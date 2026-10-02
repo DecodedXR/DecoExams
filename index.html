@@ -595,13 +595,19 @@ try{prog=JSON.parse(localStorage.getItem("ma261e1")||"{}")||{}}catch(e){prog={}}
 const save=()=>{try{localStorage.setItem("ma261e1",JSON.stringify(prog))}catch(e){}};
 
 /* math typesetting */
+// MathJax measures font size at typeset time; a detached or display:none element gives NaN-sized SVGs.
+// So queue everything and only typeset elements once they're actually on screen.
 const pending=new Set();
-function typeset(el){
-  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([el]).catch(()=>{})}
-  else pending.add(el);
+function flushMath(){
+  if(!(window.MathJax&&MathJax.typesetPromise))return;
+  const vis=[...pending].filter(e=>e.isConnected&&e.getClientRects().length);
+  if(!vis.length)return;
+  vis.forEach(e=>pending.delete(e));
+  MathJax.typesetPromise(vis).catch(()=>{});
 }
+function typeset(el){ pending.add(el); queueMicrotask(flushMath); }
 document.getElementById("mjx").addEventListener("load",()=>{
-  const go=()=>{ if(MathJax.typesetPromise){ MathJax.typesetPromise([...pending]).catch(()=>{}); pending.clear(); } else setTimeout(go,60); };
+  const go=()=>{ if(MathJax.typesetPromise) flushMath(); else setTimeout(go,60); };
   go();
 });
 
@@ -663,7 +669,7 @@ function card(q,mode){
     const ok=pick===ai; el.classList.add(ok?"ok":"no"); v.className="verdict "+(ok?"ok":"no");
     v.textContent=pick==null?"Not answered · correct: "+q.a:(ok?"Correct":"Incorrect · correct: "+q.a);
   }
-  sh.onclick=()=>{sol.hidden=!sol.hidden;sh.textContent=sol.hidden?"Show solution":"Hide solution";};
+  sh.onclick=()=>{sol.hidden=!sol.hidden;sh.textContent=sol.hidden?"Show solution":"Hide solution";flushMath();};
   el.querySelector(".chip").onclick=()=>{ $("#fTopic").value=q.t; $("#fExam").value="all"; showTab("practice"); renderPractice(); window.scrollTo({top:0}); };
   if(mode==="practice"){
     if(p) reveal(p.pick);
@@ -675,7 +681,8 @@ function card(q,mode){
   } else if(mode==="review"){
     reveal(mockState.ans[q.id]);
   }
-  typeset(el);
+  // solution typesets separately: it's hidden until revealed
+  typeset(el.querySelector(".stem"));typeset(el.querySelector(".opts"));typeset(sol);
   return el;
 }
 
@@ -763,6 +770,7 @@ function showTab(t){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
   ["practice","mock","topics"].forEach(s=>$("#"+s).hidden=s!==t);
   try{localStorage.setItem("ma261e1t",t)}catch(e){}
+  flushMath();
 }
 document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 
