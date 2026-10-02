@@ -1541,7 +1541,16 @@ function buzzer(){
     for(const f of[110,117]){const o=actx.createOscillator();o.type="square";o.frequency.setValueAtTime(f,t);o.frequency.linearRampToValueAtTime(f*.85,t+.5);o.connect(g);o.start(t);o.stop(t+.52)}
   }catch(e){}
 }
-function cheer(el,ok){ok?confetti(el):buzzer()}
+function ding(){
+  if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    // two quick rising bell tones (E6 then A6), each fading out
+    [[1318.5,0],[1760,.09]].forEach(([f,d])=>{const t=actx.currentTime+d,o=actx.createOscillator(),g=actx.createGain();
+      o.type="sine";o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.45);
+      o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+.5)});
+  }catch(e){}
+}
+function cheer(el,ok){if(ok){confetti(el);ding()}else buzzer()}
 
 /* start here */
 function renderLessons(){
