@@ -53,7 +53,7 @@ select{font:14px var(--f-body);padding:7px 10px;border:1px solid var(--rule);bor
 .qc.ok{border-left:4px solid var(--good)} .qc.no{border-left:4px solid var(--bad)}
 .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;font:12px var(--f-mono);color:var(--muted)}
 .chip{font:500 11px var(--f-mono);padding:2px 8px;border-radius:99px;background:var(--gold-soft);color:var(--gold);letter-spacing:.02em;cursor:pointer;border:0}
-.stem{overflow-x:auto;margin-bottom:12px}
+.stem{overflow-x:auto;overflow-y:hidden;padding-block:6px;margin-bottom:6px}
 .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:6px}
 .opt{display:flex;gap:10px;align-items:center;text-align:left;font:14px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:7px 10px;cursor:pointer;min-width:0;overflow-x:auto}
 .opt .L{font:600 12px var(--f-mono);color:var(--muted);flex:none;width:18px}
@@ -96,6 +96,26 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .intro ul{padding-left:18px;margin:10px 0 16px}
 .notes{font-size:13px;color:var(--muted);margin-top:36px;border-top:1px solid var(--rule);padding-top:14px}
 .notes p{margin:4px 0}
+/* Start here */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px;margin:0 0 22px;padding:0;list-style:none;counter-reset:s}
+.steps li{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;font-size:14px;counter-increment:s}
+.steps li::before{content:counter(s);display:block;font:800 22px/1 var(--f-display);color:var(--gold);margin-bottom:4px}
+.lesson{background:var(--surface);border:1px solid var(--rule);border-radius:6px;margin-bottom:10px}
+.lesson>summary{display:flex;gap:12px;align-items:baseline;padding:14px 16px;cursor:pointer;list-style:none}
+.lesson>summary::-webkit-details-marker{display:none}
+.lesson>summary::after{content:"+";margin-left:auto;font:500 18px/1 var(--f-mono);color:var(--muted)}
+.lesson[open]>summary::after{content:"2"}
+.lesson>summary:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.lesson .n{font:500 12px var(--f-mono);color:var(--gold);flex:none;width:22px}
+.lesson h3{font-size:18px;font-weight:600}
+.lesson .prog{font:12px var(--f-mono);color:var(--muted);white-space:nowrap}
+.lesson .prog.all{color:var(--good)}
+.lesson .body{padding:0 16px 16px;border-top:1px solid var(--rule)}
+.refresh{overflow-x:auto;padding-top:6px}
+.refresh p{margin:10px 0} .refresh ul{margin:8px 0;padding-left:18px} .refresh li{margin:3px 0}
+.lesson h4{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
+.lesson .qc{background:var(--paper)}
+.lesson .next{margin-top:14px}
 mjx-container{max-width:100%}
 @media (max-width:560px){header.top{grid-template-columns:1fr}.cv{display:none}.bars{grid-template-columns:minmax(0,1fr) 90px auto}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -109,19 +129,31 @@ mjx-container{max-width:100%}
     <div>
       <div class="eyebrow">MA 26100 · Multivariate Calculus · Purdue</div>
       <h1>Exam 1 Lab</h1>
-      <p class="lede">Every question from six past Exam 1s, with worked solutions, a topic breakdown, a formula sheet, and a timed mock exam.</p>
+      <p class="lede">A refresher with warm-ups for every topic, then every question from six past Exam 1s with worked solutions, a formula sheet, and a timed mock exam.</p>
       <div class="stats" id="stats"></div>
     </div>
     <div class="cv"><canvas id="contour" width="340" height="340" aria-label="Contour plot of f(x,y) = x squared minus y squared"></canvas><div class="cap">level curves of x² − y²</div></div>
   </header>
 
   <nav class="tabs" role="tablist">
-    <button role="tab" id="tab-practice" aria-selected="true" data-tab="practice">Practice</button>
+    <button role="tab" id="tab-start" aria-selected="true" data-tab="start">Start here</button>
+    <button role="tab" id="tab-practice" aria-selected="false" data-tab="practice">Practice</button>
     <button role="tab" id="tab-mock" aria-selected="false" data-tab="mock">Mock exam</button>
     <button role="tab" id="tab-topics" aria-selected="false" data-tab="topics">Topics &amp; formulas</button>
   </nav>
 
-  <section id="practice">
+  <section id="start">
+    <h2>Start here</h2>
+    <p class="sub">A quick refresher for each topic, then warm-up problems that build up to what the exam actually asks. Work through them in order.</p>
+    <ol class="steps">
+      <li><b>Read the refresher.</b> The few ideas each topic is really testing, plus the traps.</li>
+      <li><b>Do the warm-ups.</b> Each one adds a single new twist. The last ones are shaped like real exam questions.</li>
+      <li><b>Try the real ones.</b> Each topic ends with a link to every past exam question on it.</li>
+    </ol>
+    <div id="lessons"></div>
+  </section>
+
+  <section id="practice" hidden>
     <div class="filters">
       <label for="fExam">Exam<select id="fExam"></select></label>
       <label for="fTopic">Topic<select id="fTopic"></select></label>
@@ -581,6 +613,356 @@ const SHEET = {
     trap:"Factor f_x = 0 into cases (x = 0 or y = 0) and finish each case. Completing the square can turn absolute max/min into a distance problem." }
 };
 
+/* Start here: per-topic refresher + warm-ups that ramp from the bare skill to exam shape.
+   Warm-up shape matches Q entries (q, o, a, s) so card() renders them; step names the rung. */
+const LEARN = {
+vec: {
+  learn: R`<p><b>Dot product</b> is a number: multiply matching components and add. \(\vec a\cdot\vec b=0\) means perpendicular.</p>
+<p><b>Cross product</b> is a vector perpendicular to both inputs:
+\[\vec a\times\vec b=\langle a_2b_3-a_3b_2,\;a_3b_1-a_1b_3,\;a_1b_2-a_2b_1\rangle\]
+Order matters (\(\vec b\times\vec a=-\vec a\times\vec b\)) and \(\vec a\times\vec a=\vec 0\).</p>
+<p><b>Projection</b> of \(\vec u\) onto \(\vec v\) is a multiple of \(\vec v\): \(\text{proj}_{\vec v}\vec u=\dfrac{\vec u\cdot\vec v}{|\vec v|^2}\vec v\). Divide by \(|\vec v|^2\), not \(|\vec v|\).</p>`,
+  warm: [
+    { step:"The core skill", a:"C",
+      q:R`Compute \(\langle1,2,3\rangle\cdot\langle4,-1,2\rangle\).`,
+      o:["\\(12\\)",R`\(\langle4,-2,6\rangle\)`,"\\(8\\)","\\(0\\)","\\(6\\)"],
+      s:R`\(1\cdot4+2\cdot(-1)+3\cdot2=4-2+6=8\). A dot product is a single number, never a vector.` },
+    { step:"Cross product", a:"A",
+      q:R`Compute \(\langle1,2,0\rangle\times\langle0,1,3\rangle\).`,
+      o:[R`\(\langle6,-3,1\rangle\)`,R`\(\langle-6,3,-1\rangle\)`,R`\(\langle6,3,1\rangle\)`,R`\(\langle0,2,0\rangle\)`,R`\(\langle2,-3,1\rangle\)`],
+      s:R`\(\langle 2\cdot3-0\cdot1,\;0\cdot0-1\cdot3,\;1\cdot1-2\cdot0\rangle=\langle6,-3,1\rangle\).
+Check: \(\langle6,-3,1\rangle\cdot\langle1,2,0\rangle=0\) and \(\cdot\langle0,1,3\rangle=0\). (\(\langle-6,3,-1\rangle\) is the product in the other order.)` },
+    { step:"Projection", a:"B",
+      q:R`Find \(\text{proj}_{\vec v}\vec u\) for \(\vec u=\langle3,1,2\rangle\), \(\vec v=\langle1,1,0\rangle\).`,
+      o:[R`\(\langle4,4,0\rangle\)`,R`\(\langle2,2,0\rangle\)`,R`\(\langle2\sqrt2,2\sqrt2,0\rangle\)`,"\\(2\\)",R`\(\langle\tfrac67,\tfrac27,\tfrac47\rangle\)`],
+      s:R`\(\vec u\cdot\vec v=4\), \(|\vec v|^2=2\), so \(\text{proj}_{\vec v}\vec u=\tfrac42\langle1,1,0\rangle=\langle2,2,0\rangle\).
+The traps: \(\langle4,4,0\rangle\) skips the division, \(2\sqrt2\) divides by \(|\vec v|\), and the last option projects \(\vec v\) onto \(\vec u\).` },
+    { step:"Exam-style: algebra rules", a:"D",
+      q:R`For any vectors \(\vec v,\vec w\) in \(\mathbb R^3\), \(\vec v\times(3\vec v-\vec w)\) equals`,
+      o:[R`\(\vec v\times\vec w\)`,R`\(3|\vec v|^2-\vec v\times\vec w\)`,R`\(\vec 0\)`,R`\(\vec w\times\vec v\)`,R`\(3\vec v-\vec v\times\vec w\)`],
+      s:R`Distribute: \(3(\vec v\times\vec v)-\vec v\times\vec w=\vec 0-\vec v\times\vec w=\vec w\times\vec v\).
+Two rules did the work: \(\vec v\times\vec v=\vec 0\), and swapping the order flips the sign.` }
+  ]
+},
+lp: {
+  learn: R`<p><b>Line:</b> a point plus \(t\) times a direction, \(\langle x_0+at,\;y_0+bt,\;z_0+ct\rangle\). Through two points? The direction is their difference.</p>
+<p><b>Plane:</b> normal \(\vec n=\langle a,b,c\rangle\) through \((x_0,y_0,z_0)\) gives \(a(x-x_0)+b(y-y_0)+c(z-z_0)=0\). The coefficients of \(ax+by+cz=d\) <i>are</i> the normal.</p>
+<p><b>Recipes:</b> line parallel to plane \(\iff\) direction \(\cdot\,\vec n=0\). Line meets plane: plug the line into the plane, solve for \(t\). Plane from two directions: \(\vec n\) = their cross product. Two planes meet in a line with direction \(\vec n_1\times\vec n_2\).</p>
+<p><b>Shortcut:</b> on multiple choice you can often just plug each option back in to check.</p>`,
+  warm: [
+    { step:"Plane from point + normal", a:"A",
+      q:R`Which plane passes through \((1,2,0)\) with normal vector \(\langle3,-1,2\rangle\)?`,
+      o:[R`\(3x-y+2z=1\)`,R`\(3x-y+2z=0\)`,R`\(3x+y+2z=5\)`,R`\(3x-y+2z=-1\)`,R`\(x+2y=1\)`],
+      s:R`\(3(x-1)-(y-2)+2(z-0)=0\Rightarrow 3x-y+2z=1\).
+Check by plugging in \((1,2,0)\): \(3-2+0=1\). Note \(3x+y+2z=5\) contains the point too, but its normal is wrong.` },
+    { step:"Line meets plane", a:"C",
+      q:R`Where does the line \(\langle1+2t,\;t,\;2-t\rangle\) meet the plane \(x+y+z=7\)?`,
+      o:["\\((3,1,1)\\)","\\((9,4,-2)\\)","\\((5,2,0)\\)","\\((5,2,2)\\)","\\((2,1,-1)\\)"],
+      s:R`Plug in: \((1+2t)+t+(2-t)=3+2t=7\Rightarrow t=2\). Point: \((5,2,0)\).
+The answer is a point, so put \(t\) back into the line.` },
+    { step:"Parallel to a plane", a:"B",
+      q:R`For what \(b\) is the line \(x=1+2t,\;y=3-t,\;z=bt\) parallel to the plane \(x+4y+z=2\)?`,
+      o:["\\(-2\\)","\\(2\\)","\\(4\\)","\\(6\\)",R`\(\tfrac12\)`],
+      s:R`Parallel means the direction is perpendicular to the normal: \(\langle2,-1,b\rangle\cdot\langle1,4,1\rangle=2-4+b=0\Rightarrow b=2\).` },
+    { step:"Exam-style: two planes", a:"E",
+      q:R`Which line is the intersection of \(x+y+z=2\) and \(x-y=0\)?`,
+      o:[R`\(\langle1+t,\;1-t,\;t\rangle\)`,R`\(\langle t,\;t,\;2+t\rangle\)`,R`\(\langle1+t,\;1+t,\;2t\rangle\)`,R`\(\langle2+t,\;t,\;-2t\rangle\)`,R`\(\langle1+t,\;1+t,\;-2t\rangle\)`],
+      s:R`Direction: \(\langle1,1,1\rangle\times\langle1,-1,0\rangle=\langle1,1,-2\rangle\). A point: set \(z=0\), then \(x=y\) and \(x+y=2\) give \((1,1,0)\).
+Line: \(\langle1+t,1+t,-2t\rangle\). Faster on the exam: plug each option into both planes. Only E gives \(2\) and \(0\) for every \(t\).` }
+  ]
+},
+quad: {
+  learn: R`<p><b>Step 1:</b> complete the square and move every variable to one side. <b>Step 2:</b> read the signs.</p>
+<ul><li>\(+\,+\,+\;=1\): ellipsoid</li>
+<li>\(+\,+\,-\;=1\): hyperboloid of <b>one</b> sheet</li>
+<li>\(+\,-\,-\;=1\): hyperboloid of <b>two</b> sheets</li>
+<li>\(+\,+\,-\;=0\): cone</li>
+<li>one variable not squared (\(z=x^2+y^2\)): paraboloid, elliptic if the squares have the same sign, hyperbolic (saddle) if opposite</li></ul>
+<p>Count minus signs: one minus is one sheet, two minuses are two sheets. If the right side is negative, multiply everything by \(-1\) first.</p>
+<p><b>Traces:</b> fix one variable (\(z=k\)) and identify the 2D curve that's left.</p>`,
+  warm: [
+    { step:"Read the signs", a:"A",
+      q:R`Identify \(x^2+\dfrac{y^2}4+\dfrac{z^2}9=1\).`,
+      o:["Ellipsoid","Sphere","Cone","Hyperboloid of one sheet","Elliptic paraboloid"],
+      s:R`All three squares positive, equal to 1: <b>ellipsoid</b>. It's not a sphere because the denominators differ.` },
+    { step:"Count the minuses", a:"D",
+      q:R`Identify \(x^2-y^2-z^2=1\).`,
+      o:["Hyperboloid of one sheet","Cone","Hyperbolic paraboloid","Hyperboloid of two sheets","Ellipsoid"],
+      s:R`One plus, two minuses, \(=1\): <b>two sheets</b>. (At \(x=0\) you'd need \(-y^2-z^2=1\), which is impossible, so there's a gap between the sheets.)` },
+    { step:"Exam-style: complete the square", a:"B",
+      q:R`Identify \(x^2+4x+y^2-z^2=-3\).`,
+      o:["Hyperboloid of two sheets","Hyperboloid of one sheet","Cone","Ellipsoid","Hyperbolic paraboloid"],
+      s:R`\(x^2+4x=(x+2)^2-4\), so \((x+2)^2+y^2-z^2=1\). Two plus, one minus, \(=1\): <b>one sheet</b>.
+Don't judge by the \(-3\) before completing the square; it becomes \(+1\).` },
+    { step:"Exam-style: traces", a:"C",
+      q:R`In the planes \(z=k\) with \(k\neq0\), the traces of \(z=y^2-x^2\) are`,
+      o:["Parabolas","Ellipses","Hyperbolas","Pairs of lines","Circles"],
+      s:R`Set \(z=k\): \(y^2-x^2=k\). Opposite signs, nonzero constant: <b>hyperbolas</b>. (Only \(k=0\) gives the pair of lines \(y=\pm x\).)` }
+  ]
+},
+vf: {
+  learn: R`<p>A vector function \(\vec r(t)=\langle x(t),y(t),z(t)\rangle\) is a curve. Differentiate and integrate <b>component by component</b>.</p>
+<p><b>Tangent line</b> at a given point: first find the \(t_0\) that hits that point, then use \(\vec r(t_0)+s\,\vec r\,'(t_0)\).</p>
+<p><b>Motion:</b> \(\vec v=\vec r\,'\), \(\vec a=\vec v\,'\). Going backwards, integrate and fix each constant from the initial condition. Careful: \(\int e^t\,dt\) and \(\int\cos t\,dt\) don't vanish at \(t=0\), so their constants aren't just the initial values.</p>
+<p><b>Angle between curves</b> = angle between their tangent vectors. <b>Continuity</b> = where every component is defined.</p>`,
+  warm: [
+    { step:"Differentiate", a:"B",
+      q:R`For \(\vec r(t)=\langle t^2,\;3t,\;t^3\rangle\), find \(\vec r\,'(2)\).`,
+      o:[R`\(\langle4,6,8\rangle\)`,R`\(\langle4,3,12\rangle\)`,R`\(\langle2,3,3\rangle\)`,R`\(\langle4,3,8\rangle\)`,R`\(\langle2,0,6\rangle\)`],
+      s:R`\(\vec r\,'(t)=\langle2t,3,3t^2\rangle\), so \(\vec r\,'(2)=\langle4,3,12\rangle\). (\(\langle4,6,8\rangle\) is \(\vec r(2)\), the position, not the derivative.)` },
+    { step:"Tangent line", a:"D",
+      q:R`Find the tangent line to \(\vec r(t)=\langle t,t^2,t^3\rangle\) at \((1,1,1)\).`,
+      o:[R`\(\langle s,\;2s,\;3s\rangle\)`,R`\(\langle1+s,\;1+s,\;1+s\rangle\)`,R`\(\langle1+2s,\;1+s,\;1+3s\rangle\)`,R`\(\langle1+s,\;1+2s,\;1+3s\rangle\)`,R`\(\langle1+s,\;1+2s,\;1+3s^2\rangle\)`],
+      s:R`The point is \(t=1\). \(\vec r\,'(t)=\langle1,2t,3t^2\rangle\Rightarrow\vec r\,'(1)=\langle1,2,3\rangle\).
+Line: point + \(s\)·direction \(=\langle1+s,1+2s,1+3s\rangle\). A line is linear in \(s\), and it must pass through the point (the first option passes through the origin).` },
+    { step:"Integrate with a constant", a:"A",
+      q:R`\(\vec v(t)=\langle2t,\;1,\;e^t\rangle\) and \(\vec r(0)=\langle1,0,0\rangle\). Find \(\vec r(t)\).`,
+      o:[R`\(\langle t^2+1,\;t,\;e^t-1\rangle\)`,R`\(\langle t^2+1,\;t,\;e^t\rangle\)`,R`\(\langle t^2,\;t,\;e^t\rangle\)`,R`\(\langle t^2+1,\;t+1,\;e^t-1\rangle\)`,R`\(\langle2,\;0,\;e^t\rangle\)`],
+      s:R`Integrate: \(\langle t^2+C_1,\;t+C_2,\;e^t+C_3\rangle\). At \(t=0\): \(\langle C_1,\;C_2,\;1+C_3\rangle=\langle1,0,0\rangle\), so \(C_3=-1\).
+This is the classic trap: \(e^0=1\), so the \(z\) constant is \(-1\), not \(0\).` },
+    { step:"Exam-style: from acceleration", a:"C",
+      q:R`A ball has \(\vec a(t)=\langle0,0,-2\rangle\), \(\vec v(0)=\langle1,2,0\rangle\), \(\vec r(0)=\langle0,0,4\rangle\). Where is it at \(t=2\)?`,
+      o:["\\((2,4,-4)\\)","\\((2,4,4)\\)","\\((2,4,0)\\)","\\((1,2,-4)\\)","\\((0,0,0)\\)"],
+      s:R`\(\vec v(t)=\langle1,2,-2t\rangle\) (constants from \(\vec v(0)\)), then \(\vec r(t)=\langle t,\;2t,\;4-t^2\rangle\) (constants from \(\vec r(0)\)).
+\(\vec r(2)=(2,4,0)\). Integrate twice, one set of constants each time.` }
+  ]
+},
+arc: {
+  learn: R`<p><b>Arc length:</b> \(L=\displaystyle\int_a^b|\vec r\,'(t)|\,dt\). If the speed \(|\vec r\,'|\) is constant, \(L\) = speed × time, with no real integral.</p>
+<p><b>Curvature:</b> \(\kappa=\dfrac{|\vec r\,'\times\vec r\,''|}{|\vec r\,'|^3}\).</p>
+<p><b>Shortcuts the exam rewards:</b> a circle of radius \(R\) has \(\kappa=1/R\) everywhere. Many exam curves are <i>circles in disguise</i>: if \(|\vec r\,'|\) is constant and the curve is planar, compute the radius instead of crossing vectors. A helix \(\langle a\cos t,a\sin t,bt\rangle\) has \(\kappa=\dfrac{a}{a^2+b^2}\).</p>
+<p>When the integrand is \(\sqrt{\text{stuff}}\), expect the stuff to be a perfect square.</p>`,
+  warm: [
+    { step:"Constant speed", a:"E",
+      q:R`Arc length of \(\vec r(t)=\langle3\cos t,\;3\sin t,\;4t\rangle\) for \(0\le t\le2\pi\).`,
+      o:["\\(5\\)","\\(2\\pi\\)","\\(6\\pi\\)","\\(25\\pi\\)","\\(10\\pi\\)"],
+      s:R`\(\vec r\,'=\langle-3\sin t,3\cos t,4\rangle\), \(|\vec r\,'|=\sqrt{9+16}=5\). \(L=5\cdot2\pi=10\pi\).
+(\(6\pi\) forgets the \(z\) component.)` },
+    { step:"Perfect-square integrand", a:"A",
+      q:R`Arc length of \(\vec r(t)=\langle2t,\;t^2,\;\ln t\rangle\) for \(1\le t\le e\).`,
+      o:["\\(e^2\\)","\\(e^2+1\\)","\\(e^2-1\\)","\\(2e\\)","\\(e\\)"],
+      s:R`\(|\vec r\,'|^2=4+4t^2+\tfrac1{t^2}=\left(2t+\tfrac1t\right)^2\).
+\(L=\int_1^e\left(2t+\tfrac1t\right)dt=\big[t^2+\ln t\big]_1^e=(e^2+1)-1=e^2\).` },
+    { step:"Helix curvature", a:"B",
+      q:R`Curvature of \(\vec r(t)=\langle\cos t,\;\sin t,\;t\rangle\).`,
+      o:["\\(1\\)",R`\(\tfrac12\)`,R`\(\sqrt2\)`,R`\(\tfrac14\)`,"\\(2\\)"],
+      s:R`\(\vec r\,'=\langle-\sin t,\cos t,1\rangle\), \(\vec r\,''=\langle-\cos t,-\sin t,0\rangle\).
+\(\vec r\,'\times\vec r\,''=\langle\sin t,-\cos t,1\rangle\), magnitude \(\sqrt2\). \(|\vec r\,'|^3=(\sqrt2)^3=2\sqrt2\).
+\(\kappa=\sqrt2/(2\sqrt2)=\tfrac12\). Helix shortcut: \(\tfrac{1}{1+1}\).` },
+    { step:"Exam-style: circle in disguise", a:"D",
+      q:R`Curvature of \(\vec r(t)=\langle3\cos t,\;4\cos t,\;5\sin t\rangle\) at \(t=\pi/4\).`,
+      o:["\\(5\\)",R`\(\tfrac1{25}\)`,R`\(\tfrac35\)`,R`\(\tfrac15\)`,R`\(\tfrac13\)`],
+      s:R`\(|\vec r|^2=9\cos^2t+16\cos^2t+25\sin^2t=25\), and \(4x=3y\) for every \(t\), so the curve is planar through the origin.
+It's a circle of radius 5: \(\kappa=\tfrac15\) for every \(t\). The \(t=\pi/4\) is a decoy.` }
+  ]
+},
+lvl: {
+  learn: R`<p>The level curves of \(f(x,y)\) are the curves \(f(x,y)=k\). Set \(f=k\) and simplify until you see a conic.</p>
+<p><b>Peel off the outer function:</b> \(\sqrt{\cdot}\), \(e^{(\cdot)}\), and \(\ln(\cdot)\) are one-to-one, so \(e^{g}=k\) is the same as \(g=\ln k\). Only the inside matters.</p>
+<ul><li>\(x^2+y^2=c\): circles · \(ax^2+by^2=c\) (\(a\ne b\), same sign): ellipses</li>
+<li>\(x^2-y^2=c\): hyperbolas · one variable squared, the other linear: parabolas</li></ul>
+<p>Complete the square to find the center. If squaring cancels a term, look at what's left.</p>`,
+  warm: [
+    { step:"Read the conic", a:"B",
+      q:R`The level curves of \(f(x,y)=4x^2+y^2\) are`,
+      o:["Circles","Ellipses","Parabolas","Hyperbolas","Lines"],
+      s:R`\(4x^2+y^2=k\) with \(k>0\): different positive coefficients, so <b>ellipses</b>.` },
+    { step:"One square, one linear", a:"C",
+      q:R`The level curves of \(f(x,y)=y-x^2\) are`,
+      o:["Lines","Hyperbolas","Parabolas","Ellipses","Circles"],
+      s:R`\(y-x^2=k\Rightarrow y=x^2+k\): <b>parabolas</b>, shifted up and down.` },
+    { step:"Peel off ln", a:"D",
+      q:R`The level curves of \(f(x,y)=\ln(x^2-y^2)\) are`,
+      o:["Circles","Parabolas","Lines","Hyperbolas","Ellipses"],
+      s:R`\(\ln(x^2-y^2)=k\iff x^2-y^2=e^k\), a positive constant: <b>hyperbolas</b>.` },
+    { step:"Exam-style: root + complete the square", a:"A",
+      q:R`The level curves of \(f(x,y)=\sqrt{x^2-2x+y^2}\) are`,
+      o:[R`Circles centered at \((1,0)\)`,"Circles centered at the origin","Ellipses","Parabolas",R`Lines through \((1,0)\)`],
+      s:R`\(\sqrt{x^2-2x+y^2}=k\Rightarrow x^2-2x+y^2=k^2\Rightarrow(x-1)^2+y^2=k^2+1\).
+<b>Circles centered at \((1,0)\)</b>. Completing the square found the center.` }
+  ]
+},
+lim: {
+  learn: R`<p><b>Always plug in first.</b> If you get a real number, that's the answer.</p>
+<p>If you get \(0/0\), try in this order:</p>
+<ul><li><b>Factor and cancel</b> (difference of squares, grouping).</li>
+<li><b>Substitute \(u\)</b> when everything depends on one expression: \(\dfrac{\sin u}{u}\to1\), \(\dfrac{e^u-1}{u}\to1\), \(\dfrac{1-\cos u}{u}\to0\).</li>
+<li><b>Polar</b> when you see \(x^2+y^2\): let it be \(r^2\). If the leftover is \(r\cdot(\text{bounded})\), the limit is 0.</li>
+<li><b>Two paths</b> (\(y=0\) vs \(y=mx\)) giving different values means the limit does not exist.</li></ul>
+<p><b>Continuity:</b> define \(f(0,0)\) as the limit, but only if the limit exists.</p>`,
+  warm: [
+    { step:"Just plug in", a:"A",
+      q:R`\(\displaystyle\lim_{(x,y)\to(1,2)}(x^2y+3)\)`,
+      o:["\\(5\\)","\\(3\\)","\\(7\\)","\\(0\\)","Does not exist"],
+      s:R`Polynomials are continuous: \(1\cdot2+3=5\). No tricks needed when plugging in works.` },
+    { step:"Factor and cancel", a:"E",
+      q:R`\(\displaystyle\lim_{(x,y)\to(1,1)}\frac{x^2-y^2}{x-y}\)`,
+      o:["\\(0\\)","\\(1\\)","Does not exist",R`\(\infty\)`,"\\(2\\)"],
+      s:R`\(\frac{(x-y)(x+y)}{x-y}=x+y\to2\). A \(0/0\) result means "do more work," not "does not exist."` },
+    { step:"Substitute u", a:"C",
+      q:R`\(\displaystyle\lim_{(x,y)\to(0,0)}\frac{\sin(x^2+y^2)}{x^2+y^2}\)`,
+      o:["\\(0\\)","Does not exist","\\(1\\)",R`\(\tfrac12\)`,R`\(\infty\)`],
+      s:R`Let \(u=x^2+y^2\to0\). Then \(\frac{\sin u}{u}\to1\).` },
+    { step:"Two paths", a:"B",
+      q:R`\(\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy}{x^2+y^2}\)`,
+      o:["\\(0\\)","Does not exist",R`\(\tfrac12\)`,"\\(1\\)",R`\(\infty\)`],
+      s:R`Along \(y=0\): \(0\). Along \(y=x\): \(\frac{x^2}{2x^2}=\tfrac12\). Different values: <b>does not exist</b>.
+Equivalently, \(y=mx\) gives \(\frac{m}{1+m^2}\), which depends on \(m\).` },
+    { step:"Exam-style: split and polar", a:"D",
+      q:R`\(\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^3+\sin(x^2+y^2)}{x^2+y^2}\)`,
+      o:["\\(0\\)","Does not exist","\\(2\\)","\\(1\\)",R`\(\tfrac12\)`],
+      s:R`Split into two limits. \(\frac{\sin(x^2+y^2)}{x^2+y^2}\to1\).
+\(\frac{x^3}{x^2+y^2}=\frac{r^3\cos^3\theta}{r^2}=r\cos^3\theta\to0\). Total: \(1\).` }
+  ]
+},
+pd: {
+  learn: R`<p>\(f_x\): differentiate in \(x\), treating every other variable as a constant.</p>
+<p>\(f_{xy}\) means do \(x\) first, then \(y\). For nice functions the order doesn't matter (Clairaut), so <b>pick the easiest order</b>.</p>
+<p><b>The exam's favorite trick:</b> a term that doesn't contain a variable dies when you differentiate by it. For \(f_{xyz}\), only terms containing all three of \(x\), \(y\), \(z\) survive.</p>
+<p>Exponent rules: \(\frac{\partial}{\partial x}x^y=yx^{y-1}\) (power rule), \(\frac{\partial}{\partial x}a^x=a^x\ln a\) (exponential rule).</p>`,
+  warm: [
+    { step:"One partial", a:"C",
+      q:R`\(f(x,y)=x^3y^2+4y\). Find \(f_x\).`,
+      o:[R`\(3x^2y^2+4\)`,R`\(2x^3y\)`,R`\(3x^2y^2\)`,R`\(6x^2y\)`,R`\(3x^2+2y\)`],
+      s:R`Treat \(y\) as a constant: \(\frac{\partial}{\partial x}(x^3y^2)=3x^2y^2\), and \(4y\) is a constant, so it gives 0.` },
+    { step:"Chain rule inside", a:"A",
+      q:R`\(f(x,y)=xe^{xy}\). Find \(f_y\).`,
+      o:[R`\(x^2e^{xy}\)`,R`\(xe^{xy}\)`,R`\(e^{xy}+xye^{xy}\)`,R`\(xye^{xy}\)`,R`\(e^{xy}\)`],
+      s:R`\(x\) is a constant multiplier, and \(\frac{\partial}{\partial y}e^{xy}=xe^{xy}\), so \(f_y=x\cdot xe^{xy}=x^2e^{xy}\). (Option C is \(f_x\).)` },
+    { step:"Second partial", a:"B",
+      q:R`\(f(x,y)=x^2y^3+\sin x+y^4\). Find \(f_{xy}\).`,
+      o:[R`\(6x^2y\)`,R`\(6xy^2\)`,R`\(2xy^3+\cos x\)`,R`\(6xy^2+4y^3\)`,R`\(-\sin x\)`],
+      s:R`Easiest order: \(\sin x\) has no \(y\) and \(y^4\) has no \(x\), so both die. Only \(x^2y^3\) survives: \(\partial_x\partial_y=2x\cdot3y^2=6xy^2\).` },
+    { step:"Exam-style: the dead-term trick", a:"E",
+      q:R`\(f(x,y,z)=x^2y+e^{yz}+xz^3+\ln(x^5)\). Compute \(f_{xyz}(1,2,3)\).`,
+      o:["\\(1\\)",R`\(6z^2\)`,"\\(54\\)",R`\(3e^6\)`,"\\(0\\)"],
+      s:R`Check each term for all three variables: \(x^2y\) has no \(z\), \(e^{yz}\) has no \(x\), \(xz^3\) has no \(y\), \(\ln x^5\) has only \(x\). Every term dies: \(0\). No differentiating needed.` },
+    { step:"Exam-style: variable exponents", a:"D",
+      q:R`\(f(x)=x^3+3^x\). Find \(f'(x)\) (the same rules apply to \(f_x\) of \(x^y+y^x\)).`,
+      o:[R`\(3x^2+x\cdot3^{x-1}\)`,R`\(3x^2+3^x\)`,R`\(3x^2+3^x\ln x\)`,R`\(3x^2+3^x\ln3\)`,R`\(6x\)`],
+      s:R`\(x^3\): variable base, constant exponent, so use the power rule. \(3^x\): constant base, variable exponent, so use \(3^x\ln3\).
+For \(f=x^y+y^x\): \(f_x=yx^{y-1}+y^x\ln y\).` }
+  ]
+},
+chain: {
+  learn: R`<p><b>Chain rule:</b> add one term per path from \(f\) down to the variable:
+\[\frac{\partial f}{\partial t}=f_x\frac{\partial x}{\partial t}+f_y\frac{\partial y}{\partial t}+f_z\frac{\partial z}{\partial t}\]
+Evaluate everything at the same point; find \(x,y,z\) there first.</p>
+<p><b>Implicit differentiation:</b> move everything to one side, \(F=0\). Then
+\[\frac{dy}{dx}=-\frac{F_x}{F_y},\qquad\frac{\partial z}{\partial x}=-\frac{F_x}{F_z}\]
+Don't forget the minus sign.</p>`,
+  warm: [
+    { step:"Chain rule with t", a:"A",
+      q:R`\(z=x^2y\), \(x=t^2\), \(y=3t\). Find \(dz/dt\) at \(t=1\).`,
+      o:["\\(15\\)","\\(12\\)","\\(3\\)","\\(9\\)","\\(18\\)"],
+      s:R`At \(t=1\): \(x=1,y=3\). \(z_x=2xy=6\), \(z_y=x^2=1\), \(x'=2t=2\), \(y'=3\).
+\(dz/dt=6\cdot2+1\cdot3=15\). Check: \(z=3t^5\), \(z'=15t^4=15\). ✓` },
+    { step:"Implicit, two variables", a:"C",
+      q:R`Find \(dy/dx\) for \(x^2+y^3=9\) at \((1,2)\).`,
+      o:[R`\(\tfrac16\)`,"\\(-6\\)",R`\(-\tfrac16\)`,R`\(-\tfrac23\)`,"\\(0\\)"],
+      s:R`\(F=x^2+y^3-9\). \(F_x=2x=2\), \(F_y=3y^2=12\). \(dy/dx=-2/12=-\tfrac16\).` },
+    { step:"Implicit, three variables", a:"B",
+      q:R`\(z\) is defined by \(x^2+yz+z^3=3\). Find \(\partial z/\partial x\) at \((1,1,1)\).`,
+      o:[R`\(\tfrac12\)`,R`\(-\tfrac12\)`,"\\(-2\\)",R`\(-\tfrac14\)`,R`\(-\tfrac23\)`],
+      s:R`\(F=x^2+yz+z^3-3\). \(F_x=2x=2\), \(F_z=y+3z^2=4\). \(\partial z/\partial x=-\tfrac24=-\tfrac12\).
+The \(yz\) term matters in \(F_z\): treat \(y\) as a constant, so it gives \(y\).` },
+    { step:"Exam-style: polar coordinates", a:"D",
+      q:R`\(f_x=2x\), \(f_y=3\). With \(x=r\cos\theta\), \(y=r\sin\theta\), find \(\partial f/\partial r\) at \((r,\theta)=(1,\pi/2)\).`,
+      o:["\\(0\\)","\\(2\\)","\\(5\\)","\\(3\\)","\\(-3\\)"],
+      s:R`At \((1,\pi/2)\): \(x=0,\;y=1\). \(\partial x/\partial r=\cos\theta=0\), \(\partial y/\partial r=\sin\theta=1\).
+\(f_r=f_x\cdot0+f_y\cdot1=3\). Convert the point to \(x,y\) before plugging into \(f_x\).` }
+  ]
+},
+grad: {
+  learn: R`<p>\(\nabla f=\langle f_x,f_y,f_z\rangle\) points uphill, in the direction of fastest increase.</p>
+<ul><li><b>Directional derivative:</b> \(D_{\vec u}f=\nabla f\cdot\vec u\) where \(\vec u\) <b>must be a unit vector</b>. Divide the given direction by its length first.</li>
+<li><b>Maximum rate of increase</b> = \(|\nabla f|\), in the direction of \(\nabla f\).</li>
+<li><b>Steepest descent</b> = direction \(-\nabla f\). The minimum rate is \(-|\nabla f|\).</li></ul>`,
+  warm: [
+    { step:"Compute the gradient", a:"B",
+      q:R`\(f(x,y)=x^2y+y^3\). Find \(\nabla f(1,2)\).`,
+      o:[R`\(\langle4,12\rangle\)`,R`\(\langle4,13\rangle\)`,R`\(\langle2,13\rangle\)`,"\\(17\\)",R`\(\langle4,8\rangle\)`],
+      s:R`\(f_x=2xy=4\), \(f_y=x^2+3y^2=1+12=13\). \(\nabla f=\langle4,13\rangle\).` },
+    { step:"Normalize the direction", a:"E",
+      q:R`Directional derivative of \(f=x^2+y^2\) at \((1,1)\) in the direction \(\langle3,4\rangle\).`,
+      o:["\\(14\\)",R`\(2\sqrt2\)`,R`\(\tfrac75\)`,R`\(\tfrac{28}5\)`,R`\(\tfrac{14}5\)`],
+      s:R`\(\nabla f=\langle2,2\rangle\). \(|\langle3,4\rangle|=5\), so \(\vec u=\langle\tfrac35,\tfrac45\rangle\). \(D_uf=\tfrac{6+8}5=\tfrac{14}5\).
+\(14\) is what you get if you forget to normalize.` },
+    { step:"Maximum rate", a:"A",
+      q:R`Maximum rate of increase of \(f=x^2+yz\) at \((1,2,3)\).`,
+      o:[R`\(\sqrt{17}\)`,"\\(17\\)","\\(7\\)",R`\(\langle2,3,2\rangle\)`,R`\(\sqrt{13}\)`],
+      s:R`\(\nabla f=\langle2x,\;z,\;y\rangle=\langle2,3,2\rangle\). Max rate \(=|\nabla f|=\sqrt{4+9+4}=\sqrt{17}\).
+The <i>rate</i> is a number, and the <i>direction</i> is the vector.` },
+    { step:"Exam-style: steepest descent", a:"C",
+      q:R`Direction of steepest descent of \(f=x^2+2y^2\) at \((1,1)\) is parallel to`,
+      o:[R`\(\langle1,2\rangle\)`,R`\(\langle2,1\rangle\)`,R`\(\langle-1,-2\rangle\)`,R`\(\langle-2,-1\rangle\)`,R`\(\langle1,-2\rangle\)`],
+      s:R`\(\nabla f=\langle2x,4y\rangle=\langle2,4\rangle\). Descent is \(-\nabla f=\langle-2,-4\rangle\parallel\langle-1,-2\rangle\).` }
+  ]
+},
+tp: {
+  learn: R`<p><b>Surface \(F(x,y,z)=k\):</b> the normal is \(\nabla F\) at the point, so the tangent plane is
+\[F_x(x-x_0)+F_y(y-y_0)+F_z(z-z_0)=0\]</p>
+<p><b>Graph \(z=f(x,y)\):</b> \(z-z_0=f_x(x-x_0)+f_y(y-y_0)\).</p>
+<p><b>Horizontal tangent plane</b> (parallel to the \(xy\)-plane) means the normal is vertical: \(f_x=f_y=0\), or \(F_x=F_y=0\). Then find \(z\) from the surface equation.</p>
+<p>Check any answer by plugging in the point. The plane must contain it.</p>`,
+  warm: [
+    { step:"Graph z = f(x,y)", a:"A",
+      q:R`Tangent plane to \(z=x^2+y^2\) at \((1,2,5)\).`,
+      o:[R`\(z=2x+4y-5\)`,R`\(z=2x+4y+5\)`,R`\(z=2x+4y\)`,R`\(2x+4y+z=5\)`,R`\(z=x+2y\)`],
+      s:R`\(f_x=2x=2\), \(f_y=2y=4\). \(z-5=2(x-1)+4(y-2)\Rightarrow z=2x+4y-5\).
+Check: \(2+8-5=5\). ✓` },
+    { step:"Level surface F = k", a:"C",
+      q:R`Tangent plane to the sphere \(x^2+y^2+z^2=9\) at \((1,2,2)\).`,
+      o:[R`\(x+2y+2z=0\)`,R`\(2x+4y+4z=9\)`,R`\(x+2y+2z=9\)`,R`\(x+2y+2z=3\)`,R`\(x+y+z=5\)`],
+      s:R`\(\nabla F=\langle2x,2y,2z\rangle=\langle2,4,4\rangle\parallel\langle1,2,2\rangle\).
+\(1(x-1)+2(y-2)+2(z-2)=0\Rightarrow x+2y+2z=9\). Option B has the right normal but misses the point.` },
+    { step:"Horizontal tangent plane", a:"D",
+      q:R`Where is the tangent plane to \(z=x^2-4x+y^2+2y\) horizontal?`,
+      o:["\\((2,-1,5)\\)","\\((-2,1,15)\\)","\\((2,-1,0)\\)","\\((2,-1,-5)\\)","\\((4,-2,0)\\)"],
+      s:R`\(z_x=2x-4=0\Rightarrow x=2\). \(z_y=2y+2=0\Rightarrow y=-1\).
+\(z=4-8+1-2=-5\). Don't stop at \((x,y)\): the exam wants the point on the surface.` },
+    { step:"Exam-style: cone", a:"B",
+      q:R`Tangent plane to the cone \(x^2+y^2=z^2\) at \((3,4,5)\).`,
+      o:[R`\(3x+4y+5z=50\)`,R`\(3x+4y-5z=0\)`,R`\(3x+4y-5z=50\)`,R`\(x+y-z=2\)`,R`\(6x+8y-10z=1\)`],
+      s:R`\(F=x^2+y^2-z^2\), \(\nabla F=\langle6,8,-10\rangle\parallel\langle3,4,-5\rangle\).
+\(3x+4y-5z=9+16-25=0\). Tangent planes to a cone pass through its tip, the origin.` }
+  ]
+},
+ext: {
+  learn: R`<p><b>Critical points:</b> solve \(f_x=0\) and \(f_y=0\) <i>together</i>. When an equation factors (\(2xy=0\)), split into cases (\(x=0\) or \(y=0\)) and finish every case.</p>
+<p><b>Second derivative test:</b> \(D=f_{xx}f_{yy}-f_{xy}^2\).</p>
+<ul><li>\(D>0,\;f_{xx}>0\): local min · \(D>0,\;f_{xx}<0\): local max</li>
+<li>\(D<0\): saddle · \(D=0\): the test says nothing</li></ul>
+<p><b>Absolute max/min on a closed region:</b> check interior critical points <i>and</i> the boundary (substitute the boundary equation to get a one-variable problem), then compare all the values.</p>`,
+  warm: [
+    { step:"Find the critical point", a:"C",
+      q:R`Find the critical point of \(f=x^2+y^2-4x+6y\).`,
+      o:["\\((-2,3)\\)","\\((4,-6)\\)","\\((2,-3)\\)","\\((0,0)\\)","\\((2,3)\\)"],
+      s:R`\(f_x=2x-4=0\Rightarrow x=2\). \(f_y=2y+6=0\Rightarrow y=-3\).` },
+    { step:"Classify with D", a:"A",
+      q:R`Classify the critical point \((0,0)\) of \(f=x^2+xy+y^2\).`,
+      o:["Local min","Local max","Saddle point","Test is inconclusive","Not a critical point"],
+      s:R`\(f_{xx}=2,\;f_{yy}=2,\;f_{xy}=1\). \(D=4-1=3>0\) and \(f_{xx}>0\): <b>local min</b>.` },
+    { step:"Several points", a:"E",
+      q:R`Classify the critical points of \(f=x^3-3x+y^2\).`,
+      o:[R`\((1,0)\) local max; \((-1,0)\) saddle`,R`\((1,0)\) saddle; \((-1,0)\) local min`,R`Both local minima`,R`\((1,0)\) local min; \((-1,0)\) local max`,R`\((1,0)\) local min; \((-1,0)\) saddle`],
+      s:R`\(f_x=3x^2-3=0\Rightarrow x=\pm1\), \(f_y=2y=0\Rightarrow y=0\).
+\(D=f_{xx}f_{yy}-0=6x\cdot2=12x\). At \((1,0)\): \(D=12>0\), \(f_{xx}=6>0\), local min. At \((-1,0)\): \(D=-12<0\), saddle.` },
+    { step:"Exam-style: factor into cases", a:"B",
+      q:R`Find all critical points of \(f=x^2y-y\).`,
+      o:[R`\((0,0)\) only`,R`\((1,0)\) and \((-1,0)\)`,R`\((0,1)\) and \((0,-1)\)`,R`\((0,0)\), \((1,0)\), and \((-1,0)\)`,"None"],
+      s:R`\(f_y=x^2-1=0\Rightarrow x=\pm1\). Then \(f_x=2xy=0\) with \(x\ne0\) forces \(y=0\).
+\((0,0)\) is a trap: \(f_x=0\) there, but \(f_y=-1\ne0\). Both equations must hold.` },
+    { step:"Exam-style: closed region", a:"D",
+      q:R`\(M\) and \(m\) are the absolute max and min of \(f=x^2+y^2-2x\) on the disk \(x^2+y^2\le4\). Find \(M+m\).`,
+      o:["\\(8\\)","\\(-1\\)","\\(3\\)","\\(7\\)","\\(4\\)"],
+      s:R`Interior: \(f_x=2x-2=0,\;f_y=2y=0\Rightarrow(1,0)\), \(f=-1\).
+Boundary: \(x^2+y^2=4\Rightarrow f=4-2x\) with \(-2\le x\le2\): ranges from \(0\) (at \(x=2\)) to \(8\) (at \(x=-2\)).
+Compare all: \(M=8\), \(m=-1\), \(M+m=7\).` }
+  ]
+}
+};
+
 </script>
 <script>
 (function(){
@@ -593,6 +975,10 @@ const examOrder=Object.keys(EXAMS);
 let prog={};
 try{prog=JSON.parse(localStorage.getItem("ma261e1")||"{}")||{}}catch(e){prog={}}
 const save=()=>{try{localStorage.setItem("ma261e1",JSON.stringify(prog))}catch(e){}};
+// warm-ups tracked separately so they don't count toward exam stats
+let warm={};
+try{warm=JSON.parse(localStorage.getItem("ma261e1w")||"{}")||{}}catch(e){warm={}}
+const saveWarm=()=>{try{localStorage.setItem("ma261e1w",JSON.stringify(warm))}catch(e){}};
 
 /* math typesetting */
 // MathJax measures font size at typeset time; a detached or display:none element gives NaN-sized SVGs.
@@ -657,7 +1043,7 @@ function card(q,mode){
   // mode: "practice" | "mock" | "review"
   const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
   const p=prog[q.id];
-  el.innerHTML=`<div class="meta"><span>${EXAMS[q.e].name} · Q${q.n}</span><button class="chip" data-topic="${q.t}" title="Drill this topic">${TOPICS[q.t]}</button></div>
+  el.innerHTML=`<div class="meta"><span>${q.label||EXAMS[q.e].name+" · Q"+q.n}</span><button class="chip" data-topic="${q.t}" title="Drill this topic">${TOPICS[q.t]}</button></div>
     <div class="stem">${q.fig==="spiral"?spiralSVG():""}${q.q}</div>
     <div class="opts">${q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="L">${LET[i]}</span><span>${o}</span></button>`).join("")}</div>
     <div class="foot"><span class="verdict"></span><button class="linkbtn sh">Show solution</button></div>
@@ -678,6 +1064,10 @@ function card(q,mode){
     sh.hidden=true;
     opts.forEach((b,i)=>b.onclick=()=>{opts.forEach(o=>o.classList.remove("sel"));b.classList.add("sel");mockState.ans[q.id]=i;updateMockCount();});
     if(mockState.ans[q.id]!=null) opts[mockState.ans[q.id]].classList.add("sel");
+  } else if(mode==="warm"){
+    el.querySelector(".chip").hidden=true;
+    if(warm[q.id]!=null) reveal(warm[q.id]);
+    opts.forEach((b,i)=>b.onclick=()=>{warm[q.id]=i;saveWarm();reveal(i);if(i!==ai&&sol.hidden)sh.click();renderLessonProg();});
   } else if(mode==="review"){
     reveal(mockState.ans[q.id]);
   }
@@ -726,6 +1116,31 @@ function renderSheet(){
   typeset(el);
 }
 
+/* start here */
+function renderLessons(){
+  const box=$("#lessons");
+  Object.keys(TOPICS).forEach((k,ti)=>{
+    const L=LEARN[k], n=Q.filter(q=>q.t===k).length;
+    L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k;w.label=`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`});
+    const d=document.createElement("details");d.className="lesson";d.dataset.k=k;
+    d.innerHTML=`<summary><span class="n">${String(ti+1).padStart(2,"0")}</span><h3>${TOPICS[k]}</h3><span class="prog"></span></summary>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Warm-ups</h4><div class="qlist"></div>
+      <button class="btn primary next">Now try the ${n} real exam question${n===1?"":"s"} →</button></div>`;
+    L.warm.forEach(w=>d.querySelector(".qlist").appendChild(card(w,"warm")));
+    typeset(d.querySelector(".refresh"));
+    d.addEventListener("toggle",flushMath);
+    d.querySelector(".next").onclick=()=>{$("#fTopic").value=k;$("#fExam").value="all";$("#fOpen").checked=false;showTab("practice");renderPractice();window.scrollTo({top:0})};
+    box.appendChild(d);
+  });
+  renderLessonProg();
+}
+function renderLessonProg(){
+  document.querySelectorAll(".lesson").forEach(d=>{
+    const w=LEARN[d.dataset.k].warm, done=w.filter(x=>warm[x.id]!=null).length, p=d.querySelector(".prog");
+    p.textContent=`${done}/${w.length} warm-ups`;p.classList.toggle("all",done===w.length);
+  });
+}
+
 /* mock */
 const mockState={qs:[],ans:{},end:0,timer:null,done:false};
 const MOCK_MIN=60;
@@ -768,7 +1183,7 @@ function submitMock(){
 /* tabs */
 function showTab(t){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-  ["practice","mock","topics"].forEach(s=>$("#"+s).hidden=s!==t);
+  ["start","practice","mock","topics"].forEach(s=>$("#"+s).hidden=s!==t);
   try{localStorage.setItem("ma261e1t",t)}catch(e){}
   flushMath();
 }
@@ -777,10 +1192,10 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.
 /* boot */
 fillSelects();
 try{const f=JSON.parse(localStorage.getItem("ma261e1f")||"null");if(f){$("#fExam").value=f.e||"all";$("#fTopic").value=f.t||"all"}}catch(e){}
-renderStats();renderPractice();renderBars();renderSheet();mockIntro();
+renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();
 const h=(location.hash||"").slice(1);
-let t0="practice";try{t0=localStorage.getItem("ma261e1t")||"practice"}catch(e){}
-showTab(["practice","mock","topics"].includes(h)?h:t0);
+let t0="start";try{t0=localStorage.getItem("ma261e1t")||"start"}catch(e){}
+showTab(["start","practice","mock","topics"].includes(h)?h:t0);
 })();
 </script>
 
