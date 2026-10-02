@@ -34,6 +34,9 @@ h1{font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.02em;margin-t
 .lede{color:var(--muted);max-width:56ch;margin:10px 0 0}
 #contour{width:170px;height:170px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);display:block}
 .cap{font:11px var(--f-mono);color:var(--muted);text-align:center;margin-top:4px}
+.fxbtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sndbtn{font:500 12px var(--f-mono);color:var(--muted);background:none;border:1px solid var(--rule);border-radius:99px;padding:3px 10px;cursor:pointer}
+.sndbtn:hover{color:var(--ink);border-color:var(--ink)}
 .stats{display:flex;flex-wrap:wrap;gap:8px 22px;font:13px var(--f-mono);color:var(--muted);margin-top:14px}
 .stats b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
 nav.tabs{display:flex;gap:4px;border-bottom:2px solid var(--ink);margin-bottom:18px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;padding-top:6px}
@@ -171,6 +174,7 @@ mjx-container{max-width:100%}
       <h1>Exam 1 Lab</h1>
       <p class="lede">A refresher with warm-ups for every topic, then every question from six past Exam 1s with worked solutions, a formula sheet, and a timed mock exam.</p>
       <div class="stats" id="stats"></div>
+      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button></div>
     </div>
     <div class="cv"><canvas id="contour" width="340" height="340" aria-label="Contour plot of f(x,y) = x squared minus y squared"></canvas><div class="cap">level curves of x² − y²</div></div>
   </header>
@@ -1116,7 +1120,7 @@ function card(q,mode){
   el.querySelector(".chip").onclick=()=>{ $("#fTopic").value=q.t; $("#fExam").value="all"; showTab("practice"); renderPractice(); window.scrollTo({top:0}); };
   if(mode==="practice"){
     if(p) reveal(p.pick);
-    opts.forEach((b,i)=>b.onclick=()=>{prog[q.id]={pick:i,ok:i===ai};save();reveal(i);renderStats();renderBars();});
+    opts.forEach((b,i)=>b.onclick=()=>{prog[q.id]={pick:i,ok:i===ai};save();reveal(i);cheer(b,i===ai);renderStats();renderBars();});
   } else if(mode==="mock"){
     sh.hidden=true;
     opts.forEach((b,i)=>b.onclick=()=>{opts.forEach(o=>o.classList.remove("sel"));b.classList.add("sel");mockState.ans[q.id]=i;updateMockCount();});
@@ -1124,7 +1128,7 @@ function card(q,mode){
   } else if(mode==="warm"){
     el.querySelector(".chip").hidden=true;
     if(warm[q.id]!=null) reveal(warm[q.id]);
-    opts.forEach((b,i)=>b.onclick=()=>{warm[q.id]=i;saveWarm();reveal(i);if(i!==ai&&sol.hidden)sh.click();renderLessonProg();});
+    opts.forEach((b,i)=>b.onclick=()=>{warm[q.id]=i;saveWarm();reveal(i);cheer(b,i===ai);if(i!==ai&&sol.hidden)sh.click();renderLessonProg();});
   } else if(mode==="review"){
     reveal(mockState.ans[q.id]);
   }
@@ -1510,13 +1514,34 @@ function redrawViz(){VIZS.forEach(g=>g.redraw())}
 try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redrawViz)}catch(e){}
 new MutationObserver(redrawViz).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
 
-function confetti(el){if(RM)return;const r=el.getBoundingClientRect(),cols=["gold","good","ink","bad"].map(cv);
+function confetti(el){if(RM||!confettiOn())return;const r=el.getBoundingClientRect(),cols=["gold","good","ink","bad"].map(cv);
   for(let i=0;i<30;i++){const s=document.createElement("i");s.className="confetti";
     s.style.cssText=`left:${r.left+r.width*(.15+.7*Math.random())}px;top:${r.top+r.height/2}px;background:${cols[i%4]}`;document.body.appendChild(s);
     const a=Math.random()*Math.PI*2,v=60+Math.random()*130;
     s.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v-70}px) rotate(${Math.random()*720}deg)`,opacity:0}],
       {duration:900+Math.random()*500,easing:"cubic-bezier(.15,.7,.3,1)"}).onfinish=()=>s.remove()}}
 
+
+/* answer feedback: confetti when right, buzzer when wrong */
+// each toggle remembers its choice in this browser
+function toggle(id,key,on,off){
+  let v=true;try{v=localStorage.getItem(key)!=="off"}catch(e){}
+  const b=$(id),show=()=>{b.textContent=v?on:off;b.setAttribute("aria-pressed",v)};
+  b.onclick=()=>{v=!v;try{localStorage.setItem(key,v?"on":"off")}catch(e){};show()};show();
+  return()=>v;
+}
+const soundOn=toggle("#snd","ma261snd","🔊 Sound on","🔇 Sound off"),confettiOn=toggle("#cfx","ma261cfx","🎉 Confetti on","Confetti off");
+let actx;
+function buzzer(){
+  if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    const t=actx.currentTime,g=actx.createGain();g.connect(actx.destination);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);g.gain.setValueAtTime(.12,t+.42);g.gain.exponentialRampToValueAtTime(.0001,t+.5);
+    // two slightly detuned square waves beat against each other: the game-show "ehhh"
+    for(const f of[110,117]){const o=actx.createOscillator();o.type="square";o.frequency.setValueAtTime(f,t);o.frequency.linearRampToValueAtTime(f*.85,t+.5);o.connect(g);o.start(t);o.stop(t+.52)}
+  }catch(e){}
+}
+function cheer(el,ok){ok?confetti(el):buzzer()}
 
 /* start here */
 function renderLessons(){
