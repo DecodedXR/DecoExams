@@ -101,17 +101,55 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .steps li{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;font-size:14px;counter-increment:s}
 .steps li::before{content:counter(s);display:block;font:800 22px/1 var(--f-display);color:var(--gold);margin-bottom:4px}
 .lesson{background:var(--surface);border:1px solid var(--rule);border-radius:6px;margin-bottom:10px}
-.lesson>summary{display:flex;gap:12px;align-items:baseline;padding:14px 16px;cursor:pointer;list-style:none}
+.lesson>summary{display:flex;gap:12px;align-items:center;padding:14px 16px;cursor:pointer;list-style:none}
 .lesson>summary::-webkit-details-marker{display:none}
-.lesson>summary::after{content:"+";margin-left:auto;font:500 18px/1 var(--f-mono);color:var(--muted)}
+.lesson>summary::after{content:"+";margin-left:6px;font:500 18px/1 var(--f-mono);color:var(--muted)}
 .lesson[open]>summary::after{content:"2"}
 .lesson>summary:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 .lesson .n{font:500 12px var(--f-mono);color:var(--gold);flex:none;width:22px}
 .lesson h3{font-size:18px;font-weight:600}
-.lesson .prog{font:12px var(--f-mono);color:var(--muted);white-space:nowrap}
-.lesson .prog.all{color:var(--good)}
+.lesson .st{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lesson .hook{font-size:13px;color:var(--muted)}
+.lesson .dots{display:flex;gap:4px;margin-left:auto;flex:none}
+.dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--rule)}
+.dots i.ok{background:var(--good);border-color:var(--good)} .dots i.no{background:var(--bad);border-color:var(--bad)}
+.lesson.done{border-color:var(--good)} .lesson.done .n{color:var(--good);font-weight:600}
+.meter{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;font:13px var(--f-mono);color:var(--muted)}
+.meter b{color:var(--ink);font-weight:500}
+.mbar{flex:1 1 200px;height:10px;background:var(--grid);border:1px solid var(--rule);border-radius:99px;overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--gold);transition:width .4s}
+.viz{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px}
+@media (max-width:640px){.viz{grid-template-columns:1fr}}
+.viz canvas,.tree svg{width:100%;display:block;border-radius:4px;background:var(--surface);border:1px solid var(--rule)}
+.vhint{font:12px var(--f-mono);color:var(--muted);margin:6px 0 0}
+.vctl{display:flex;flex-direction:column;gap:8px}
+.vctl label{display:grid;grid-template-columns:auto 1fr 3em;gap:8px;align-items:center;font:12px var(--f-mono);color:var(--muted)}
+.vctl label.vsel{grid-template-columns:auto 1fr}
+.vctl input[type=range]{accent-color:var(--gold);width:100%;min-width:0}
+.vctl output{color:var(--ink);text-align:right}
+.vbtns{display:flex;flex-wrap:wrap;gap:6px}
+.vbtns .btn{padding:5px 10px;font:600 13px var(--f-mono)}
+.vread{font:13px/1.75 var(--f-mono);margin-top:10px;overflow-x:auto}
+.vread .big{display:block;font:700 18px/1.25 var(--f-display);color:var(--gold);margin-bottom:6px}
+.vread .veq{color:var(--ink);font-weight:500}
+.vwhy{font:14px/1.5 var(--f-body);color:var(--muted);margin-top:4px}
+.vcap{font-size:13px;color:var(--muted);margin:10px 0 0;border-top:1px solid var(--rule);padding-top:8px}
+.kg{color:var(--gold);font-weight:600} .ki{color:var(--ink);font-weight:600} .kd{color:var(--good);font-weight:600}
+.slice{display:flex;gap:10px;align-items:center;margin-top:6px}
+.spark{width:120px;height:52px;flex:none;background:var(--surface);border:1px solid var(--rule);border-radius:4px}
+.vmeter{position:relative;height:8px;border-radius:99px;margin-top:8px;background:linear-gradient(90deg,var(--bad),var(--rule) 50%,var(--good))}
+.vmeter i{position:absolute;top:-4px;width:4px;height:16px;margin-left:-2px;background:var(--ink);border-radius:2px}
+.vmlab{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.tree line{stroke:var(--rule);stroke-width:3;transition:stroke .3s}
+.tree text{font:12px var(--f-mono);fill:var(--muted);transition:fill .3s}
+.tree .nd circle{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.tree .nd text{font:600 15px var(--f-mono);fill:var(--ink);text-anchor:middle}
+.tree svg.on1 :is(.e1,.e2) line,.tree svg.on2 :is(.e3,.e4) line{stroke:var(--gold)}
+.tree svg.on1 :is(.e1,.e2) text,.tree svg.on2 :is(.e3,.e4) text{fill:var(--ink)}
+.confetti{position:fixed;width:7px;height:10px;border-radius:1px;pointer-events:none;z-index:50}
+@media (max-width:560px){.lesson .hook{display:none}}
 .lesson .body{padding:0 16px 16px;border-top:1px solid var(--rule)}
-.refresh{overflow-x:auto;padding-top:6px}
+.refresh{overflow-x:auto;overflow-y:hidden;padding-top:6px}
 .refresh p{margin:10px 0} .refresh ul{margin:8px 0;padding-left:18px} .refresh li{margin:3px 0}
 .lesson h4{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
 .lesson .qc{background:var(--paper)}
@@ -150,6 +188,7 @@ mjx-container{max-width:100%}
       <li><b>Do the warm-ups.</b> Each one adds a single new twist. The last ones are shaped like real exam questions.</li>
       <li><b>Try the real ones.</b> Each topic ends with a link to every past exam question on it.</li>
     </ol>
+    <div class="meter" id="meter"></div>
     <div id="lessons"></div>
   </section>
 
@@ -962,6 +1001,20 @@ Compare all: \(M=8\), \(m=-1\), \(M+m=7\).` }
   ]
 }
 };
+const HOOKS = {
+  vec:"Two products, two questions: how aligned, and how much area?",
+  lp:"A line is a point and a direction. A plane is a point and a normal.",
+  quad:"Count the minus signs. That's most of the work.",
+  vf:"Differentiate for velocity, integrate to go back.",
+  arc:"How far along, and how sharp the bend.",
+  lvl:"Slice the mountain at fixed heights and look down.",
+  lim:"Sneak up on the point from every direction.",
+  pd:"Freeze every variable but one.",
+  chain:"One product per path, then add the paths.",
+  grad:"The arrow that points straight uphill.",
+  tp:"The gradient sticks straight out of the surface.",
+  ext:"Bowls, domes, and saddles: D tells them apart."
+};
 
 </script>
 <script>
@@ -1116,6 +1169,324 @@ function renderSheet(){
   typeset(el);
 }
 
+/* visuals: one interactive picture per lesson, built the first time the lesson opens */
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cv=n=>getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const fx=(v,d=2)=>{let s=(Math.abs(v)<.5*10**-d?0:v).toFixed(d);if(s.includes("."))s=s.replace(/\.?0+$/,"");return s.replace("-","−")};
+const sgn=(v,first)=>v<0?(first?"−":" − "):(first?"":" + ");
+const VIZS=[],anims=new Set();
+// ponytail: one shared rAF loop for all animations; each animator bails when its canvas is hidden
+function animate(fn){if(!anims.size)requestAnimationFrame(function tick(t){anims.forEach(f=>f(t));requestAnimationFrame(tick)});anims.add(fn)}
+const shown=g=>g.c.getClientRects().length>0;
+
+function viz(host,o){
+  const box=document.createElement("div");box.className="viz";
+  box.innerHTML=`<div class="vfig"><canvas role="img" aria-label="${o.label}"></canvas>${o.hint?`<p class="vhint">${o.hint}</p>`:""}</div>
+    <div class="vside"><div class="vctl"></div><div class="vread" aria-live="polite"></div>${o.cap?`<p class="vcap">${o.cap}</p>`:""}</div>`;
+  host.appendChild(box);
+  const c=box.querySelector("canvas"),ctx=c.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1);
+  const W=Math.round(c.getBoundingClientRect().width)||320,H=Math.round(W*(o.aspect||.8));
+  c.width=W*dpr;c.height=H*dpr;c.style.height=H+"px";c.style.touchAction=o.touch||"none";
+  const[x0,x1]=o.xr||[-3,3],yc=o.yc||0,k=W/(x1-x0);
+  const g={c,ctx,W,H,ctl:box.querySelector(".vctl"),read:box.querySelector(".vread"),handles:[],
+    X:x=>(x-x0)*k,Y:y=>H/2-(y-yc)*k,ix:p=>x0+p/k,iy:p=>yc+(H/2-p)/k,
+    redraw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);g.draw()}};
+  const pos=e=>{const r=c.getBoundingClientRect();return[Math.max(6,Math.min(W-6,e.clientX-r.left)),Math.max(6,Math.min(H-6,e.clientY-r.top))]};
+  const near=(px,py)=>g.handles.find(h=>Math.hypot(g.X(h.x)-px,g.Y(h.y)-py)<22);
+  let act=null,last;
+  c.addEventListener("pointerdown",e=>{const[px,py]=pos(e);act=near(px,py)||(g.onfree?"free":null);last=[px,py];
+    if(g.onhover){g.onhover(g.ix(px),g.iy(py));g.redraw()}
+    if(act){c.setPointerCapture(e.pointerId);e.preventDefault()}});
+  c.addEventListener("pointermove",e=>{const[px,py]=pos(e);
+    if(act==="free"){g.onfree(px-last[0],py-last[1]);last=[px,py];g.redraw()}
+    else if(act){act.move(g.ix(px),g.iy(py));g.redraw()}
+    else{c.style.cursor=near(px,py)?"grab":"";if(g.onhover){g.onhover(g.ix(px),g.iy(py));g.redraw()}}});
+  for(const ev of["pointerup","pointercancel"])c.addEventListener(ev,()=>act=null);
+  VIZS.push(g);return g;
+}
+const pt=(x,y,snap=.5)=>{const h={x,y,move(X,Y){h.x=Math.round(X/snap)*snap;h.y=Math.round(Y/snap)*snap}};return h};
+function slider(ctl,lab,min,max,step,val,on){const l=document.createElement("label");
+  l.innerHTML=`<span>${lab}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}"><output>${fx(val)}</output>`;
+  const i=l.querySelector("input"),o=l.querySelector("output");i.oninput=()=>{o.textContent=fx(+i.value);on(+i.value)};ctl.appendChild(l);
+  return{set(v){i.value=v;o.textContent=fx(v)}}}
+function choose(ctl,lab,opts,on){const l=document.createElement("label");l.className="vsel";
+  l.innerHTML=`<span>${lab}</span><select>${opts.map((o,i)=>`<option value="${i}">${o}</option>`).join("")}</select>`;
+  l.querySelector("select").onchange=e=>on(+e.target.value);ctl.appendChild(l)}
+function button(ctl,lab,on){let row=ctl.lastElementChild;if(!row||!row.classList.contains("vbtns")){row=document.createElement("div");row.className="vbtns";ctl.appendChild(row)}
+  const b=document.createElement("button");b.type="button";b.className="btn";b.textContent=lab;b.onclick=on;row.appendChild(b);return b}
+
+function axes(g,grid=true){const{ctx,W,H}=g;ctx.lineWidth=1;
+  if(grid){ctx.strokeStyle=cv("grid");ctx.beginPath();
+    for(let x=Math.ceil(g.ix(0));x<=g.ix(W);x++){ctx.moveTo(g.X(x),0);ctx.lineTo(g.X(x),H)}
+    for(let y=Math.ceil(g.iy(H));y<=g.iy(0);y++){ctx.moveTo(0,g.Y(y));ctx.lineTo(W,g.Y(y))}ctx.stroke()}
+  ctx.strokeStyle=cv("rule");ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(g.X(0),0);ctx.lineTo(g.X(0),H);ctx.moveTo(0,g.Y(0));ctx.lineTo(W,g.Y(0));ctx.stroke()}
+function seg(g,x1,y1,x2,y2,col,w=2,dash){const c=g.ctx;c.save();c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();c.moveTo(g.X(x1),g.Y(y1));c.lineTo(g.X(x2),g.Y(y2));c.stroke();c.restore()}
+function arrow(g,x1,y1,x2,y2,col,lab,w=2.5){const c=g.ctx,a=g.X(x1),b=g.Y(y1),p=g.X(x2),q=g.Y(y2),L=Math.hypot(p-a,q-b);if(L<2)return;
+  const ux=(p-a)/L,uy=(q-b)/L,hs=Math.min(w*4+2,L*.5);
+  c.save();c.strokeStyle=c.fillStyle=col;c.lineWidth=w;c.lineCap="round";c.beginPath();c.moveTo(a,b);c.lineTo(p-ux*hs*.7,q-uy*hs*.7);c.stroke();
+  c.beginPath();c.moveTo(p,q);c.lineTo(p-ux*hs-uy*hs*.5,q-uy*hs+ux*hs*.5);c.lineTo(p-ux*hs+uy*hs*.5,q-uy*hs-ux*hs*.5);c.closePath();c.fill();
+  if(lab){c.font="600 14px "+cv("f-mono");c.fillText(lab,p+ux*12-5,q+uy*12+5)}c.restore()}
+function dot(g,x,y,col,r=6,ring){const c=g.ctx;c.beginPath();c.arc(g.X(x),g.Y(y),r,0,7);c.fillStyle=col;c.fill();if(ring){c.lineWidth=2.5;c.strokeStyle=cv("surface");c.stroke()}}
+function curve(g,f,t0,t1,col,w=2,n=240,dash){const c=g.ctx;c.save();c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();
+  for(let i=0;i<=n;i++){const[x,y]=f(t0+(t1-t0)*i/n);i?c.lineTo(g.X(x),g.Y(y)):c.moveTo(g.X(x),g.Y(y))}c.stroke();c.restore()}
+function text(g,x,y,s,col,dx=0,dy=0){const c=g.ctx;c.font="600 14px "+cv("f-mono");c.fillStyle=col;c.fillText(s,g.X(x)+dx,g.Y(y)+dy)}
+function poly(g,pts,col){const c=g.ctx;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(g.X(x),g.Y(y)):c.moveTo(g.X(x),g.Y(y)));c.closePath();c.fillStyle=col;c.fill()}
+// contour map: shade by height, darken band edges every `step`, paint the level f = hk gold
+function heat(g,f,step,hk){
+  const s=3,w=Math.ceil(g.W/s)+1,h=Math.ceil(g.H/s)+1,v=new Float32Array(w*h);let lo=Infinity,hi=-Infinity;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const z=f(g.ix(i*s),g.iy(j*s));v[j*w+i]=z;if(isFinite(z)){lo=Math.min(lo,z);hi=Math.max(hi,z)}}
+  const off=heat.c||(heat.c=document.createElement("canvas"));off.width=w;off.height=h;
+  const ox=off.getContext("2d"),img=ox.createImageData(w,h),S=rgb(cv("surface")),G=rgb(cv("gold")),I=rgb(cv("ink")),P=rgb(cv("paper"));
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const z=v[j*w+i];let C=P;
+    if(isFinite(z)){const t=hi>lo?(z-lo)/(hi-lo):0;C=S.map((c,q)=>c+(G[q]-c)*t*.55);
+      const r=i<w-1?v[j*w+i+1]:z,d=j<h-1?v[(j+1)*w+i]:z,b=Math.floor(z/step);
+      if(b!==Math.floor(r/step)||b!==Math.floor(d/step))C=C.map((c,q)=>c+(I[q]-c)*.4);
+      if(hk!=null&&((z-hk)*(r-hk)<=0&&r!==z||(z-hk)*(d-hk)<=0&&d!==z))C=G}
+    img.data.set([C[0],C[1],C[2],255],4*(j*w+i))}
+  ox.putImageData(img,0,0);g.ctx.drawImage(off,0,0,w*s,h*s)}
+function spark(fn,a,m,col){const xs=Array.from({length:41},(_,i)=>a-2+i/10),ys=xs.map(fn),lo=Math.min(...ys),hi=Math.max(...ys);
+  const Y=y=>62-54*(y-lo)/((hi-lo)||1),X=x=>(x-a+2)*40,t=[a-.9,a+.9].map(x=>[X(x),Y(fn(a)+m*(x-a))]);
+  return `<svg class="spark" viewBox="0 0 160 70" aria-hidden="true"><polyline points="${xs.map((x,i)=>X(x).toFixed(1)+","+Y(ys[i]).toFixed(1)).join(" ")}" fill="none" stroke="var(--muted)" stroke-width="2"/>
+  <line x1="${t[0][0]}" y1="${t[0][1]}" x2="${t[1][0]}" y2="${t[1][1]}" stroke="var(--${col})" stroke-width="3" stroke-linecap="round"/><circle cx="80" cy="${Y(fn(a))}" r="4.5" fill="var(--ink)"/></svg>`}
+
+const VIZ={
+vec(h){
+  const g=viz(h,{label:"Two draggable vectors a and b with their parallelogram and the projection of a onto b",xr:[-1.5,4.5],yc:1.4,hint:"Drag the dots at the arrow tips.",
+    cap:"The shaded parallelogram's area is |a × b|. The green arrow is the projection of a onto b, always along b."});
+  const a=pt(3,1),b=pt(1,2.5);g.handles=[a,b];
+  g.draw=()=>{axes(g);const d=a.x*b.x+a.y*b.y,cr=a.x*b.y-a.y*b.x,bb=b.x**2+b.y**2,s=bb?d/bb:0,la=Math.hypot(a.x,a.y),lb=Math.sqrt(bb);
+    poly(g,[[0,0],[a.x,a.y],[a.x+b.x,a.y+b.y],[b.x,b.y]],cv("gold-soft"));
+    seg(g,a.x,a.y,s*b.x,s*b.y,cv("muted"),1.5,[4,4]);
+    arrow(g,0,0,s*b.x,s*b.y,cv("good"),"",5);
+    arrow(g,0,0,b.x,b.y,cv("ink"),"b");arrow(g,0,0,a.x,a.y,cv("gold"),"a");
+    dot(g,a.x,a.y,cv("gold"),7,1);dot(g,b.x,b.y,cv("ink"),7,1);
+    const th=la&&lb?Math.acos(Math.max(-1,Math.min(1,d/(la*lb))))*180/Math.PI:0,ok=la&&lb;
+    const msg=!ok?"Give both vectors some length":d===0?"a ⟂ b, so a · b = 0":cr===0?"a ∥ b, so the area is 0":d>0?"Acute angle: a · b > 0":"Obtuse angle: a · b < 0";
+    g.read.innerHTML=`<span class="big">${msg}</span>
+      <div><span class="kg">a</span> = ⟨${fx(a.x)}, ${fx(a.y)}⟩ · <span class="ki">b</span> = ⟨${fx(b.x)}, ${fx(b.y)}⟩</div>
+      <div>a · b = ${fx(a.x)}·${fx(b.x)} + ${fx(a.y)}·${fx(b.y)} = <b>${fx(d)}</b></div>
+      <div>angle θ = ${fx(th,0)}°</div>
+      <div>area |a × b| = <b>${fx(Math.abs(cr))}</b></div>
+      <div><span class="kd">proj<sub>b</sub>a</span> = (${fx(d)} / ${fx(bb)}) b</div>`};
+  g.redraw()},
+
+lp(h){
+  const g=viz(h,{label:"A movable line hitting a fixed line that has normal vector n",xr:[-3.5,3.5],hint:"Drag the start point P or the tip of d.",
+    cap:"A 2D stand-in: the thick line plays the plane x + 2y = 2, with normal n = ⟨1, 2⟩. In 3D the algebra is the same with one more coordinate."});
+  const P=pt(-2.5,-1.5),D=pt(-.5,-1),n=[1,2];
+  P.move=(X,Y)=>{const dx=D.x-P.x,dy=D.y-P.y;P.x=Math.round(X*2)/2;P.y=Math.round(Y*2)/2;D.x=P.x+dx;D.y=P.y+dy};
+  g.handles=[D,P];
+  g.draw=()=>{axes(g);const d=[D.x-P.x,D.y-P.y],nd=n[0]*d[0]+n[1]*d[1],nP=n[0]*P.x+n[1]*P.y;
+    seg(g,-8,5,8,-3,cv("ink"),4);arrow(g,.4,.8,1,2,cv("gold"),"n");
+    if(d[0]||d[1])seg(g,P.x-20*d[0],P.y-20*d[1],P.x+20*d[0],P.y+20*d[1],cv("muted"),1.5,[5,5]);
+    arrow(g,P.x,P.y,D.x,D.y,cv("good"),"d");dot(g,P.x,P.y,cv("good"),7,1);dot(g,D.x,D.y,cv("good"),5);text(g,P.x,P.y,"P",cv("good"),-18,18);
+    let msg,work="";
+    if(!d[0]&&!d[1])msg="Give d some length";
+    else if(nd===0)msg=nP===2?"d · n = 0 and P is on it: the line lies inside":"d · n = 0: parallel, never meets";
+    else{const t=(2-nP)/nd,Q=[P.x+t*d[0],P.y+t*d[1]];dot(g,Q[0],Q[1],cv("gold"),8,1);
+      msg=`Hits at (${fx(Q[0])}, ${fx(Q[1])})`;work=`<div>${fx(nP)} + ${fx(nd)}t = 2 → t = ${fx(t)}</div>`}
+    g.read.innerHTML=`<span class="big">${msg}</span>
+      <div>line: ⟨${fx(P.x)} + ${fx(d[0])}t, ${fx(P.y)} + ${fx(d[1])}t⟩</div>
+      <div><span class="kd">d</span> · <span class="kg">n</span> = ${fx(d[0])}·1 + ${fx(d[1])}·2 = <b>${fx(nd)}</b></div>
+      <div>plug into x + 2y = 2:</div>${work||"<div>no t works</div>"}`};
+  g.redraw()},
+
+quad(h){
+  const g=viz(h,{label:"Rotating 3D wireframe of the quadric surface for the chosen signs",xr:[-3,3],aspect:.85,hint:"Flip the signs. Drag the picture to spin it."});
+  const s={x:1,y:1,z:-1,lin:0,r:1};let phi=.6,hold=0;
+  g.onfree=dx=>{phi+=dx*.012;hold=performance.now()};
+  const sg=v=>v>0?"+":"−",range=(a,b,n)=>Array.from({length:n+1},(_,i)=>a+(b-a)*i/n);
+  const bx=["x","y","z","r"].map(v=>button(g.ctl,"",()=>{if(v==="r")s.r=s.r?0:1;else s[v]=-s[v];g.redraw()}));
+  const lb=button(g.ctl,"",()=>{s.lin^=1;g.redraw()});
+  function mesh(){
+    const L=[],C=Math.cos,S=Math.sin,ch=Math.cosh,sh=Math.sinh;
+    const ring=(f,us)=>{for(const u of us)L.push(range(0,2*Math.PI,48).map(v=>f(u,v)));
+      for(let j=0;j<16;j++){const v=j/16*2*Math.PI;L.push(range(us[0],us.at(-1),30).map(u=>f(u,v)))}};
+    if(s.lin){for(const c of range(-1.5,1.5,10)){L.push(range(-1.5,1.5,30).map(t=>[c,t,(s.x*c*c+s.y*t*t)/2]));L.push(range(-1.5,1.5,30).map(t=>[t,c,(s.x*t*t+s.y*c*c)/2]))}
+      return{L,eq:`z = ${s.x>0?"":"−"}x² ${sg(s.y)} y²`,name:s.x===s.y?"Elliptic paraboloid":"Hyperbolic paraboloid",
+        why:s.x===s.y?"z is not squared, and x², y² have the same sign: a bowl.":"z is not squared, and x², y² have opposite signs: a saddle (Pringle)."}}
+    const vars=["x","y","z"],p=vars.filter(v=>s[v]>0).length,eq=`${s.x>0?"":"−"}x² ${sg(s.y)} y² ${sg(s.z)} z² = ${s.r}`;
+    const odd=vars.find(v=>vars.filter(w=>s[w]===s[v]).length===1),rest=vars.filter(v=>v!==odd);
+    const put=(a,b,w,m)=>{const o={};o[rest[0]]=a*m;o[rest[1]]=b*m;o[odd]=w*m;return[o.x,o.y,o.z]};
+    if(s.r===1){
+      if(p===3){ring((u,v)=>[1.8*S(u)*C(v),1.8*S(u)*S(v),1.8*C(u)],range(.2,Math.PI-.2,8));return{L,eq,name:"Ellipsoid",why:"Three + signs and = 1: a closed egg (a sphere when the coefficients match)."}}
+      if(p===2){ring((u,v)=>put(ch(u)*C(v),ch(u)*S(v),sh(u),1.1),range(-1.3,1.3,8));return{L,eq,name:"Hyperboloid of one sheet",why:`Two +, one −, = 1. One minus, one sheet: a cooling-tower tube around the ${odd}-axis.`}}
+      if(p===1){for(const q of[1,-1])ring((u,v)=>put(sh(u)*C(v),sh(u)*S(v),q*ch(u),1.1),range(0,1.4,6));return{L,eq,name:"Hyperboloid of two sheets",why:`One +, two −, = 1. Two minuses, two sheets: two bowls facing away along the ${odd}-axis.`}}
+      return{L,eq,name:"No points at all",why:"Three − signs can never add up to +1."}}
+    if(p===0||p===3)return{L,eq,name:"Just the origin",why:"Same signs and = 0: only (0, 0, 0) works."};
+    ring((u,v)=>put(u*C(v),u*S(v),u,1.2),range(-1.6,1.6,10));return{L,eq,name:"Cone",why:`Mixed signs and = 0: a double cone around the ${odd}-axis.`};
+  }
+  g.draw=()=>{const m=mesh(),cp=Math.cos(phi),sp=Math.sin(phi),ce=Math.cos(.38),se=Math.sin(.38);
+    const P=([x,y,z])=>{const X=x*cp-y*sp,D=x*sp+y*cp;return[X,z*ce-D*se,D]};
+    const o=P([0,0,0]);for(const[v,lab]of[[[2.5,0,0],"x"],[[0,2.5,0],"y"],[[0,0,2.5],"z"]]){const a=P(v);seg(g,o[0],o[1],a[0],a[1],cv("rule"),1.5);text(g,a[0],a[1],lab,cv("muted"),4,-4)}
+    const c=g.ctx;c.strokeStyle=cv("gold");c.lineWidth=1.4;
+    for(const l of m.L)for(let i=1;i<l.length;i++){const a=P(l[i-1]),b=P(l[i]);
+      c.globalAlpha=.18+.7*Math.max(0,Math.min(1,.5+(a[2]+b[2])/7));c.beginPath();c.moveTo(g.X(a[0]),g.Y(a[1]));c.lineTo(g.X(b[0]),g.Y(b[1]));c.stroke()}
+    c.globalAlpha=1;if(!m.L.length)dot(g,o[0],o[1],cv("gold"),m.name==="Just the origin"?6:0);
+    ["x","y","z"].forEach((v,i)=>{bx[i].textContent=`${sg(s[v])}${v}²`;bx[i].hidden=s.lin&&v==="z"});
+    bx[3].textContent=`= ${s.r}`;bx[3].hidden=!!s.lin;lb.textContent=s.lin?"square z again":"make z linear";
+    g.read.innerHTML=`<span class="big">${m.name}</span><div class="veq">${m.eq}</div><div class="vwhy">${m.why}</div>`};
+  animate(()=>{if(RM||!shown(g)||performance.now()-hold<1500)return;phi+=.005;g.redraw()});
+  g.redraw()},
+
+vf(h){
+  const g=viz(h,{label:"A point moving along a figure-eight with velocity and acceleration arrows",xr:[-3,3],aspect:.7,hint:"Slide t or press play.",
+    cap:"Velocity is always tangent to the curve, and the dashed line is the tangent line r(t₀) + s·r′(t₀). Acceleration points into the bend."});
+  const r=t=>[2*Math.cos(t),Math.sin(2*t)],v=t=>[-2*Math.sin(t),2*Math.cos(2*t)],A=t=>[-2*Math.cos(t),-4*Math.sin(2*t)];
+  let t=.6,play=false;
+  const sl=slider(g.ctl,"t",0,6.28,.01,t,x=>{t=x;g.redraw()});
+  const pb=button(g.ctl,"▶ Play",()=>{play=!play;pb.textContent=play?"❚❚ Pause":"▶ Play"});
+  animate(()=>{if(!play||!shown(g))return;t=(t+.012)%(2*Math.PI);sl.set(t);g.redraw()});
+  g.draw=()=>{axes(g);curve(g,r,0,2*Math.PI,cv("muted"),1.5);const p=r(t),d=v(t),a=A(t);
+    seg(g,p[0]-9*d[0],p[1]-9*d[1],p[0]+9*d[0],p[1]+9*d[1],cv("rule"),1.5,[5,5]);
+    arrow(g,p[0],p[1],p[0]+.2*a[0],p[1]+.2*a[1],cv("good"),"a",2);
+    arrow(g,p[0],p[1],p[0]+.45*d[0],p[1]+.45*d[1],cv("gold"),"v",3);
+    dot(g,p[0],p[1],cv("ink"),6,1);
+    g.read.innerHTML=`<div class="veq">r(t) = ⟨2 cos t, sin 2t⟩</div><div>r(${fx(t)}) = ⟨${fx(p[0])}, ${fx(p[1])}⟩</div>
+      <div><span class="kg">v = r′(t)</span> = ⟨${fx(d[0])}, ${fx(d[1])}⟩</div><div>speed |r′| = ${fx(Math.hypot(...d))}</div>
+      <div><span class="kd">a = r″(t)</span> = ⟨${fx(a[0])}, ${fx(a[1])}⟩</div>`};
+  g.redraw()},
+
+arc(h){
+  const g=viz(h,{label:"An ellipse with its osculating circle and the arc length traced so far",xr:[-3.2,3.2],aspect:.7,hint:"Slide t along the curve.",
+    cap:"The dashed circle hugs the curve. Tight bend → small circle → big κ. Nearly flat → huge circle → κ near 0."});
+  const a=2.2,b=1.1,r=t=>[a*Math.cos(t),b*Math.sin(t)];let t=.5;
+  slider(g.ctl,"t",0,6.28,.01,t,x=>{t=x;g.redraw()});
+  g.draw=()=>{axes(g,false);
+    const d=[-a*Math.sin(t),b*Math.cos(t)],dd=[-a*Math.cos(t),-b*Math.sin(t)],sp=Math.hypot(...d),cr=d[0]*dd[1]-d[1]*dd[0],kap=Math.abs(cr)/sp**3,R=1/kap;
+    const p=r(t),N=[-d[1]/sp*Math.sign(cr),d[0]/sp*Math.sign(cr)],C=[p[0]+R*N[0],p[1]+R*N[1]];
+    curve(g,r,0,2*Math.PI,cv("muted"),1.5);if(t>0)curve(g,r,0,t,cv("gold"),5);
+    curve(g,u=>[C[0]+R*Math.cos(u),C[1]+R*Math.sin(u)],0,2*Math.PI,cv("good"),2,160,[6,4]);
+    seg(g,p[0],p[1],C[0],C[1],cv("good"),1.5);dot(g,C[0],C[1],cv("good"),4);dot(g,p[0],p[1],cv("ink"),6,1);
+    let s=0;for(let i=0;i<200;i++){const u=t*(i+.5)/200;s+=Math.hypot(a*Math.sin(u),b*Math.cos(u))*t/200}
+    g.read.innerHTML=`<span class="big">κ = 1/R = ${fx(kap)}</span><div class="veq">r(t) = ⟨${a} cos t, ${b} sin t⟩</div>
+      <div><span class="kd">circle radius</span> R = ${fx(R)}</div><div>speed |r′(t)| = ${fx(sp)}</div>
+      <div><span class="kg">length so far</span> s = ∫₀ᵗ |r′| du = ${fx(s)}</div>`};
+  g.redraw()},
+
+lvl(h){
+  const g=viz(h,{label:"Contour map of the chosen function with one level curve highlighted",xr:[-3,3],aspect:.8,touch:"pan-y",hint:"Hover or tap the map: the gold curve is the level through that point.",
+    cap:"Lighter means higher. Every line is a level curve f(x, y) = k, spaced evenly in k."});
+  const F=[["4x² + y²",(x,y)=>4*x*x+y*y,2,"ellipses"],["y − x²",(x,y)=>y-x*x,.75,"parabolas"],["ln(x² − y²)",(x,y)=>Math.log(x*x-y*y),.5,"hyperbolas (only where x² > y²)"],
+    ["√(x² − 2x + y²)",(x,y)=>Math.sqrt(x*x-2*x+y*y),.4,"circles centered at (1, 0)"],["xy",(x,y)=>x*y,.75,"hyperbolas (and the axes for k = 0)"]];
+  let f=F[0],pk=[1,.8];
+  choose(g.ctl,"f(x, y) =",F.map(q=>q[0]),i=>{f=F[i];g.redraw()});
+  g.onhover=(x,y)=>{pk=[x,y]};
+  g.draw=()=>{const k=f[1](...pk),ok=isFinite(k);heat(g,f[1],f[2],ok?k:null);axes(g,false);dot(g,...pk,cv("ink"),5,1);
+    g.read.innerHTML=`<span class="big">Level curves: ${f[3]}</span><div>at (${fx(pk[0])}, ${fx(pk[1])}): f = ${ok?fx(k):"undefined here"}</div>
+      <div><span class="kg">gold curve</span>: ${f[0]} = ${ok?fx(k):"?"}</div>`};
+  g.redraw()},
+
+lim(h){
+  const g=viz(h,{label:"Contour map near the origin with a straight path approaching it",xr:[-2,2],aspect:.8,hint:"Change the slope m of the path, or the function."});
+  const F=[["xy / (x² + y²)",(x,y)=>x*y/(x*x+y*y),.1,"Different slopes give different values, so the limit does not exist."],
+    ["x³ / (x² + y²)",(x,y)=>x**3/(x*x+y*y),.1,"Every path gives 0. Polar: r cos³θ → 0, so the limit is 0."],
+    ["sin(x² + y²) / (x² + y²)",(x,y)=>{const u=x*x+y*y;return Math.sin(u)/u},.05,"Every path gives 1. Set u = x² + y²: sin u / u → 1."]];
+  let f=F[0],m=1,ph=.5;
+  choose(g.ctl,"f(x, y) =",F.map(q=>q[0]),i=>{f=F[i];g.redraw()});
+  slider(g.ctl,"slope m",-3,3,.25,m,v=>{m=v;g.redraw()});
+  animate(()=>{if(RM||!shown(g))return;ph=(ph+.005)%1;g.redraw()});
+  g.draw=()=>{heat(g,f[1],f[2]);axes(g,false);const L=1/Math.hypot(1,m),s=.08+1.9*(1-ph);
+    seg(g,-5*L,-5*m*L,5*L,5*m*L,cv("gold"),2.5);
+    for(const q of[1,-1])dot(g,q*s*L,q*s*m*L,cv("ink"),6,1);
+    g.ctx.beginPath();g.ctx.arc(g.X(0),g.Y(0),6,0,7);g.ctx.lineWidth=2;g.ctx.strokeStyle=cv("ink");g.ctx.stroke();
+    g.read.innerHTML=`<div>path: y = ${m===1?"":m===-1?"−":fx(m)}x</div><div>f at the dots = ${fx(f[1](s*L,s*m*L),3)}</div>
+      <div><span class="kg">along this path, f →</span> <b>${fx(f[1](1e-4*L,1e-4*m*L),3)}</b></div><span class="big">${f[3]}</span>`};
+  g.redraw()},
+
+pd(h){
+  const g=viz(h,{label:"Contour map of f = x² + xy − y² with the two slices through a draggable point",xr:[-2.5,2.5],aspect:.8,hint:"Drag the point.",
+    cap:"f_x is the slope of the gold slice (y frozen). f_y is the slope of the green slice (x frozen)."});
+  const f=(x,y)=>x*x+x*y-y*y,P=pt(1,.5,.25);g.handles=[P];
+  g.draw=()=>{heat(g,f,.5);axes(g,false);seg(g,-9,P.y,9,P.y,cv("gold"),3);seg(g,P.x,-9,P.x,9,cv("good"),3);dot(g,P.x,P.y,cv("ink"),7,1);
+    const a=2*P.x+P.y,b=P.x-2*P.y;
+    g.read.innerHTML=`<div class="veq">f(x, y) = x² + xy − y²</div><div>f(${fx(P.x)}, ${fx(P.y)}) = ${fx(f(P.x,P.y))}</div>
+      <div class="slice"><div><span class="kg">freeze y = ${fx(P.y)}</span><br>f<sub>x</sub> = 2x + y = <b>${fx(a)}</b></div>${spark(x=>f(x,P.y),P.x,a,"gold")}</div>
+      <div class="slice"><div><span class="kd">freeze x = ${fx(P.x)}</span><br>f<sub>y</sub> = x − 2y = <b>${fx(b)}</b></div>${spark(y=>f(P.x,y),P.y,b,"good")}</div>`};
+  g.redraw()},
+
+chain(h){
+  const box=document.createElement("div");box.className="viz tree";h.appendChild(box);
+  box.innerHTML=`<div class="vfig"><svg viewBox="0 0 340 210" role="img" aria-label="Tree: z depends on x and y, and both depend on t">
+    <g class="e e1"><line x1="160" y1="32" x2="96" y2="100"/><text x="124" y="60" text-anchor="end">∂z/∂x = y² = 4</text></g>
+    <g class="e e2"><line x1="90" y1="124" x2="90" y2="170"/><text x="100" y="152">dx/dt = 2t = 2</text></g>
+    <g class="e e3"><line x1="180" y1="32" x2="244" y2="100"/><text x="216" y="60">∂z/∂y = 2xy = 4</text></g>
+    <g class="e e4"><line x1="250" y1="124" x2="250" y2="170"/><text x="260" y="152">dy/dt = 2</text></g>
+    <g class="nd"><circle cx="170" cy="20" r="14"/><text x="170" y="25">z</text><circle cx="90" cy="112" r="14"/><text x="90" y="117">x</text>
+    <circle cx="250" cy="112" r="14"/><text x="250" y="117">y</text><circle cx="90" cy="184" r="14"/><text x="90" y="189">t</text><circle cx="250" cy="184" r="14"/><text x="250" y="189">t</text></g></svg>
+    <p class="vhint">Press Next step to walk the tree.</p></div>
+    <div class="vside"><div class="vctl"></div><div class="vread" aria-live="polite"></div>
+    <p class="vcap">One product per path from z down to t, then add the paths. A variable with three inputs gets three paths.</p></div>`;
+  const svg=box.querySelector("svg"),rd=box.querySelector(".vread");let step=0;
+  const lines=["Path 1 (through x): 4 × 2 = <b>8</b>","Path 2 (through y): 4 × 2 = <b>8</b>","<span class=\"big\">dz/dt = 8 + 8 = 16</span>"];
+  const show=()=>{svg.classList.toggle("on1",step===1||step===3);svg.classList.toggle("on2",step>=2);
+    rd.innerHTML=`<div class="veq">z = xy², x = t², y = 2t, at t = 1</div><div>so x = 1, y = 2</div>${lines.slice(0,step).map(l=>`<div>${l}</div>`).join("")}${step===3?"<div>Check: z = 4t⁴, z′ = 16t³ = 16 ✓</div>":""}`;
+    nb.textContent=step===3?"↺ Start over":"Next step ▸"};
+  const nb=button(box.querySelector(".vctl"),"",()=>{step=(step+1)%4;show()});show()},
+
+grad(h){
+  const g=viz(h,{label:"Two-hill landscape with the gradient arrow and a direction you can rotate",xr:[-3,3],aspect:.8,hint:"Drag the gold point. Drag the dark arrow's tip around it.",
+    cap:"Small arrows show ∇f everywhere: always uphill, perpendicular to the level curves, longest where it's steepest."});
+  const f=(x,y)=>Math.exp(-((x-1)**2+y*y))+.8*Math.exp(-((x+1.2)**2+(y-.6)**2)/.6);
+  const gr=(x,y)=>{const e=1e-4;return[(f(x+e,y)-f(x-e,y))/(2*e),(f(x,y+e)-f(x,y-e))/(2*e)]};
+  const P=pt(-.2,-.7,.05),U=pt(0,0);let ang=0;
+  const put=()=>{U.x=P.x+Math.cos(ang);U.y=P.y+Math.sin(ang)};put();
+  P.move=(X,Y)=>{P.x=X;P.y=Y;put()};U.move=(X,Y)=>{ang=Math.atan2(Y-P.y,X-P.x);put()};g.handles=[U,P];
+  button(g.ctl,"u along ∇f",()=>{const[a,b]=gr(P.x,P.y);ang=Math.atan2(b,a);put();g.redraw()});
+  button(g.ctl,"u along −∇f",()=>{const[a,b]=gr(P.x,P.y);ang=Math.atan2(-b,-a);put();g.redraw()});
+  g.draw=()=>{heat(g,f,.1);axes(g,false);
+    for(let x=-2.75;x<3;x+=.5)for(let y=-2.25;y<2.4;y+=.5){const[a,b]=gr(x,y),L=Math.hypot(a,b);if(L>.03){const s=.12+.25*Math.min(1,L*1.6);arrow(g,x,y,x+a/L*s,y+b/L*s,cv("muted"),"",1)}}
+    const[a,b]=gr(P.x,P.y),L=Math.hypot(a,b),ux=Math.cos(ang),uy=Math.sin(ang),D=a*ux+b*uy,cs=L>1e-3?D/L:0;
+    arrow(g,P.x,P.y,P.x+a*1.4,P.y+b*1.4,cv("gold"),"∇f",4);arrow(g,P.x,P.y,U.x,U.y,cv("ink"),"u",2.5);
+    dot(g,U.x,U.y,cv("ink"),6,1);dot(g,P.x,P.y,cv("gold"),7,1);
+    const msg=L<1e-3?"Flat spot: ∇f = 0":cs>.995?"Straight uphill: the maximum, |∇f|":cs<-.995?"Straight downhill: steepest descent":Math.abs(cs)<.05?"Along the level curve: D<sub>u</sub>f = 0":cs>0?"Partly uphill":"Partly downhill";
+    g.read.innerHTML=`<span class="big">${msg}</span><div><span class="kg">∇f</span> = ⟨${fx(a)}, ${fx(b)}⟩</div><div>max rate |∇f| = ${fx(L)}</div>
+      <div><span class="ki">u</span> = ⟨${fx(ux)}, ${fx(uy)}⟩, a unit vector</div><div>D<sub>u</sub>f = ∇f · u = <b>${fx(D)}</b></div>
+      <div class="vmeter" aria-hidden="true"><i style="left:${50+50*cs}%"></i></div><div class="vmlab"><span>−|∇f|</span><span>0</span><span>+|∇f|</span></div>`};
+  g.redraw()},
+
+tp(h){
+  const g=viz(h,{label:"Ellipse level curve with the gradient normal and the tangent line at a draggable point",xr:[-3,3],aspect:.72,hint:"Drag the point around the curve.",
+    cap:"In 3D the level curve becomes a level surface F(x, y, z) = k and the tangent line becomes the tangent plane. ∇F is still the normal."});
+  let th=.9;const P={x:0,y:0},place=()=>{P.x=2*Math.cos(th);P.y=Math.sin(th)};place();
+  P.move=(X,Y)=>{th=Math.atan2(Y,X/2);place()};g.handles=[P];
+  const m=v=>v<0?`+ ${fx(-v)}`:`− ${fx(v)}`;
+  g.draw=()=>{axes(g);for(const k of[.4,2])curve(g,t=>[2*Math.sqrt(k)*Math.cos(t),Math.sqrt(k)*Math.sin(t)],0,7,cv("rule"),1.5);
+    curve(g,t=>[2*Math.cos(t),Math.sin(t)],0,7,cv("ink"),3);
+    const n=[P.x/2,2*P.y],nl=Math.hypot(...n),T=[-n[1]/nl,n[0]/nl];
+    seg(g,P.x-9*T[0],P.y-9*T[1],P.x+9*T[0],P.y+9*T[1],cv("good"),2.5);arrow(g,P.x,P.y,P.x+n[0]*.8,P.y+n[1]*.8,cv("gold"),"∇F",4);dot(g,P.x,P.y,cv("ink"),7,1);
+    g.read.innerHTML=`<span class="big">∇F is always ⟂ to the curve</span><div class="veq">F(x, y) = x²/4 + y² = 1</div><div>point (${fx(P.x)}, ${fx(P.y)})</div>
+      <div><span class="kg">∇F</span> = ⟨x/2, 2y⟩ = ⟨${fx(n[0])}, ${fx(n[1])}⟩</div>
+      <div><span class="kd">tangent line</span>: ${fx(n[0])}(x ${m(P.x)}) + ${fx(n[1])}(y ${m(P.y)}) = 0</div>`};
+  g.redraw()},
+
+ext(h){
+  const g=viz(h,{label:"Contour map of f = ax² + bxy + cy² with the second-derivative test result",xr:[-2.5,2.5],aspect:.8,hint:"Move the sliders or pick a preset.",
+    cap:"Closed rings around the point: a max or min. Contours crossing in an X: a saddle."});
+  const s={a:1,b:.5,c:1},sl={};
+  for(const v of["a","b","c"])sl[v]=slider(g.ctl,v,-2,2,.25,s[v],x=>{s[v]=x;g.redraw()});
+  for(const[n,p]of[["Bowl",[1,0,1]],["Dome",[-1,0,-1]],["Saddle",[1,0,-1]],["D = 0",[1,2,1]]])button(g.ctl,n,()=>{[s.a,s.b,s.c]=p;for(const v in sl)sl[v].set(s[v]);g.redraw()});
+  const term=(c,v,first)=>c?`${sgn(c,first)}${Math.abs(c)===1?"":fx(Math.abs(c))}${v}`:"";
+  g.draw=()=>{const f=(x,y)=>s.a*x*x+s.b*x*y+s.c*y*y;heat(g,f,.4);axes(g,false);dot(g,0,0,cv("ink"),6,1);
+    const D=4*s.a*s.c-s.b*s.b,fxx=2*s.a,[cls,col]=D>0?(fxx>0?["Local min","good"]:["Local max","bad"]):D<0?["Saddle point","gold"]:["Test says nothing","muted"];
+    const eq=(term(s.a,"x²",1)+term(s.b,"xy",!s.a)+term(s.c,"y²",!s.a&&!s.b))||"0";
+    g.read.innerHTML=`<span class="big" style="color:var(--${col})">${cls} at (0, 0)</span><div class="veq">f = ${eq}</div>
+      <div>f<sub>xx</sub> = ${fx(fxx)}, f<sub>yy</sub> = ${fx(2*s.c)}, f<sub>xy</sub> = ${fx(s.b)}</div><div>D = f<sub>xx</sub>f<sub>yy</sub> − f<sub>xy</sub>² = <b>${fx(D)}</b></div>`};
+  g.redraw()}
+};
+function redrawViz(){VIZS.forEach(g=>g.redraw())}
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redrawViz)}catch(e){}
+new MutationObserver(redrawViz).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+function confetti(el){if(RM)return;const r=el.getBoundingClientRect(),cols=["gold","good","ink","bad"].map(cv);
+  for(let i=0;i<30;i++){const s=document.createElement("i");s.className="confetti";
+    s.style.cssText=`left:${r.left+r.width*(.15+.7*Math.random())}px;top:${r.top+r.height/2}px;background:${cols[i%4]}`;document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2,v=60+Math.random()*130;
+    s.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v-70}px) rotate(${Math.random()*720}deg)`,opacity:0}],
+      {duration:900+Math.random()*500,easing:"cubic-bezier(.15,.7,.3,1)"}).onfinish=()=>s.remove()}}
+
+
 /* start here */
 function renderLessons(){
   const box=$("#lessons");
@@ -1123,22 +1494,29 @@ function renderLessons(){
     const L=LEARN[k], n=Q.filter(q=>q.t===k).length;
     L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k;w.label=`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`});
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;
-    d.innerHTML=`<summary><span class="n">${String(ti+1).padStart(2,"0")}</span><h3>${TOPICS[k]}</h3><span class="prog"></span></summary>
-      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Warm-ups</h4><div class="qlist"></div>
+    d.dataset.n=String(ti+1).padStart(2,"0");
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="qlist"></div>
       <button class="btn primary next">Now try the ${n} real exam question${n===1?"":"s"} →</button></div>`;
     L.warm.forEach(w=>d.querySelector(".qlist").appendChild(card(w,"warm")));
     typeset(d.querySelector(".refresh"));
-    d.addEventListener("toggle",flushMath);
+    d.addEventListener("toggle",()=>{if(d.open&&!d.built){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
     d.querySelector(".next").onclick=()=>{$("#fTopic").value=k;$("#fExam").value="all";$("#fOpen").checked=false;showTab("practice");renderPractice();window.scrollTo({top:0})};
     box.appendChild(d);
   });
   renderLessonProg();
 }
 function renderLessonProg(){
+  let tot=0,done=0,topics=0;
   document.querySelectorAll(".lesson").forEach(d=>{
-    const w=LEARN[d.dataset.k].warm, done=w.filter(x=>warm[x.id]!=null).length, p=d.querySelector(".prog");
-    p.textContent=`${done}/${w.length} warm-ups`;p.classList.toggle("all",done===w.length);
+    const w=LEARN[d.dataset.k].warm,n=w.filter(x=>warm[x.id]!=null).length,full=n===w.length;
+    tot+=w.length;done+=n;topics+=full;
+    d.querySelectorAll(".dots i").forEach((el,i)=>{const p=warm[w[i].id];el.className=p==null?"":p===LET.indexOf(w[i].a)?"ok":"no"});
+    if(full&&d.dataset.full==="0")confetti(d.querySelector("summary"));
+    d.dataset.full=full?"1":"0";d.classList.toggle("done",full);
+    d.querySelector(".n").textContent=full?"✓":d.dataset.n;
   });
+  $("#meter").innerHTML=`<div class="mbar"><i style="width:${100*done/tot}%"></i></div><span><b>${done}</b>/${tot} warm-ups · <b>${topics}</b>/12 topics done</span>`;
 }
 
 /* mock */
