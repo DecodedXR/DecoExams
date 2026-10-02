@@ -132,7 +132,9 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .vread{font:13px/1.75 var(--f-mono);margin-top:10px;overflow-x:auto}
 .vread .big{display:block;font:700 18px/1.25 var(--f-display);color:var(--gold);margin-bottom:6px}
 .vread .veq{color:var(--ink);font-weight:500}
-.vwhy{font:14px/1.5 var(--f-body);color:var(--muted);margin-top:4px}
+.vwhy{font:14px/1.5 var(--f-body);color:var(--muted);margin:4px 0 0}
+.vsub{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-top:10px}
+.vlist{font:14px/1.45 var(--f-body);color:var(--muted);margin:2px 0 0;padding-left:18px} .vlist li{margin:3px 0}
 .vcap{font-size:13px;color:var(--muted);margin:10px 0 0;border-top:1px solid var(--rule);padding-top:8px}
 .kg{color:var(--gold);font-weight:600} .ki{color:var(--ink);font-weight:600} .kd{color:var(--good);font-weight:600}
 .slice{display:flex;gap:10px;align-items:center;margin-top:6px}
@@ -712,13 +714,15 @@ Line: \(\langle1+t,1+t,-2t\rangle\). Faster on the exam: plug each option into b
 },
 quad: {
   learn: R`<p><b>Step 1:</b> complete the square and move every variable to one side. <b>Step 2:</b> read the signs.</p>
-<ul><li>\(+\,+\,+\;=1\): ellipsoid</li>
-<li>\(+\,+\,-\;=1\): hyperboloid of <b>one</b> sheet</li>
-<li>\(+\,-\,-\;=1\): hyperboloid of <b>two</b> sheets</li>
-<li>\(+\,+\,-\;=0\): cone</li>
-<li>one variable not squared (\(z=x^2+y^2\)): paraboloid, elliptic if the squares have the same sign, hyperbolic (saddle) if opposite</li></ul>
-<p>Count minus signs: one minus is one sheet, two minuses are two sheets. If the right side is negative, multiply everything by \(-1\) first.</p>
-<p><b>Traces:</b> fix one variable (\(z=k\)) and identify the 2D curve that's left.</p>`,
+<ul><li><b>Ellipsoid</b>, \(+\,+\,+\;=1\): a closed egg (a sphere if the coefficients match). It's bounded, and every slice is an ellipse, a point, or empty.</li>
+<li><b>Hyperboloid of one sheet</b>, \(+\,+\,-\;=1\): one connected tube shaped like a cooling tower, running along the axis of the <i>minus</i> variable. Slices across the axis are ellipses (never empty). Slices along it are hyperbolas.</li>
+<li><b>Hyperboloid of two sheets</b>, \(+\,-\,-\;=1\): two separate bowls facing away from each other along the axis of the <i>plus</i> variable, with an empty gap between them. Slices across the axis are empty, then a point, then ellipses. Slices along it are hyperbolas.</li>
+<li><b>Cone</b>, \(+\,+\,-\;=0\): two cones meeting tip to tip at the origin, along the odd-sign variable's axis. Slices across the axis are ellipses (a point at the tip). Slices through the axis are pairs of crossing lines.</li>
+<li><b>Elliptic paraboloid</b>, \(z=x^2+y^2\): one variable isn't squared, and the squares have the same sign. It's a single bowl (satellite dish). Horizontal slices are ellipses, and vertical slices are parabolas opening the same way.</li>
+<li><b>Hyperbolic paraboloid</b>, \(z=x^2-y^2\): one variable isn't squared, and the squares have opposite signs. It's a saddle (Pringle). Horizontal slices are hyperbolas (crossing lines at height 0), and vertical slices are parabolas, opening up one way and down the other.</li></ul>
+<p><b>Memory trick:</b> with \(=1\), count the minus signs. One minus means one sheet, two minuses mean two sheets. The axis is always the variable whose sign is the odd one out.</p>
+<p><b>Negative right side?</b> Multiply everything by \(-1\) first: \(x^2+y^2-z^2=-1\) is \(-x^2-y^2+z^2=1\), which is two sheets.</p>
+<p><b>Traces:</b> fix one variable (\(z=k\)) and identify the 2D curve that's left. Use the 3D model below to check the slices.</p>`,
   warm: [
     { step:"Read the signs", a:"A",
       q:R`Identify \(x^2+\dfrac{y^2}4+\dfrac{z^2}9=1\).`,
@@ -1304,19 +1308,43 @@ quad(h){
     const ring=(f,us)=>{for(const u of us)L.push(range(0,2*Math.PI,48).map(v=>f(u,v)));
       for(let j=0;j<16;j++){const v=j/16*2*Math.PI;L.push(range(us[0],us.at(-1),30).map(u=>f(u,v)))}};
     if(s.lin){for(const c of range(-1.5,1.5,10)){L.push(range(-1.5,1.5,30).map(t=>[c,t,(s.x*c*c+s.y*t*t)/2]));L.push(range(-1.5,1.5,30).map(t=>[t,c,(s.x*t*t+s.y*c*c)/2]))}
-      return{L,eq:`z = ${s.x>0?"":"−"}x² ${sg(s.y)} y²`,name:s.x===s.y?"Elliptic paraboloid":"Hyperbolic paraboloid",
-        why:s.x===s.y?"z is not squared, and x², y² have the same sign: a bowl.":"z is not squared, and x², y² have opposite signs: a saddle (Pringle)."}}
+      return{L,eq:`z = ${s.x>0?"":"−"}x² ${sg(s.y)} y²`,name:s.x===s.y?"Elliptic paraboloid":"Hyperbolic paraboloid"}}
     const vars=["x","y","z"],p=vars.filter(v=>s[v]>0).length,eq=`${s.x>0?"":"−"}x² ${sg(s.y)} y² ${sg(s.z)} z² = ${s.r}`;
     const odd=vars.find(v=>vars.filter(w=>s[w]===s[v]).length===1),rest=vars.filter(v=>v!==odd);
     const put=(a,b,w,m)=>{const o={};o[rest[0]]=a*m;o[rest[1]]=b*m;o[odd]=w*m;return[o.x,o.y,o.z]};
     if(s.r===1){
-      if(p===3){ring((u,v)=>[1.8*S(u)*C(v),1.8*S(u)*S(v),1.8*C(u)],range(.2,Math.PI-.2,8));return{L,eq,name:"Ellipsoid",why:"Three + signs and = 1: a closed egg (a sphere when the coefficients match)."}}
-      if(p===2){ring((u,v)=>put(ch(u)*C(v),ch(u)*S(v),sh(u),1.1),range(-1.3,1.3,8));return{L,eq,name:"Hyperboloid of one sheet",why:`Two +, one −, = 1. One minus, one sheet: a cooling-tower tube around the ${odd}-axis.`}}
-      if(p===1){for(const q of[1,-1])ring((u,v)=>put(sh(u)*C(v),sh(u)*S(v),q*ch(u),1.1),range(0,1.4,6));return{L,eq,name:"Hyperboloid of two sheets",why:`One +, two −, = 1. Two minuses, two sheets: two bowls facing away along the ${odd}-axis.`}}
-      return{L,eq,name:"No points at all",why:"Three − signs can never add up to +1."}}
-    if(p===0||p===3)return{L,eq,name:"Just the origin",why:"Same signs and = 0: only (0, 0, 0) works."};
-    ring((u,v)=>put(u*C(v),u*S(v),u,1.2),range(-1.6,1.6,10));return{L,eq,name:"Cone",why:`Mixed signs and = 0: a double cone around the ${odd}-axis.`};
+      if(p===3){ring((u,v)=>[1.8*S(u)*C(v),1.8*S(u)*S(v),1.8*C(u)],range(.2,Math.PI-.2,8));return{L,eq,name:"Ellipsoid"}}
+      if(p===2){ring((u,v)=>put(ch(u)*C(v),ch(u)*S(v),sh(u),1.1),range(-1.3,1.3,8));return{L,eq,name:"Hyperboloid of one sheet"}}
+      if(p===1){for(const q of[1,-1])ring((u,v)=>put(sh(u)*C(v),sh(u)*S(v),q*ch(u),1.1),range(0,1.4,6));return{L,eq,name:"Hyperboloid of two sheets"}}
+      return{L,eq,name:"No points at all"}}
+    if(p===0||p===3)return{L,eq,name:"Just the origin"};
+    ring((u,v)=>put(u*C(v),u*S(v),u,1.2),range(-1.6,1.6,10));return{L,eq,name:"Cone"};
   }
+  // what the surface looks like, what its slices are, and how to recognize it on the exam
+  function about(name){
+    const vars=["x","y","z"],a=vars.find(v=>vars.filter(w=>s[w]===s[v]).length===1),[b,c]=vars.filter(v=>v!==a),up=s.x>0;
+    return{
+    "Ellipsoid":{look:"A closed, egg-shaped surface, like a rugby ball. It's bounded, so it fits inside a box. With every coefficient 1 it's the unit sphere. In general x²/a² + y²/b² + z²/c² = 1 crosses the axes at ±a, ±b, ±c.",
+      slices:["z = k: ellipses for |k| < 1, a single point at k = ±1, nothing beyond","x = k or y = k: ellipses as well. Every slice is an ellipse, a point, or empty"],
+      spot:"All three squares are positive and the right side is positive. Equal coefficients make it a sphere."},
+    "Hyperboloid of one sheet":{look:`One connected tube around the ${a}-axis, shaped like a cooling tower. It's narrowest at ${a} = 0, where the waist is a circle of radius 1, and flares out forever in both directions.`,
+      slices:[`${a} = k: ellipses (circles here) for every k. Never empty, and bigger as |k| grows`,`${b} = k or ${c} = k: hyperbolas. At k = ±1 the slice is a pair of crossing lines`],
+      spot:`Exactly one minus sign and a positive right side. The minus variable (${a}) is the axis the tube runs along.`},
+    "Hyperboloid of two sheets":{look:`Two separate bowls facing away from each other along the ${a}-axis. Nothing exists between ${a} = −1 and ${a} = 1. That gap splits it into two sheets.`,
+      slices:[`${a} = k: empty for |k| < 1, a single point at k = ±1 (the bowl tips), ellipses for |k| > 1`,`${b} = k or ${c} = k: hyperbolas, one branch on each sheet`],
+      spot:`Two minus signs and a positive right side. The axis is the lone plus variable (${a}).`},
+    "Cone":{look:`Two cones meeting tip to tip at the origin and opening along the ${a}-axis, like an ice-cream cone and its mirror image. Its sides are straight lines through the origin.`,
+      slices:[`${a} = k: ellipses (circles here) for k ≠ 0, shrinking to the single point at k = 0`,`${b} = 0 or ${c} = 0: a pair of lines crossing at the origin`,`other ${b} = k or ${c} = k: hyperbolas`],
+      spot:`Mixed signs with 0 on the right. The odd-sign variable (${a}) is the axis. It often shows up as ${a}² = ${b}² + ${c}².`},
+    "Elliptic paraboloid":{look:`A single bowl with its vertex at the origin, opening ${up?"upward":"downward"} along the z-axis and widening forever, like a satellite dish.`,
+      slices:[`z = k: ellipses (circles here) for ${up?"k > 0":"k < 0"}, the point at k = 0, nothing for ${up?"k < 0":"k > 0"}`,`x = k or y = k: parabolas opening ${up?"up":"down"}`],
+      spot:"One variable appears only to the first power (z), and the two squares have the same sign. The unsquared variable is the axis."},
+    "Hyperbolic paraboloid":{look:`A saddle, shaped like a Pringle chip. Moving along the ${up?"x":"y"}-direction it curves up, and along the ${up?"y":"x"}-direction it curves down. The origin is a saddle point: neither a max nor a min.`,
+      slices:["z = k: hyperbolas for k ≠ 0, and the crossing lines y = ±x at k = 0",`x = k: parabolas opening ${s.y>0?"up":"down"}`,`y = k: parabolas opening ${up?"up":"down"}`],
+      spot:"One variable appears only to the first power (z), and the two squares have opposite signs. The header plot shows its level curves."},
+    "Just the origin":{look:"Only the single point (0, 0, 0). There's no surface.",slices:[],spot:"Squares with the same sign can only add up to 0 when every variable is 0."},
+    "No points at all":{look:"Empty: no point satisfies this equation.",slices:[],spot:"−x² − y² − z² is never positive, so it can't equal 1. Multiplying by −1 gives x² + y² + z² = −1, which is clearly impossible."}
+    }[name]}
   g.draw=()=>{const m=mesh(),cp=Math.cos(phi),sp=Math.sin(phi),ce=Math.cos(.38),se=Math.sin(.38);
     const P=([x,y,z])=>{const X=x*cp-y*sp,D=x*sp+y*cp;return[X,z*ce-D*se,D]};
     const o=P([0,0,0]);for(const[v,lab]of[[[2.5,0,0],"x"],[[0,2.5,0],"y"],[[0,0,2.5],"z"]]){const a=P(v);seg(g,o[0],o[1],a[0],a[1],cv("rule"),1.5);text(g,a[0],a[1],lab,cv("muted"),4,-4)}
@@ -1326,7 +1354,10 @@ quad(h){
     c.globalAlpha=1;if(!m.L.length)dot(g,o[0],o[1],cv("gold"),m.name==="Just the origin"?6:0);
     ["x","y","z"].forEach((v,i)=>{bx[i].textContent=`${sg(s[v])}${v}²`;bx[i].hidden=s.lin&&v==="z"});
     bx[3].textContent=`= ${s.r}`;bx[3].hidden=!!s.lin;lb.textContent=s.lin?"square z again":"make z linear";
-    g.read.innerHTML=`<span class="big">${m.name}</span><div class="veq">${m.eq}</div><div class="vwhy">${m.why}</div>`};
+    const A=about(m.name);
+    g.read.innerHTML=`<span class="big">${m.name}</span><div class="veq">${m.eq}</div><p class="vwhy">${A.look}</p>
+      ${A.slices.length?`<div class="vsub">Slices (traces)</div><ul class="vlist">${A.slices.map(t=>`<li>${t}</li>`).join("")}</ul>`:""}
+      <div class="vsub">How to spot it</div><p class="vwhy">${A.spot}</p>`};
   animate(()=>{if(RM||!shown(g)||performance.now()-hold<1500)return;phi+=.005;g.redraw()});
   g.redraw()},
 
