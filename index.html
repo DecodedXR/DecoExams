@@ -158,7 +158,8 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .refresh p{margin:10px 0} .refresh ul{margin:8px 0;padding-left:18px} .refresh li{margin:3px 0}
 .lesson h4{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
 .lesson .qc{background:var(--paper)}
-.lesson .next{margin-top:14px}
+.lesson .lfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.btn:disabled{opacity:.45;cursor:default}
 mjx-container{max-width:100%}
 @media (max-width:560px){header.top{grid-template-columns:1fr}.cv{display:none}.bars{grid-template-columns:minmax(0,1fr) 90px auto}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -1120,7 +1121,7 @@ function card(q,mode){
   el.querySelector(".chip").onclick=()=>{ $("#fTopic").value=q.t; $("#fExam").value="all"; showTab("practice"); renderPractice(); window.scrollTo({top:0}); };
   if(mode==="practice"){
     if(p) reveal(p.pick);
-    opts.forEach((b,i)=>b.onclick=()=>{prog[q.id]={pick:i,ok:i===ai};save();reveal(i);cheer(b,i===ai);renderStats();renderBars();});
+    opts.forEach((b,i)=>b.onclick=()=>{prog[q.id]={pick:i,ok:i===ai};save();reveal(i);cheer(b,i===ai);renderStats();renderBars();resetLabel();});
   } else if(mode==="mock"){
     sh.hidden=true;
     opts.forEach((b,i)=>b.onclick=()=>{opts.forEach(o=>o.classList.remove("sel"));b.classList.add("sel");mockState.ans[q.id]=i;updateMockCount();});
@@ -1151,16 +1152,29 @@ function renderPractice(){
   let txt=`${list.length} question${list.length===1?"":"s"} · ${done} answered`;
   if(ex!=="all") txt+=" · "+EXAMS[ex].note;
   $("#count").textContent=txt;
+  resetLabel();
   if(!list.length){box.innerHTML=`<p class="sub">Nothing left here. Clear the filters or reset your progress.</p>`;return}
   list.forEach(q=>box.appendChild(card(q,"practice")));
 }
 ["#fExam","#fTopic","#fOpen"].forEach(s=>$(s).addEventListener("change",()=>{try{localStorage.setItem("ma261e1f",JSON.stringify({e:$("#fExam").value,t:$("#fTopic").value}))}catch(e){};renderPractice()}));
 $("#shuffle").onclick=()=>{order=Q.slice().sort(()=>Math.random()-.5);renderPractice()};
-let resetArm=false;
-$("#reset").onclick=e=>{
-  if(!resetArm){resetArm=true;e.target.textContent="Click again to erase";e.target.classList.remove("ghost");setTimeout(()=>{resetArm=false;e.target.textContent="Reset my progress";e.target.classList.add("ghost")},3000);return}
-  prog={};save();resetArm=false;e.target.textContent="Reset my progress";e.target.classList.add("ghost");renderPractice();renderStats();renderBars();
-};
+// first click arms the button for 3 s; a second click within that window runs the reset
+function twoClick(b,act){
+  let t=null;
+  b.onclick=()=>{
+    if(!t){b.dataset.idle=b.textContent;b.textContent="Click again to erase";b.classList.remove("ghost");
+      t=setTimeout(()=>{t=null;b.textContent=b.dataset.idle;b.classList.add("ghost")},3000);return}
+    clearTimeout(t);t=null;b.classList.add("ghost");act();
+  };
+}
+// Practice reset only touches the questions in the current exam/topic filter
+const inFilter=()=>{const ex=$("#fExam").value,tp=$("#fTopic").value;return Q.filter(q=>(ex==="all"||q.e===ex)&&(tp==="all"||q.t===tp))};
+function resetLabel(){
+  const ex=$("#fExam").value,tp=$("#fTopic").value,b=$("#reset");
+  b.textContent=ex==="all"&&tp==="all"?"Reset all progress":"Reset "+[ex!=="all"&&EXAMS[ex].name,tp!=="all"&&TOPICS[tp]].filter(Boolean).join(" · ");
+  b.disabled=!inFilter().some(q=>prog[q.id]);
+}
+twoClick($("#reset"),()=>{inFilter().forEach(q=>delete prog[q.id]);save();renderPractice();renderStats();renderBars()});
 
 /* topics */
 function renderBars(){
@@ -1563,8 +1577,9 @@ function renderLessons(){
     d.dataset.n=String(ti+1).padStart(2,"0");
     d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
       <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="qlist"></div>
-      <button class="btn primary next">Now try the ${n} real exam question${n===1?"":"s"} →</button></div>`;
-    L.warm.forEach(w=>d.querySelector(".qlist").appendChild(card(w,"warm")));
+      <div class="lfoot"><button class="btn primary next">Now try the ${n} real exam question${n===1?"":"s"} →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
+    const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach(w=>ql.appendChild(card(w,"warm")))};fill();
+    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>delete warm[w.id]);saveWarm();fill();renderLessonProg()});
     typeset(d.querySelector(".refresh"));
     d.addEventListener("toggle",()=>{if(d.open&&!d.built){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
     d.querySelector(".next").onclick=()=>{$("#fTopic").value=k;$("#fExam").value="all";$("#fOpen").checked=false;showTab("practice");renderPractice();window.scrollTo({top:0})};
@@ -1581,6 +1596,7 @@ function renderLessonProg(){
     if(full&&d.dataset.full==="0")confetti(d.querySelector("summary"));
     d.dataset.full=full?"1":"0";d.classList.toggle("done",full);
     d.querySelector(".n").textContent=full?"✓":d.dataset.n;
+    d.querySelector(".wreset").disabled=!n;
   });
   $("#meter").innerHTML=`<div class="mbar"><i style="width:${100*done/tot}%"></i></div><span><b>${done}</b>/${tot} warm-ups · <b>${topics}</b>/12 topics done</span>`;
 }
