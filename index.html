@@ -151,6 +151,8 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .tree .nd text{font:600 15px var(--f-mono);fill:var(--ink);text-anchor:middle}
 .tree svg.on1 :is(.e1,.e2) line,.tree svg.on2 :is(.e3,.e4) line{stroke:var(--gold)}
 .tree svg.on1 :is(.e1,.e2) text,.tree svg.on2 :is(.e3,.e4) text{fill:var(--ink)}
+.meme{position:fixed;right:16px;bottom:16px;z-index:60;max-width:min(320px,calc(100vw - 32px));display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--surface);border:2px solid var(--ink);border-radius:10px;box-shadow:4px 4px 0 var(--ink);font:600 15px/1.3 var(--f-body);color:var(--ink);pointer-events:none}
+.meme b{font-size:44px;line-height:1}
 .confetti{position:fixed;width:7px;height:10px;border-radius:1px;pointer-events:none;z-index:50}
 @media (max-width:560px){.lesson .hook{display:none}}
 .lesson .body{padding:0 16px 16px;border-top:1px solid var(--rule)}
@@ -175,7 +177,7 @@ mjx-container{max-width:100%}
       <h1>Exam 1 Lab</h1>
       <p class="lede">A refresher with warm-ups for every topic, then every question from six past Exam 1s with worked solutions, a formula sheet, and a timed mock exam.</p>
       <div class="stats" id="stats"></div>
-      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button></div>
+      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button><button class="sndbtn" id="mem" type="button"></button></div>
     </div>
     <div class="cv"><canvas id="contour" width="340" height="340" aria-label="Contour plot of f(x,y) = x squared minus y squared"></canvas><div class="cap">level curves of x² − y²</div></div>
   </header>
@@ -1544,7 +1546,16 @@ function toggle(id,key,on,off){
   b.onclick=()=>{v=!v;try{localStorage.setItem(key,v?"on":"off")}catch(e){};show()};show();
   return()=>v;
 }
-const soundOn=toggle("#snd","ma261snd","🔊 Sound on","🔇 Sound off"),confettiOn=toggle("#cfx","ma261cfx","🎉 Confetti on","Confetti off");
+const soundOn=toggle("#snd","ma261snd","🔊 Sound on","🔇 Sound off"),confettiOn=toggle("#cfx","ma261cfx","🎉 Confetti on","Confetti off"),memesOn=toggle("#mem","ma261mem","😂 Memes on","Memes off");
+// ponytail: emoji "stickers" instead of image files, so nothing to host or license
+const YAY=[["🐓","Cock-a-doodle-CORRECT"],["🐐","Certified GOAT of Calc III"],["😎","Gradient? Never heard of her. Anyway, nailed it"],["🧠","Big brain energy detected"],["🚀","Partial derivative? Full send"],["🦆","Even the duck is impressed"],["🍕","You earned a slice (of a level curve)"],["👑","Clairaut would be proud"],["🔥","Too hot. Directional derivative is maxed"],["🐸","It is Wednesday and you are correct"]],
+  NAY=[["💀","Bro took the gradient downhill"],["🤡","Cross product said w×v, you said nah"],["🐓","Cock-a-doodle-DON'T"],["🫠","The saddle point got you"],["🙈","Pretend you didn't click that"],["🧯","That answer is on fire (bad)"],["🦆","The duck is disappointed"],["📉","Your stock just dropped"],["🥲","It's okay. The limit doesn't exist either"],["🐌","Slow down, check the sign"]];
+let memeEl,memeT;
+function meme(ok){if(!memesOn())return;const L=ok?YAY:NAY,[e,t]=L[Math.random()*L.length|0];
+  memeEl?.remove();clearTimeout(memeT);memeEl=document.createElement("div");memeEl.className="meme";memeEl.setAttribute("role","status");
+  memeEl.innerHTML=`<b>${e}</b><span>${t}</span>`;document.body.appendChild(memeEl);
+  if(!RM)memeEl.animate([{transform:"translateY(40px) rotate(-6deg) scale(.6)",opacity:0},{transform:"rotate(2deg) scale(1.05)",opacity:1,offset:.6},{transform:"none",opacity:1}],{duration:350,easing:"ease-out"});
+  memeT=setTimeout(()=>memeEl.remove(),2200)}
 let actx;
 function buzzer(){
   if(!soundOn())return;
@@ -1565,7 +1576,7 @@ function ding(){
         o.type=type;o.frequency.setValueAtTime(hz,t);og.gain.value=lvl;o.connect(og);og.connect(g);o.start(t);o.stop(t+.85)})});
   }catch(e){}
 }
-function cheer(el,ok){if(ok){confetti(el);ding()}else buzzer()}
+function cheer(el,ok){meme(ok);if(ok){confetti(el);ding()}else buzzer()}
 
 /* start here */
 function renderLessons(){
