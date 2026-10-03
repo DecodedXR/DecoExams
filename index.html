@@ -153,6 +153,15 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .tree svg.on1 :is(.e1,.e2) text,.tree svg.on2 :is(.e3,.e4) text{fill:var(--ink)}
 .meme{position:fixed;right:16px;bottom:16px;z-index:60;max-width:min(320px,calc(100vw - 32px));display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--surface);border:2px solid var(--ink);border-radius:10px;box-shadow:4px 4px 0 var(--ink);font:600 15px/1.3 var(--f-body);color:var(--ink);pointer-events:none}
 .meme b{font-size:44px;line-height:1}
+.achtoast{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:70;display:flex;gap:12px;align-items:center;padding:10px 18px;background:var(--ink);color:var(--paper);border:2px solid var(--gold);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.25);font:700 16px/1.25 var(--f-body);pointer-events:none;max-width:calc(100vw - 32px)}
+.achtoast b{font-size:36px;line-height:1} .achtoast small{display:block;font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+#achd{max-width:min(680px,calc(100vw - 32px));width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:10px;padding:18px}
+#achd::backdrop{background:rgba(0,0,0,.45)}
+#achd .ahead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px} #achd h2{margin:0;font:700 22px var(--f-display)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.ach{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.ach b{font-size:28px;line-height:1} .ach div{font:600 14px/1.25 var(--f-body)} .ach small{display:block;font:400 12px/1.3 var(--f-body);color:var(--muted)}
+.ach.locked{opacity:.45} .ach.locked b{filter:grayscale(1)}
 .confetti{position:fixed;width:7px;height:10px;border-radius:1px;pointer-events:none;z-index:50}
 @media (max-width:560px){.lesson .hook{display:none}}
 .lesson .body{padding:0 16px 16px;border-top:1px solid var(--rule)}
@@ -177,7 +186,8 @@ mjx-container{max-width:100%}
       <h1>Exam 1 Lab</h1>
       <p class="lede">A refresher with warm-ups for every topic, then every question from six past Exam 1s with worked solutions, a formula sheet, and a timed mock exam.</p>
       <div class="stats" id="stats"></div>
-      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button><button class="sndbtn" id="mem" type="button"></button></div>
+      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button><button class="sndbtn" id="mem" type="button"></button><button class="sndbtn" id="achb" type="button"></button></div>
+      <dialog id="achd"><div class="ahead"><h2>Achievements</h2><form method="dialog"><button class="btn">Close</button></form></div><div class="agrid" id="agrid"></div></dialog>
     </div>
     <div class="cv"><canvas id="contour" width="340" height="340" aria-label="Contour plot of f(x,y) = x squared minus y squared"></canvas><div class="cap">level curves of x² − y²</div></div>
   </header>
@@ -1555,7 +1565,7 @@ function meme(ok){if(!memesOn())return;const L=ok?YAY:NAY,[e,t]=L[Math.random()*
   memeEl?.remove();clearTimeout(memeT);memeEl=document.createElement("div");memeEl.className="meme";memeEl.setAttribute("role","status");
   memeEl.innerHTML=`<b>${e}</b><span>${t}</span>`;document.body.appendChild(memeEl);
   if(!RM)memeEl.animate([{transform:"translateY(40px) rotate(-6deg) scale(.6)",opacity:0},{transform:"rotate(2deg) scale(1.05)",opacity:1,offset:.6},{transform:"none",opacity:1}],{duration:350,easing:"ease-out"});
-  memeT=setTimeout(()=>memeEl.remove(),2200)}
+  memeT=setTimeout(()=>memeEl.remove(),2200);ach.memes=(ach.memes||0)+1}
 let actx;
 function buzzer(){
   if(!soundOn())return;
@@ -1576,7 +1586,70 @@ function ding(){
         o.type=type;o.frequency.setValueAtTime(hz,t);og.gain.value=lvl;o.connect(og);og.connect(g);o.start(t);o.stop(t+.85)})});
   }catch(e){}
 }
-function cheer(el,ok){meme(ok);if(ok){confetti(el);ding()}else buzzer()}
+function cheer(el,ok){meme(ok);if(ok){confetti(el);ding()}else buzzer();achAnswer(ok)}
+
+/* achievements: earned once, kept even when progress is reset */
+let ach={got:{},streak:0,best:0,wrongs:0,wrongRun:0,answered:0};
+try{Object.assign(ach,JSON.parse(localStorage.getItem("ma261ach")||"{}"))}catch(e){}
+const saveAch=()=>{try{localStorage.setItem("ma261ach",JSON.stringify(ach))}catch(e){}};
+// topics whose warm-ups are all answered (or all right)
+const wFull=ok=>Object.values(LEARN).filter(L=>L.warm.every(w=>ok?warm[w.id]===LET.indexOf(w.a):warm[w.id]!=null)).length;
+const exDone=ok=>examOrder.some(e=>Q.filter(q=>q.e===e).every(q=>ok?prog[q.id]?.ok:prog[q.id]));
+const ACH=[
+  ["first","👶","Baby steps","Answer your first question",c=>ach.answered>=1],
+  ["right","🐓","Cock-a-doodle-doo","Get your first answer right",c=>ach.best>=1],
+  ["wrong","🫠","Character development","Get your first answer wrong",c=>ach.wrongs>=1],
+  ["s3","🔥","Heating up","3 right in a row",c=>ach.best>=3],
+  ["s5","🌶️","On fire","5 right in a row",c=>ach.best>=5],
+  ["s10","🚀","Unstoppable","10 right in a row",c=>ach.best>=10],
+  ["s20","🐐","GOAT mode","20 right in a row",c=>ach.best>=20],
+  ["comeback","🦅","Comeback kid","Get one right after 3+ wrong in a row",c=>ach.comeback],
+  ["fail25","💀","Failing forward","Get 25 answers wrong. It's how you learn",c=>ach.wrongs>=25],
+  ["grind","💯","Grinder","Answer 100 times (re-answers count)",c=>ach.answered>=100],
+  ["w10","🤸","Stretched out","Answer 10 warm-ups",c=>c.nw>=10],
+  ["topic","✅","Topic down","Finish every warm-up in one topic",c=>wFull()>=1],
+  ["flawless","🎯","Flawless","Get every warm-up in a topic right",c=>wFull(true)>=1],
+  ["wall","🎓","Fully warmed up","Finish the warm-ups for all 12 topics",c=>wFull()===12],
+  ["q25","📝","Quarter way","Answer 25 past exam questions",c=>c.np>=25],
+  ["qall","🏁","Seen it all","Answer every past exam question",c=>c.np===Q.length],
+  ["exam","📄","Full exam","Answer every question from one past exam",c=>exDone()],
+  ["exam100","👑","Perfect exam","Get every question right on one past exam",c=>exDone(true)],
+  ["brain","🧠","Big brain","80%+ correct over 20+ exam questions",c=>c.np>=20&&c.nr/c.np>=.8],
+  ["mock","⏱️","Under pressure","Finish a mock exam",c=>ach.mocks>=1],
+  ["mock9","📈","Passing vibes","Get 9+ of 12 on a mock exam",c=>ach.mockBest>=9],
+  ["mock12","💎","Perfect mock","Get 12 of 12 on a mock exam",c=>ach.mockBest===12],
+  ["speed","⚡","Speedrun","9+ right on a mock in under 20 minutes",c=>ach.fast],
+  ["night","🦉","Night owl","Answer a question between midnight and 4 a.m.",c=>ach.night],
+  ["early","🌅","Early bird","Answer a question between 5 and 7 a.m.",c=>ach.early],
+  ["cheat","📋","Cheat sheet","Open the Topics & formulas tab",c=>ach.cheat],
+  ["pooper","🥱","Party pooper","Turn off confetti",c=>ach.pooper],
+  ["memes","🤡","Meme lord","See 50 memes",c=>ach.memes>=50],
+  ["all","🏆","Completionist","Unlock every other achievement",c=>ACH.every(a=>a[0]==="all"||ach.got[a[0]])]
+];
+function checkAch(quiet){
+  const P=Object.values(prog),c={np:P.length,nr:P.filter(p=>p.ok).length,nw:Object.keys(warm).length},fresh=[];
+  ACH.forEach(a=>{if(!ach.got[a[0]]&&a[4](c)){ach.got[a[0]]=Date.now();fresh.push(a)}});
+  if(fresh.length)saveAch();
+  $("#achb").textContent=`🏆 ${Object.keys(ach.got).length}/${ACH.length} achievements`;
+  // quiet on page load, so old progress doesn't fire a burst of toasts
+  if(!quiet)fresh.forEach(([,e,n],i)=>setTimeout(()=>{const t=document.createElement("div");t.className="achtoast";t.setAttribute("role","status");
+    t.innerHTML=`<b>${e}</b><span><small>Achievement unlocked</small>${n}</span>`;document.body.appendChild(t);confetti(t);ding();
+    if(!RM)t.animate([{transform:"translate(-50%,-80px)",opacity:0},{transform:"translate(-50%,0)",opacity:1}],{duration:350,easing:"ease-out"});
+    setTimeout(()=>t.remove(),2600)},500+i*2800));
+}
+function achAnswer(ok){
+  ach.answered++;
+  if(ok){if(ach.wrongRun>=3)ach.comeback=1;ach.streak++;ach.best=Math.max(ach.best,ach.streak);ach.wrongRun=0}
+  else{ach.streak=0;ach.wrongs++;ach.wrongRun++}
+  const h=new Date().getHours();if(h<4)ach.night=1;if(h>=5&&h<7)ach.early=1;
+  saveAch();checkAch();
+}
+const achFlag=k=>{if(!ach[k]){ach[k]=1;saveAch();checkAch()}};
+$("#cfx").addEventListener("click",()=>{if(!confettiOn())achFlag("pooper")});
+$("#achb").onclick=()=>{
+  $("#agrid").innerHTML=ACH.map(([id,e,n,d])=>`<div class="ach${ach.got[id]?"":" locked"}"><b>${e}</b><div>${n}<small>${d}</small></div></div>`).join("");
+  $("#achd").showModal();
+};
 
 /* start here */
 function renderLessons(){
@@ -1644,6 +1717,7 @@ function submitMock(){
   if(mockState.done)return;mockState.done=true;clearInterval(mockState.timer);
   const right=mockState.qs.filter(q=>mockState.ans[q.id]===LET.indexOf(q.a)).length;
   const used=Math.round((MOCK_MIN*60000-Math.max(0,mockState.end-Date.now()))/60000);
+  ach.mocks=(ach.mocks||0)+1;ach.mockBest=Math.max(ach.mockBest||0,right);if(right>=9&&used<20)ach.fast=1;saveAch();checkAch();
   const weak=[...new Set(mockState.qs.filter(q=>mockState.ans[q.id]!==LET.indexOf(q.a)).map(q=>TOPICS[q.t]))];
   const m=$("#mock");
   m.innerHTML=`<div class="intro"><div class="eyebrow">Mock result</div><div class="score">${right*8+4}</div><p class="sub">${right} of 12 correct · about ${used} min used${weak.length?" · review: "+weak.join(", "):""}</p><button class="btn primary" id="mAgain">New mock exam</button></div><div class="qlist" id="mList" style="margin-top:14px"></div>`;
@@ -1655,6 +1729,7 @@ function submitMock(){
 function showTab(t){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
   ["start","practice","mock","topics"].forEach(s=>$("#"+s).hidden=s!==t);
+  if(t==="topics")achFlag("cheat");
   try{localStorage.setItem("ma261e1t",t)}catch(e){}
   flushMath();
 }
@@ -1663,7 +1738,7 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.
 /* boot */
 fillSelects();
 try{const f=JSON.parse(localStorage.getItem("ma261e1f")||"null");if(f){$("#fExam").value=f.e||"all";$("#fTopic").value=f.t||"all"}}catch(e){}
-renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();
+renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();checkAch(true);
 const h=(location.hash||"").slice(1);
 let t0="start";try{t0=localStorage.getItem("ma261e1t")||"start"}catch(e){}
 showTab(["start","practice","mock","topics"].includes(h)?h:t0);
