@@ -166,6 +166,9 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 @media (max-width:560px){.lesson .hook{display:none}}
 .lesson .body{padding:0 16px 16px;border-top:1px solid var(--rule)}
 .refresh{overflow-x:auto;overflow-y:hidden;padding-top:6px}
+.refresh .idea{background:var(--paper);border-left:4px solid var(--gold);padding:10px 14px;border-radius:4px;font-size:16px}
+.refresh .ex{border:1px dashed var(--rule);border-radius:6px;padding:8px 12px;margin:8px 0;overflow-x:auto;overflow-y:hidden}
+.refresh .ex>b:first-child{color:var(--gold)}
 .refresh p{margin:10px 0} .refresh ul{margin:8px 0;padding-left:18px} .refresh li{margin:3px 0}
 .lesson h4{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
 .lesson .qc{background:var(--paper)}
@@ -675,11 +678,20 @@ const SHEET = {
    Warm-up shape matches Q entries (q, o, a, s) so card() renders them; step names the rung. */
 const LEARN = {
 vec: {
-  learn: R`<p><b>Dot product</b> is a number: multiply matching components and add. \(\vec a\cdot\vec b=0\) means perpendicular.</p>
-<p><b>Cross product</b> is a vector perpendicular to both inputs:
-\[\vec a\times\vec b=\langle a_2b_3-a_3b_2,\;a_3b_1-a_1b_3,\;a_1b_2-a_2b_1\rangle\]
-Order matters (\(\vec b\times\vec a=-\vec a\times\vec b\)) and \(\vec a\times\vec a=\vec 0\).</p>
-<p><b>Projection</b> of \(\vec u\) onto \(\vec v\) is a multiple of \(\vec v\): \(\text{proj}_{\vec v}\vec u=\dfrac{\vec u\cdot\vec v}{|\vec v|^2}\vec v\). Divide by \(|\vec v|^2\), not \(|\vec v|\).</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> vectors are arrows. You can "multiply" two of them in two ways. The <b>dot product</b> gives a number that says how much they point the same way. The <b>cross product</b> gives a new arrow sticking straight out of both.</p>
+<p><b>Dot product:</b> multiply matching parts, then add.</p>
+<div class="ex"><b>Example:</b> \(\langle1,2,3\rangle\cdot\langle4,0,-1\rangle=4+0-3=1\).</div>
+<ul><li>Positive: the angle is less than 90°. Zero: exactly 90° (<b>perpendicular</b>). Negative: more than 90°.</li>
+<li>Angle: \(\cos\theta=\dfrac{\vec a\cdot\vec b}{|\vec a||\vec b|}\).</li></ul>
+<p><b>Cross product:</b> fill in a 3×3 grid. For each of \(\vec i,\vec j,\vec k\), cover its column and cross-multiply the 2×2 left over. The middle one (\(\vec j\)) gets a minus sign.
+\[\vec a\times\vec b=\begin{vmatrix}\vec i&\vec j&\vec k\\a_1&a_2&a_3\\b_1&b_2&b_3\end{vmatrix}=\langle a_2b_3-a_3b_2,\;a_3b_1-a_1b_3,\;a_1b_2-a_2b_1\rangle\]</p>
+<div class="ex"><b>Example:</b> \(\langle1,0,0\rangle\times\langle0,1,0\rangle=\langle0,0,1\rangle\). The x-arrow crossed with the y-arrow points up the z-axis.</div>
+<ul><li><b>Order matters:</b> \(\vec b\times\vec a=-(\vec a\times\vec b)\). Flip the order and the arrow flips.</li>
+<li>\(\vec a\times\vec a=\vec 0\): a vector makes no area with itself.</li>
+<li>\(|\vec a\times\vec b|\) is the area of the parallelogram the two arrows make.</li></ul>
+<p><b>Projection:</b> the "shadow" of \(\vec u\) on \(\vec v\). It points along \(\vec v\): \(\text{proj}_{\vec v}\vec u=\dfrac{\vec u\cdot\vec v}{|\vec v|^2}\,\vec v\).</p>
+<div class="ex"><b>Example:</b> \(\vec u=\langle2,3\rangle\), \(\vec v=\langle1,0\rangle\). Here \(\vec u\cdot\vec v=2\) and \(|\vec v|^2=1\), so the shadow is \(\langle2,0\rangle\): just the x-part of \(\vec u\).</div>
+<p><b>Common mistake:</b> dividing by \(|\vec v|\) instead of \(|\vec v|^2\).</p>`,
   warm: [
     { step:"The core skill", a:"C",
       q:R`Compute \(\langle1,2,3\rangle\cdot\langle4,-1,2\rangle\).`,
@@ -703,10 +715,19 @@ Two rules did the work: \(\vec v\times\vec v=\vec 0\), and swapping the order fl
   ]
 },
 lp: {
-  learn: R`<p><b>Line:</b> a point plus \(t\) times a direction, \(\langle x_0+at,\;y_0+bt,\;z_0+ct\rangle\). Through two points? The direction is their difference.</p>
-<p><b>Plane:</b> normal \(\vec n=\langle a,b,c\rangle\) through \((x_0,y_0,z_0)\) gives \(a(x-x_0)+b(y-y_0)+c(z-z_0)=0\). The coefficients of \(ax+by+cz=d\) <i>are</i> the normal.</p>
-<p><b>Recipes:</b> line parallel to plane \(\iff\) direction \(\cdot\,\vec n=0\). Line meets plane: plug the line into the plane, solve for \(t\). Plane from two directions: \(\vec n\) = their cross product. Two planes meet in a line with direction \(\vec n_1\times\vec n_2\).</p>
-<p><b>Shortcut:</b> on multiple choice you can often just plug each option back in to check.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> a <b>line</b> needs a starting point and a direction to walk. A <b>plane</b> needs a point and a <b>normal vector</b>, an arrow sticking straight out of it like a pole out of a floor.</p>
+<p><b>Line:</b> point + \(t\) × direction.</p>
+<div class="ex"><b>Example:</b> through \((1,2,3)\) in direction \(\langle4,5,6\rangle\): \(\langle1+4t,\;2+5t,\;3+6t\rangle\). At \(t=0\) you're at the start, and each step of \(t\) moves you one direction-vector.</div>
+<p>Through two points \(P\) and \(Q\)? Use \(P\) as the start and \(Q-P\) as the direction.</p>
+<p><b>Plane:</b> normal \(\langle a,b,c\rangle\) through \((x_0,y_0,z_0)\) gives \(a(x-x_0)+b(y-y_0)+c(z-z_0)=0\).</p>
+<div class="ex"><b>Example:</b> normal \(\langle2,-1,3\rangle\) through \((1,0,4)\): \(2(x-1)-(y-0)+3(z-4)=0\), which simplifies to \(2x-y+3z=14\). Check: \(2-0+12=14\). ✓</div>
+<p>Going the other way: in \(ax+by+cz=d\), the numbers in front of \(x,y,z\) <i>are</i> the normal \(\langle a,b,c\rangle\).</p>
+<p><b>Recipes you'll need:</b></p>
+<ul><li><b>Where does a line hit a plane?</b> Plug the line's \(x,y,z\) into the plane's equation, solve for \(t\), then plug \(t\) back into the line.</li>
+<li><b>Line parallel to plane?</b> The direction is perpendicular to the normal: direction \(\cdot\,\vec n=0\).</li>
+<li><b>Plane containing two directions?</b> Normal = their cross product.</li>
+<li><b>Two planes meet in a line</b> with direction \(\vec n_1\times\vec n_2\).</li></ul>
+<p><b>Multiple choice shortcut:</b> plug each option back in and see which one works.</p>`,
   warm: [
     { step:"Plane from point + normal", a:"A",
       q:R`Which plane passes through \((1,2,0)\) with normal vector \(\langle3,-1,2\rangle\)?`,
@@ -730,16 +751,21 @@ Line: \(\langle1+t,1+t,-2t\rangle\). Faster on the exam: plug each option into b
   ]
 },
 quad: {
-  learn: R`<p><b>Step 1:</b> complete the square and move every variable to one side. <b>Step 2:</b> read the signs.</p>
-<ul><li><b>Ellipsoid</b>, \(+\,+\,+\;=1\): a closed egg (a sphere if the coefficients match). It's bounded, and every slice is an ellipse, a point, or empty.</li>
-<li><b>Hyperboloid of one sheet</b>, \(+\,+\,-\;=1\): one connected tube shaped like a cooling tower, running along the axis of the <i>minus</i> variable. Slices across the axis are ellipses (never empty). Slices along it are hyperbolas.</li>
-<li><b>Hyperboloid of two sheets</b>, \(+\,-\,-\;=1\): two separate bowls facing away from each other along the axis of the <i>plus</i> variable, with an empty gap between them. Slices across the axis are empty, then a point, then ellipses. Slices along it are hyperbolas.</li>
-<li><b>Cone</b>, \(+\,+\,-\;=0\): two cones meeting tip to tip at the origin, along the odd-sign variable's axis. Slices across the axis are ellipses (a point at the tip). Slices through the axis are pairs of crossing lines.</li>
-<li><b>Elliptic paraboloid</b>, \(z=x^2+y^2\): one variable isn't squared, and the squares have the same sign. It's a single bowl (satellite dish). Horizontal slices are ellipses, and vertical slices are parabolas opening the same way.</li>
-<li><b>Hyperbolic paraboloid</b>, \(z=x^2-y^2\): one variable isn't squared, and the squares have opposite signs. It's a saddle (Pringle). Horizontal slices are hyperbolas (crossing lines at height 0), and vertical slices are parabolas, opening up one way and down the other.</li></ul>
-<p><b>Memory trick:</b> with \(=1\), count the minus signs. One minus means one sheet, two minuses mean two sheets. The axis is always the variable whose sign is the odd one out.</p>
-<p><b>Negative right side?</b> Multiply everything by \(-1\) first: \(x^2+y^2-z^2=-1\) is \(-x^2-y^2+z^2=1\), which is two sheets.</p>
-<p><b>Traces:</b> fix one variable (\(z=k\)) and identify the 2D curve that's left. Use the 3D model below to check the slices.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> every quadric surface is one of six shapes, and the <b>signs</b> in the equation tell you which. You don't need to graph anything.</p>
+<p><b>The 3-question recipe:</b></p>
+<ol><li><b>Clean up:</b> put all the variables on one side and the number on the other. Complete the square if there are \(x\)-terms with no square. If the number is negative, multiply everything by \(-1\).</li>
+<li><b>Is one variable NOT squared?</b> Then it's a paraboloid. Same signs on the squares: a <b>bowl</b>. Opposite signs: a <b>saddle</b>.</li>
+<li><b>Otherwise, look at the right side.</b> If it's 0, you have a <b>cone</b>. If it's 1, count the minus signs: 0 is an <b>ellipsoid</b>, 1 is <b>one sheet</b>, 2 is <b>two sheets</b>.</li></ol>
+<div class="ex"><b>Example:</b> \(4x^2+y^2-z^2=4\). Divide by 4: \(x^2+\frac{y^2}{4}-\frac{z^2}{4}=1\). Every variable is squared, the right side is 1, and there's one minus sign, so it's a <b>hyperboloid of one sheet</b>. It runs along the z-axis (the odd sign out).</div>
+<div class="ex"><b>Example:</b> \(x^2-y^2+z=0\). Here \(z\) is not squared: \(z=y^2-x^2\). The squares have opposite signs, so it's a <b>saddle</b> (hyperbolic paraboloid).</div>
+<p><b>What each shape looks like:</b></p>
+<ul><li><b>Ellipsoid</b> \((+\,+\,+\;=1)\): a closed egg. It's a sphere if all the numbers match.</li>
+<li><b>Hyperboloid of one sheet</b> \((+\,+\,-\;=1)\): a cooling-tower tube along the minus variable's axis.</li>
+<li><b>Hyperboloid of two sheets</b> \((+\,-\,-\;=1)\): two bowls facing away from each other, with a gap in between, along the plus variable's axis.</li>
+<li><b>Cone</b> \((+\,+\,-\;=0)\): two ice-cream cones touching tip to tip at the origin.</li>
+<li><b>Elliptic paraboloid</b> (\(z=x^2+y^2\)): one bowl, like a satellite dish.</li>
+<li><b>Hyperbolic paraboloid</b> (\(z=x^2-y^2\)): a saddle, shaped like a Pringle.</li></ul>
+<p><b>Traces</b> are just slices. Set one variable to a number (like \(z=1\)) and name the 2D curve that's left. Play with the 3D model below to see them.</p>`,
   warm: [
     { step:"Read the signs", a:"A",
       q:R`Identify \(x^2+\dfrac{y^2}4+\dfrac{z^2}9=1\).`,
@@ -761,10 +787,15 @@ Don't judge by the \(-3\) before completing the square; it becomes \(+1\).` },
   ]
 },
 vf: {
-  learn: R`<p>A vector function \(\vec r(t)=\langle x(t),y(t),z(t)\rangle\) is a curve. Differentiate and integrate <b>component by component</b>.</p>
-<p><b>Tangent line</b> at a given point: first find the \(t_0\) that hits that point, then use \(\vec r(t_0)+s\,\vec r\,'(t_0)\).</p>
-<p><b>Motion:</b> \(\vec v=\vec r\,'\), \(\vec a=\vec v\,'\). Going backwards, integrate and fix each constant from the initial condition. Careful: \(\int e^t\,dt\) and \(\int\cos t\,dt\) don't vanish at \(t=0\), so their constants aren't just the initial values.</p>
-<p><b>Angle between curves</b> = angle between their tangent vectors. <b>Continuity</b> = where every component is defined.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> \(\vec r(t)=\langle x(t),y(t),z(t)\rangle\) is like a GPS track: at time \(t\) you're at that point. Its derivative is your <b>velocity</b>, an arrow that just touches (is tangent to) the path.</p>
+<p><b>Rule #1:</b> do everything one component at a time.</p>
+<div class="ex"><b>Example:</b> \(\vec r=\langle t^2,\;\sin t,\;3t\rangle\) gives \(\vec r\,'=\langle 2t,\;\cos t,\;3\rangle\).</div>
+<p><b>Tangent line at a point:</b> first find the time \(t_0\) when you're at that point. Then the line is \(\vec r(t_0)+s\,\vec r\,'(t_0)\).</p>
+<div class="ex"><b>Example:</b> same curve, point \((4,\sin2,6)\). From \(3t=6\) we get \(t_0=2\). The line is \(\langle4,\sin2,6\rangle+s\langle4,\cos2,3\rangle\).</div>
+<p><b>Motion:</b> velocity \(\vec v=\vec r\,'\), acceleration \(\vec a=\vec v\,'\). Going <i>backwards</i> (from \(\vec v\) to \(\vec r\)), integrate each part, add a \(+C\), then use the starting position to find each \(C\).</p>
+<div class="ex"><b>Example:</b> \(\vec v=\langle e^t,\,2t\rangle\) and \(\vec r(0)=\langle1,1\rangle\). Integrating gives \(\langle e^t+C_1,\;t^2+C_2\rangle\). At \(t=0\) that's \(\langle1+C_1,\;C_2\rangle=\langle1,1\rangle\), so \(C_1=0\) and \(C_2=1\). Watch out: \(e^0=1\), not 0, so \(C_1\) is <b>not</b> the starting value.</div>
+<p><b>Angle between two curves</b> = the angle between their tangent vectors where they cross. Use the dot product formula.</p>
+<p><b>Continuity:</b> \(\vec r\) is continuous wherever every component makes sense. For example, \(\ln t\) needs \(t>0\) and \(\frac1{t-1}\) needs \(t\ne1\).</p>`,
   warm: [
     { step:"Differentiate", a:"B",
       q:R`For \(\vec r(t)=\langle t^2,\;3t,\;t^3\rangle\), find \(\vec r\,'(2)\).`,
@@ -788,10 +819,15 @@ This is the classic trap: \(e^0=1\), so the \(z\) constant is \(-1\), not \(0\).
   ]
 },
 arc: {
-  learn: R`<p><b>Arc length:</b> \(L=\displaystyle\int_a^b|\vec r\,'(t)|\,dt\). If the speed \(|\vec r\,'|\) is constant, \(L\) = speed × time, with no real integral.</p>
+  learn: R`<p class="idea"><b>The big idea:</b> <b>arc length</b> is how far you travel along the curve: integrate your speed over time. <b>Curvature</b> \(\kappa\) is how sharply the path bends. A straight road has \(\kappa=0\), and a tight turn has a big \(\kappa\).</p>
+<p><b>Arc length:</b> \(L=\displaystyle\int_a^b|\vec r\,'(t)|\,dt\), where \(|\vec r\,'(t)|\) is your <b>speed</b>.</p>
+<div class="ex"><b>Example:</b> \(\vec r=\langle3\cos t,\,3\sin t,\,4t\rangle\) for \(0\le t\le2\pi\). Then \(\vec r\,'=\langle-3\sin t,\,3\cos t,\,4\rangle\) and the speed is \(\sqrt{9\sin^2t+9\cos^2t+16}=\sqrt{25}=5\). The speed is constant, so \(L=5\cdot2\pi=10\pi\). No real integral needed.</div>
+<p><b>Tip:</b> when the speed is \(\sqrt{\text{stuff}}\), the stuff is almost always a perfect square on exams. Look for it.</p>
 <p><b>Curvature:</b> \(\kappa=\dfrac{|\vec r\,'\times\vec r\,''|}{|\vec r\,'|^3}\).</p>
-<p><b>Shortcuts the exam rewards:</b> a circle of radius \(R\) has \(\kappa=1/R\) everywhere. Many exam curves are <i>circles in disguise</i>: if \(|\vec r\,'|\) is constant and the curve is planar, compute the radius instead of crossing vectors. A helix \(\langle a\cos t,a\sin t,bt\rangle\) has \(\kappa=\dfrac{a}{a^2+b^2}\).</p>
-<p>When the integrand is \(\sqrt{\text{stuff}}\), expect the stuff to be a perfect square.</p>`,
+<p><b>Shortcuts that save time:</b></p>
+<ul><li>A circle of radius \(R\) has \(\kappa=\frac1R\) everywhere. A big circle is a gentle bend.</li>
+<li>A helix \(\langle a\cos t,\,a\sin t,\,bt\rangle\) has \(\kappa=\dfrac{a}{a^2+b^2}\). For the example above, \(\kappa=\frac{3}{9+16}=\frac{3}{25}\).</li>
+<li><b>Circles in disguise:</b> if the speed is constant and the curve lies flat in a plane, it's a circle. Find its radius instead of crossing vectors.</li></ul>`,
   warm: [
     { step:"Constant speed", a:"E",
       q:R`Arc length of \(\vec r(t)=\langle3\cos t,\;3\sin t,\;4t\rangle\) for \(0\le t\le2\pi\).`,
@@ -817,11 +853,18 @@ It's a circle of radius 5: \(\kappa=\tfrac15\) for every \(t\). The \(t=\pi/4\) 
   ]
 },
 lvl: {
-  learn: R`<p>The level curves of \(f(x,y)\) are the curves \(f(x,y)=k\). Set \(f=k\) and simplify until you see a conic.</p>
-<p><b>Peel off the outer function:</b> \(\sqrt{\cdot}\), \(e^{(\cdot)}\), and \(\ln(\cdot)\) are one-to-one, so \(e^{g}=k\) is the same as \(g=\ln k\). Only the inside matters.</p>
-<ul><li>\(x^2+y^2=c\): circles · \(ax^2+by^2=c\) (\(a\ne b\), same sign): ellipses</li>
-<li>\(x^2-y^2=c\): hyperbolas · one variable squared, the other linear: parabolas</li></ul>
-<p>Complete the square to find the center. If squaring cancels a term, look at what's left.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> think of \(f(x,y)\) as the height of a mountain. A <b>level curve</b> is a contour line on a hiking map: every point on it has the same height \(k\).</p>
+<p><b>Recipe:</b> set \(f(x,y)=k\), simplify, and name the shape.</p>
+<div class="ex"><b>Example:</b> \(f=x^2+y^2\). Setting \(x^2+y^2=k\) gives circles of radius \(\sqrt k\), so the map is rings around the origin.</div>
+<p><b>Peel off the outside:</b> \(e^{(\cdot)}\), \(\ln(\cdot)\) and \(\sqrt{\cdot}\) never repeat a value, so "outside = constant" means "inside = constant." Only the inside decides the shape.</p>
+<div class="ex"><b>Example:</b> \(f=e^{x^2+4y^2}\). Setting \(e^{x^2+4y^2}=k\) means \(x^2+4y^2=\ln k\), which gives <b>ellipses</b>.</div>
+<p><b>Name that shape:</b></p>
+<ul><li>\(x^2+y^2=c\): circles</li>
+<li>\(ax^2+by^2=c\) (different positive numbers): ellipses</li>
+<li>\(x^2-y^2=c\): hyperbolas (the minus is the giveaway)</li>
+<li>one variable squared, the other not (\(y=x^2+c\)): parabolas</li>
+<li>no squares at all: straight lines</li></ul>
+<p><b>Off-center?</b> Complete the square. For example, \(x^2-2x+y^2=k\) becomes \((x-1)^2+y^2=k+1\): circles centered at \((1,0)\).</p>`,
   warm: [
     { step:"Read the conic", a:"B",
       q:R`The level curves of \(f(x,y)=4x^2+y^2\) are`,
@@ -843,13 +886,15 @@ lvl: {
   ]
 },
 lim: {
-  learn: R`<p><b>Always plug in first.</b> If you get a real number, that's the answer.</p>
-<p>If you get \(0/0\), try in this order:</p>
-<ul><li><b>Factor and cancel</b> (difference of squares, grouping).</li>
-<li><b>Substitute \(u\)</b> when everything depends on one expression: \(\dfrac{\sin u}{u}\to1\), \(\dfrac{e^u-1}{u}\to1\), \(\dfrac{1-\cos u}{u}\to0\).</li>
-<li><b>Polar</b> when you see \(x^2+y^2\): let it be \(r^2\). If the leftover is \(r\cdot(\text{bounded})\), the limit is 0.</li>
-<li><b>Two paths</b> (\(y=0\) vs \(y=mx\)) giving different values means the limit does not exist.</li></ul>
-<p><b>Continuity:</b> define \(f(0,0)\) as the limit, but only if the limit exists.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> the limit asks what value \(f\) heads toward as \((x,y)\) sneaks up on a point. In 2D you can sneak up from infinitely many directions, and <b>they all have to agree</b>.</p>
+<p><b>Step 1: always plug in first.</b> If you get a normal number, you're done.</p>
+<div class="ex"><b>Example:</b> \(\displaystyle\lim_{(x,y)\to(1,2)}\frac{x^2+y}{x+1}=\frac{1+2}{2}=\frac32\).</div>
+<p><b>Got \(\frac00\)?</b> That doesn't mean "no answer." It means keep working. Try these in order:</p>
+<ul><li><b>Factor and cancel:</b> \(\dfrac{x^2-y^2}{x-y}=x+y\), so the limit at \((1,1)\) is \(2\).</li>
+<li><b>Substitute:</b> if everything is built from one chunk \(u\to0\), use \(\dfrac{\sin u}{u}\to1\). For example, \(\dfrac{\sin(xy)}{xy}\to1\).</li>
+<li><b>Polar, when you see \(x^2+y^2\):</b> write it as \(r^2\), with \(x=r\cos\theta\) and \(y=r\sin\theta\). For example, \(\dfrac{x^2y}{x^2+y^2}=r\cos^2\theta\sin\theta\). The \(\cos\) and \(\sin\) parts stay between \(-1\) and \(1\), and \(r\to0\), so the limit is \(0\).</li>
+<li><b>Two paths that disagree means it does not exist:</b> for \(\dfrac{xy}{x^2+y^2}\), along \(y=0\) you get \(0\), and along \(y=x\) you get \(\frac{x^2}{2x^2}=\frac12\). They don't match, so the limit does not exist.</li></ul>
+<p><b>Continuity:</b> \(f\) is continuous at a point if the limit exists and equals the value there. To fix a hole, define \(f\) at that point to be the limit, which only works if the limit exists.</p>`,
   warm: [
     { step:"Just plug in", a:"A",
       q:R`\(\displaystyle\lim_{(x,y)\to(1,2)}(x^2y+3)\)`,
@@ -876,10 +921,13 @@ Equivalently, \(y=mx\) gives \(\frac{m}{1+m^2}\), which depends on \(m\).` },
   ]
 },
 pd: {
-  learn: R`<p>\(f_x\): differentiate in \(x\), treating every other variable as a constant.</p>
-<p>\(f_{xy}\) means do \(x\) first, then \(y\). For nice functions the order doesn't matter (Clairaut), so <b>pick the easiest order</b>.</p>
-<p><b>The exam's favorite trick:</b> a term that doesn't contain a variable dies when you differentiate by it. For \(f_{xyz}\), only terms containing all three of \(x\), \(y\), \(z\) survive.</p>
-<p>Exponent rules: \(\frac{\partial}{\partial x}x^y=yx^{y-1}\) (power rule), \(\frac{\partial}{\partial x}a^x=a^x\ln a\) (exponential rule).</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> \(f_x\) is how fast \(f\) changes when you move <b>only</b> in the \(x\)-direction. Freeze every other variable: pretend \(y\) is just a number like 5.</p>
+<div class="ex"><b>Example:</b> \(f=x^2y^3+\sin y\).<br>\(f_x=2xy^3\): \(y^3\) is just a constant multiplier, and \(\sin y\) is a constant, so its derivative is 0.<br>\(f_y=3x^2y^2+\cos y\).</div>
+<p><b>Second derivatives:</b> \(f_{xy}\) means take \(x\) first, then \(y\). Continuing the example, \(f_{xy}=(2xy^3)_y=6xy^2\).</p>
+<p><b>Clairaut:</b> for nice functions \(f_{xy}=f_{yx}\), so the order doesn't matter. <b>Pick whichever order is easiest.</b></p>
+<p><b>The exam's favorite trick:</b> a term without a variable becomes 0 when you differentiate by that variable. So for \(f_{xyz}\), only the terms containing all three of \(x\), \(y\) and \(z\) survive.</p>
+<div class="ex"><b>Example:</b> \(f=xyz+x^5+e^y z\). For \(f_{xyz}\), the \(x^5\) term has no \(y\) and \(e^yz\) has no \(x\), so both die. Only \(xyz\) is left, and \(f_{xyz}=1\).</div>
+<p><b>Exponents:</b> if the variable is in the base, use the power rule: \(\frac{\partial}{\partial x}x^y=yx^{y-1}\). If it's in the exponent, use the exponential rule: \(\frac{\partial}{\partial x}a^x=a^x\ln a\).</p>`,
   warm: [
     { step:"One partial", a:"C",
       q:R`\(f(x,y)=x^3y^2+4y\). Find \(f_x\).`,
@@ -905,12 +953,17 @@ For \(f=x^y+y^x\): \(f_x=yx^{y-1}+y^x\ln y\).` }
   ]
 },
 chain: {
-  learn: R`<p><b>Chain rule:</b> add one term per path from \(f\) down to the variable:
-\[\frac{\partial f}{\partial t}=f_x\frac{\partial x}{\partial t}+f_y\frac{\partial y}{\partial t}+f_z\frac{\partial z}{\partial t}\]
-Evaluate everything at the same point; find \(x,y,z\) there first.</p>
-<p><b>Implicit differentiation:</b> move everything to one side, \(F=0\). Then
-\[\frac{dy}{dx}=-\frac{F_x}{F_y},\qquad\frac{\partial z}{\partial x}=-\frac{F_x}{F_z}\]
-Don't forget the minus sign.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> \(f\) depends on \(x\) and \(y\), and \(x\) and \(y\) depend on \(t\). So nudging \(t\) changes \(f\) <b>through both</b> \(x\) and \(y\). Add up both effects: one term per path in the tree.</p>
+\[\frac{df}{dt}=\underbrace{f_x\frac{dx}{dt}}_{\text{through }x}+\underbrace{f_y\frac{dy}{dt}}_{\text{through }y}\]
+<div class="ex"><b>Example:</b> \(z=xy^2\) with \(x=t^2\) and \(y=2t\). Find \(\frac{dz}{dt}\) at \(t=1\).<br>
+1. Where are we? At \(t=1\): \(x=1\), \(y=2\).<br>
+2. The pieces: \(z_x=y^2=4\), \(z_y=2xy=4\), \(x'=2t=2\), \(y'=2\).<br>
+3. Add the paths: \(4\cdot2+4\cdot2=16\).</div>
+<p><b>Always find \(x,y,z\) at the point first</b>, then plug everything in at once.</p>
+<p><b>Implicit differentiation:</b> move everything to one side so it reads \(F=0\). Then
+\[\frac{dy}{dx}=-\frac{F_x}{F_y},\qquad\frac{\partial z}{\partial x}=-\frac{F_x}{F_z}\]</p>
+<div class="ex"><b>Example:</b> \(x^2+y^2=25\), so \(F=x^2+y^2-25\). Then \(\frac{dy}{dx}=-\frac{2x}{2y}=-\frac xy\), which is \(-\frac34\) at \((3,4)\). That's the same answer as Calc 1, just faster.</div>
+<p><b>Common mistake:</b> forgetting the minus sign.</p>`,
   warm: [
     { step:"Chain rule with t", a:"A",
       q:R`\(z=x^2y\), \(x=t^2\), \(y=3t\). Find \(dz/dt\) at \(t=1\).`,
@@ -934,10 +987,14 @@ The \(yz\) term matters in \(F_z\): treat \(y\) as a constant, so it gives \(y\)
   ]
 },
 grad: {
-  learn: R`<p>\(\nabla f=\langle f_x,f_y,f_z\rangle\) points uphill, in the direction of fastest increase.</p>
-<ul><li><b>Directional derivative:</b> \(D_{\vec u}f=\nabla f\cdot\vec u\) where \(\vec u\) <b>must be a unit vector</b>. Divide the given direction by its length first.</li>
-<li><b>Maximum rate of increase</b> = \(|\nabla f|\), in the direction of \(\nabla f\).</li>
-<li><b>Steepest descent</b> = direction \(-\nabla f\). The minimum rate is \(-|\nabla f|\).</li></ul>`,
+  learn: R`<p class="idea"><b>The big idea:</b> on the hiking map, the <b>gradient</b> \(\nabla f\) is an arrow pointing <b>straight uphill</b>. Its length is how steep that steepest climb is.</p>
+<p>\(\nabla f=\langle f_x,f_y,f_z\rangle\): just stack the partial derivatives.</p>
+<div class="ex"><b>Example:</b> \(f=x^2+3y\) at \((1,2)\) gives \(\nabla f=\langle2x,3\rangle=\langle2,3\rangle\).</div>
+<p><b>Directional derivative:</b> how fast \(f\) changes if you walk in direction \(\vec u\): \(D_{\vec u}f=\nabla f\cdot\vec u\). Here \(\vec u\) <b>must have length 1</b>, so divide the given direction by its length first.</p>
+<div class="ex"><b>Example:</b> same \(f\), direction \(\langle3,4\rangle\). Its length is 5, so \(\vec u=\langle\frac35,\frac45\rangle\) and \(D_{\vec u}f=2\cdot\frac35+3\cdot\frac45=\frac{18}5\).</div>
+<ul><li><b>Fastest increase:</b> rate \(|\nabla f|\), in the direction of \(\nabla f\). In the example that's \(\sqrt{4+9}=\sqrt{13}\).</li>
+<li><b>Fastest decrease (steepest descent):</b> direction \(-\nabla f\), rate \(-|\nabla f|\).</li>
+<li><b>Walking along a contour line</b> (perpendicular to \(\nabla f\)): rate 0, because you stay at the same height.</li></ul>`,
   warm: [
     { step:"Compute the gradient", a:"B",
       q:R`\(f(x,y)=x^2y+y^3\). Find \(\nabla f(1,2)\).`,
@@ -960,11 +1017,13 @@ The <i>rate</i> is a number, and the <i>direction</i> is the vector.` },
   ]
 },
 tp: {
-  learn: R`<p><b>Surface \(F(x,y,z)=k\):</b> the normal is \(\nabla F\) at the point, so the tangent plane is
-\[F_x(x-x_0)+F_y(y-y_0)+F_z(z-z_0)=0\]</p>
-<p><b>Graph \(z=f(x,y)\):</b> \(z-z_0=f_x(x-x_0)+f_y(y-y_0)\).</p>
-<p><b>Horizontal tangent plane</b> (parallel to the \(xy\)-plane) means the normal is vertical: \(f_x=f_y=0\), or \(F_x=F_y=0\). Then find \(z\) from the surface equation.</p>
-<p>Check any answer by plugging in the point. The plane must contain it.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> a <b>tangent plane</b> is the flat sheet that just touches a surface at one point, like a board resting on a ball. The gradient sticks straight out of the surface, so <b>the gradient is the plane's normal</b>.</p>
+<p><b>Surface \(F(x,y,z)=k\):</b> normal \(=\nabla F\) at the point, so the plane is \(F_x(x-x_0)+F_y(y-y_0)+F_z(z-z_0)=0\).</p>
+<div class="ex"><b>Example:</b> the sphere \(x^2+y^2+z^2=14\) at \((1,2,3)\). Here \(\nabla F=\langle2x,2y,2z\rangle=\langle2,4,6\rangle\). The plane is \(2(x-1)+4(y-2)+6(z-3)=0\), or \(x+2y+3z=14\). Check: \(1+4+9=14\). ✓</div>
+<p><b>Graph \(z=f(x,y)\):</b> \(z-z_0=f_x(x-x_0)+f_y(y-y_0)\). It's the 3D version of the Calc 1 tangent line \(y-y_0=m(x-x_0)\).</p>
+<div class="ex"><b>Example:</b> \(z=x^2+y^2\) at \((1,1,2)\). Here \(f_x=2\) and \(f_y=2\), so \(z-2=2(x-1)+2(y-1)\).</div>
+<p><b>Horizontal tangent plane</b> (flat like a table): the normal points straight up, so \(f_x=0\) and \(f_y=0\) (or \(F_x=F_y=0\)). Solve those, then get \(z\) from the surface equation.</p>
+<p><b>Always check:</b> plug the point into your plane. It has to work.</p>`,
   warm: [
     { step:"Graph z = f(x,y)", a:"A",
       q:R`Tangent plane to \(z=x^2+y^2\) at \((1,2,5)\).`,
@@ -989,11 +1048,20 @@ Check: \(2+8-5=5\). ✓` },
   ]
 },
 ext: {
-  learn: R`<p><b>Critical points:</b> solve \(f_x=0\) and \(f_y=0\) <i>together</i>. When an equation factors (\(2xy=0\)), split into cases (\(x=0\) or \(y=0\)) and finish every case.</p>
-<p><b>Second derivative test:</b> \(D=f_{xx}f_{yy}-f_{xy}^2\).</p>
-<ul><li>\(D>0,\;f_{xx}>0\): local min · \(D>0,\;f_{xx}<0\): local max</li>
-<li>\(D<0\): saddle · \(D=0\): the test says nothing</li></ul>
-<p><b>Absolute max/min on a closed region:</b> check interior critical points <i>and</i> the boundary (substitute the boundary equation to get a one-variable problem), then compare all the values.</p>`,
+  learn: R`<p class="idea"><b>The big idea:</b> it's the same as Calc 1. Peaks and valleys happen where the slope is zero. In 2D the slope must be zero in <b>both</b> directions, and then a number \(D\) tells you whether it's a bowl, a dome, or a saddle.</p>
+<p><b>Step 1, critical points:</b> solve \(f_x=0\) and \(f_y=0\) at the same time.</p>
+<div class="ex"><b>Example:</b> \(f=x^2+y^2-2x\). From \(f_x=2x-2=0\) and \(f_y=2y=0\), the critical point is \((1,0)\).</div>
+<p><b>Tip:</b> if an equation factors, like \(2xy=0\), split it into cases (\(x=0\) <i>or</i> \(y=0\)) and finish <b>every</b> case. Missing a case is the #1 way to lose points.</p>
+<p><b>Step 2, the \(D\) test:</b> \(D=f_{xx}f_{yy}-(f_{xy})^2\).</p>
+<ul><li>\(D>0\) and \(f_{xx}>0\): <b>local min</b> (a bowl ∪)</li>
+<li>\(D>0\) and \(f_{xx}<0\): <b>local max</b> (a dome ∩)</li>
+<li>\(D<0\): <b>saddle</b> (a Pringle)</li>
+<li>\(D=0\): the test can't tell</li></ul>
+<div class="ex"><b>Example, continued:</b> \(f_{xx}=2\), \(f_{yy}=2\) and \(f_{xy}=0\), so \(D=4>0\). Since \(f_{xx}>0\), \((1,0)\) is a local min.</div>
+<p><b>Absolute max/min on a closed region</b> (three steps):</p>
+<ol><li>Find the critical points <i>inside</i> the region.</li>
+<li>Check the boundary: substitute the boundary equation to turn it into a Calc 1 problem, and include the corners.</li>
+<li>Plug every candidate into \(f\). The biggest value is the max and the smallest is the min.</li></ol>`,
   warm: [
     { step:"Find the critical point", a:"C",
       q:R`Find the critical point of \(f=x^2+y^2-4x+6y\).`,
