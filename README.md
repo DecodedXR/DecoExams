@@ -1,12 +1,14 @@
-# MA 261 Exam 1 Lab
+# Boiler Exam Lab
 
-Study site for Purdue MA 26100 Exam 1: a "Start here" refresher with warm-up problems for each topic that build up to exam level, plus all 72 questions from six past exams (Fall 2022 through Spring 2025) with worked solutions, a topic breakdown, a formula sheet, and a timed 12-question mock exam.
+Exam prep labs for Purdue courses. `index.html` is the picker: choose a course, then an exam.
 
-- Single static file: `index.html` (no build step).
-- Math is rendered with MathJax 3 from cdnjs; fonts from Google Fonts.
-- Progress is saved in each visitor's browser (localStorage).
-- Fall 2022 had no official key; those answers were worked out by hand. All others match the official keys.
+- **MA 261 Exam 1** (`ma261.html`): a "Start here" refresher with warm-ups for each topic, all 72 questions from six past exams (Fall 2022 through Spring 2025) with worked solutions, a topic breakdown, a formula sheet, and a timed 12-question mock exam. Fall 2022 had no official key; those answers were worked out by hand. All others match the official keys.
+- **ECE 20875 Exam 1** (`ece20875.html`): refreshers, interactive figures and warm-ups for 10 topics; both official Fall 2026 mock exams (1a, 1b) with their keys, plus 12 extra problems built from lecture examples; code questions that run real Python in the browser (Pyodide, in a Web Worker with a 6 s limit); a printable notes sheet; and a timed 6-question mock you self-grade.
+
+Static files, no build step. `site.css` is shared. Math uses MathJax 3 from cdnjs; fonts from Google Fonts. Progress is saved in each visitor's browser (localStorage).
+
+`python check_ece20875.py` (needs node) runs every ECE code solution against its tests and checks the page scripts parse.
 
 ## Publish on GitHub Pages
 
-Push this folder as its own repo (or as the repo root), then in the repo's Settings > Pages, set Source to "Deploy from a branch", branch `main`, folder `/ (root)`.
+In the repo's Settings > Pages, set Source to "Deploy from a branch", branch `main`, folder `/ (root)`.

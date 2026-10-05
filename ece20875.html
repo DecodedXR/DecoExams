@@ -1,0 +1,1660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ECE 20875 Exam 1 prep: both official Fall 2026 mock exams with worked solutions, runnable Python practice, refreshers, a printable notes sheet, and a timed mock exam.">
+<title>ECE 20875 Exam 1 Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+html,body{margin:0}[hidden]{display:none!important}
+.part{border-top:1px dashed var(--rule);padding-top:12px;margin-top:12px}
+.ph{display:flex;gap:8px;align-items:baseline;font:600 13px var(--f-mono);margin-bottom:4px}
+.ph span{color:var(--muted);font-weight:400}
+.ph .tick{margin-left:auto;font-weight:600} .ph .tick.ok{color:var(--good)} .ph .tick.no{color:var(--bad)}
+.pq{overflow-x:auto;overflow-y:hidden}
+.pq p,.ctx p{margin:6px 0}
+pre.code{font:13px/1.5 var(--f-mono);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:10px 12px;overflow-x:auto;margin:8px 0;white-space:pre;tab-size:4}
+code{font:13px var(--f-mono);background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:0 4px}
+pre.code code{border:0;padding:0;background:none}
+textarea{display:block;width:100%;font:13px/1.5 var(--f-mono);tab-size:4;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:10px 12px;resize:vertical;margin:8px 0 0}
+textarea.code{min-height:8em;white-space:pre;overflow:auto}
+textarea.work{min-height:4.5em;font:14px/1.5 var(--f-body)}
+textarea:focus,.nums input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.nums{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:end;margin-top:8px}
+.nums label{display:flex;flex-direction:column;font:500 11px var(--f-mono);color:var(--muted);gap:3px}
+.nums input{font:15px var(--f-mono);width:8.5em;padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink)}
+.nums input.right{border-color:var(--good);background:var(--good-soft)} .nums input.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.out{font:12.5px/1.5 var(--f-mono);white-space:pre-wrap;background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;margin:8px 0 0;max-height:18em;overflow:auto}
+.out .p{color:var(--good)} .out .f{color:var(--bad)}
+.sol pre.code{white-space:pre}
+.self{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;font:12px var(--f-mono);color:var(--muted)}
+.self .btn{padding:4px 10px}
+.self .btn.on.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)} .self .btn.on.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.ctx{overflow-x:auto}
+table.dt{border-collapse:collapse;font:13px var(--f-mono);margin:8px 0}
+table.dt td,table.dt th{border:1px solid var(--rule);padding:3px 10px;text-align:center}
+table.dt th{background:var(--paper);font-weight:500}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px;margin:0 0 22px}
+.facts div{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;font-size:14px}
+.facts b{display:block;font:700 17px var(--f-display);margin-bottom:2px}
+.keybug{background:var(--gold-soft);border-left:4px solid var(--gold);padding:8px 12px;border-radius:4px;margin:8px 0;font-size:14px}
+.pts{font:600 12px var(--f-mono);color:var(--gold)}
+.mscore{font:500 14px var(--f-mono);color:var(--muted)}
+.cifig{max-width:440px;width:100%;display:block;margin:6px 0}
+.cifig text{font:12px var(--f-mono);fill:var(--muted)}
+.play textarea{min-height:12em}
+#bell{width:170px;height:170px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);display:block}
+.vplay{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px}
+@media print{
+  nav.tabs,header.top,.notes,#start,#practice,#mock,.bars,.legend,.noprint,.meme,.achtoast{display:none!important}
+  #topics{display:block!important}
+  body{background:#fff}
+  .sheet{grid-template-columns:1fr 1fr;gap:8px} .card{break-inside:avoid;padding:8px 10px} .card h3{font-size:14px} .card li{font-size:11px;margin:1px 0} .trap{font-size:10.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow"><a href="./" style="color:inherit">← All exams</a> · ECE 20875 · Python for Data Science</div>
+      <h1>Exam 1 Lab</h1>
+      <p class="lede">Refreshers for every topic, both official Fall 2026 mock exams with their keys, extra problems built from the lecture examples, code you can actually run, a notes sheet to print, and a timed mock.</p>
+      <div class="stats" id="stats"></div>
+      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button><button class="sndbtn" id="mem" type="button"></button><button class="sndbtn" id="achb" type="button"></button></div>
+      <dialog id="achd"><div class="ahead"><h2>Achievements</h2><form method="dialog"><button class="btn">Close</button></form></div><div class="agrid" id="agrid"></div></dialog>
+    </div>
+    <div class="cv"><canvas id="bell" width="340" height="340" aria-label="A histogram of sample means with the normal curve the central limit theorem predicts"></canvas><div class="cap">sample means → normal</div></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-start" aria-selected="true" data-tab="start">Start here</button>
+    <button role="tab" id="tab-practice" aria-selected="false" data-tab="practice">Practice</button>
+    <button role="tab" id="tab-mock" aria-selected="false" data-tab="mock">Mock exam</button>
+    <button role="tab" id="tab-topics" aria-selected="false" data-tab="topics">Topics &amp; notes</button>
+  </nav>
+
+  <section id="start">
+    <h2>What the exam looks like</h2>
+    <p class="sub">From the two Fall 2026 mock exams posted on Brightspace. The real one follows the same template.</p>
+    <div class="facts">
+      <div><b>60 minutes, 6 questions</b>About 10 minutes each, 16 to 18 points each, 100 total. The mocks have 9 so you get extra practice.</div>
+      <div><b>Written, show your work</b>Points are given line by line (for example 1 pt for the mean, 2 for the SE). A right number with no work loses points.</div>
+      <div><b>Notes allowed, calculator not</b>Printed course materials and handwritten notes are allowed. Numbers are chosen to work by hand: √64 = 8, and values like e<sup>−1</sup> = 0.368 are given.</div>
+      <div><b>Fill-in-the-blank Python</b>Two or three questions give you a function with blanks: loops, lists, dicts, lambda, map, filter, reduce, comprehensions.</div>
+      <div><b>Use 68–95–99.7</b>p-values and probabilities are estimated with the empirical rule or a small z table printed on the exam (z = 1.5, 2, 2.5 for 90, 95, 99%).</div>
+      <div><b>Scope: Weeks 1–4</b>Python, data structures, higher-order functions, histograms, distributions, CLT, hypothesis tests, confidence intervals, regression, ridge, cross-validation. Clustering, kNN and naive Bayes (Weeks 5–7) did not appear on either mock.</div>
+    </div>
+    <h2>Start here</h2>
+    <p class="sub">A plain-language refresher for each topic, something to play with, then warm-ups that build up to exam shape.</p>
+    <ol class="steps">
+      <li><b>Read the refresher.</b> The few ideas each topic really tests, plus the traps.</li>
+      <li><b>Do the warm-ups.</b> Numbers are checked instantly; code runs real Python in your browser.</li>
+      <li><b>Try the exam questions.</b> Each topic ends with a link to every mock exam part on it.</li>
+    </ol>
+    <div class="meter" id="meter"></div>
+    <div id="lessons"></div>
+  </section>
+
+  <section id="practice" hidden>
+    <div class="filters">
+      <label for="fSet">Source<select id="fSet"></select></label>
+      <label for="fTopic">Topic<select id="fTopic"></select></label>
+      <label class="chk" for="fOpen"><input type="checkbox" id="fOpen"> Unfinished only</label>
+      <button class="btn" id="shuffle">Shuffle</button>
+      <button class="btn ghost" id="reset">Reset my progress</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="qlist" id="qlist"></div>
+  </section>
+
+  <section id="mock" hidden></section>
+
+  <section id="topics" hidden>
+    <div class="noprint">
+      <h2>What shows up</h2>
+      <p class="sub">Points per topic across both official mock exams. The gold bar is your accuracy on that topic in Practice (saved in this browser only). Click a topic to drill it.</p>
+      <div class="bars" id="bars"></div>
+      <div class="legend"><span><i style="background:var(--ink)"></i>points on the official mocks</span><span><i style="background:var(--gold)"></i>your % correct</span></div>
+    </div>
+    <h2>Notes sheet</h2>
+    <p class="sub noprint">Handwritten notes are allowed on the exam. Print this as a starting point (it fits on two pages), or better, copy it out by hand and add your own mistakes to each card.</p>
+    <p class="noprint"><button class="btn primary" id="print" type="button">Print the notes sheet</button></p>
+    <div class="sheet" id="sheet"></div>
+  </section>
+
+  <div class="notes">
+    <p>Sources: ECE 20875 Fall 2026 Brightspace materials: Mock Exam 1a and 1b (with keys), lecture slides and notebooks for Weeks 1–4 and the self-reading. "Lab extras" are written for this site from the lecture examples and are not official; their answers were worked out by hand and checked in Python.</p>
+    <p>Progress is stored in your own browser. Code runs locally in your browser with Pyodide (downloaded the first time you press Run).</p>
+  </div>
+</div>
+
+<script>
+window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:"global"},startup:{typeset:false},options:{enableMenu:false}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async id="mjx"></script>
+<script>
+const R=String.raw;
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+// code block for question text and solutions
+const C=s=>`<pre class="code"><code>${esc(s.replace(/^\n+|\s+$/g,""))}</code></pre>`;
+const T=(head,rows)=>`<table class="dt"><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;
+
+const SETS={
+  A:{name:"Mock 1a", long:"Mock Exam 1a (Fall 2026)", note:"Official mock with key (labelled Spring 2026 Exam #1 inside)."},
+  B:{name:"Mock 1b", long:"Mock Exam 1b (Fall 2026)", note:"Official mock with key."},
+  X:{name:"Lab extras", long:"Lab extras", note:"Written for this site from lecture examples. Not official."}
+};
+const TOPICS={
+  py:"Python basics & lists",
+  dict:"Dicts, sets & tuples",
+  hof:"Lambda, map/filter/reduce",
+  hist:"Histograms",
+  prob:"Probability & distributions",
+  clt:"Sampling & the CLT",
+  hyp:"Hypothesis testing",
+  ci:"Confidence intervals",
+  reg:"Linear regression",
+  fit:"Ridge, overfitting & CV"
+};
+// mock exam draws one problem from each slot, like the real 6-question exam
+const SLOTS=[["Python coding",["py","dict"]],["Distributions",["hist","prob"]],["Sampling & CLT",["clt"]],["Inference",["hyp","ci"]],["Regression",["reg","fit"]],["Higher-order functions",["hof"]]];
+
+/* Problems. Each part has a kind:
+   code: start (with ____ blanks), tests [[call, expected]], optional pre (setup code), need (words the code must use), sol (code)
+   num:  ans [numbers], lab [labels]; checked within ~1%
+   mc:   o [options], a (letter)
+   free: self-graded against the solution */
+const P=[
+/* ---------------- MOCK 1a ---------------- */
+{s:"A",n:1,t:"py",
+ ctx:R`<p>A social media company has lists of user IDs from activity logs. The same user can appear many times. The team needs the unique active users.</p>`,
+ parts:[
+ {p:"A",pts:10,kind:"code",q:R`<p>Fill in <code>remove_duplicates(lst)</code>: return a new list with duplicates removed, keeping first-seen order.</p><p>Input <code>[1, 2, 3, 2, 4, 1, 5]</code> → Output <code>[1, 2, 3, 4, 5]</code></p>`,
+  start:`def remove_duplicates(lst):
+    result = []
+    for item in ____:
+        if ____:
+            ____
+    return result`,
+  tests:[["remove_duplicates([1, 2, 3, 2, 4, 1, 5])","[1, 2, 3, 4, 5]"],["remove_duplicates([])","[]"],["remove_duplicates([3, 1, 3, 2, 1])","[3, 1, 2]"],["remove_duplicates(['a', 'a'])","['a']"]],
+  sol:`def remove_duplicates(lst):
+    result = []
+    for item in lst:
+        if item not in result:
+            result.append(item)
+    return result`,
+  why:R`<code>set(lst)</code> would also drop duplicates, but sets do not keep order, so it can fail the expected output.`},
+ {p:"B",pts:6,kind:"code",q:R`<p>Fill in <code>count_duplicates(lst)</code>: use <code>remove_duplicates</code> from Part A to return how many duplicate items were removed.</p><p>Input <code>[1, 2, 3, 2, 4, 1, 5]</code> → Output <code>2</code></p>`,
+  pre:`def remove_duplicates(lst):
+    result = []
+    for item in lst:
+        if item not in result:
+            result.append(item)
+    return result`,
+  start:`def count_duplicates(lst):
+    unique_list = ____
+    return ____`,
+  need:["remove_duplicates"],
+  tests:[["count_duplicates([1, 2, 3, 2, 4, 1, 5])","2"],["count_duplicates([])","0"],["count_duplicates([7, 7, 7])","2"]],
+  sol:`def count_duplicates(lst):
+    unique_list = remove_duplicates(lst)
+    return len(lst) - len(unique_list)`}
+]},
+{s:"A",n:2,t:"dict",
+ ctx:R`<p>Purdue tracks meal swipes. Each transaction is a tuple <code>(student_name, num_meals)</code>. The manager wants each student's total and the top student.</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"code",q:R`<p>Fill in <code>calculate_total_meals(transactions)</code>: return a dict mapping each student to their total meals.</p><p>Input <code>[("Alice", 2), ("Bob", 3), ("Alice", 1), ("Charlie", 2), ("Bob", 2)]</code><br>Output <code>{"Alice": 3, "Bob": 5, "Charlie": 2}</code></p>`,
+  start:`def calculate_total_meals(transactions):
+    total_meals = {}
+    for student, meals in transactions:
+        if ____:
+            total_meals[student] = ____
+        else:
+            ____
+    return total_meals`,
+  tests:[[`calculate_total_meals([("Alice", 2), ("Bob", 3), ("Alice", 1), ("Charlie", 2), ("Bob", 2)])`,`{"Alice": 3, "Bob": 5, "Charlie": 2}`],["calculate_total_meals([])","{}"],[`calculate_total_meals([("Z", 4)])`,`{"Z": 4}`]],
+  sol:`def calculate_total_meals(transactions):
+    total_meals = {}
+    for student, meals in transactions:
+        if student not in total_meals:
+            total_meals[student] = meals
+        else:
+            total_meals[student] += meals
+    return total_meals`},
+ {p:"B",pts:8,kind:"code",q:R`<p>Fill in <code>find_top_student(transactions)</code>: use Part A and return the name with the most meals. Same input → <code>"Bob"</code>.</p>`,
+  pre:`def calculate_total_meals(transactions):
+    total_meals = {}
+    for student, meals in transactions:
+        total_meals[student] = total_meals.get(student, 0) + meals
+    return total_meals`,
+  start:`def find_top_student(transactions):
+    total_meals = calculate_total_meals(transactions)
+    top_student = None
+    max_meals = 0
+    for student, total in ____:
+        if ____:
+            max_meals = ____
+            top_student = ____
+    return top_student`,
+  tests:[[`find_top_student([("Alice", 2), ("Bob", 3), ("Alice", 1), ("Charlie", 2), ("Bob", 2)])`,`"Bob"`],[`find_top_student([("Z", 1)])`,`"Z"`],[`find_top_student([("A", 1), ("B", 9), ("A", 3)])`,`"B"`]],
+  sol:`def find_top_student(transactions):
+    total_meals = calculate_total_meals(transactions)
+    top_student = None
+    max_meals = 0
+    for student, total in total_meals.items():
+        if total > max_meals:
+            max_meals = total
+            top_student = student
+    return top_student`,
+  why:R`Looping over a dict gives keys only. Use <code>.items()</code> to get key and value together. A shortcut: <code>max(total_meals, key=total_meals.get)</code>.`}
+]},
+{s:"A",n:3,t:"hist",
+ ctx:R`<p>On a snowy day you track how late (minutes past schedule) the last 10 CityBuses were:</p>${C("[12, 3, 30, 6, 8, 1, 15, 12, 9, 4]")}`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Build a <b>density</b> histogram with bins \([0,10)\), \([10,20)\), \([20,30]\). What is the height of each bar? (Total area must be 1.)</p>`,
+  ans:[0.06,0.03,0.01],lab:["[0, 10)","[10, 20)","[20, 30]"],
+  sol:R`Counts: \([0,10)\): 3, 6, 8, 1, 9, 4 → 6. \([10,20)\): 12, 15, 12 → 3. \([20,30]\): 30 → 1 (the last bin includes 30).
+Probability = count / 10: 0.6, 0.3, 0.1. Density = probability / bin width (10): <b>0.06, 0.03, 0.01</b>.
+Check: area = 10(0.06 + 0.03 + 0.01) = 1.`},
+ {p:"B (a)",pts:5,t:"prob",kind:"num",q:R`<p>Model the delay as Exponential with \(\lambda=0.1\): \(f(x)=\lambda e^{-\lambda x}\), \(F(x)=1-e^{-\lambda x}\). Given \(e^{-1}=0.368\), \(e^{-2}=0.135\).</p><p>Find \(P(X\le 10)\).</p>`,
+  ans:[0.632],lab:["P(X ≤ 10)"],
+  sol:R`\(P(X\le10)=F(10)=1-e^{-0.1\cdot10}=1-e^{-1}=1-0.368=\mathbf{0.632}\).`},
+ {p:"B (b)",pts:5,t:"prob",kind:"num",q:R`<p>Same model. Find the probability that a bus is more than 20 minutes late, \(P(X>20)\).</p>`,
+  ans:[0.135],lab:["P(X > 20)"],
+  sol:R`\(P(X>20)=1-F(20)=e^{-0.1\cdot20}=e^{-2}=\mathbf{0.135}\).`}
+]},
+{s:"A",n:4,t:"clt",
+ ctx:R`<p>An LLM answers a daily batch of 100 independent coding questions, each correct with probability \(p=0.8\), so the daily number correct is Binomial. You record \(n=64\) days and compute the sample mean \(\bar x\).</p>`,
+ parts:[
+ {p:"A",pts:7,kind:"num",q:R`<p>Give the population mean and SD (one day of 100), then the mean and standard error of the sampling distribution of \(\bar x\).</p>`,
+  ans:[80,4,80,0.5],lab:["μ","σ","mean of x̄","SE"],
+  sol:R`\(\mu=np=100(0.8)=80\). \(\sigma=\sqrt{np(1-p)}=\sqrt{100(0.8)(0.2)}=\sqrt{16}=4\).
+By the CLT, \(\bar x\) is approximately <b>Normal</b> with mean \(\mu_{\bar x}=80\) and \(SE=\sigma/\sqrt n=4/\sqrt{64}=4/8=0.5\).`},
+ {p:"B",pts:6,kind:"num",q:R`<p>Using the CLT and the 68–95–99.7 rule, estimate \(P(\bar x>81)\).</p>`,
+  ans:[0.025],lab:["P(x̄ > 81)"],
+  sol:R`81 is \((81-80)/0.5=2\) standard errors above the mean. 95% lies within ±2 SE, so 5% is in the two tails and the upper tail has half: <b>0.025</b>.`},
+ {p:"C",pts:5,kind:"num",q:R`<p>How many days \(n\) would make the standard error exactly 0.25 (same \(\sigma\))?</p>`,
+  ans:[256],lab:["n"],
+  sol:R`\(0.25=4/\sqrt n\Rightarrow\sqrt n=16\Rightarrow n=\mathbf{256}\). Halving the SE takes 4 times as many samples.`}
+]},
+{s:"A",n:5,t:"hyp",
+ ctx:R`<p>An A/B test compares mean session time for two recommendation algorithms. Known \(\sigma_A=\sigma_B=10\) min. Samples: \(n_A=50,\ \bar x_A=46\); \(n_B=50,\ \bar x_B=40\).</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"free",q:R`<p>State \(H_0\) and \(H_1\) for testing whether the two algorithms have different means.</p>`,
+  sol:R`\(H_0:\ \mu_A=\mu_B\) (or \(\mu_A-\mu_B=0\)). \(H_1:\ \mu_A\ne\mu_B\). 2 pts each.`},
+ {p:"B",pts:7,kind:"num",q:R`<p>Compute the z-score for the difference between the sample means.</p>`,
+  ans:[3],lab:["z"],
+  sol:R`\(SE=\sqrt{\sigma_A^2/n_A+\sigma_B^2/n_B}=\sqrt{100/50+100/50}=\sqrt4=2\).
+\(z=(46-40)/2=\mathbf{3}\).`},
+ {p:"C",pts:5,kind:"mc",q:R`<p>At \(\alpha=0.05\), what is the decision?</p>`,
+  o:["Reject H₀: |z| = 3 is beyond the ±2 critical values","Fail to reject H₀: z = 3 is inside 99.7%","Reject H₁","Not enough information"],a:"A",
+  sol:R`Two-sided at \(\alpha=0.05\): critical values about ±2, and 3 is outside. Or: \(p\approx1-0.997=0.003<0.05\). <b>Reject \(H_0\)</b>.`}
+]},
+{s:"A",n:6,t:"ci",
+ ctx:R`<p>A professor samples 64 students: sample mean 57, sample SD 24. z-scores: 99% two-sided 2.5, 95% two-sided 2, 90% two-sided 1.5 (one-sided: 2.25, 1.75, 1.25).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Compute the standard error.</p>`,ans:[3],lab:["SE"],sol:R`\(SE=s/\sqrt n=24/\sqrt{64}=24/8=\mathbf3\).`},
+ {p:"B",pts:6,kind:"num",q:R`<p>Compute the two-sided 90% confidence interval. Write the formula first.</p>`,ans:[52.5,61.5],lab:["Lower","Upper"],
+  sol:R`\(\bar x\pm z\cdot SE=57\pm1.5(3)=57\pm4.5\Rightarrow[\mathbf{52.5},\ \mathbf{61.5}]\).`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>If the professor samples 400 students instead, which is correct?</p>`,
+  o:["The SE becomes larger, so the CI becomes wider.","The SE becomes smaller, so the CI becomes narrower.","The SE stays the same, so the CI stays the same.","The sample mean must change because the sample size changed.","The CI becomes wider because more data increases variability."],a:"B",
+  sol:R`\(SE=s/\sqrt n\): going from 64 to 400 shrinks it from 3 to 1.2, so the interval narrows. <b>B</b>.`}
+]},
+{s:"A",n:7,t:"reg",
+ ctx:R`<p>Battery-life tests on a phone. \(x_1\) = brightness (nits), \(x_2\) = charge cycles, \(y\) = battery life (h).</p>${T(["Device","x₁","x₂","y"],[[1,500,100,14],[2,800,200,10],[3,1000,50,11],[4,600,300,9]])}<p>Model: \(\hat y=a_1x_1+a_2x_2+b\), \(\beta=[a_1\ a_2\ b]^T\).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"free",q:R`<p>Write the feature matrix \(X\), the target \(y\), and the least squares equation. Do not solve.</p>`,
+  sol:R`\[X=\begin{bmatrix}500&100&1\\800&200&1\\1000&50&1\\600&300&1\end{bmatrix},\quad y=\begin{bmatrix}14\\10\\11\\9\end{bmatrix},\quad X^TX\beta=X^Ty\]
+The column of 1s is for \(b\). Writing out \(X^T\) on both sides gets full credit.`},
+ {p:"B",pts:6,kind:"num",q:R`<p>After training on more data, \(\beta=[-0.01\ \ {-0.02}\ \ 21]^T\). Predict battery life for two new devices and compute the test MSE.</p>${T(["Device","x₁","x₂","y"],[[5,700,150,12.5],[6,900,250,8.5]])}`,
+  ans:[11,7,2.25],lab:["ŷ₅","ŷ₆","MSE"],
+  sol:R`\(\hat y_5=-0.01(700)-0.02(150)+21=-7-3+21=11\)
+\(\hat y_6=-0.01(900)-0.02(250)+21=-9-5+21=7\)
+\(MSE=\dfrac{(12.5-11)^2+(8.5-7)^2}{2}=\dfrac{2.25+2.25}{2}=\mathbf{2.25}\)`},
+ {p:"C",pts:4,kind:"num",q:R`<p>Training MSE is 0.8 and the variance of \(y\) in the training set is 4.0. Compute \(R^2=1-\dfrac{MSE}{\sigma_y^2}\). Is it a good fit?</p>`,
+  ans:[0.8],lab:["R²"],
+  sol:R`\(R^2=1-0.8/4.0=\mathbf{0.8}\). Yes: the model explains 80% of the variance in the training data.`}
+]},
+{s:"A",n:8,t:"fit",
+ ctx:R`<p>You can only afford to test 3 vehicle prototypes. Each has 4 features, and the model is \(\hat y=a_1x_1+a_2x_2+a_3x_3+a_4x_4+b\), so \(\beta=[a_1\ a_2\ a_3\ a_4\ b]^T\).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"free",t:"reg",q:R`<p>What are the dimensions of \(X\) and \(X^TX\)? Why will \(X^TX\beta=X^Ty\) fail to give a unique solution?</p>`,
+  sol:R`\(X\) is <b>3×5</b> (3 rows of data, 4 features + the 1s column). \(X^TX\) is <b>5×5</b>.
+5 unknowns but only 3 data points: the columns of \(X\) are linearly dependent, so \(X^TX\) is not invertible and infinitely many \(\beta\) fit the data perfectly.`},
+ {p:"B",pts:6,kind:"mc",q:R`<p>Two parameter vectors both fit the 3 points perfectly: \(\beta_1=[2\ 0\ 0\ 0\ 3]^T\), \(\beta_2=[1\ {-1}\ 1\ 1\ 2]^T\). With ridge regression (penalty on the full vector), which does ridge prefer, and does ridge mainly fight overfitting or underfitting?</p>`,
+  o:["β₁, overfitting","β₂, overfitting","β₁, underfitting","β₂, underfitting"],a:"B",
+  sol:R`\(\|\beta_1\|^2=2^2+3^2=13\), \(\|\beta_2\|^2=1+1+1+1+4=8\). Ridge picks the smaller norm: <b>\(\beta_2\)</b>. It mitigates <b>overfitting</b>.`},
+ {p:"C (i)",pts:3,kind:"mc",q:R`<p>What is the main trade-off of k-fold cross-validation versus a single validation split?</p>`,
+  o:["k-fold CV reduces training cost but increases the risk of underfitting.","k-fold CV gives a more stable performance estimate but trains the model k times.","k-fold CV is only useful if the test set is used during training to tune hyperparameters.","Increasing k gives a larger test set, so the model generalizes better."],a:"B",
+  sol:R`More stable estimate (every point gets tested once), at the cost of k trainings. <b>B</b>.`},
+ {p:"C (ii)",pts:3,kind:"mc",q:R`<p>How should a hold-out test set be treated?</p>`,
+  o:["Include it in the CV folds so the model sees more data while tuning λ.","Use it to decide when to stop training.","Leave it untouched during model selection and tuning; use it only for the final unbiased error estimate.","Use it to compute the rank of X."],a:"C",
+  sol:R`The test set is the "real exam": never used to train or tune. <b>C</b>.`}
+]},
+{s:"A",n:9,t:"hof",
+ ctx:R`<p>You are a TA processing exam scores:</p>${C(`students = [
+    {'name': 'Alice', 'major': 'ECE', 'midterm': 80, 'final': 95},
+    {'name': 'Bob', 'major': 'CS', 'midterm': 60, 'final': 55},
+    {'name': 'Catherine', 'major': 'ECE', 'midterm': 90, 'final': 82},
+    {'name': 'David', 'major': 'ME', 'midterm': 85, 'final': 90},
+    {'name': 'Ethan', 'major': 'ECE', 'midterm': 40, 'final': 45},
+    {'name': 'Frank', 'major': 'ECE', 'midterm': 85, 'final': 88}
+]`)}`,
+ parts:[
+ {p:"A",pts:5,kind:"code",q:R`<p>Use a <b>list comprehension</b> to list the names of ECE students with a final of at least 90.</p>`,
+  pre:"students = [{'name': 'Alice', 'major': 'ECE', 'midterm': 80, 'final': 95},{'name': 'Bob', 'major': 'CS', 'midterm': 60, 'final': 55},{'name': 'Catherine', 'major': 'ECE', 'midterm': 90, 'final': 82},{'name': 'David', 'major': 'ME', 'midterm': 85, 'final': 90},{'name': 'Ethan', 'major': 'ECE', 'midterm': 40, 'final': 45},{'name': 'Frank', 'major': 'ECE', 'midterm': 85, 'final': 88}]",
+  start:`high_final_ECE_students = [____ for s in students if ____]`,
+  need:["for","if"],
+  tests:[["high_final_ECE_students","['Alice']"]],
+  sol:`high_final_ECE_students = [s['name'] for s in students
+                           if s['major'] == 'ECE' and s['final'] >= 90]`},
+ {p:"B",pts:5,kind:"code",q:R`<p>Use <code>filter</code> with an inline <code>lambda</code> to get the records of students who improved (final strictly greater than midterm).</p>`,
+  pre:"students = [{'name': 'Alice', 'major': 'ECE', 'midterm': 80, 'final': 95},{'name': 'Bob', 'major': 'CS', 'midterm': 60, 'final': 55},{'name': 'Catherine', 'major': 'ECE', 'midterm': 90, 'final': 82},{'name': 'David', 'major': 'ME', 'midterm': 85, 'final': 90},{'name': 'Ethan', 'major': 'ECE', 'midterm': 40, 'final': 45},{'name': 'Frank', 'major': 'ECE', 'midterm': 85, 'final': 88}]",
+  start:`improved_students = list(filter(____, students))`,
+  need:["filter","lambda"],
+  tests:[["[s['name'] for s in improved_students]","['Alice', 'David', 'Ethan', 'Frank']"]],
+  sol:`improved_students = list(filter(lambda s: s['final'] > s['midterm'], students))`,
+  why:R`Remember the <code>list(...)</code>: in Python 3, <code>filter</code> and <code>map</code> return lazy iterators.`},
+ {p:"C",pts:8,kind:"code",q:R`<p>Curve: if the final is below 60, add 10; otherwise add 2. Compute the class average of the curved finals using <code>map</code> to curve and <code>reduce</code> to sum, both with inline lambdas.</p>`,
+  pre:"students = [{'name': 'Alice', 'major': 'ECE', 'midterm': 80, 'final': 95},{'name': 'Bob', 'major': 'CS', 'midterm': 60, 'final': 55},{'name': 'Catherine', 'major': 'ECE', 'midterm': 90, 'final': 82},{'name': 'David', 'major': 'ME', 'midterm': 85, 'final': 90},{'name': 'Ethan', 'major': 'ECE', 'midterm': 40, 'final': 45},{'name': 'Frank', 'major': 'ECE', 'midterm': 85, 'final': 88}]",
+  start:`from functools import reduce
+curved = list(map(lambda s: ____, students))
+average_curved_final_score = reduce(____, curved) / len(students)`,
+  need:["map","reduce","lambda"],
+  tests:[["average_curved_final_score","80.5"]],
+  sol:`from functools import reduce
+average_curved_final_score = reduce(lambda x, y: x + y,
+    list(map(lambda s: s['final'] + 10 if s['final'] < 60 else s['final'] + 2,
+             students))) / len(students)`,
+  why:R`Curved finals: 97, 65, 84, 92, 55, 90. Sum 483, average 80.5. The conditional goes inside the lambda: <code>A if cond else B</code>.`}
+]},
+
+/* ---------------- MOCK 1b ---------------- */
+{s:"B",n:1,t:"py",
+ ctx:R`<p>Fibonacci: \(F_0=0,\ F_1=1,\ F_i=F_{i-1}+F_{i-2}\). The sequence starts 0, 1, 1, 2, 3, 5, 8, 13, …</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"code",q:R`<p>Write <code>is_fibonacci_sequence(seq)</code>: <code>True</code> if the whole list is a valid Fibonacci sequence starting 0, 1.</p>${C(`is_fibonacci_sequence([0,1,1,2,3,5]) -> True
+is_fibonacci_sequence([1,1,2,3,5,8]) -> False   (doesn't start with 0, 1)
+is_fibonacci_sequence([0,1,2])       -> False   (breaks the sum rule)`)}`,
+  start:`def is_fibonacci_sequence(seq):
+    if len(seq) < 2:
+        return False
+    if ____:
+        return False
+    for i in range(____, len(seq)):
+        if ____:
+            return False
+    return True`,
+  tests:[["is_fibonacci_sequence([0,1,1,2,3,5])","True"],["is_fibonacci_sequence([1,1,2,3,5,8])","False"],["is_fibonacci_sequence([2,3,5,8])","False"],["is_fibonacci_sequence([0,1,2])","False"],["is_fibonacci_sequence([0,1])","True"],["is_fibonacci_sequence([0])","False"]],
+  sol:`def is_fibonacci_sequence(seq):
+    if len(seq) < 2:
+        return False
+    if seq[0] != 0 or seq[1] != 1:
+        return False
+    for i in range(2, len(seq)):
+        if seq[i] != seq[i-1] + seq[i-2]:
+            return False
+    return True`,
+  why:R`The classic trap is <code>return True</code> inside the loop. Only return True after every index passed.`},
+ {p:"B",pts:8,kind:"code",q:R`<p>Write <code>fib(n)</code>: return the Fibonacci list of length \(n+1\).</p>${C(`fib(6) -> [0, 1, 1, 2, 3, 5, 8]
+fib(0) -> [0]`)}`,
+  start:`def fib(n):
+    fib_seq = [0, 1]
+    if n == 0:
+        return ____
+    if n == 1:
+        return fib_seq
+    for i in range(2, ____):
+        fib_seq.append(____)
+    return fib_seq`,
+  tests:[["fib(6)","[0, 1, 1, 2, 3, 5, 8]"],["fib(0)","[0]"],["fib(1)","[0, 1]"],["fib(2)","[0, 1, 1]"]],
+  sol:`def fib(n):
+    fib_seq = [0, 1]
+    if n == 0:
+        return fib_seq[0:1]
+    if n == 1:
+        return fib_seq
+    for i in range(2, n + 1):
+        fib_seq.append(fib_seq[i-1] + fib_seq[i-2])
+    return fib_seq`,
+  why:R`Length \(n+1\) means the last index is \(n\), so the loop is <code>range(2, n+1)</code>. Off-by-one is what this part tests.`}
+]},
+{s:"B",n:2,t:"dict",
+ ctx:R`<p>A grocery logs daily customer counts in <code>visits</code>, starting Monday with no gaps (index 0 → Mon, …, 6 → Sun, 7 → Mon again).</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"code",q:R`<p>Write <code>bucket_visits_by_day(visits)</code>: return a dict from "Mon" … "Sun" to the list of counts for that weekday. Hint: <code>enumerate()</code>.</p>${C(`bucket_visits_by_day([10,20,30,40,50,60,70,80,90])
+-> {"Mon":[10,80], "Tue":[20,90], "Wed":[30], "Thu":[40],
+    "Fri":[50], "Sat":[60], "Sun":[70]}`)}`,
+  start:`def bucket_visits_by_day(visits):
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    visits_dict = {day: [] for day in days}
+    for i, day in enumerate(days):
+        ____
+    return visits_dict`,
+  tests:[["bucket_visits_by_day([10,20,30,40,50,60,70,80,90])",`{"Mon":[10,80], "Tue":[20,90], "Wed":[30], "Thu":[40], "Fri":[50], "Sat":[60], "Sun":[70]}`],["bucket_visits_by_day([5])",`{"Mon":[5], "Tue":[], "Wed":[], "Thu":[], "Fri":[], "Sat":[], "Sun":[]}`]],
+  sol:`def bucket_visits_by_day(visits):
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    visits_dict = {day: [] for day in days}
+    for i, day in enumerate(days):
+        visits_dict[day] = visits[i::7]          # either this...
+        # for j in range(i, len(visits), 7):     # ...or this
+        #     visits_dict[day].append(visits[j])
+    return visits_dict`,
+  why:R`<code>visits[i::7]</code> starts at index i and takes every 7th element. Both answers got full credit on the key.`},
+ {p:"B",pts:8,kind:"code",q:R`<p>Write <code>count_busy_days(visits_dict, threshold)</code>: count the weekday (Mon–Fri) entries with at least <code>threshold</code> customers.</p>${C(`visits_dict = {"Mon": [70,80], "Tue": [50,90], "Wed": [30], "Thu": [40],
+               "Fri": [50], "Sat": [60], "Sun": [70]}
+count_busy_days(visits_dict, 40) -> 6`)}`,
+  start:`def count_busy_days(visits_dict, threshold):
+    weekday_list = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    count = 0
+    for day in weekday_list:
+        for v in ____:
+            if ____:
+                count += 1
+    return count`,
+  tests:[[`count_busy_days({"Mon": [70,80], "Tue": [50,90], "Wed": [30], "Thu": [40], "Fri": [50], "Sat": [60], "Sun": [70]}, 40)`,"6"],[`count_busy_days({"Mon": [70,80], "Tue": [50,90], "Wed": [30], "Thu": [40], "Fri": [50], "Sat": [60], "Sun": [70]}, 50)`,"5"],[`count_busy_days({"Mon": [], "Tue": [], "Wed": [], "Thu": [], "Fri": [], "Sat": [99], "Sun": [99]}, 1)`,"0"]],
+  sol:`def count_busy_days(visits_dict, threshold):
+    weekday_list = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    count = 0
+    for day in weekday_list:
+        for v in visits_dict[day]:
+            if v >= threshold:
+                count += 1
+    return count`,
+  why:R`<div class="keybug"><b>Heads up:</b> the official key writes <code>for i in weekday_list[day]</code>, which would crash (a list can't be indexed by a string). It should be <code>visits_dict[day]</code>. Also note the answer 6 counts <i>entries</i>, not days: Mon 70, 80; Tue 50, 90; Thu 40; Fri 50.</div>`}
+]},
+{s:"B",n:3,t:"prob",
+ ctx:R`<p>A network engineer sends 10 packets per trial and records successes over 20 trials:</p>${T(["successes","7","8","9","10"],[["trials",1,3,11,5]])}`,
+ parts:[
+ {p:"A",pts:5,t:"hist",kind:"num",q:R`<p>Plot the probability mass histogram. What is the bar height for each number of successes?</p>`,
+  ans:[0.05,0.15,0.55,0.25],lab:["7","8","9","10"],
+  sol:R`Divide each count by 20 trials: 1/20 = <b>0.05</b>, 3/20 = <b>0.15</b>, 11/20 = <b>0.55</b>, 5/20 = <b>0.25</b>. Bars sum to 1. Nothing below 7.`},
+ {p:"B",pts:5,kind:"num",q:R`<p>Model successes as Binomial(\(n=10, p\)). Estimate \(p\) from the sample mean, then find \(P(X=9)\). Given: \(\binom{n}{1}=\binom{n}{n-1}=n\), \(0.9^9=0.39\), \(0.9^{10}=0.35\).</p>`,
+  ans:[0.39],lab:["P(X = 9)"],
+  sol:R`\(\bar x=\dfrac{7(1)+8(3)+9(11)+10(5)}{20}=\dfrac{180}{20}=9\), so \(p=9/10=0.9\).
+\(P(X=9)=\binom{10}{9}(0.9)^9(0.1)^1=10(0.39)(0.1)=\mathbf{0.39}\).`},
+ {p:"C",pts:6,kind:"num",q:R`<p>Find \(P(X\ge9)\) and say what it means.</p>`,
+  ans:[0.74],lab:["P(X ≥ 9)"],
+  sol:R`\(P(X\ge9)=P(9)+P(10)=0.39+\binom{10}{10}(0.9)^{10}(0.1)^0=0.39+0.35=\mathbf{0.74}\).
+There is a 74% chance that at least 9 of 10 packets get through in a trial.`}
+]},
+{s:"B",n:4,t:"clt",
+ ctx:R`<p>Time on a shopping app per session has an unknown distribution with \(\mu=10\) min and \(\sigma=4\). Sessions are independent. Let \(\bar X_{64}\) be the mean of \(n=64\) sessions.</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"num",q:R`<p>By the CLT, what is the approximate distribution of \(\bar X_{64}\)? Give its mean and standard error.</p>`,
+  ans:[10,0.5],lab:["mean","SE"],
+  sol:R`\(\bar X_n\approx\mathcal N\!\left(\mu,\ \sigma^2/n\right)=\mathcal N(10,\ 4^2/64)=\mathcal N(10,\ 0.5^2)\). Mean <b>10</b>, SE <b>0.5</b>. The population need not be normal.`},
+ {p:"B",pts:8,kind:"num",q:R`<p>Estimate \(P(\bar X_{64}>10.5)\).</p>`,
+  ans:[0.16],lab:["P(X̄ > 10.5)"],
+  sol:R`\(z=(10.5-10)/0.5=1\). About 68% is within ±1 SE, so 32% is outside, split evenly: \(P(Z>1)\approx\mathbf{0.16}\).`}
+]},
+{s:"B",n:5,t:"hyp",
+ ctx:R`<p>A coffee machine claims a mean fill of \(\mu_0=250\) mL with known \(\sigma=6\) mL. A sample of \(n=36\) cups has \(\bar x=253\) mL. Use a z-test for whether the true mean differs from 250.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"free",q:R`<p>State the hypotheses.</p>`,sol:R`\(H_0:\mu=250\), \(H_1:\mu\ne250\).`},
+ {p:"B",pts:5,kind:"num",q:R`<p>Write the z formula, identify each quantity, and compute z.</p>`,ans:[3],lab:["z"],
+  sol:R`\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}=\dfrac{253-250}{6/\sqrt{36}}=\dfrac31=\mathbf3\) with \(\bar x=253,\ \mu_0=250,\ \sigma=6,\ n=36\).`},
+ {p:"C",pts:5,kind:"num",q:R`<p>One- or two-tailed? Why? Then estimate the p-value with the 68–95–99.7 rule.</p>`,ans:[0.003],lab:["p-value"],
+  sol:R`Two-tailed, because \(H_1\) is \(\mu\ne250\) (a difference in either direction counts).
+\(p=2P(Z>3)=2(0.0015)=\mathbf{0.003}\).`},
+ {p:"D",pts:4,kind:"mc",q:R`<p>At \(\alpha=0.01\), what is the decision?</p>`,
+  o:["Reject H₀: p = 0.003 < 0.01, strong evidence the mean fill differs from 250 mL","Fail to reject H₀: p is close to α","Accept H₀: the machine is calibrated","Reject H₀ only at α = 0.05"],a:"A",
+  sol:R`\(0.003<0.01\): <b>reject \(H_0\)</b>, and say it in context (the true mean fill differs from 250 mL).`}
+]},
+{s:"B",n:6,t:"ci",
+ ctx:R`<p>A lab samples \(n=900\) titanium bolts: \(\bar x=7.2\) MPa, \(s=1.5\) MPa. Use z = 1.5 for 90%, 2 for 95%, 2.5 for 99%.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Standard error?</p>`,ans:[0.05],lab:["SE"],sol:R`\(1.5/\sqrt{900}=1.5/30=\mathbf{0.05}\).`},
+ {p:"B",pts:8,kind:"num",q:R`<p>Two-sided 99% confidence interval for the mean (3 decimals).</p>`,ans:[7.075,7.325],lab:["Lower","Upper"],
+  sol:R`\(7.2\pm2.5(0.05)=7.2\pm0.125\Rightarrow(\mathbf{7.075},\ \mathbf{7.325})\).`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>With \(n=100\) you got the top interval below (the true \(\mu\) is marked). With a new sample of \(n=400\), which 95% interval is most likely?</p>
+<svg class="cifig" viewBox="0 0 440 230" role="img" aria-label="Six horizontal intervals. Top: n=100, centered at x-bar with mu to the right inside. A: narrow at the same x-bar, mu shifted. B: wider, centered near mu. C: narrow at the same x-bar, mu outside. D: about half width, x-bar moved toward mu, contains mu. E: same width as n=100 with mu moved.">
+<g stroke="var(--rule)" stroke-dasharray="3 3"><path d="M160 10V220M260 10V220"/></g>
+<g stroke="var(--muted)" stroke-width="5" stroke-linecap="round">
+<path d="M40 25H300"/><path d="M120 70H215"/><path d="M118 100H385"/><path d="M120 135H215"/><path d="M188 165H305" stroke="var(--ink)"/><path d="M40 200H300"/></g>
+<g fill="var(--ink)"><rect x="158" y="17" width="4" height="16"/><rect x="158" y="62" width="4" height="16"/><rect x="238" y="92" width="4" height="16"/><rect x="158" y="127" width="4" height="16"/><rect x="238" y="157" width="4" height="16"/><rect x="158" y="192" width="4" height="16"/></g>
+<g fill="var(--gold)"><rect x="258" y="17" width="4" height="16"/><rect x="178" y="62" width="4" height="16"/><rect x="258" y="92" width="4" height="16"/><rect x="258" y="127" width="4" height="16"/><rect x="258" y="157" width="4" height="16"/><rect x="178" y="192" width="4" height="16"/></g>
+<text x="0" y="29">n=100</text><text x="18" y="74">A</text><text x="18" y="104">B</text><text x="18" y="139">C</text><text x="18" y="169">D</text><text x="18" y="204">E</text>
+<text x="152" y="12">x̄</text><text x="256" y="12">μ</text></svg>
+<p style="font-size:13px;color:var(--muted)">Black tick: sample mean. Gold tick: true μ.</p>`,
+  o:["A","B","C","D","E"],a:"D",
+  sol:R`Three facts decide it. \(\mu\) is fixed, so A and E (which move \(\mu\)) are out. 4× the samples halves the width, so B (wider) and E are out. A new sample gives a new \(\bar x\), which with more data tends to land closer to \(\mu\): C keeps the old \(\bar x\) and misses \(\mu\). <b>D</b>: half the width, new \(\bar x\), contains \(\mu\).`}
+]},
+{s:"B",n:7,t:"reg",
+ ctx:R`<p>A company models job satisfaction \(y\) from years of experience \(x_1\) and salary in thousands \(x_2\): \(\hat y=4x_1+0.2x_2+30\). Held-out employees:</p>${T(["Employee","x₁","x₂","y"],[["A",5,80,76],["B",10,90,80],["C",8,70,66]])}`,
+ parts:[
+ {p:"A",pts:8,kind:"num",q:R`<p>Predict each score and compute the MSE.</p>`,ans:[66,88,76,88],lab:["ŷ_A","ŷ_B","ŷ_C","MSE"],
+  sol:R`\(\hat y_A=20+16+30=66\), \(\hat y_B=40+18+30=88\), \(\hat y_C=32+14+30=76\).
+Residuals \(y-\hat y\): 10, −8, −10. \(MSE=\dfrac{100+64+100}{3}=\mathbf{88}\).`},
+ {p:"B",pts:5,kind:"num",q:R`<p>The variance of the satisfaction scores is 100. Compute \(R^2=1-MSE/\sigma_y^2\). Is this a good model?</p>`,ans:[0.12],lab:["R²"],
+  sol:R`\(R^2=1-88/100=\mathbf{0.12}\). No: the model explains only 12% of the variance.`},
+ {p:"C",pts:3,kind:"free",q:R`<p>A model with \(R^2=0.5\) predicts 95 for an employee whose actual score was 70, a much bigger residual than everyone else. Give one possible reason.</p>`,
+  sol:R`Any one: the point is an <b>outlier</b>; the employee has circumstances the features don't capture; a data recording error.`}
+]},
+{s:"B",n:8,t:"reg",
+ ctx:R`<p>Predict house energy use \(y\) (kWh) from temperature \(x_1\) (°F, 30–70) and house size \(x_2\) (sq ft, 1000–3000) with \(\hat y=a_1x_1+a_2x_1^2+a_3x_2+b\).</p>${T(["x₁","x₂","y"],[[40,1500,800],[50,2000,900],[60,2500,950]])}`,
+ parts:[
+ {p:"A",pts:8,kind:"free",q:R`<p>Build \(X\) and \(y\) and write the least squares equation for \(\beta=[a_1,a_2,a_3,b]\). Do not solve.</p>`,
+  sol:R`\[X=\begin{bmatrix}40&1600&1500&1\\50&2500&2000&1\\60&3600&2500&1\end{bmatrix},\quad y=\begin{bmatrix}800\\900\\950\end{bmatrix},\quad X^TX\beta=X^Ty\ \text{ or }\ \beta=(X^TX)^{-1}X^Ty\]
+The \(x_1^2\) column is just 40², 50², 60². The model is still linear in the parameters.`},
+ {p:"B [1]",pts:5,t:"fit",kind:"num",q:R`<p>Ridge with \(\lambda=2\) gives \(a_1=6.0,\ a_2=0.8,\ a_3=0.6,\ b=100\). Compute the penalty \(\lambda(a_1^2+a_2^2+a_3^2)\).</p>`,ans:[74],lab:["penalty"],
+  sol:R`\(2(36+0.64+0.36)=2(37)=\mathbf{74}\). \(b\) is not penalized.`},
+ {p:"B [2]",pts:3,t:"fit",kind:"mc",q:R`<p>Is this a fair parameterization, or was it biased by the different feature scales?</p>`,
+  o:["(a) This is a fair parameterization","(b) a₁ may have been over-penalized because it is the largest coefficient by a factor","(c) a₂ and a₃ may have been over-penalized, making them small","(d) b did not get penalized and that is not fair"],a:"B",
+  sol:R`\(x_1\) is small (30–70) next to \(x_1^2\) (900–4900) and \(x_2\) (1000–3000), so it needs a big coefficient, and ridge punishes big coefficients. <b>(b)</b>. Fix: standardize features before ridge.`}
+]},
+{s:"B",n:9,t:"hof",
+ ctx:R`${C(`workouts = [
+    {'type': 'cardio',   'duration': 45, 'calories': 300},
+    {'type': 'strength', 'duration': 60, 'calories': 400},
+    {'type': 'yoga',     'duration': 75, 'calories': 200},
+    {'type': 'cardio',   'duration': 30, 'calories': 250},
+    {'type': 'strength', 'duration': 50, 'calories': 350}
+]`)}`,
+ parts:[
+ {p:"A",pts:5,kind:"code",q:R`<p>Use <code>filter</code> to keep intense workouts: more than 50 minutes <b>or</b> at least 300 calories.</p>`,
+  pre:"workouts = [{'type': 'cardio', 'duration': 45, 'calories': 300},{'type': 'strength', 'duration': 60, 'calories': 400},{'type': 'yoga', 'duration': 75, 'calories': 200},{'type': 'cardio', 'duration': 30, 'calories': 250},{'type': 'strength', 'duration': 50, 'calories': 350}]",
+  start:`intense_workouts = list(filter(
+    lambda w: ____,
+    workouts
+))`,
+  need:["filter","lambda"],
+  tests:[["[w['duration'] for w in intense_workouts]","[45, 60, 75, 50]"]],
+  sol:`intense_workouts = list(filter(
+    lambda w: w['duration'] > 50 or w['calories'] >= 300,
+    workouts
+))`},
+ {p:"B",pts:5,kind:"code",q:R`<p>Use <code>map()</code> to get every duration in hours, then <code>reduce()</code> for the total.</p>`,
+  pre:"workouts = [{'type': 'cardio', 'duration': 45, 'calories': 300},{'type': 'strength', 'duration': 60, 'calories': 400},{'type': 'yoga', 'duration': 75, 'calories': 200},{'type': 'cardio', 'duration': 30, 'calories': 250},{'type': 'strength', 'duration': 50, 'calories': 350}]",
+  start:`from functools import reduce
+durations = list(map(____, workouts))
+total_duration = reduce(____, durations)`,
+  need:["map","reduce"],
+  tests:[["durations[:2]","[0.75, 1.0]"],["round(total_duration, 4)","4.3333"]],
+  sol:`from functools import reduce
+durations = list(map(lambda w: w['duration'] / 60, workouts))
+total_duration = reduce(lambda x, y: x + y, durations)`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Use a <b>nested</b> list comprehension to build a set of all unique workout types.</p>${C(`weeks = [['cardio', 'strength'], ['yoga'], ['cardio', 'strength', 'yoga']]`)}`,
+  pre:"weeks = [['cardio', 'strength'], ['yoga'], ['cardio', 'strength', 'yoga']]",
+  start:`unique = set([____ for week in weeks ____])`,
+  need:["for week in weeks"],
+  tests:[["unique","{'cardio', 'strength', 'yoga'}"]],
+  sol:`unique = set([workout for week in weeks for workout in week])`,
+  why:R`Read nested comprehensions left to right like nested loops: outer loop first (<code>for week in weeks</code>), then inner (<code>for workout in week</code>).`}
+]},
+
+/* ---------------- LAB EXTRAS ---------------- */
+{s:"X",n:1,t:"py",
+ ctx:R`${C(`nums = [4, 8, 15, 16, 23, 42]`)}<p>Trace each by hand first. This is how code questions check if you really know indexing.</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"mc",q:R`<p><code>nums[1:4]</code></p>`,o:["[8, 15, 16]","[4, 8, 15, 16]","[8, 15, 16, 23]","[15, 16, 23]"],a:"A",sol:R`Start at index 1, stop <i>before</i> index 4: 8, 15, 16.`},
+ {p:"B",pts:3,kind:"mc",q:R`<p><code>nums[::-2]</code></p>`,o:["[42, 16, 8]","[4, 15, 23]","[42, 23, 16, 15, 8, 4]","[23, 15, 4]"],a:"A",sol:R`Step −2 starts at the end: index 5 (42), 3 (16), 1 (8).`},
+ {p:"C",pts:3,kind:"mc",q:R`<p>After <code>a = [1, 2]; b = a; b.append(3)</code>, what is <code>a</code>?</p>`,o:["[1, 2]","[1, 2, 3]","[3]","Error"],a:"B",sol:R`<code>b = a</code> does not copy; both names point to the same list. Use <code>a.copy()</code> or <code>a[:]</code> for a real copy (same for dicts: <code>d.copy()</code>).`},
+ {p:"D",pts:3,kind:"mc",q:R`<p><code>type(("apple"))</code></p>`,o:["tuple","str","list","Error"],a:"B",sol:R`Parentheses alone don't make a tuple. A one-item tuple needs a comma: <code>("apple",)</code>.`}
+]},
+{s:"X",n:2,t:"dict",
+ ctx:R`<p>Word counting is the classic dict pattern: check if the key exists, then create or add.</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"code",q:R`<p>Write <code>word_count(words)</code>: given a list of words, return a dict of counts.</p>${C(`word_count(["a", "b", "a"]) -> {"a": 2, "b": 1}`)}`,
+  start:`def word_count(words):
+    counts = {}
+    for w in words:
+        ____
+    return counts`,
+  tests:[[`word_count(["a", "b", "a"])`,`{"a": 2, "b": 1}`],["word_count([])","{}"],[`word_count(["x"] * 4)`,`{"x": 4}`]],
+  sol:`def word_count(words):
+    counts = {}
+    for w in words:
+        if w not in counts:
+            counts[w] = 1
+        else:
+            counts[w] += 1          # or: counts[w] = counts.get(w, 0) + 1
+    return counts`},
+ {p:"B",pts:8,kind:"code",q:R`<p>Write <code>keys_above(counts, k)</code>: return a sorted list of keys whose value is greater than <code>k</code>. Use a comprehension over <code>.items()</code>.</p>`,
+  start:`def keys_above(counts, k):
+    return sorted([____ for ____ in counts.items() if ____])`,
+  need:["items"],
+  tests:[[`keys_above({"a": 2, "b": 1, "c": 5}, 1)`,`["a", "c"]`],[`keys_above({"a": 2}, 5)`,"[]"]],
+  sol:`def keys_above(counts, k):
+    return sorted([key for key, v in counts.items() if v > k])`}
+]},
+{s:"X",n:3,t:"hof",
+ ctx:R`<p>Higher-order functions take functions as arguments. Trace these by hand.</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"num",q:R`<p>${C(`from functools import reduce
+reduce(lambda x, y: x * y, [1, 2, 3, 4])`)}</p>`,ans:[24],lab:["result"],sol:R`Rolling: ((1·2)·3)·4 = 24.`},
+ {p:"B",pts:3,kind:"mc",q:R`<p><code>[x if x % 2 else -x for x in range(1, 6)]</code></p>`,o:["[1, -2, 3, -4, 5]","[-1, 2, -3, 4, -5]","[1, 3, 5]","SyntaxError"],a:"A",
+  sol:R`<code>x % 2</code> is 1 (truthy) for odd x, so odds stay and evens flip. An if-<b>else</b> goes <i>before</i> the <code>for</code>; a filter-only <code>if</code> goes after.`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Using <code>filter</code>, <code>map</code> and <code>reduce</code>, compute the sum of the squares of the odd numbers in <code>nums</code>.</p>`,
+  pre:"nums = [1, 2, 3, 4, 5]",
+  start:`from functools import reduce
+nums = [1, 2, 3, 4, 5]
+result = reduce(____, map(____, filter(____, nums)))`,
+  need:["filter","map","reduce"],
+  tests:[["result","35"]],
+  sol:`from functools import reduce
+nums = [1, 2, 3, 4, 5]
+result = reduce(lambda a, b: a + b,
+                map(lambda x: x ** 2,
+                    filter(lambda x: x % 2 == 1, nums)))`,
+  why:R`Odds 1, 3, 5 → squares 1, 9, 25 → sum 35.`}
+]},
+{s:"X",n:4,t:"hist",
+ ctx:R`<p>The coffee shop from lecture logged customers for 100 days and plotted a histogram with 8 bins of width 5 from 15 to 55.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>The bin \([30,35)\) holds 21 days. What is its probability (relative frequency) and its density?</p>`,ans:[0.21,0.042],lab:["probability","density"],
+  sol:R`Probability = 21/100 = <b>0.21</b>. Density = 0.21 / 5 = <b>0.042</b>.`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Sturges' rule: \(k=\lceil\log_2 n\rceil+1\). How many bins for \(n=64\)?</p>`,ans:[7],lab:["k"],sol:R`\(\log_2 64=6\), so \(k=7\).`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>What happens if you use far too many bins for 100 points?</p>`,
+  o:["Each bin has few points, so the estimate is noisy and spiky","The histogram becomes smoother","The total area grows past 1","Nothing changes"],a:"A",
+  sol:R`Too small a bin width: few samples per bin, high variance. Too wide: rare and common values lumped together. The lecture picks the width that minimizes estimated error.`}
+]},
+{s:"X",n:5,t:"prob",
+ ctx:R`<p>Problems straight from the probability lecture examples.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Time between website visits is Exponential with \(\lambda=2\) (per minute). Find \(P(X>0.5)\). Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P(X > 0.5)"],
+  sol:R`\(P(X>x)=1-F(x)=e^{-\lambda x}=e^{-2(0.5)}=e^{-1}=\mathbf{0.368}\).`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Of 200 machine outputs, 20 were out of spec. Model the next output as Bernoulli. What is \(p\) = P(out of spec)?</p>`,ans:[0.1],lab:["p"],sol:R`\(p=20/200=\mathbf{0.1}\).`},
+ {p:"C",pts:4,kind:"num",q:R`<p>Binomial(\(n=4, p=0.5\)). Find \(P(X=2)\).</p>`,ans:[0.375],lab:["P(X = 2)"],sol:R`\(\binom42(0.5)^2(0.5)^2=6/16=\mathbf{0.375}\).`},
+ {p:"D",pts:4,kind:"num",q:R`<p>\(X\sim\mathcal N(\mu,\sigma^2)\). Using 68–95–99.7, find \(P(\mu-\sigma<X<\mu+2\sigma)\).</p>`,ans:[0.815],lab:["probability"],
+  sol:R`Left half of 68% is 0.34, right half of 95% is 0.475. Total <b>0.815</b>.`}
+]},
+{s:"X",n:6,t:"clt",
+ ctx:R`<p>From lecture: the number of YouTube videos Bob watches per day is Binomial(50, 0.2). Look at the mean over a random sample of 100 days.</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Mean and variance of one day, then the mean and variance of \(\bar X\).</p>`,ans:[10,8,10,0.08],lab:["μ","σ²","mean of X̄","Var(X̄)"],
+  sol:R`\(\mu=np=10\), \(\sigma^2=np(1-p)=50(0.2)(0.8)=8\). By the CLT \(\bar X\approx\mathcal N(10,\ 8/100)=\mathcal N(10,\ 0.08)\).`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>Bob's daily count is Binomial (discrete and skewed). Why can we still call \(\bar X\) normal?</p>`,
+  o:["The CLT works for any population shape once n is large (n ≥ 30 rule of thumb)","Because the binomial is always normal","Because the variance is small","We can't"],a:"A",sol:R`That is the point of the CLT: the sample <i>mean</i> is approximately normal whatever the population looks like.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>If Bob's sample were 400 days instead of 100, the SD of \(\bar X\) would</p>`,o:["halve","double","quarter","stay the same"],a:"A",sol:R`\(SE=\sigma/\sqrt n\): 4× the data → \(\sqrt4=2\)× smaller.`}
+]},
+{s:"X",n:7,t:"hyp",
+ ctx:R`<p>Lecture example: a factory claims widgets weigh \(\mu_0=100\) g with \(\sigma=22\) g. You weigh 100 new widgets and get \(\bar x=95\) g.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Standard error and z-score.</p>`,ans:[2.2,-2.27],lab:["SE","z"],
+  sol:R`\(SE=22/\sqrt{100}=2.2\). \(z=(95-100)/2.2=\mathbf{-2.27}\).`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>The two-sided p-value is 0.023. Decision?</p>`,
+  o:["Reject at α = 0.05 and 0.1, but not at α = 0.01","Reject at every α","Fail to reject at every α","Reject only at α = 0.01"],a:"A",
+  sol:R`Reject when \(p<\alpha\): 0.023 < 0.05 and < 0.1, but 0.023 > 0.01.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>If instead \(H_1:\mu<100\) (one-sided), the p-value would be</p>`,o:["0.0115","0.023","0.046","0.977"],a:"A",
+  sol:R`All the area is in one tail, so it is half the two-sided p: 0.0115.`},
+ {p:"D",pts:4,kind:"free",q:R`<p>Why do we say "fail to reject \(H_0\)" instead of "accept \(H_0\)"?</p>`,
+  sol:R`Not finding evidence against \(H_0\) does not prove it is true; the sample may just be too small to detect a difference.`}
+]},
+{s:"X",n:8,t:"hyp",
+ ctx:R`<p>Two production lines. Known \(\sigma_1=\sigma_2=6\). Line 1: \(n_1=36,\ \bar x_1=52\). Line 2: \(n_2=36,\ \bar x_2=49\).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Two-sample z: compute SE and z (2 decimals).</p>`,ans:[1.41,2.12],lab:["SE","z"],
+  sol:R`\(SE=\sqrt{36/36+36/36}=\sqrt2\approx1.41\). \(z=(52-49)/1.41\approx\mathbf{2.12}\).`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>Two-sided test at \(\alpha=0.05\), critical value ≈ 2:</p>`,o:["Reject H₀: the line means differ","Fail to reject H₀","Accept H₀","Need a t-test"],a:"A",sol:R`\(|z|=2.12>2\). Reject.`}
+]},
+{s:"X",n:9,t:"ci",
+ ctx:R`<p>Widgets again: \(\bar x=95,\ \sigma=22,\ n=100\). Use z = 2 for 95%.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>95% confidence interval.</p>`,ans:[90.6,99.4],lab:["Lower","Upper"],sol:R`\(95\pm2(2.2)=95\pm4.4\Rightarrow(90.6,\ 99.4)\). (Lecture uses 1.96: (90.69, 99.31).)`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>Which is the right interpretation of a 95% CI?</p>`,
+  o:["If we repeated the experiment many times, about 95% of the intervals would contain μ","There is a 95% chance this data is correct","95% of widgets weigh between the bounds","μ moves around inside the interval 95% of the time"],a:"A",sol:R`The randomness is in the interval, not in \(\mu\).`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>When should you use a t-distribution instead of z?</p>`,o:["σ unknown and n < 30","Always for two-sample tests","When n > 30","When the data is discrete"],a:"A",sol:R`Use \(s\) and \(t\) with \(df=n-1\) degrees of freedom. The t has fatter tails, so intervals are wider.`}
+]},
+{s:"X",n:10,t:"reg",
+ ctx:R`<p>Fit a simple line \(\hat y=ax+b\) to the points (1, 2), (2, 3), (3, 5).</p><p>\(a=\dfrac{\sum x_iy_i-n\bar x\bar y}{\sum x_i^2-n\bar x^2},\quad b=\bar y-a\bar x\)</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Find \(a\) and \(b\) (3 decimals).</p>`,ans:[1.5,0.333],lab:["a","b"],
+  sol:R`\(\bar x=2,\ \bar y=10/3\). \(\sum xy=2+6+15=23\), \(n\bar x\bar y=20\). \(\sum x^2=14\), \(n\bar x^2=12\).
+\(a=3/2=\mathbf{1.5}\), \(b=10/3-3=\mathbf{0.333}\).`},
+ {p:"B",pts:3,kind:"num",q:R`<p>Predict \(y\) at \(x=4\).</p>`,ans:[6.333],lab:["ŷ"],sol:R`\(1.5(4)+1/3=6.333\).`},
+ {p:"C",pts:3,kind:"mc",q:R`<p>A model is \(\hat y=10x_1+100x_2+5\). Does \(x_2\) matter more?</p>`,o:["Not necessarily: the features may have different scales; normalize first","Yes, its weight is 10 times bigger","No, x₁ always matters more","Only if R² > 0.5"],a:"A",
+  sol:R`Standardize each feature (subtract mean, divide by SD) before comparing weights.`}
+]},
+{s:"X",n:11,t:"fit",
+ ctx:R`<p>One feature, no intercept: \(x=[1,2]\), \(y=[2,4]\). Ridge: \(a=\dfrac{\sum x_iy_i}{\sum x_i^2+\lambda}\) (this is \((X^TX+\lambda I)^{-1}X^Ty\) for one column).</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Find \(a\) for \(\lambda=0\) and \(\lambda=5\).</p>`,ans:[2,1],lab:["λ = 0","λ = 5"],sol:R`\(\sum xy=10,\ \sum x^2=5\). \(\lambda=0\): 10/5 = 2. \(\lambda=5\): 10/10 = 1. Bigger λ, smaller coefficient.`},
+ {p:"B",pts:4,kind:"num",q:R`<p>You try λ ∈ {0.01, 0.1, 1, 10} with 5-fold CV. How many models are trained before the final refit?</p>`,ans:[20],lab:["models"],sol:R`4 values × 5 folds = <b>20</b>. Then one more on all the data with the best λ.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>Train MSE is tiny but test MSE is huge. This is</p>`,o:["overfitting: lower the degree or raise λ","underfitting: add features","a perfect model","a sign the test set is too big"],a:"A",sol:R`Overfitting: memorized the training data. Underfitting has high error on both.`}
+]},
+{s:"X",n:12,t:"reg",
+ ctx:R`<p>You have 50 data points, 3 features, and an intercept.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"mc",q:R`<p>Dimensions of \(X\) and \(X^TX\)?</p>`,o:["50×4 and 4×4","50×3 and 3×3","4×50 and 50×50","50×4 and 50×50"],a:"A",sol:R`3 feature columns + 1 column of 1s = 4. \(X^TX\) is (4×50)(50×4) = 4×4.`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>Feature 3 is always exactly 2 × feature 1. What happens?</p>`,o:["XᵀX is not invertible; infinitely many solutions","Nothing","R² becomes negative","The intercept is 0"],a:"A",sol:R`Linearly dependent columns make \(X^TX\) singular. Ridge (\(+\lambda I\)) makes it invertible again.`}
+]}
+];
+
+/* Start here: refresher + warm-ups per topic. Warm-ups use the same part format. */
+const LEARN={
+py:{learn:R`<p class="idea"><b>The big idea:</b> most exam code is a loop that walks a list and builds a result. Know how lists index, slice and grow, and where <code>return</code> goes.</p>
+<p><b>Indexing</b> starts at 0. Negative indexes count from the end: <code>lst[-1]</code> is the last item.</p>
+<p><b>Slicing</b> <code>lst[start:stop:step]</code> stops <i>before</i> <code>stop</code>. Leave a part out to mean "from the start / to the end".</p>
+<div class="ex"><b>Example:</b> <code>a = [10, 20, 30, 40, 50]</code>. <code>a[1:3]</code> → [20, 30]. <code>a[::2]</code> → [10, 30, 50]. <code>a[::-1]</code> → reversed.</div>
+<ul><li><code>append(x)</code> adds to the end. <code>insert(i, x)</code>, <code>remove(x)</code> (first match), <code>pop(i)</code>.</li>
+<li><code>x in lst</code> checks membership. <code>len(lst)</code> is the length.</li>
+<li><code>range(start, stop, step)</code> also stops before <code>stop</code>: <code>range(2, 10, 3)</code> → 2, 5, 8.</li>
+<li><code>for i, v in enumerate(lst)</code> gives the index and the value.</li></ul>
+<div class="ex"><b>Exam pattern:</b>${C(`def keep_unique(lst):
+    result = []
+    for item in lst:
+        if item not in result:
+            result.append(item)
+    return result        # after the loop, not inside it`)}</div>
+<p><b>Common mistakes:</b> <code>return</code> indented inside the loop (returns after one item); <code>range(len(x))</code> off by one; <code>b = a</code> makes an alias, not a copy.</p>`,
+warm:[
+ {step:"Slicing",kind:"mc",q:R`<p><code>nums = [10, 20, 30, 40, 50]</code>. What is <code>nums[1:3]</code>?</p>`,o:["[20, 30]","[10, 20, 30]","[20, 30, 40]","[10, 20]"],a:"A",sol:R`Start at index 1 (20), stop before index 3.`},
+ {step:"Step slices",kind:"mc",q:R`<p>Same list. <code>nums[::2]</code>?</p>`,o:["[10, 30, 50]","[20, 40]","[50, 30, 10]","[10, 20]"],a:"A",sol:R`Every second item from the start.`},
+ {step:"range",kind:"mc",q:R`<p><code>list(range(2, 10, 3))</code>?</p>`,o:["[2, 5, 8]","[2, 5, 8, 11]","[3, 6, 9]","[2, 3, 4]"],a:"A",sol:R`2, 5, 8. The next one, 11, is past the stop (10).`},
+ {step:"Write a loop",kind:"code",q:R`<p>Write <code>evens(lst)</code> that returns the even numbers, in order.</p>`,
+  start:`def evens(lst):
+    out = []
+    for x in lst:
+        ____
+    return out`,tests:[["evens([1, 2, 3, 4, 6])","[2, 4, 6]"],["evens([])","[]"],["evens([1, 3])","[]"]],
+  sol:`def evens(lst):
+    out = []
+    for x in lst:
+        if x % 2 == 0:
+            out.append(x)
+    return out`},
+ {step:"Exam shape",kind:"code",q:R`<p>Write <code>first_index(lst, target)</code>: the index of the first match, or −1. Use <code>enumerate</code>.</p>`,
+  start:`def first_index(lst, target):
+    for i, v in ____:
+        if ____:
+            return ____
+    return -1`,need:["enumerate"],tests:[["first_index([5, 7, 7], 7)","1"],["first_index([5], 9)","-1"],["first_index([], 1)","-1"]],
+  sol:`def first_index(lst, target):
+    for i, v in enumerate(lst):
+        if v == target:
+            return i
+    return -1`,why:R`<code>return -1</code> sits after the loop: only reached if nothing matched.`}
+]},
+dict:{learn:R`<p class="idea"><b>The big idea:</b> a dict maps keys to values. The exam's favorite move is "group or total things by key": check if the key is there, then create it or add to it.</p>
+${C(`totals = {}
+for name, amount in pairs:
+    if name not in totals:
+        totals[name] = amount      # first time: create
+    else:
+        totals[name] += amount     # seen before: add
+# same thing in one line:  totals[name] = totals.get(name, 0) + amount`)}
+<ul><li><code>d[k]</code> on a missing key raises <code>KeyError</code>. <code>d.get(k, default)</code> doesn't.</li>
+<li>Loop over <code>d</code> → keys. <code>d.values()</code> → values. <code>d.items()</code> → (key, value) pairs.</li>
+<li>Dict comprehension: <code>{day: [] for day in days}</code> starts every key with its own empty list.</li>
+<li>Key with the biggest value: <code>max(d, key=d.get)</code>, or loop over <code>.items()</code> tracking the best.</li></ul>
+<p><b>Sets</b> <code>{1, 2, 3}</code>: no duplicates, no order, no indexing. <code>set(lst)</code> removes duplicates; <code>|</code>, <code>&amp;</code>, <code>-</code> are union, intersection, difference.</p>
+<p><b>Tuples</b> <code>(1, 2)</code>: like lists but can't change. A one-item tuple needs a comma: <code>("a",)</code>. Unpack them: <code>for name, n in pairs</code>.</p>
+<p><b>Common mistake:</b> <code>d2 = d</code> is the same dict. Use <code>d.copy()</code>.</p>`,
+warm:[
+ {step:"Add and update",kind:"mc",q:R`<p><code>d = {"a": 1}; d["b"] = 2; d["a"] += 5</code>. Now <code>d</code> is</p>`,o:[`{"a": 6, "b": 2}`,`{"a": 1, "b": 2}`,`{"a": 5, "b": 2}`,"KeyError"],a:"A",sol:R`Assigning a new key adds it; <code>+=</code> updates an existing one.`},
+ {step:"Sets",kind:"num",q:R`<p><code>len(set([1, 2, 2, 3, 3, 3]))</code></p>`,ans:[3],lab:["length"],sol:R`{1, 2, 3}.`},
+ {step:"Tuples",kind:"mc",q:R`<p><code>type(("apple"))</code></p>`,o:["str","tuple","list","set"],a:"A",sol:R`No comma, no tuple.`},
+ {step:"Counting",kind:"code",q:R`<p>Write <code>count_letters(s)</code>: a dict of how many times each character appears.</p>`,
+  start:`def count_letters(s):
+    counts = {}
+    for ch in s:
+        ____
+    return counts`,tests:[[`count_letters("banana")`,`{"b": 1, "a": 3, "n": 2}`],[`count_letters("")`,"{}"]],
+  sol:`def count_letters(s):
+    counts = {}
+    for ch in s:
+        counts[ch] = counts.get(ch, 0) + 1
+    return counts`},
+ {step:"Exam shape",kind:"code",q:R`<p>Write <code>top_key(d)</code>: the key with the largest value (assume no ties, all values positive).</p>`,
+  start:`def top_key(d):
+    best, best_v = None, 0
+    for k, v in ____:
+        if ____:
+            best, best_v = k, v
+    return best`,tests:[[`top_key({"x": 3, "y": 9, "z": 1})`,`"y"`],[`top_key({"only": 1})`,`"only"`]],
+  sol:`def top_key(d):
+    best, best_v = None, 0
+    for k, v in d.items():
+        if v > best_v:
+            best, best_v = k, v
+    return best`}
+]},
+hof:{learn:R`<p class="idea"><b>The big idea:</b> instead of writing a loop, hand a small function to a tool that loops for you. <code>map</code> transforms every item, <code>filter</code> keeps some items, <code>reduce</code> rolls everything into one value.</p>
+<p><b>lambda</b> is a one-line function with no name: <code>lambda x, y: x + y</code> is the same as a <code>def</code> that returns <code>x + y</code>.</p>
+${C(`from functools import reduce          # reduce is NOT built in
+nums = [1, 2, 3, 4, 5]
+list(map(lambda x: x ** 2, nums))      # [1, 4, 9, 16, 25]
+list(filter(lambda x: x % 2 == 1, nums))  # [1, 3, 5]
+reduce(lambda a, b: a + b, nums)       # ((((1+2)+3)+4)+5) = 15`)}
+<ul><li><code>map</code> and <code>filter</code> return iterators. Wrap them in <code>list(...)</code>.</li>
+<li><code>filter</code>'s function must return True/False. Items where it's True are <b>kept</b>.</li>
+<li><code>reduce</code> calls the function on the first two items, then on (result, next item), and so on.</li></ul>
+<p><b>List comprehensions</b> do map and filter in one line:</p>
+${C(`[n ** 2 for n in nums if n > 2]            # filter: if goes AFTER the for
+["odd" if n % 2 else "even" for n in nums]  # if-else goes BEFORE the for
+[x for row in grid for x in row]            # nested: outer loop first`)}
+<p><b>Common mistakes:</b> forgetting <code>from functools import reduce</code>; forgetting <code>list()</code>; putting <code>else</code> after the <code>for</code>; inside the dict data, writing <code>s.name</code> instead of <code>s['name']</code>.</p>`,
+warm:[
+ {step:"reduce",kind:"num",q:R`<p><code>reduce(lambda x, y: x * y, [1, 2, 3, 4])</code></p>`,ans:[24],lab:["result"],sol:R`1·2 = 2, ·3 = 6, ·4 = 24.`},
+ {step:"map",kind:"mc",q:R`<p><code>list(map(lambda x: x ** 2, [1, 2, 3]))</code></p>`,o:["[1, 4, 9]","[2, 4, 6]","14","<map object>"],a:"A",sol:R`Squares each item.`},
+ {step:"Comprehension filter",kind:"mc",q:R`<p><code>[n for n in range(10) if n % 3 == 0]</code></p>`,o:["[0, 3, 6, 9]","[3, 6, 9]","[0, 3, 6]","[1, 4, 7]"],a:"A",sol:R`0 counts: 0 % 3 == 0.`},
+ {step:"Nested",kind:"code",q:R`<p>Flatten <code>grid</code> into one list with a nested comprehension.</p>`,
+  pre:"grid = [[1, 2], [3], [4, 5]]",start:`flat = [____ for row in grid ____]`,need:["for row in grid"],tests:[["flat","[1, 2, 3, 4, 5]"]],
+  sol:`flat = [x for row in grid for x in row]`},
+ {step:"Exam shape",kind:"code",q:R`<p>Given <code>prices</code> (a list of dicts), use <code>filter</code> to keep items under 10, then <code>map</code> to get their names.</p>${C(`prices = [{'name': 'tea', 'cost': 3}, {'name': 'cake', 'cost': 12}, {'name': 'bun', 'cost': 5}]`)}`,
+  pre:"prices = [{'name': 'tea', 'cost': 3}, {'name': 'cake', 'cost': 12}, {'name': 'bun', 'cost': 5}]",
+  start:`cheap_names = list(map(____, filter(____, prices)))`,need:["map","filter","lambda"],tests:[["cheap_names","['tea', 'bun']"]],
+  sol:`cheap_names = list(map(lambda p: p['name'], filter(lambda p: p['cost'] < 10, prices)))`}
+]},
+hist:{learn:R`<p class="idea"><b>The big idea:</b> a histogram sorts data into bins and draws a bar per bin. The only thing that changes between the three kinds is what you divide by.</p>
+<ul><li><b>Count:</b> \(c_i\) = number of points in bin \(i\). Bars add up to \(n\).</li>
+<li><b>Probability</b> (relative frequency): \(p_i=c_i/n\). Bars add up to 1.</li>
+<li><b>Density:</b> \(d_i=p_i/w\) where \(w\) is the bin width. The <b>area</b> adds up to 1. This is <code>plt.hist(data, density=True)</code>.</li></ul>
+<div class="ex"><b>Example:</b> 10 bus delays, bins of width 10. The \([0,10)\) bin holds 6 points → probability 0.6 → density 0.6/10 = 0.06.</div>
+<p><b>Bins:</b> \([a,b)\) includes \(a\) but not \(b\); the last bin usually includes its right edge. A point exactly on an edge goes to the bin on its right.</p>
+<p><b>How many bins?</b> Rules of thumb: \(\sqrt n\), Sturges \(\lceil\log_2 n\rceil+1\). Too few bins hide the shape; too many make it noisy. Lecture picks the width that minimizes an estimate of the error between the histogram and the true distribution.</p>
+<p><b>Discrete data</b> (counts like "7 of 10 packets") gets a probability <b>mass</b> histogram: one bar per value, height = fraction of trials.</p>
+<p><b>Common mistake:</b> forgetting to divide by the width for density, so the area isn't 1.</p>`,
+warm:[
+ {step:"Probability",kind:"num",q:R`<p>50 data points, 10 of them in a bin. Probability of that bin?</p>`,ans:[0.2],lab:["p"],sol:R`10/50.`},
+ {step:"Density",kind:"num",q:R`<p>Same bin, width 5. Density?</p>`,ans:[0.04],lab:["density"],sol:R`0.2/5.`},
+ {step:"Build one",kind:"num",q:R`<p>Data <code>[2, 4, 4, 7, 9, 11, 12, 13]</code>, bins \([0,5),[5,10),[10,15]\). Density of each bin?</p>`,ans:[0.075,0.05,0.075],lab:["[0,5)","[5,10)","[10,15]"],
+  sol:R`Counts 3, 2, 3 out of 8 → 0.375, 0.25, 0.375 → divide by 5 → 0.075, 0.05, 0.075. Area: 5(0.2) = 1.`},
+ {step:"Bin count",kind:"num",q:R`<p>Sturges' rule for \(n=64\)?</p>`,ans:[7],lab:["bins"],sol:R`\(\log_2 64+1=7\).`},
+ {step:"Exam shape",kind:"mc",q:R`<p>A density histogram has bars 0.06, 0.03, 0.01 on bins of width 10. What's the total area?</p>`,o:["1","0.1","10","0.6"],a:"A",sol:R`10(0.06 + 0.03 + 0.01) = 1. It always is for density.`}
+]},
+prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likely each value is. Discrete ones list probabilities (PMF). Continuous ones give a curve (PDF) where probability is <b>area</b>.</p>
+<ul><li><b>PMF</b> \(P(X=k)\) for discrete. <b>PDF</b> \(f(x)\) for continuous; \(P(X=x)=0\) for any single value.</li>
+<li><b>CDF</b> \(F(x)=P(X\le x)\). Then \(P(X>x)=1-F(x)\) and \(P(a<X\le b)=F(b)-F(a)\).</li></ul>
+<p><b>The four you need:</b></p>
+<ul><li><b>Bernoulli(p):</b> one yes/no trial. Estimate \(p\) = successes / trials.</li>
+<li><b>Binomial(n, p):</b> successes in \(n\) trials. \(P(X=k)=\binom nk p^k(1-p)^{n-k}\). Mean \(np\), variance \(np(1-p)\).</li>
+<li><b>Exponential(λ):</b> waiting time. \(f(x)=\lambda e^{-\lambda x}\), \(F(x)=1-e^{-\lambda x}\), so \(P(X>x)=e^{-\lambda x}\). Mean \(1/\lambda\).</li>
+<li><b>Normal(μ, σ²):</b> bell curve. About 68% within 1σ, 95% within 2σ, 99.7% within 3σ.</li></ul>
+<div class="ex"><b>Example:</b> Exponential with λ = 0.1. \(P(X>20)=e^{-0.1\cdot20}=e^{-2}=0.135\). The exam gives you the value of \(e^{-2}\).</div>
+<div class="ex"><b>Example:</b> Binomial(10, 0.9). \(P(X=9)=\binom{10}9(0.9)^9(0.1)=10(0.39)(0.1)=0.39\). \(\binom{10}{9}=10\) because choosing 9 is the same as leaving 1 out.</div>
+<p><b>Normal tail cheat-table</b> (one tail beyond ±z): z = 1 → 0.16, z = 2 → 0.025, z = 3 → 0.0015.</p>
+<p><b>Common mistake:</b> using \(F(x)\) when the question asks "more than". "More than" is \(1-F\).</p>`,
+warm:[
+ {step:"Binomial mean",kind:"num",q:R`<p>Binomial(10, 0.9). Mean?</p>`,ans:[9],lab:["mean"],sol:R`\(np=9\).`},
+ {step:"Binomial SD",kind:"num",q:R`<p>Binomial(100, 0.8). Standard deviation?</p>`,ans:[4],lab:["σ"],sol:R`\(\sqrt{100(0.8)(0.2)}=\sqrt{16}=4\).`},
+ {step:"Exponential",kind:"num",q:R`<p>Exponential with λ = 0.5. \(P(X>2)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P"],sol:R`\(e^{-0.5\cdot2}=e^{-1}\).`},
+ {step:"CDF sums",kind:"num",q:R`<p>Binomial(10, 0.9) with \(P(9)=0.39,\ P(10)=0.35\). \(P(X\ge9)\)?</p>`,ans:[0.74],lab:["P"],sol:R`Add them: 0.74.`},
+ {step:"Exam shape",kind:"num",q:R`<p>\(X\sim\mathcal N(50, 5^2)\). Using 68–95–99.7, \(P(X>60)\)?</p>`,ans:[0.025],lab:["P"],sol:R`60 is 2σ above. 5% outside ±2σ, half on the right: 0.025.`}
+]},
+clt:{learn:R`<p class="idea"><b>The big idea:</b> if you average \(n\) independent samples, the average itself is random, and it's approximately <b>normal</b>, no matter what shape the data has. It's centered at \(\mu\) and its spread shrinks like \(1/\sqrt n\).</p>
+\[\bar X\approx\mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),\qquad SE=\frac{\sigma}{\sqrt n}\]
+<ul><li><b>Parameters</b> describe the population (\(\mu,\sigma\)). <b>Statistics</b> describe a sample (\(\bar x, s\)).</li>
+<li>Sample variance divides by \(n-1\): \(s^2=\frac1{n-1}\sum(x_i-\bar x)^2\).</li>
+<li>Rule of thumb: \(n\ge30\) for the CLT. If \(\sigma\) is unknown, use \(s\) in its place.</li>
+<li>4× the samples → half the SE. To cut SE to a target: \(n=(\sigma/SE)^2\).</li></ul>
+<div class="ex"><b>Example:</b> \(\mu=10,\ \sigma=4,\ n=64\). \(SE=4/8=0.5\). \(P(\bar X>10.5)\): \(z=(10.5-10)/0.5=1\) → about 0.16.</div>
+<div class="ex"><b>Recipe for "probability the sample mean is above/below c":</b> find SE, find \(z=(c-\mu)/SE\), then read the tail off 68–95–99.7.</div>
+<p><b>Common mistake:</b> using \(\sigma\) instead of \(\sigma/\sqrt n\) for a question about the <i>mean</i>.</p>`,
+warm:[
+ {step:"SE",kind:"num",q:R`<p>\(\sigma=12,\ n=36\). SE?</p>`,ans:[2],lab:["SE"],sol:R`12/6.`},
+ {step:"Tail",kind:"num",q:R`<p>\(\mu=50,\ \sigma=10,\ n=100\). \(P(\bar X>52)\)?</p>`,ans:[0.025],lab:["P"],sol:R`SE = 1, z = 2, upper tail 0.025.`},
+ {step:"Sample size",kind:"num",q:R`<p>With \(n=25\) the SE is 2. What \(n\) gives SE = 1?</p>`,ans:[100],lab:["n"],sol:R`Halving SE needs 4× the data.`},
+ {step:"Shape",kind:"mc",q:R`<p>Does the CLT need the population to be normal?</p>`,o:["No, any shape works for large n","Yes, always","Only for discrete data","Only if σ is known"],a:"A",sol:R`That's what makes it so useful.`},
+ {step:"Exam shape",kind:"num",q:R`<p>Daily count is Binomial(50, 0.2). Over 100 days, what is \(\text{Var}(\bar X)\)?</p>`,ans:[0.08],lab:["Var"],sol:R`\(\sigma^2=50(0.2)(0.8)=8\); divided by 100: 0.08.`}
+]},
+hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\)), then ask how surprising your sample would be. If it would be very surprising (p-value below \(\alpha\)), reject \(H_0\).</p>
+<p><b>The z-test in four lines</b> (the exam gives points for each):</p>
+<ol><li>\(H_0:\mu=\mu_0\). \(H_1:\mu\ne\mu_0\) (two-sided) or \(\mu>\mu_0\) / \(\mu<\mu_0\) (one-sided).</li>
+<li>\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}\). Name each quantity.</li>
+<li>p-value: two-sided \(p=2P(Z>|z|)\); one-sided \(p=P(Z>z)\) in the direction of \(H_1\).</li>
+<li>Decide: \(p<\alpha\) → reject \(H_0\), else fail to reject. Say what it means in context.</li></ol>
+<p><b>Two-sided p-values from 68–95–99.7:</b> \(|z|=1\to0.32\), \(|z|=2\to0.05\), \(|z|=3\to0.003\). Halve them for one-sided.</p>
+<p><b>Two samples:</b> \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}\), \(z=(\bar x_1-\bar x_2)/SE\), \(H_0:\mu_1=\mu_2\).</p>
+<div class="ex"><b>Example:</b> \(\mu_0=250,\ \sigma=6,\ n=36,\ \bar x=253\). \(z=3/1=3\), two-sided \(p=0.003<0.01\) → reject.</div>
+<p><b>t-test:</b> when \(\sigma\) is unknown and \(n<30\), use \(s\) and the t-distribution with \(n-1\) degrees of freedom (fatter tails).</p>
+<p><b>Common mistakes:</b> "accept \(H_0\)" (say "fail to reject"); forgetting to double the tail for two-sided; putting the sample mean in \(H_0\).</p>`,
+warm:[
+ {step:"Hypotheses",kind:"mc",q:R`<p>Testing whether the mean fill "differs from 250 mL". \(H_1\)?</p>`,o:["μ ≠ 250","μ > 250","μ = 250","x̄ ≠ 250"],a:"A",sol:R`"Differs" is two-sided. Hypotheses are about μ, never x̄.`},
+ {step:"z-score",kind:"num",q:R`<p>\(\bar x=103,\ \mu_0=100,\ \sigma=12,\ n=16\). z?</p>`,ans:[1],lab:["z"],sol:R`SE = 12/4 = 3. z = 3/3 = 1.`},
+ {step:"p-value",kind:"num",q:R`<p>Two-sided p-value for z = 2 (empirical rule)?</p>`,ans:[0.05],lab:["p"],sol:R`5% is outside ±2.`},
+ {step:"Decide",kind:"mc",q:R`<p>p = 0.03, α = 0.01.</p>`,o:["Fail to reject H₀","Reject H₀","Accept H₁","Accept H₀"],a:"A",sol:R`0.03 is not below 0.01.`},
+ {step:"Exam shape",kind:"num",q:R`<p>Two samples, \(\sigma=10\) for both, \(n=50\) each, means 54 and 50. z?</p>`,ans:[2],lab:["z"],sol:R`SE = √(2 + 2) = 2. z = 4/2 = 2.`}
+]},
+ci:{learn:R`<p class="idea"><b>The big idea:</b> a confidence interval is "my estimate, plus or minus a margin". The margin is a z-value times the standard error.</p>
+\[\bar x\pm z_c\cdot\frac{\sigma}{\sqrt n}\]
+<ul><li>Exam z-values (from its table): 90% → 1.5, 95% → 2, 99% → 2.5 two-sided. The real values are 1.645, 1.96, 2.576.</li>
+<li><b>Wider</b> when you want more confidence or the data is more spread out. <b>Narrower</b> with more data: 4× n → half the width.</li>
+<li><b>Meaning:</b> if you repeated the experiment many times, about 95% of the intervals would contain \(\mu\). \(\mu\) is fixed; the interval moves.</li>
+<li>One-sided bound: use the one-sided z (all the error in one tail), and one end is \(\pm\infty\).</li>
+<li>Small \(n\), unknown \(\sigma\): swap \(z_c\) for \(t_c\) with \(n-1\) degrees of freedom.</li></ul>
+<div class="ex"><b>Example:</b> \(n=64,\ \bar x=57,\ s=24\). SE = 24/8 = 3. 90%: \(57\pm1.5(3)=[52.5,\ 61.5]\).</div>
+<p><b>Common mistakes:</b> forgetting the \(\sqrt n\); using the one-sided z for a two-sided interval; saying "95% chance μ is in this interval".</p>`,
+warm:[
+ {step:"SE",kind:"num",q:R`<p>\(\bar x=57,\ s=24,\ n=64\). SE?</p>`,ans:[3],lab:["SE"],sol:R`24/8.`},
+ {step:"Interval",kind:"num",q:R`<p>Same data, 95% (z = 2). Lower bound?</p>`,ans:[51],lab:["lower"],sol:R`57 − 6.`},
+ {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400. The width</p>`,o:["halves","quarters","doubles","stays"],a:"A",sol:R`\(\sqrt{4}=2\).`},
+ {step:"Confidence",kind:"mc",q:R`<p>A 99% interval vs a 95% interval from the same data:</p>`,o:["99% is wider","99% is narrower","Same width","Can't tell"],a:"A",sol:R`More confidence needs a bigger net.`},
+ {step:"Exam shape",kind:"num",q:R`<p>\(n=900,\ \bar x=7.2,\ s=1.5\). 99% CI with z = 2.5?</p>`,ans:[7.075,7.325],lab:["lower","upper"],sol:R`SE = 0.05; margin 0.125.`}
+]},
+reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the features, \(\hat y=a_1x_1+\dots+a_mx_m+b\), choosing the weights that make the average squared error (MSE) as small as possible.</p>
+<p><b>Matrix form:</b> one row per data point, one column per feature, plus a column of <b>1s</b> for \(b\).</p>
+\[X=\begin{bmatrix}x_{11}&x_{12}&1\\x_{21}&x_{22}&1\\\vdots&\vdots&\vdots\end{bmatrix},\quad \beta=\begin{bmatrix}a_1\\a_2\\b\end{bmatrix},\quad X^TX\beta=X^Ty\ \Rightarrow\ \beta=(X^TX)^{-1}X^Ty\]
+<ul><li>\(X\) is \(n\times(m+1)\); \(X^TX\) is \((m+1)\times(m+1)\).</li>
+<li>\(X^TX\) can't be inverted when columns are linearly dependent, e.g. more parameters than data points. Then infinitely many solutions.</li>
+<li>A feature like \(x_1^2\) is just another column. Still "linear" regression.</li></ul>
+<p><b>Judging a fit:</b> residual \(y_i-\hat y_i\); \(MSE=\frac1n\sum(y_i-\hat y_i)^2\); \(R^2=1-\dfrac{MSE}{\sigma_y^2}\) (fraction of variance explained, 1 is perfect, near 0 is bad).</p>
+<div class="ex"><b>Example:</b> \(\hat y=4x_1+0.2x_2+30\) at \((5, 80)\) → 66. Actual 76 → residual 10, squared 100.</div>
+<p><b>One feature by hand:</b> \(a=\dfrac{\sum x_iy_i-n\bar x\bar y}{\sum x_i^2-n\bar x^2}\), \(b=\bar y-a\bar x\).</p>
+<p><b>Comparing weights:</b> only fair after standardizing features \((x-\bar x)/s\); otherwise scale decides the size.</p>
+<p><b>Common mistakes:</b> forgetting the 1s column; dividing the MSE by the wrong count; using \(1-\sigma_y^2/MSE\).</p>`,
+warm:[
+ {step:"Predict",kind:"num",q:R`<p>\(\hat y=2x_1+3x_2+1\) at \(x_1=1,\ x_2=2\)?</p>`,ans:[9],lab:["ŷ"],sol:R`2 + 6 + 1.`},
+ {step:"MSE",kind:"num",q:R`<p>Residuals 1, −2, 1. MSE?</p>`,ans:[2],lab:["MSE"],sol:R`(1 + 4 + 1)/3.`},
+ {step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`1 − 2/8.`},
+ {step:"Dimensions",kind:"mc",q:R`<p>10 points, 3 features, with intercept. Shape of X?</p>`,o:["10×4","10×3","4×10","4×4"],a:"A",sol:R`3 features + the 1s column.`},
+ {step:"Exam shape",kind:"num",q:R`<p>Fit \(\hat y=ax+b\) to (0, 1), (1, 3), (2, 5). Slope and intercept?</p>`,ans:[2,1],lab:["a","b"],sol:R`The points lie exactly on y = 2x + 1.`}
+]},
+fit:{learn:R`<p class="idea"><b>The big idea:</b> a model can fit the training data <i>too</i> well and then fail on new data (overfitting). Ridge regression fights this by charging a price for big weights; cross-validation picks how big that price should be.</p>
+<ul><li><b>Overfitting:</b> low training error, high test error. Too many parameters for the data. <b>Underfitting:</b> high error on both.</li>
+<li><b>Ridge:</b> minimize \(\|y-X\beta\|^2+\lambda\|\beta\|^2\). Solution \(\beta=(X^TX+\lambda I)^{-1}X^Ty\). The intercept is usually not penalized.</li>
+<li>Bigger \(\lambda\) → smaller weights, smoother model. \(\lambda=0\) is plain least squares.</li>
+<li>Penalty value: \(\lambda(a_1^2+a_2^2+\dots)\). Among several perfect fits, ridge picks the one with the smallest \(\|\beta\|^2\).</li>
+<li><b>Scale matters:</b> a feature with small numbers needs a big weight and gets punished more. Standardize first.</li></ul>
+<p><b>Evaluating:</b> split into train/test (80/20 or 90/10). The test set is the "real exam": never used for training or tuning.</p>
+<p><b>k-fold CV:</b> split into k parts; train on k−1, test on the one left out; repeat k times and average the test MSE. To pick λ: run CV for each λ (k models each), take the best, retrain on all the data. Leave-one-out: k = n. Trade-off: more stable estimate, k times the training.</p>
+<p><b>Common mistakes:</b> tuning on the test set; penalizing the intercept; forgetting to square in the penalty.</p>`,
+warm:[
+ {step:"Penalty",kind:"num",q:R`<p>λ = 3, weights \(a_1=1,\ a_2=2\). Penalty?</p>`,ans:[15],lab:["penalty"],sol:R`3(1 + 4).`},
+ {step:"Which β",kind:"mc",q:R`<p>Two perfect fits: \(\|\beta_1\|^2=13\), \(\|\beta_2\|^2=8\). Ridge picks</p>`,o:["β₂","β₁","either","neither"],a:"A",sol:R`Smaller norm.`},
+ {step:"CV count",kind:"num",q:R`<p>5-fold CV over 4 λ values. Models trained (before the final refit)?</p>`,ans:[20],lab:["models"],sol:R`4 × 5.`},
+ {step:"Diagnose",kind:"mc",q:R`<p>Train R² = 0.99, test R² = 0.2.</p>`,o:["Overfitting","Underfitting","Good fit","Data leak only"],a:"A",sol:R`Great on training, bad on new data.`},
+ {step:"Exam shape",kind:"num",q:R`<p>One feature, no intercept: \(x=[1,2],\ y=[2,4]\), λ = 5. Ridge weight \(a=\sum xy/(\sum x^2+\lambda)\)?</p>`,ans:[1],lab:["a"],sol:R`10/(5 + 5).`}
+]}
+};
+const HOOKS={
+  py:"Loop, check, append, return after the loop.",
+  dict:"Is the key there? Create it or add to it.",
+  hof:"Transform, keep, roll up.",
+  hist:"Count, then divide by n, then by the width.",
+  prob:"Probability is area; more than = 1 − CDF.",
+  clt:"Averages are normal, with spread σ/√n.",
+  hyp:"Assume nothing changed. How surprising is the data?",
+  ci:"Estimate ± z × SE.",
+  reg:"Add a column of 1s, then XᵀXβ = Xᵀy.",
+  fit:"Charge for big weights; test on unseen folds."
+};
+const SHEET={
+  py:{f:[R`<code>a[i:j:k]</code> stops before j; <code>a[-1]</code> last; <code>a[::-1]</code> reversed`,R`<code>range(s, e, step)</code> excludes e; <code>enumerate(a)</code> → (i, v)`,R`<code>append</code>, <code>insert(i,x)</code>, <code>remove(x)</code>, <code>pop(i)</code>, <code>x in a</code>, <code>len(a)</code>`,R`<code>b = a</code> aliases; <code>a.copy()</code> or <code>a[:]</code> copies`],trap:"return goes after the loop. Check range end points: length n+1 means range(…, n+1)."},
+  dict:{f:[R`Create-or-add: <code>d[k] = d.get(k, 0) + v</code>`,R`<code>for k, v in d.items()</code>; keys only: <code>for k in d</code>`,R`<code>{k: [] for k in keys}</code>; max key: <code>max(d, key=d.get)</code>`,R`set: no duplicates, no order; tuple: immutable, <code>("a",)</code>`],trap:"d[k] on a missing key is a KeyError. Iterating a dict gives keys, not values."},
+  hof:{f:[R`<code>lambda x, y: x + y</code>`,R`<code>list(map(f, a))</code>, <code>list(filter(pred, a))</code>`,R`<code>from functools import reduce</code>; <code>reduce(f, a)</code> = f(f(f(a0,a1),a2),a3)`,R`<code>[f(x) for x in a if c]</code>; <code>[A if c else B for x in a]</code>; nested: outer for first`],trap:"Wrap map/filter in list(). if-else goes before for; a filter if goes after."},
+  hist:{f:[R`count \(c_i\); probability \(p_i=c_i/n\) (sum 1)`,R`density \(d_i=p_i/w\) (area 1)`,R`\([a,b)\) bins; last bin closed`,R`bins: \(\sqrt n\), Sturges \(\lceil\log_2n\rceil+1\)`],trap:"Density needs ÷ bin width. Edge values go to the right-hand bin."},
+  prob:{f:[R`Binomial: \(\binom nk p^k(1-p)^{n-k}\), mean \(np\), var \(np(1-p)\)`,R`Exponential: \(F=1-e^{-\lambda x}\), \(P(X>x)=e^{-\lambda x}\), mean \(1/\lambda\)`,R`Normal: 68 / 95 / 99.7 within 1 / 2 / 3 σ`,R`one tail beyond z = 1, 2, 3: 0.16, 0.025, 0.0015`],trap:"“More than” is 1 − CDF. Estimate p as (sample mean)/(trials)."},
+  clt:{f:[R`\(\bar X\approx\mathcal N(\mu,\sigma^2/n)\), \(SE=\sigma/\sqrt n\)`,R`\(s^2=\frac1{n-1}\sum(x_i-\bar x)^2\)`,R`\(z=(c-\mu)/SE\) for "P(mean > c)"`,R`\(n=(\sigma/SE)^2\); 4× n halves SE`],trap:"Questions about the mean use SE, not σ. Population shape doesn't matter for n ≥ 30."},
+  hyp:{f:[R`\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}\)`,R`two-sided \(p=2P(Z>|z|)\): z = 1, 2, 3 → 0.32, 0.05, 0.003`,R`two-sample: \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}\)`,R`reject if \(p<\alpha\); t-test if σ unknown and n < 30 (df = n − 1)`],trap:"Say “fail to reject”, never “accept”. Hypotheses use μ, not x̄. State the decision in context."},
+  ci:{f:[R`\(\bar x\pm z_c\,\sigma/\sqrt n\)`,R`exam z: 90% 1.5, 95% 2, 99% 2.5 (real 1.645, 1.96, 2.576)`,R`wider: more confidence, more spread; narrower: more n`,R`95% of intervals from repeated samples contain μ`],trap:"μ is fixed, the interval moves. 4× the data halves the width."},
+  reg:{f:[R`\(X\) rows = points, columns = features + 1s`,R`\(X^TX\beta=X^Ty\), \(\beta=(X^TX)^{-1}X^Ty\)`,R`\(MSE=\frac1n\sum(y-\hat y)^2\), \(R^2=1-MSE/\sigma_y^2\)`,R`\(a=\frac{\sum xy-n\bar x\bar y}{\sum x^2-n\bar x^2}\), \(b=\bar y-a\bar x\)`],trap:"Dependent columns or more parameters than points → XᵀX not invertible. Compare weights only after standardizing."},
+  fit:{f:[R`ridge: \(\min\|y-X\beta\|^2+\lambda\|\beta\|^2\), \(\beta=(X^TX+\lambda I)^{-1}X^Ty\)`,R`penalty \(\lambda\sum a_i^2\) (not b)`,R`overfit: low train, high test error; underfit: both high`,R`k-fold: k models per λ, average test MSE, refit on all data`],trap:"Never tune on the test set. Small-scale features get over-penalized: standardize first."}
+};
+</script>
+<script>
+(function(){
+const LET="ABCDEFG";
+const $=s=>document.querySelector(s);
+const SKEY="ece20875e1";
+P.forEach(q=>{q.id=q.s+"-"+q.n;q.parts.forEach((p,i)=>{p.id=q.id+"-"+i;p.t=p.t||q.t})});
+const PARTS=P.flatMap(q=>q.parts);
+const setOrder=Object.keys(SETS);
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||"null")||d}catch(e){return d}};
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let prog=load(SKEY,{}),warm=load(SKEY+"w",{}),drafts=load(SKEY+"d",{});
+const save=()=>store(SKEY,prog),saveWarm=()=>store(SKEY+"w",warm);
+let draftT;const saveDrafts=()=>{clearTimeout(draftT);draftT=setTimeout(()=>store(SKEY+"d",drafts),400)};
+
+/* math typesetting: only once elements are visible (same trick as the MA 261 page) */
+const pending=new Set();
+function flushMath(){
+  if(!(window.MathJax&&MathJax.typesetPromise))return;
+  const vis=[...pending].filter(e=>e.isConnected&&e.getClientRects().length);
+  if(!vis.length)return;vis.forEach(e=>pending.delete(e));MathJax.typesetPromise(vis).catch(()=>{});
+}
+function typeset(el){pending.add(el);queueMicrotask(flushMath)}
+$("#mjx").addEventListener("load",()=>{const go=()=>{if(MathJax.typesetPromise)flushMath();else setTimeout(go,60)};go()});
+
+/* ---------- Python in a worker (Pyodide), so an infinite loop can be killed ---------- */
+const PYO="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
+const HARNESS=`
+import sys, io, json, math, traceback
+def _harness(job):
+    job = json.loads(job)
+    ns = {"__name__": "__main__"}
+    buf = io.StringIO(); old = sys.stdout; sys.stdout = buf
+    try:
+        try:
+            if job["pre"]: exec(job["pre"], ns)
+            exec(job["src"], ns)
+        except BaseException as e:
+            tb = traceback.format_exception(type(e), e, e.__traceback__)
+            return json.dumps({"out": buf.getvalue(), "err": "".join(tb[-2:]), "res": []})
+        res = []
+        for call, exp in job["tests"]:
+            try:
+                g = eval(call, ns); x = eval(exp, ns)
+                same = g == x or (isinstance(g, (int, float)) and isinstance(x, (int, float)) and math.isclose(g, x, rel_tol=1e-9, abs_tol=1e-9))
+                res.append([call, bool(same), repr(g), repr(x)])
+            except BaseException as e:
+                res.append([call, False, type(e).__name__ + ": " + str(e), exp])
+        return json.dumps({"out": buf.getvalue(), "err": "", "res": res})
+    finally:
+        sys.stdout = old
+`;
+const WORKER=`importScripts("${PYO}pyodide.js");
+const ready=loadPyodide({indexURL:"${PYO}"}).then(py=>{py.runPython(${JSON.stringify(HARNESS)});postMessage({ready:1});return py});
+ready.catch(e=>postMessage({fail:String(e)}));
+onmessage=async e=>{const py=await ready;postMessage({id:e.data.id,r:py.globals.get("_harness")(e.data.job)})};`;
+let wk=null,wkReady=false,jobs=new Map(),jobN=0;
+function worker(){
+  if(wk)return wk;
+  wk=new Worker(URL.createObjectURL(new Blob([WORKER],{type:"text/javascript"})));wkReady=false;
+  wk.onmessage=e=>{const d=e.data;
+    if(d.ready){wkReady=true;jobs.forEach(j=>j.arm());return}
+    if(d.fail){wk.terminate();wk=null;jobs.forEach(j=>j.done({err:"Could not load Python: "+d.fail+"\nCheck your connection and try again.",res:[],out:""}));return}
+    const j=jobs.get(d.id);if(j)j.done(JSON.parse(d.r))};
+  return wk;
+}
+// ponytail: 6 s limit once Python is loaded; a stuck run kills the worker and the next run reloads Pyodide (from cache)
+function runPy(pre,src,tests,onLoading){
+  return new Promise(res=>{
+    const id=++jobN;let t=null;
+    const j={done(r){clearTimeout(t);jobs.delete(id);res(r)},
+      arm(){clearTimeout(t);t=setTimeout(()=>{wk.terminate();wk=null;jobs.forEach(x=>x.done({err:"Stopped after 6 seconds. Is there a loop that never ends?",res:[],out:""}))},6000)}};
+    jobs.set(id,j);worker();
+    if(wkReady)j.arm();else onLoading&&onLoading();
+    wk.postMessage({id,job:JSON.stringify({pre:pre||"",src,tests:tests||[]})});
+  });
+}
+function showRun(out,r,need,src){
+  const L=[];
+  if(r.out)L.push(esc(r.out.replace(/\s+$/,"")));
+  if(r.err)L.push(`<span class="f">${esc(r.err.replace(/\s+$/,""))}</span>`);
+  let ok=!r.err&&r.res.length>0;
+  r.res.forEach(([c,pass,got,exp])=>{ok=ok&&pass;L.push(pass?`<span class="p">✓ ${esc(c)} → ${esc(got)}</span>`:`<span class="f">✗ ${esc(c)}\n   got      ${esc(got)}\n   expected ${esc(exp)}</span>`)});
+  (need||[]).forEach(w=>{if(!src.includes(w)){ok=false;L.push(`<span class="f">✗ the question asks you to use ${esc(w)}</span>`)}});
+  if(r.res.length)L.push(ok?`<span class="p">All tests passed.</span>`:"Some tests failed.");
+  out.innerHTML=L.join("\n")||"(no output)";out.hidden=false;
+  return ok;
+}
+
+/* ---------- answer checking ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/[−–]/g,"-").replace(/,/g,"").replace(/\s+/g,"");
+  if(!s)return NaN;
+  let pct=false;if(s.endsWith("%")){pct=true;s=s.slice(0,-1)}
+  const v=s.includes("/")?s.split("/").map(Number).reduce((a,b)=>a/b):Number(s);
+  return pct?v/100:v;
+}
+// within 1% (so 0.387 passes for 0.39), with a floor for small numbers
+const close=(x,a)=>Math.abs(x-a)<=Math.max(.01*Math.abs(a),Math.abs(a)<.1?.0005:.005);
+
+/* ---------- one part of a problem ---------- */
+// mode: practice | warm (saved) | mock (no feedback until review)
+function partEl(p,mode,label){
+  const st=mode==="warm"?warm:prog,el=document.createElement("div");el.className="part";
+  const ans=p.kind==="num"?p.ans.map((a,i)=>(p.lab?p.lab[i]+" = ":"")+a).join(", "):p.kind==="mc"?p.a:"";
+  el.innerHTML=`${label===false?"":`<div class="ph"><b>${label||"Part "+p.p}</b>${p.pts?`<span>[${p.pts} pts]</span>`:""}<span class="tick"></span></div>`}
+    <div class="pq">${p.q}</div><div class="inp"></div>
+    <div class="foot"><span class="verdict"></span><button class="linkbtn sh" type="button">Show solution</button>
+      <span class="self" hidden>Grade yourself:<button class="btn ghost ok" data-g="1" type="button">Got it</button><button class="btn ghost no" data-g="0" type="button">Missed it</button></span></div>
+    <div class="sol" hidden>${ans?`<span class="k">Answer: ${ans}</span>`:""}${p.kind==="code"?C(p.sol):p.sol}${p.why?`<div>${p.why}</div>`:""}</div>`;
+  const inp=el.querySelector(".inp"),sol=el.querySelector(".sol"),sh=el.querySelector(".sh"),v=el.querySelector(".verdict"),self=el.querySelector(".self"),tick=el.querySelector(".tick");
+  const live=mode==="practice"||mode==="warm";
+  function mark(ok,quiet){
+    el.res=ok;v.className="verdict "+(ok?"ok":"no");v.textContent=ok?"Correct":"Not yet";
+    if(tick){tick.className="tick "+(ok?"ok":"no");tick.textContent=ok?"✓":"✗"}
+    self.querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.g===+ok));
+    if(live){st[p.id]={ok};mode==="warm"?saveWarm():save();if(!quiet){cheer(el,ok);changed()}}
+    else if(el.onscore){if(!quiet)cheer(el,ok);el.onscore()}
+  }
+  function reveal(){sol.hidden=false;sh.textContent="Hide solution";if(p.kind==="code"||p.kind==="free")self.hidden=false;typeset(sol);flushMath()}
+  sh.onclick=()=>{if(sol.hidden)reveal();else{sol.hidden=true;sh.textContent="Show solution"}};
+  self.querySelectorAll("button").forEach(b=>b.onclick=()=>mark(b.dataset.g==="1"));
+  if(mode==="mock")sh.hidden=true;
+  const dk=mode==="mock"?null:(mode==="warm"?"w:":"")+p.id;
+
+  if(p.kind==="mc"){
+    inp.innerHTML=`<div class="opts">${p.o.map((o,i)=>`<button class="opt" type="button"><span class="L">${LET[i]}</span><span>${o}</span></button>`).join("")}</div>`;
+    const opts=[...inp.querySelectorAll(".opt")],ai=LET.indexOf(p.a);
+    const lock=pick=>opts.forEach((b,i)=>{b.disabled=true;if(i===ai)b.classList.add("right");else if(i===pick)b.classList.add("wrong")});
+    opts.forEach((b,i)=>b.onclick=()=>{
+      if(mode==="mock"){opts.forEach(o=>o.classList.remove("sel"));b.classList.add("sel");el.pick=i;el.oninput&&el.oninput();return}
+      lock(i);mark(i===ai);if(i!==ai)reveal()});
+    el.answered=()=>el.pick!=null;
+    el.review=()=>{lock(el.pick);if(el.pick!=null)mark(el.pick===ai,true);else{mark(false,true);v.textContent="Not answered · correct: "+p.a}reveal()};
+    if(live&&st[p.id]){lock(st[p.id].ok?ai:-1);mark(st[p.id].ok,true)}
+  } else if(p.kind==="num"){
+    inp.innerHTML=`<div class="nums">${p.ans.map((a,i)=>`<label>${p.lab?p.lab[i]:"answer"}<input inputmode="decimal" autocomplete="off" spellcheck="false"></label>`).join("")}${mode==="mock"?"":`<button class="btn" type="button">Check</button>`}</div>`;
+    const ins=[...inp.querySelectorAll("input")],btn=inp.querySelector(".btn");
+    if(dk&&drafts[dk])ins.forEach((x,i)=>x.value=drafts[dk][i]||"");
+    ins.forEach(x=>x.addEventListener("input",()=>{x.classList.remove("right","wrong");if(dk){drafts[dk]=ins.map(y=>y.value);saveDrafts()}el.oninput&&el.oninput()}));
+    const check=quiet=>{
+      const vals=ins.map(x=>parseNum(x.value));
+      if(!quiet&&vals.some(isNaN)){v.className="verdict no";v.textContent="Enter a number in every box (1/3 and 2.5% work too)";return}
+      const ok=vals.map((x,i)=>!isNaN(x)&&close(x,p.ans[i]));
+      ins.forEach((x,i)=>{x.classList.toggle("right",ok[i]);x.classList.toggle("wrong",!ok[i])});
+      const all=ok.every(Boolean);mark(all,quiet);if(!all)v.textContent=`${ok.filter(Boolean).length} of ${ok.length} right`;
+    };
+    if(btn)btn.onclick=()=>check(false);
+    ins.forEach(x=>x.addEventListener("keydown",e=>{if(e.key==="Enter"&&btn)check(false)}));
+    el.answered=()=>ins.some(x=>x.value.trim());
+    el.review=()=>{ins.forEach(x=>x.readOnly=true);check(true);if(!el.answered())v.textContent="Not answered";reveal()};
+    if(live&&st[p.id])mark(st[p.id].ok,true);
+  } else if(p.kind==="code"){
+    inp.innerHTML=`<textarea class="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code" rows="${p.start.split("\n").length+1}"></textarea>
+      <div class="foot">${mode==="mock"?"":`<button class="btn primary run" type="button">Run tests</button>`}<button class="btn ghost rst" type="button">Reset code</button></div><pre class="out" hidden></pre>`;
+    const ta=inp.querySelector("textarea"),out=inp.querySelector(".out"),run=inp.querySelector(".run");
+    ta.value=(dk&&drafts[dk])||p.start;
+    ta.addEventListener("input",()=>{if(dk){drafts[dk]=ta.value;saveDrafts()}el.oninput&&el.oninput()});
+    // Tab types 4 spaces; Esc then Tab leaves the box (keyboard users aren't trapped)
+    let escd=false;ta.addEventListener("keydown",e=>{if(e.key==="Escape"){escd=true;return}
+      if(e.key==="Tab"&&!escd&&!e.shiftKey){e.preventDefault();ta.setRangeText("    ",ta.selectionStart,ta.selectionEnd,"end");ta.dispatchEvent(new Event("input"))}escd=false});
+    inp.querySelector(".rst").onclick=()=>{ta.value=p.start;if(dk){delete drafts[dk];saveDrafts()}out.hidden=true};
+    el.answered=()=>ta.value.trim()!==p.start.trim();
+    const go=async quiet=>{
+      const src=ta.value;
+      if(src.includes("____")){out.hidden=false;out.innerHTML=`<span class="f">Fill in every ____ first.</span>`;return}
+      if(run)run.disabled=true;out.hidden=false;out.textContent="Running…";
+      const r=await runPy(p.pre,src,p.tests,()=>out.textContent="Loading Python (about 10 s the first time)…");
+      if(run)run.disabled=false;
+      const ok=showRun(out,r,p.need,src);achFlag("ran");
+      if(ok){if(!st[p.id]?.ok)ach.passed=(ach.passed||0)+1;mark(true,quiet)}
+      else if(quiet)mark(false,true);
+      else{v.className="verdict no";v.textContent="Not yet. Fix it and run again, or show the solution."}
+    };
+    if(run)run.onclick=()=>go(false);
+    el.review=()=>{ta.readOnly=true;reveal();
+      const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="Run tests on my answer";b.onclick=()=>go(true);inp.querySelector(".foot").prepend(b)};
+    if(live&&st[p.id])mark(st[p.id].ok,true);
+  } else {
+    inp.innerHTML=`<textarea class="work" aria-label="Your answer" placeholder="Write your answer the way you would on paper, then show the solution and grade yourself."></textarea>`;
+    const ta=inp.querySelector("textarea");if(dk&&drafts[dk])ta.value=drafts[dk];
+    ta.addEventListener("input",()=>{if(dk){drafts[dk]=ta.value;saveDrafts()}el.oninput&&el.oninput()});
+    el.answered=()=>ta.value.trim()!=="";
+    el.review=()=>{ta.readOnly=true;reveal()};
+    if(live&&st[p.id])mark(st[p.id].ok,true);
+  }
+  typeset(el.querySelector(".pq"));
+  return el;
+}
+
+/* ---------- problem card ---------- */
+const topicsOf=q=>[...new Set(q.parts.map(p=>p.t))];
+function card(q){
+  const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
+  const pts=q.parts.reduce((s,p)=>s+(p.pts||0),0);
+  el.innerHTML=`<div class="meta"><span>${SETS[q.s].name} · Q${q.n}</span>${topicsOf(q).map(t=>`<button class="chip" type="button" data-topic="${t}" title="Drill this topic">${TOPICS[t]}</button>`).join("")}<span class="pts">${pts} pts</span></div><div class="ctx">${q.ctx}</div>`;
+  q.parts.forEach(p=>el.appendChild(partEl(p,"practice")));
+  el.querySelectorAll(".chip").forEach(b=>b.onclick=()=>drill(b.dataset.topic));
+  paint(el,q);typeset(el.querySelector(".ctx"));
+  return el;
+}
+function paint(el,q){const d=q.parts.filter(p=>prog[p.id]),full=d.length===q.parts.length;
+  el.classList.toggle("ok",full&&d.every(p=>prog[p.id].ok));el.classList.toggle("no",full&&d.some(p=>!prog[p.id].ok))}
+function changed(){renderStats();renderBars();resetLabel();renderLessonProg();
+  document.querySelectorAll("#qlist .qc").forEach(el=>{const q=P.find(x=>x.id===el.dataset.id);if(q)paint(el,q)})}
+
+/* ---------- stats ---------- */
+function renderStats(){
+  const d=PARTS.filter(p=>prog[p.id]),r=d.filter(p=>prog[p.id].ok).length;
+  $("#stats").innerHTML=`<span><b>${P.length}</b> problems</span><span><b>${PARTS.length}</b> parts</span><span><b>2</b> official mocks</span><span>you: <b>${d.length}</b> parts done · <b>${d.length?Math.round(100*r/d.length):0}%</b> right</span>`;
+}
+
+/* ---------- practice ---------- */
+let order=P.slice();
+function fillSelects(){
+  $("#fSet").innerHTML=`<option value="all">Everything</option>`+setOrder.map(k=>`<option value="${k}">${SETS[k].long}</option>`).join("");
+  $("#fTopic").innerHTML=`<option value="all">All topics</option>`+Object.entries(TOPICS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+}
+const inFilter=()=>{const s=$("#fSet").value,t=$("#fTopic").value;return P.filter(q=>(s==="all"||q.s===s)&&(t==="all"||topicsOf(q).includes(t)))};
+function renderPractice(){
+  const open=$("#fOpen").checked,keep=inFilter(),list=order.filter(q=>keep.includes(q)&&(!open||q.parts.some(p=>!prog[p.id])));
+  const box=$("#qlist");box.innerHTML="";
+  const parts=list.flatMap(q=>q.parts),done=parts.filter(p=>prog[p.id]).length,s=$("#fSet").value;
+  $("#count").textContent=`${list.length} problem${list.length===1?"":"s"} · ${parts.length} parts · ${done} done`+(s!=="all"?" · "+SETS[s].note:"");
+  resetLabel();
+  if(!list.length){box.innerHTML=`<p class="sub">Nothing left here. Clear the filters or reset your progress.</p>`;return}
+  list.forEach(q=>box.appendChild(card(q)));
+}
+["#fSet","#fTopic","#fOpen"].forEach(s=>$(s).addEventListener("change",()=>{store(SKEY+"f",{s:$("#fSet").value,t:$("#fTopic").value});renderPractice()}));
+$("#shuffle").onclick=()=>{order=P.slice().sort(()=>Math.random()-.5);renderPractice()};
+function drill(t){$("#fTopic").value=t;$("#fSet").value="all";$("#fOpen").checked=false;showTab("practice");renderPractice();window.scrollTo({top:0})}
+function twoClick(b,act){let t=null;
+  b.onclick=()=>{if(!t){b.dataset.idle=b.textContent;b.textContent="Click again to erase";b.classList.remove("ghost");
+      t=setTimeout(()=>{t=null;b.textContent=b.dataset.idle;b.classList.add("ghost")},3000);return}
+    clearTimeout(t);t=null;b.classList.add("ghost");act()}}
+function resetLabel(){const s=$("#fSet").value,t=$("#fTopic").value,b=$("#reset");
+  b.textContent=s==="all"&&t==="all"?"Reset all progress":"Reset "+[s!=="all"&&SETS[s].name,t!=="all"&&TOPICS[t]].filter(Boolean).join(" · ");
+  b.disabled=!inFilter().some(q=>q.parts.some(p=>prog[p.id]))}
+twoClick($("#reset"),()=>{inFilter().forEach(q=>q.parts.forEach(p=>{delete prog[p.id];delete drafts[p.id]}));save();saveDrafts();renderPractice();changed()});
+
+/* ---------- topics & notes ---------- */
+const OFFICIAL=P.filter(q=>q.s!=="X").flatMap(q=>q.parts);
+function renderBars(){
+  const rows=Object.entries(TOPICS).map(([k,v])=>{const d=PARTS.filter(p=>p.t===k&&prog[p.id]);
+    return{k,v,n:OFFICIAL.filter(p=>p.t===k).reduce((s,p)=>s+p.pts,0),done:d.length,right:d.filter(p=>prog[p.id].ok).length}}).sort((a,b)=>b.n-a.n);
+  const max=Math.max(...rows.map(r=>r.n));
+  $("#bars").innerHTML=rows.map(r=>{const pct=r.done?Math.round(100*r.right/r.done):null;
+    return `<button class="lab" type="button" data-k="${r.k}">${r.v}</button><div class="track"><div class="fill" style="width:${100*r.n/max}%"></div>${pct!=null?`<div class="acc" style="width:${(100*r.n/max)*pct/100}%"></div>`:""}</div><span class="num">${r.n} pts${pct!=null?` · ${pct}%`:""}</span>`}).join("");
+  $("#bars").querySelectorAll(".lab").forEach(b=>b.onclick=()=>drill(b.dataset.k));
+}
+function renderSheet(){
+  $("#sheet").innerHTML=Object.entries(SHEET).map(([k,s])=>`<div class="card"><h3>${TOPICS[k]}</h3><ul>${s.f.map(f=>`<li>${f}</li>`).join("")}</ul><div class="trap"><b>Trap</b>${s.trap}</div></div>`).join("");
+  typeset($("#sheet"));
+}
+$("#print").onclick=()=>{achFlag("print");window.print()};
+
+/* ---------- start here ---------- */
+function renderLessons(){
+  const box=$("#lessons");
+  Object.keys(TOPICS).forEach((k,ti)=>{
+    const L=LEARN[k],n=PARTS.filter(p=>p.t===k).length;
+    L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k});
+    const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="qlist"></div>
+      <div class="lfoot"><button class="btn primary next" type="button">Now try the ${n} exam part${n===1?"":"s"} on this →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
+    const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach((w,i)=>{
+      const c=document.createElement("article");c.className="qc";c.innerHTML=`<div class="meta"><span>Warm-up ${i+1} of ${L.warm.length} · ${w.step}</span></div>`;
+      c.appendChild(partEl(w,"warm",false));ql.appendChild(c)})};fill();
+    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>{delete warm[w.id];delete drafts["w:"+w.id]});saveWarm();saveDrafts();fill();renderLessonProg()});
+    typeset(d.querySelector(".refresh"));
+    d.addEventListener("toggle",()=>{if(d.open&&!d.built){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
+    d.querySelector(".next").onclick=()=>drill(k);
+    box.appendChild(d);
+  });
+  renderLessonProg();
+}
+function renderLessonProg(){
+  let tot=0,done=0,topics=0;
+  document.querySelectorAll(".lesson").forEach(d=>{
+    const w=LEARN[d.dataset.k].warm,n=w.filter(x=>warm[x.id]).length,full=n===w.length;
+    tot+=w.length;done+=n;topics+=full;
+    d.querySelectorAll(".dots i").forEach((el,i)=>{const p=warm[w[i].id];el.className=!p?"":p.ok?"ok":"no"});
+    if(full&&d.dataset.full==="0")confetti(d.querySelector("summary"));
+    d.dataset.full=full?"1":"0";d.classList.toggle("done",full);
+    d.querySelector(".n").textContent=full?"✓":d.dataset.n;
+    d.querySelector(".wreset").disabled=!n;
+  });
+  $("#meter").innerHTML=`<div class="mbar"><i style="width:${100*done/tot}%"></i></div><span><b>${done}</b>/${tot} warm-ups · <b>${topics}</b>/${Object.keys(TOPICS).length} topics done</span>`;
+}
+
+/* ---------- mock exam ---------- */
+const MOCK_MIN=60,mockState={qs:[],els:[],end:0,timer:null,done:false};
+function mockIntro(){
+  $("#mock").innerHTML=`<div class="intro"><h2>Mock Exam 1</h2><p class="sub">Six problems, one from each area the real exam covers, drawn from both official mocks and the lab extras.</p>
+  <ul><li>${MOCK_MIN} minutes on the clock, about 10 per problem</li><li>No checking or solutions until you submit</li><li>Work on paper like the real thing, then type your final answers</li><li>After you submit, numbers and multiple choice grade themselves; grade your code and written answers against the solutions</li></ul>
+  <button class="btn primary" id="mStart" type="button">Start mock exam</button></div>`;
+  $("#mStart").onclick=startMock;
+}
+function startMock(){
+  const pick=a=>a[Math.random()*a.length|0];
+  mockState.qs=SLOTS.map(([,ts])=>pick(P.filter(q=>ts.includes(q.t))));
+  mockState.done=false;mockState.counted=false;mockState.end=Date.now()+MOCK_MIN*60000;mockState.els=[];
+  $("#mock").innerHTML=`<div class="mockbar"><span class="timer" id="mTime">${MOCK_MIN}:00</span><span id="mCount"></span><button class="btn primary" id="mSubmit" type="button">Submit</button></div><div class="qlist" id="mList"></div>`;
+  mockState.qs.forEach((q,i)=>{
+    const c=document.createElement("article");c.className="qc";
+    c.innerHTML=`<div class="meta"><span>Question ${i+1} of 6 · ${SLOTS[i][0]}</span><span class="pts">${q.parts.reduce((s,p)=>s+p.pts,0)} pts</span></div><div class="ctx">${q.ctx}</div>`;
+    q.parts.forEach(p=>{const e=partEl(p,"mock");e.oninput=updateMockCount;e.p=p;mockState.els.push(e);c.appendChild(e)});
+    typeset(c.querySelector(".ctx"));$("#mList").appendChild(c);
+  });
+  updateMockCount();$("#mSubmit").onclick=submitMock;
+  clearInterval(mockState.timer);mockState.timer=setInterval(tick,1000);tick();window.scrollTo({top:0});flushMath();
+}
+function tick(){const left=Math.max(0,mockState.end-Date.now()),el=$("#mTime");if(!el){clearInterval(mockState.timer);return}
+  el.textContent=Math.floor(left/60000)+":"+String(Math.floor(left/1000)%60).padStart(2,"0");if(left<=0)submitMock()}
+function updateMockCount(){const c=$("#mCount");if(c)c.textContent=mockState.els.filter(e=>e.answered()).length+" / "+mockState.els.length+" parts answered"}
+function mockScore(){
+  const tot=mockState.els.reduce((s,e)=>s+e.p.pts,0),got=mockState.els.filter(e=>e.res).reduce((s,e)=>s+e.p.pts,0);
+  const left=mockState.els.filter(e=>e.res===undefined).length,sc=Math.round(100*got/tot);
+  $("#mScore").textContent=sc;$("#mLeft").textContent=left?`${left} part${left===1?"":"s"} still to grade yourself below`:"All parts graded";
+  if(!left){if(!mockState.counted)ach.mocks=(ach.mocks||0)+1;mockState.counted=true;ach.mockBest=Math.max(ach.mockBest||0,sc);saveAch();checkAch()}
+}
+function submitMock(){
+  if(mockState.done)return;mockState.done=true;clearInterval(mockState.timer);
+  const used=Math.round((MOCK_MIN*60000-Math.max(0,mockState.end-Date.now()))/60000);
+  const list=$("#mList");list.remove();
+  $("#mock").innerHTML=`<div class="intro"><div class="eyebrow">Mock result · about ${used} min used</div><div class="score" id="mScore">0</div><p class="sub"><span id="mLeft"></span>. Score is out of 100.</p><button class="btn primary" id="mAgain" type="button">New mock exam</button></div>`;
+  list.style.marginTop="14px";$("#mock").appendChild(list);
+  mockState.els.forEach(e=>{e.onscore=mockScore;e.review()});
+  mockScore();$("#mAgain").onclick=startMock;window.scrollTo({top:0});flushMath();
+}
+
+/* ---------- small canvas plotting kit ---------- */
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cv=n=>getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const fx=(v,d=3)=>{let s=(+v).toFixed(d);if(s.includes("."))s=s.replace(/\.?0+$/,"");return s.replace("-","−")};
+const VIZS=[];
+function plot(host,o){
+  const box=document.createElement("div");box.className="viz";
+  box.innerHTML=`<div class="vfig"><canvas role="img" aria-label="${o.label}"></canvas>${o.hint?`<p class="vhint">${o.hint}</p>`:""}</div><div class="vside"><div class="vctl"></div><div class="vread" aria-live="polite"></div>${o.cap?`<p class="vcap">${o.cap}</p>`:""}</div>`;
+  host.appendChild(box);
+  const c=box.querySelector("canvas"),ctx=c.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1);
+  const W=Math.round(c.getBoundingClientRect().width)||320,H=Math.round(W*(o.aspect||.75));
+  c.width=W*dpr;c.height=H*dpr;c.style.height=H+"px";
+  const pad={l:40,r:10,t:12,b:26};
+  const g={c,ctx,W,H,ctl:box.querySelector(".vctl"),read:box.querySelector(".vread"),
+    range(xr,yr){g.xr=xr;g.yr=yr},
+    X:x=>pad.l+(x-g.xr[0])/(g.xr[1]-g.xr[0])*(W-pad.l-pad.r),Y:y=>H-pad.b-(y-g.yr[0])/(g.yr[1]-g.yr[0])*(H-pad.t-pad.b),
+    redraw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);g.draw()}};
+  VIZS.push(g);return g;
+}
+function frame(g,xt,yt,xl){const c=g.ctx;c.font="11px "+cv("f-mono");c.fillStyle=cv("muted");c.strokeStyle=cv("grid");c.lineWidth=1;
+  c.beginPath();(yt||[]).forEach(y=>{c.moveTo(g.X(g.xr[0]),g.Y(y));c.lineTo(g.X(g.xr[1]),g.Y(y))});c.stroke();
+  c.textAlign="right";(yt||[]).forEach(y=>c.fillText(fx(y),g.X(g.xr[0])-4,g.Y(y)+4));
+  c.textAlign="center";(xt||[]).forEach(x=>c.fillText(fx(x),g.X(x),g.H-10));
+  c.strokeStyle=cv("rule");c.lineWidth=1.5;c.beginPath();c.moveTo(g.X(g.xr[0]),g.Y(g.yr[0]));c.lineTo(g.X(g.xr[1]),g.Y(g.yr[0]));c.stroke();
+  if(xl){c.textAlign="right";c.fillText(xl,g.W-10,g.H-10)}c.textAlign="left"}
+function rect(g,x0,x1,y,col,a=1){const c=g.ctx;c.globalAlpha=a;c.fillStyle=col;c.fillRect(g.X(x0),g.Y(y),g.X(x1)-g.X(x0),g.Y(g.yr[0])-g.Y(y));c.globalAlpha=1}
+function path(g,pts,col,w=2,dash){const c=g.ctx;c.save();c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(g.X(x),g.Y(y)):c.moveTo(g.X(x),g.Y(y)));c.stroke();c.restore()}
+function area(g,f,a,b,col,al=.35){if(b<=a)return;const c=g.ctx,n=120;c.beginPath();c.moveTo(g.X(a),g.Y(0));for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;c.lineTo(g.X(x),g.Y(f(x)))}c.lineTo(g.X(b),g.Y(0));c.closePath();c.globalAlpha=al;c.fillStyle=col;c.fill();c.globalAlpha=1}
+function fn(g,f,col,w=2){const n=200,[a,b]=g.xr;path(g,Array.from({length:n+1},(_,i)=>{const x=a+(b-a)*i/n;return[x,f(x)]}),col,w)}
+function dot(g,x,y,col,r=4){const c=g.ctx;c.beginPath();c.arc(g.X(x),g.Y(y),r,0,7);c.fillStyle=col;c.fill()}
+function slider(ctl,lab,min,max,step,val,on,show=fx){const l=document.createElement("label");
+  l.innerHTML=`<span>${lab}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}"><output>${show(val)}</output>`;
+  const i=l.querySelector("input"),o=l.querySelector("output");i.oninput=()=>{o.textContent=show(+i.value);on(+i.value)};ctl.appendChild(l);
+  return{set(v){i.value=v;o.textContent=show(v)}}}
+function choose(ctl,lab,opts,on){const l=document.createElement("label");l.className="vsel";
+  l.innerHTML=`<span>${lab}</span><select>${opts.map((o,i)=>`<option value="${i}">${o}</option>`).join("")}</select>`;
+  l.querySelector("select").onchange=e=>on(+e.target.value);ctl.appendChild(l);return l.querySelector("select")}
+function button(ctl,lab,on){let row=ctl.lastElementChild;if(!row||!row.classList.contains("vbtns")){row=document.createElement("div");row.className="vbtns";ctl.appendChild(row)}
+  const b=document.createElement("button");b.type="button";b.className="btn";b.textContent=lab;b.onclick=on;row.appendChild(b);return b}
+const ticks=(a,b,n=5)=>{const s=(b-a)/n,m=10**Math.floor(Math.log10(s)),st=[1,2,2.5,5,10].map(k=>k*m).find(k=>k>=s),t=[];for(let x=Math.ceil(a/st)*st;x<=b+1e-9;x+=st)t.push(+x.toFixed(10));return t};
+// stats helpers (Abramowitz–Stegun erf, good to ~1e-7)
+const erf=x=>{const t=1/(1+.3275911*Math.abs(x)),y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x);return x>=0?y:-y};
+const Phi=z=>.5*(1+erf(z/Math.SQRT2)),npdf=(x,m=0,s=1)=>Math.exp(-(((x-m)/s)**2)/2)/(s*Math.sqrt(2*Math.PI));
+const zq=p=>{let lo=-8,hi=8;for(let i=0;i<60;i++){const m=(lo+hi)/2;Phi(m)<p?lo=m:hi=m}return(lo+hi)/2};
+const rnorm=()=>Math.sqrt(-2*Math.log(1-Math.random()))*Math.cos(2*Math.PI*Math.random());
+const nCk=(n,k)=>{let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return r};
+function solve(A,b){const n=b.length,M=A.map((r,i)=>[...r,b[i]]);
+  for(let i=0;i<n;i++){let p=i;for(let j=i+1;j<n;j++)if(Math.abs(M[j][i])>Math.abs(M[p][i]))p=j;[M[i],M[p]]=[M[p],M[i]];
+    for(let j=i+1;j<n;j++){const f=M[j][i]/M[i][i];for(let k=i;k<=n;k++)M[j][k]-=f*M[i][k]}}
+  const x=Array(n).fill(0);for(let i=n-1;i>=0;i--){let s=M[i][n];for(let k=i+1;k<n;k++)s-=M[i][k]*x[k];x[i]=s/M[i][i]}return x}
+
+// the 100 days of coffee customers from the histograms lecture
+const COFFEE=[37,43,48,41,46,19,28,35,34,38,31,32,32,23,23,33,35,39,34,28,39,28,29,38,28,30,25,35,39,35,31,28,25,26,15,31,28,32,40,21,34,38,30,47,34,31,51,30,41,36,33,51,22,25,29,50,32,39,25,37,54,33,36,25,30,22,41,35,31,40,30,33,27,36,27,34,24,41,37,29,48,40,31,32,33,32,40,31,32,40,31,33,32,38,37,41,37,39,38,42];
+
+function playground(h,presets){
+  const box=document.createElement("div");box.className="vplay play";
+  box.innerHTML=`<div class="filters" style="margin:0"><label>Example<select>${presets.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join("")}</select></label><button class="btn primary" type="button">Run</button></div>
+  <textarea class="code" spellcheck="false" autocapitalize="off" aria-label="Python code"></textarea><pre class="out" hidden></pre>
+  <p class="vhint">Real Python 3, running in your browser. Change anything and press Run.</p>`;
+  h.appendChild(box);
+  const sel=box.querySelector("select"),ta=box.querySelector("textarea"),out=box.querySelector(".out"),run=box.querySelector(".btn");
+  const set=()=>{ta.value=presets[+sel.value][1];ta.rows=ta.value.split("\n").length+1;out.hidden=true};set();sel.onchange=set;
+  run.onclick=async()=>{run.disabled=true;out.hidden=false;out.textContent="Running…";
+    const r=await runPy("",ta.value,[],()=>out.textContent="Loading Python (about 10 s the first time)…");run.disabled=false;showRun(out,r,[],ta.value);achFlag("ran")};
+}
+
+const VIZ={
+py(h){playground(h,[
+ ["Indexing and slicing",`a = [10, 20, 30, 40, 50]
+print(a[0], a[-1])
+print(a[1:3])
+print(a[::2])
+print(a[::-1])`],
+ ["Loops and range",`for i in range(2, 10, 3):
+    print(i)
+for i, v in enumerate(["x", "y", "z"]):
+    print(i, v)`],
+ ["return inside the loop (bug)",`def has_even_buggy(lst):
+    for x in lst:
+        if x % 2 == 0:
+            return True
+        return False      # returns after the FIRST item!
+
+def has_even(lst):
+    for x in lst:
+        if x % 2 == 0:
+            return True
+    return False          # only after checking every item
+
+print(has_even_buggy([1, 2]), has_even([1, 2]))`],
+ ["Aliasing vs copying",`a = [1, 2]
+b = a
+c = a.copy()
+b.append(3)
+print(a, b, c)`]])},
+dict(h){playground(h,[
+ ["Totals by key",`pairs = [("Alice", 2), ("Bob", 3), ("Alice", 1)]
+totals = {}
+for name, n in pairs:
+    if name not in totals:
+        totals[name] = n
+    else:
+        totals[name] += n
+print(totals)
+print(max(totals, key=totals.get))`],
+ ["Group by weekday",`visits = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+by_day = {d: visits[i::7] for i, d in enumerate(days)}
+print(by_day)`],
+ ["Sets and tuples",`s = set([3, 1, 3, 2])
+print(s, len(s))
+print({1, 2} | {2, 3}, {1, 2} & {2, 3}, {1, 2} - {2, 3})
+print(type(("a")), type(("a",)))`],
+ ["KeyError vs get",`d = {"a": 1}
+print(d.get("z", 0))
+print(d["z"])   # KeyError`]])},
+hof(h){playground(h,[
+ ["map / filter / reduce",`from functools import reduce
+nums = [1, 2, 3, 4, 5]
+print(list(map(lambda x: x ** 2, nums)))
+print(list(filter(lambda x: x % 2 == 1, nums)))
+print(reduce(lambda a, b: a + b, nums))
+print(map(lambda x: x, nums))   # without list(): just an iterator`],
+ ["Comprehensions",`nums = [1, 2, 3, 4, 5, 6]
+print([n ** 2 for n in nums if n > 2])
+print(["odd" if n % 2 else "even" for n in nums])
+grid = [[1, 2], [3], [4, 5]]
+print([x for row in grid for x in row])`],
+ ["Records (exam style)",`from functools import reduce
+students = [{'name': 'Alice', 'final': 95}, {'name': 'Bob', 'final': 55}]
+curved = list(map(lambda s: s['final'] + 10 if s['final'] < 60 else s['final'] + 2, students))
+print(curved, reduce(lambda x, y: x + y, curved) / len(curved))`]])},
+hist(h){
+  const g=plot(h,{label:"Histogram of 100 days of coffee customers with adjustable bins and y-axis type",hint:"Change the bins and the y-axis. Watch which total stays at 1.",cap:"Count: bars add to n. Probability: bars add to 1. Density: the area adds to 1."});
+  let k=8,m=2;slider(g.ctl,"bins",2,40,1,k,v=>{k=v;g.redraw()},v=>String(v));
+  choose(g.ctl,"y-axis",["count","probability","density"],v=>{m=v;g.redraw()}).value="2";
+  g.draw=()=>{const a=15,b=55,w=(b-a)/k,c=Array(k).fill(0);COFFEE.forEach(x=>c[Math.min(k-1,Math.floor((x-a)/w))]++);
+    const hgt=c.map(x=>m===0?x:m===1?x/100:x/100/w),mx=Math.max(...hgt)*1.15;g.range([a,b],[0,mx]);frame(g,ticks(a,b),ticks(0,mx,4),"customers");
+    hgt.forEach((y,i)=>rect(g,a+i*w+.1,a+(i+1)*w-.1,y,cv("ink"),.85));
+    const sum=hgt.reduce((s,x)=>s+x,0);
+    g.read.innerHTML=`<span class="big">${k} bins, width ${fx(w,2)}</span><div>sum of bar heights = <b>${fx(sum,3)}</b></div><div>total area = <b>${fx(sum*w,3)}</b></div>`};
+  g.redraw()},
+prob(h){
+  const g=plot(h,{label:"Plot of a chosen distribution with the asked-for probability shaded",hint:"Pick a distribution and move the sliders.",cap:"Discrete: probability is bar height. Continuous: probability is area."});
+  const s={d:0,n:10,p:.9,k:9,l:.1,x:10,z:2},sub=document.createElement("div");sub.className="vctl";
+  choose(g.ctl,"distribution",["Binomial","Exponential","Normal"],v=>{s.d=v;build();g.redraw()});g.ctl.appendChild(sub);
+  function build(){sub.innerHTML="";
+    if(s.d===0){slider(sub,"n",1,30,1,s.n,v=>{s.n=v;s.k=Math.min(s.k,v);g.redraw()},v=>String(v));slider(sub,"p",.05,.95,.05,s.p,v=>{s.p=v;g.redraw()});slider(sub,"k",0,30,1,s.k,v=>{s.k=Math.min(v,s.n);g.redraw()},v=>String(v))}
+    if(s.d===1){slider(sub,"λ",.05,1,.05,s.l,v=>{s.l=v;g.redraw()});slider(sub,"x",0,40,1,s.x,v=>{s.x=v;g.redraw()},v=>String(v))}
+    if(s.d===2)slider(sub,"±kσ",.5,3,.5,s.z,v=>{s.z=v;g.redraw()})}
+  build();
+  g.draw=()=>{
+    if(s.d===0){const pm=Array.from({length:s.n+1},(_,k)=>nCk(s.n,k)*s.p**k*(1-s.p)**(s.n-k)),mx=Math.max(...pm)*1.15;
+      g.range([-.6,s.n+.6],[0,mx]);frame(g,ticks(0,s.n,Math.min(s.n,6)).filter(Number.isInteger),ticks(0,mx,4),"k");
+      pm.forEach((y,k)=>rect(g,k-.4,k+.4,y,k===s.k?cv("gold"):cv("ink"),k===s.k?1:.75));
+      const cdf=pm.slice(0,s.k+1).reduce((a,b)=>a+b,0);
+      g.read.innerHTML=`<span class="big">P(X = ${s.k}) = ${fx(pm[s.k],3)}</span><div>P(X ≤ ${s.k}) = ${fx(cdf,3)}</div><div>P(X ≥ ${s.k}) = ${fx(1-cdf+pm[s.k],3)}</div><div>mean np = ${fx(s.n*s.p,2)}, SD = ${fx(Math.sqrt(s.n*s.p*(1-s.p)),2)}</div>`}
+    if(s.d===1){const f=x=>s.l*Math.exp(-s.l*x);g.range([0,40],[0,s.l*1.1]);frame(g,ticks(0,40),ticks(0,s.l*1.1,4),"x");
+      area(g,f,0,s.x,cv("gold"));fn(g,f,cv("ink"));
+      g.read.innerHTML=`<span class="big">P(X ≤ ${s.x}) = ${fx(1-Math.exp(-s.l*s.x),3)}</span><div>P(X &gt; ${s.x}) = e<sup>−λx</sup> = e<sup>−${fx(s.l*s.x,2)}</sup> = ${fx(Math.exp(-s.l*s.x),3)}</div><div>mean 1/λ = ${fx(1/s.l,2)}</div>`}
+    if(s.d===2){g.range([-4,4],[0,.45]);frame(g,[-3,-2,-1,0,1,2,3],[0,.2,.4],"σ from μ");area(g,npdf,-s.z,s.z,cv("gold"));fn(g,npdf,cv("ink"));
+      const inside=2*Phi(s.z)-1;g.read.innerHTML=`<span class="big">${fx(100*inside,1)}% within ±${s.z}σ</span><div>each tail: ${fx((1-inside)/2,4)}</div><div>Rule: 68 / 95 / 99.7 at 1 / 2 / 3σ</div>`}};
+  g.redraw()},
+clt(h){
+  const g=plot(h,{label:"Histogram of simulated sample means with the normal curve the CLT predicts",hint:"Pick a skewed population, then draw lots of samples.",cap:"However lopsided the population, the means pile up into a bell around μ with spread σ/√n."});
+  const pops=[["Exponential (skewed)",()=>-Math.log(1-Math.random()),1,1,[0,3]],["Uniform 0–1",()=>Math.random(),.5,Math.sqrt(1/12),[0,1]],["Two humps",()=>(Math.random()<.5?.2:.8)+.05*rnorm(),.5,Math.sqrt(.0925),[0,1]]];
+  let pi=0,n=5,means=[];
+  choose(g.ctl,"population",pops.map(p=>p[0]),v=>{pi=v;means=[];g.redraw()});
+  slider(g.ctl,"n",1,100,1,n,v=>{n=v;means=[];g.redraw()},v=>String(v));
+  const draw=k=>{const r=pops[pi][1];for(let i=0;i<k;i++){let s=0;for(let j=0;j<n;j++)s+=r();means.push(s/n)}g.redraw()};
+  button(g.ctl,"Draw 1",()=>draw(1));button(g.ctl,"Draw 500",()=>draw(500));button(g.ctl,"Clear",()=>{means=[];g.redraw()});
+  g.draw=()=>{const[,,mu,sd,xr]=pops[pi],se=sd/Math.sqrt(n),B=40,w=(xr[1]-xr[0])/B,c=Array(B).fill(0);
+    means.forEach(m=>{const i=Math.floor((m-xr[0])/w);if(i>=0&&i<B)c[i]++});
+    const d=c.map(x=>means.length?x/means.length/w:0),mx=Math.min(Math.max(npdf(mu,mu,se),...d),40)*1.1;g.range(xr,[0,mx]);frame(g,ticks(xr[0],xr[1]),[],"sample mean");
+    d.forEach((y,i)=>y&&rect(g,xr[0]+i*w,xr[0]+(i+1)*w,Math.min(y,mx),cv("ink"),.75));fn(g,x=>Math.min(npdf(x,mu,se),mx),cv("gold"),2.5);
+    const m=means.reduce((a,b)=>a+b,0)/(means.length||1),s=Math.sqrt(means.reduce((a,b)=>a+(b-m)**2,0)/Math.max(1,means.length-1));
+    g.read.innerHTML=`<span class="big">${means.length} sample means</span><div>average of means: <b>${means.length?fx(m,3):"–"}</b> (μ = ${fx(mu,3)})</div><div>SD of means: <b>${means.length>1?fx(s,3):"–"}</b> (σ/√n = ${fx(se,3)})</div>`};
+  draw(500)},
+hyp(h){
+  const g=plot(h,{label:"Standard normal curve with the z-score marked and the p-value region shaded",hint:"Coffee machine: μ₀ = 250 mL. Move the sample and watch the p-value.",cap:"Gold area = p-value. Past a dashed line = reject at your α."});
+  const s={x:253,sg:6,n:36,tail:0,a:.05};
+  slider(g.ctl,"x̄",245,255,.5,s.x,v=>{s.x=v;g.redraw()});slider(g.ctl,"σ",2,12,1,s.sg,v=>{s.sg=v;g.redraw()},v=>String(v));slider(g.ctl,"n",4,100,1,s.n,v=>{s.n=v;g.redraw()},v=>String(v));
+  choose(g.ctl,"H₁",["μ ≠ 250 (two-sided)","μ > 250","μ < 250"],v=>{s.tail=v;g.redraw()});choose(g.ctl,"α",["0.05","0.01","0.10"],v=>{s.a=[.05,.01,.1][v];g.redraw()});
+  g.draw=()=>{const se=s.sg/Math.sqrt(s.n),z=(s.x-250)/se,zc=Math.min(4,Math.abs(z)),zz=Math.max(-4,Math.min(4,z));g.range([-4,4],[0,.45]);frame(g,[-3,-2,-1,0,1,2,3],[],"z");
+    let p;if(s.tail===0){p=2*(1-Phi(Math.abs(z)));area(g,npdf,-4,-zc,cv("gold"),.6);area(g,npdf,zc,4,cv("gold"),.6)}
+    else if(s.tail===1){p=1-Phi(z);area(g,npdf,zz,4,cv("gold"),.6)}else{p=Phi(z);area(g,npdf,-4,zz,cv("gold"),.6)}
+    fn(g,npdf,cv("ink"));const crit=s.tail===0?zq(1-s.a/2):zq(1-s.a);
+    (s.tail===0?[-crit,crit]:s.tail===1?[crit]:[-crit]).forEach(c=>path(g,[[c,0],[c,.42]],cv("bad"),1.5,[5,4]));
+    path(g,[[zz,0],[zz,npdf(zz)]],cv("good"),3);
+    const rej=p<s.a;g.read.innerHTML=`<span class="big" style="color:var(--${rej?"bad":"good"})">${rej?"Reject H₀":"Fail to reject H₀"}</span><div>SE = σ/√n = ${fx(se,3)}</div><div>z = (x̄ − 250)/SE = <b>${fx(z,2)}</b></div><div>p-value = <b>${fx(p,4)}</b> vs α = ${s.a}</div><div>critical z = ${s.tail===0?"±":s.tail===1?"":"−"}${fx(crit,2)}</div>`};
+  g.redraw()},
+ci(h){
+  const g=plot(h,{label:"Forty simulated confidence intervals with the true mean line; misses are red",hint:"Population: μ = 50, σ = 10. Each line is one experiment's interval.",cap:"About c% of the intervals catch μ. μ never moves; the intervals do.",aspect:.9});
+  const s={c:95,n:25,runs:[]};
+  const sim=()=>{s.runs=Array.from({length:40},()=>{let m=0;for(let i=0;i<s.n;i++)m+=50+10*rnorm();return m/s.n});g.redraw()};
+  slider(g.ctl,"confidence",80,99,1,s.c,v=>{s.c=v;g.redraw()},v=>v+"%");slider(g.ctl,"n",5,200,5,s.n,v=>{s.n=v;sim()},v=>String(v));
+  button(g.ctl,"Run 40 experiments",sim);
+  g.draw=()=>{const z=zq(1-(1-s.c/100)/2),half=z*10/Math.sqrt(s.n);g.range([38,62],[0,41]);frame(g,[40,45,50,55,60],[],"");
+    let hit=0;s.runs.forEach((m,i)=>{const ok=Math.abs(m-50)<=half;hit+=ok;path(g,[[m-half,40-i],[m+half,40-i]],ok?cv("ink"):cv("bad"),ok?2:3);dot(g,m,40-i,ok?cv("ink"):cv("bad"),2.5)});
+    path(g,[[50,0],[50,41]],cv("gold"),2);
+    g.read.innerHTML=`<span class="big">${hit} of ${s.runs.length} contain μ</span><div>z<sub>c</sub> = ${fx(z,3)}, SE = ${fx(10/Math.sqrt(s.n),3)}</div><div>width = 2 z<sub>c</sub> SE = <b>${fx(2*half,2)}</b></div>`};
+  sim()},
+reg(h){
+  const g=plot(h,{label:"Scatter plot with an adjustable line and its residuals",hint:"Move a and b to shrink the MSE, then press Least squares.",cap:"Least squares picks the line with the smallest MSE: the solution of XᵀXβ = Xᵀy."});
+  const D=[[1,2.1],[2,2.9],[3,5.2],[4,5.8],[5,7.1],[6,8.4],[7,8.6],[8,10.3]],s={a:.5,b:2},n=D.length;
+  const A=slider(g.ctl,"a (slope)",-1,3,.05,s.a,v=>{s.a=v;g.redraw()}),B=slider(g.ctl,"b",-3,6,.05,s.b,v=>{s.b=v;g.redraw()});
+  const mx=D.reduce((t,[x])=>t+x,0)/n,my=D.reduce((t,[,y])=>t+y,0)/n,a0=(D.reduce((t,[x,y])=>t+x*y,0)-n*mx*my)/(D.reduce((t,[x])=>t+x*x,0)-n*mx*mx),b0=my-a0*mx;
+  button(g.ctl,"Least squares",()=>{s.a=a0;s.b=b0;A.set(s.a);B.set(s.b);g.redraw()});
+  g.draw=()=>{g.range([0,9],[0,12]);frame(g,ticks(0,9),ticks(0,12,4),"x");
+    D.forEach(([x,y])=>path(g,[[x,y],[x,s.a*x+s.b]],cv("bad"),1.5,[3,3]));path(g,[[0,s.b],[9,s.a*9+s.b]],cv("gold"),2.5);D.forEach(([x,y])=>dot(g,x,y,cv("ink"),4.5));
+    const mse=D.reduce((t,[x,y])=>t+(y-s.a*x-s.b)**2,0)/n,vy=D.reduce((t,[,y])=>t+(y-my)**2,0)/n;
+    g.read.innerHTML=`<span class="big">ŷ = ${fx(s.a,2)}x ${s.b<0?"−":"+"} ${fx(Math.abs(s.b),2)}</span><div>MSE = <b>${fx(mse,3)}</b></div><div>R² = 1 − MSE/σ²<sub>y</sub> = <b>${fx(1-mse/vy,3)}</b></div><div>best: a = ${fx(a0,3)}, b = ${fx(b0,3)}</div>`};
+  g.redraw()},
+fit(h){
+  const g=plot(h,{label:"Polynomial ridge fit to training points with test points; shows train and test MSE",hint:"Raise the degree until it overfits, then raise λ to calm it down.",cap:"Black: training points. Hollow gold: test points the model never sees."});
+  const f=x=>Math.sin(2.6*x),noise=[.21,-.13,.08,-.26,.17,.02,-.19,.24,-.07,.12,-.22,.05,.15,-.1,.27,-.18,.03,-.24,.09,.19];
+  const tr=Array.from({length:10},(_,i)=>{const x=-1+2*i/9;return[x,f(x)+noise[i]]}),te=Array.from({length:10},(_,i)=>{const x=-.9+1.8*i/9;return[x,f(x)+noise[10+i]]});
+  const s={d:3,L:-6};slider(g.ctl,"degree",1,9,1,s.d,v=>{s.d=v;g.redraw()},v=>String(v));slider(g.ctl,"log₁₀ λ",-6,1,.5,s.L,v=>{s.L=v;g.redraw()},v=>v===-6?"≈0":fx(v,1));
+  g.draw=()=>{const lam=10**s.L,feat=x=>Array.from({length:s.d+1},(_,k)=>x**k);
+    // ridge on polynomial features; the constant term (k = 0) is not penalized
+    const X=tr.map(([x])=>feat(x)),XtX=X[0].map((_,i)=>X[0].map((_,j)=>X.reduce((t,r)=>t+r[i]*r[j],0)+(i===j&&i>0?lam:0))),Xty=X[0].map((_,i)=>X.reduce((t,r,k)=>t+r[i]*tr[k][1],0));
+    const w=solve(XtX,Xty),pr=x=>feat(x).reduce((t,v,i)=>t+v*w[i],0),mse=D=>D.reduce((t,[x,y])=>t+(y-pr(x))**2,0)/D.length;
+    g.range([-1.1,1.1],[-1.8,1.8]);frame(g,[-1,0,1],[-1,0,1],"x");fn(g,x=>Math.max(-2,Math.min(2,pr(x))),cv("gold"),2.5);
+    tr.forEach(([x,y])=>dot(g,x,y,cv("ink"),4.5));te.forEach(([x,y])=>{const c=g.ctx;c.beginPath();c.arc(g.X(x),g.Y(y),4.5,0,7);c.strokeStyle=cv("gold");c.lineWidth=2;c.stroke()});
+    const a=mse(tr),b=mse(te),lab=a<.012&&b>2.5*a?["Overfitting","bad"]:a>.08?["Underfitting","muted"]:["Good balance","good"];
+    g.read.innerHTML=`<span class="big" style="color:var(--${lab[1]})">${lab[0]}</span><div>train MSE = <b>${fx(a,4)}</b></div><div>test MSE = <b>${fx(b,4)}</b></div><div>‖β‖² = ${fx(w.slice(1).reduce((t,v)=>t+v*v,0),2)}</div>`};
+  g.redraw()}
+};
+function redrawViz(){VIZS.forEach(g=>g.redraw());bell()}
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redrawViz)}catch(e){}
+new MutationObserver(redrawViz).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+/* header flourish: a histogram of means under the normal curve */
+function bell(){const c=$("#bell"),x=c.getContext("2d"),W=c.width,H=c.height;x.clearRect(0,0,W,H);
+  const B=17,bw=W/B,jit=[.92,1.06,.95,1.1,.9,1.04,.97,1.02,1.05,.96,1.08,.93,1.03,.98,1.07,.94,1.01];
+  x.globalAlpha=.8;x.fillStyle=cv("ink");for(let i=0;i<B;i++){const z=-3.2+6.4*(i+.5)/B,hh=npdf(z)*jit[i]*H*1.9;x.fillRect(i*bw+1,H-12-hh,bw-2,hh)}
+  x.globalAlpha=1;x.strokeStyle=cv("gold");x.lineWidth=4;x.beginPath();for(let i=0;i<=120;i++){const z=-3.2+6.4*i/120,px=W*i/120,py=H-12-npdf(z)*H*1.9;i?x.lineTo(px,py):x.moveTo(px,py)}x.stroke()}
+bell();
+
+/* ---------- feedback: confetti, sounds, memes (same switches as the MA 261 page) ---------- */
+function confetti(el){if(RM||!confettiOn())return;const r=el.getBoundingClientRect(),cols=["gold","good","ink","bad"].map(cv);
+  for(let i=0;i<30;i++){const s=document.createElement("i");s.className="confetti";
+    s.style.cssText=`left:${r.left+r.width*(.15+.7*Math.random())}px;top:${r.top+Math.min(r.height/2,60)}px;background:${cols[i%4]}`;document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2,v=60+Math.random()*130;
+    s.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v-70}px) rotate(${Math.random()*720}deg)`,opacity:0}],
+      {duration:900+Math.random()*500,easing:"cubic-bezier(.15,.7,.3,1)"}).onfinish=()=>s.remove()}}
+function toggle(id,key,on,off){let v=true;try{v=localStorage.getItem(key)!=="off"}catch(e){}
+  const b=$(id),show=()=>{b.textContent=v?on:off;b.setAttribute("aria-pressed",v)};
+  b.onclick=()=>{v=!v;try{localStorage.setItem(key,v?"on":"off")}catch(e){};show()};show();return()=>v}
+const soundOn=toggle("#snd","ma261snd","🔊 Sound on","🔇 Sound off"),confettiOn=toggle("#cfx","ma261cfx","🎉 Confetti on","Confetti off"),memesOn=toggle("#mem","ma261mem","😂 Memes on","Memes off");
+const YAY=[["🐍","The snake approves"],["📈","Stonks"],["🎯","p < 0.05. Significant"],["🧠","Big brain, small standard error"],["🔔","Bell curve energy"],["✅","All tests passed (emotionally)"],["🐐","GOAT of data science"],["🚀","Full send, zero bugs"],["📊","Histogram of your wins: one tall bar"],["🤖","Beep boop. Correctness verified"],["💯","R² = 1.0"],["🧪","Hypothesis confirmed"],["🧮","The math is mathing"],["🎲","Not luck. The CLT says so"],["🦆","Rubber duck is impressed"],["😎","Lambda? I barely know her"],["🍕","Pizza with a perfect fit"],["🔥","Hot take: you're right"],["👑","Least squares royalty"],["🥇","First place, no overfitting"],["⚡","O(1) brain"],["🎉","Reject H₀: you're good"],["🌟","Gold star, unpenalized"],["🍀","Within 2 SE of perfect"],["🐢","Slow and steady, low variance"],["🦉","Wise owl, tight interval"],["🏆","Cross-validated champion"],["🤌","Chef's kiss comprehension"],["🛸","Out of this distribution"],["💎","Ridge regression? More like ridge progression"],["🧃","map(squeeze, juice)"],["🎸","Rock-solid reduce"],["🐝","Busy bee, correct bee"],["🙌","Praise be to the CLT"],["🫡","Salute, Python wizard"],["👨‍🍳","Cooked (in a good way)"],["🌈","Normal distribution of happiness"],["🥳","Test set: untouched. Score: great"]],
+  NAY=[["💀","IndentationError: vibes"],["🤡","Accepted H₀. Never accept H₀"],["🫠","Overfit to the wrong answer"],["🙈","Pretend that was a sample outlier"],["📉","Not stonks"],["🐍","The snake hissed"],["🧯","Runtime error IRL"],["🥲","It's okay. Variance happens"],["🐌","Slow down, check your √n"],["😬","Off by one. Classic"],["🪦","RIP that answer"],["🍝","Spaghetti code"],["🌀","Infinite loop of sadness"],["🙃","Wrong tail"],["🦆","Explain it to the duck"],["🧂","Salty residuals"],["🚑","Calling a TA"],["🤔","Did you divide by the bin width?"],["🐛","Found a bug (it's you)"],["😵","KeyError: correct_answer"],["🫣","p > α. Fail to impress"],["📦","Forgot list() around map"],["🧊","Cold. Like a z of −3"],["🎻","Sad violin in the key of e⁻¹"],["🐓","The rooster from MA 261 says hi. And no"],["🥴","That's a one-sided answer to a two-sided question"]];
+let memeEl,memeT;
+function meme(ok){if(!memesOn())return;const L=ok?YAY:NAY,[e,t]=L[Math.random()*L.length|0];
+  memeEl?.remove();clearTimeout(memeT);memeEl=document.createElement("div");memeEl.className="meme";memeEl.setAttribute("role","status");
+  memeEl.innerHTML=`<b>${e}</b><span>${t}</span>`;document.body.appendChild(memeEl);
+  if(!RM)memeEl.animate([{transform:"translateY(40px) rotate(-6deg) scale(.6)",opacity:0},{transform:"rotate(2deg) scale(1.05)",opacity:1,offset:.6},{transform:"none",opacity:1}],{duration:350,easing:"ease-out"});
+  memeT=setTimeout(()=>memeEl.remove(),2200);ach.memes=(ach.memes||0)+1}
+let actx;
+function buzzer(){if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    const t=actx.currentTime,g=actx.createGain();g.connect(actx.destination);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);g.gain.setValueAtTime(.12,t+.42);g.gain.exponentialRampToValueAtTime(.0001,t+.5);
+    for(const f of[110,117]){const o=actx.createOscillator();o.type="square";o.frequency.setValueAtTime(f,t);o.frequency.linearRampToValueAtTime(f*.85,t+.5);o.connect(g);o.start(t);o.stop(t+.52)}}catch(e){}}
+function ding(){if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    [[880,0],[1318.5,.12]].forEach(([f,d])=>{const t=actx.currentTime+d,g=actx.createGain();g.connect(actx.destination);
+      g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.4,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.8);
+      [["triangle",f,1],["sine",f*2,.35]].forEach(([type,hz,lvl])=>{const o=actx.createOscillator(),og=actx.createGain();
+        o.type=type;o.frequency.setValueAtTime(hz,t);og.gain.value=lvl;o.connect(og);og.connect(g);o.start(t);o.stop(t+.85)})})}catch(e){}}
+function cheer(el,ok){meme(ok);if(ok){confetti(el);ding()}else buzzer();achAnswer(ok)}
+
+/* ---------- achievements: earned once, kept through resets ---------- */
+let ach=Object.assign({got:{},streak:0,best:0,wrongs:0,wrongRun:0,answered:0},load("ece20875ach",{}));
+const saveAch=()=>store("ece20875ach",ach);
+const wFull=ok=>Object.values(LEARN).filter(L=>L.warm.every(w=>ok?warm[w.id]?.ok:warm[w.id])).length;
+const setDone=s=>P.filter(q=>q.s===s).every(q=>q.parts.every(p=>prog[p.id]));
+const ACH=[
+  ["first","👶","Hello, world","Answer your first part",c=>ach.answered>=1],
+  ["right","🐍","Sssssuccess","Get your first answer right",c=>ach.best>=1],
+  ["wrong","🫠","Character development","Get your first answer wrong",c=>ach.wrongs>=1],
+  ["s3","🔥","Heating up","3 right in a row",c=>ach.best>=3],
+  ["s5","🌶️","On fire","5 right in a row",c=>ach.best>=5],
+  ["s10","🚀","Unstoppable","10 right in a row",c=>ach.best>=10],
+  ["comeback","🦅","Comeback kid","Get one right after 3+ wrong in a row",c=>ach.comeback],
+  ["ran","▶️","It runs!","Run Python in the browser",c=>ach.ran],
+  ["pass5","🧪","Green tests","Pass the tests on 5 code parts",c=>(ach.passed||0)>=5],
+  ["pass15","🧑‍💻","Code machine","Pass the tests on 15 code parts",c=>(ach.passed||0)>=15],
+  ["w10","🤸","Stretched out","Do 10 warm-ups",c=>c.nw>=10],
+  ["topic","✅","Topic down","Finish every warm-up in one topic",c=>wFull()>=1],
+  ["flawless","🎯","Flawless","Get every warm-up in a topic right",c=>wFull(true)>=1],
+  ["wall","🎓","Fully warmed up","Finish the warm-ups for all 10 topics",c=>wFull()===10],
+  ["mA","📄","Mock 1a, done","Answer every part of Mock 1a",c=>setDone("A")],
+  ["mB","📄","Mock 1b, done","Answer every part of Mock 1b",c=>setDone("B")],
+  ["mX","🧩","Extra credit","Answer every lab extra",c=>setDone("X")],
+  ["brain","🧠","Big brain","80%+ right over 30+ parts",c=>c.np>=30&&c.nr/c.np>=.8],
+  ["mock","⏱️","Under pressure","Finish and grade a mock exam",c=>ach.mocks>=1],
+  ["mock80","📈","Passing vibes","Score 80+ on a mock exam",c=>ach.mockBest>=80],
+  ["mock100","💎","Perfect mock","Score 100 on a mock exam",c=>ach.mockBest>=100],
+  ["print","🖨️","Prepared","Print the notes sheet",c=>ach.print],
+  ["night","🦉","Night owl","Answer between midnight and 4 a.m.",c=>ach.night],
+  ["memes","🤡","Meme lord","See 50 memes",c=>ach.memes>=50],
+  ["all","🏆","Completionist","Unlock every other achievement",c=>ACH.every(a=>a[0]==="all"||ach.got[a[0]])]
+];
+function checkAch(quiet){
+  const d=PARTS.filter(p=>prog[p.id]),c={np:d.length,nr:d.filter(p=>prog[p.id].ok).length,nw:Object.keys(warm).length},fresh=[];
+  ACH.forEach(a=>{if(!ach.got[a[0]]&&a[4](c)){ach.got[a[0]]=Date.now();fresh.push(a)}});
+  if(fresh.length)saveAch();
+  $("#achb").textContent=`🏆 ${Object.keys(ach.got).length}/${ACH.length} achievements`;
+  if(!quiet)fresh.forEach(([,e,n],i)=>setTimeout(()=>{const t=document.createElement("div");t.className="achtoast";t.setAttribute("role","status");
+    t.innerHTML=`<b>${e}</b><span><small>Achievement unlocked</small>${n}</span>`;document.body.appendChild(t);confetti(t);ding();
+    if(!RM)t.animate([{transform:"translate(-50%,-80px)",opacity:0},{transform:"translate(-50%,0)",opacity:1}],{duration:350,easing:"ease-out"});
+    setTimeout(()=>t.remove(),2600)},500+i*2800));
+}
+function achAnswer(ok){ach.answered++;
+  if(ok){if(ach.wrongRun>=3)ach.comeback=1;ach.streak++;ach.best=Math.max(ach.best,ach.streak);ach.wrongRun=0}
+  else{ach.streak=0;ach.wrongs++;ach.wrongRun++}
+  if(new Date().getHours()<4)ach.night=1;saveAch();checkAch()}
+const achFlag=k=>{if(!ach[k])ach[k]=1;saveAch();checkAch()};
+$("#achb").onclick=()=>{$("#agrid").innerHTML=ACH.map(([id,e,n,d])=>`<div class="ach${ach.got[id]?"":" locked"}"><b>${e}</b><div>${n}<small>${d}</small></div></div>`).join("");$("#achd").showModal()};
+
+/* ---------- tabs & boot ---------- */
+const TABS=["start","practice","mock","topics"];
+function showTab(t){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  TABS.forEach(s=>$("#"+s).hidden=s!==t);
+  try{localStorage.setItem(SKEY+"t",t)}catch(e){}
+  flushMath();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+fillSelects();
+const f0=load(SKEY+"f",null);if(f0){$("#fSet").value=f0.s||"all";$("#fTopic").value=f0.t||"all"}
+renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();checkAch(true);
+const h=(location.hash||"").slice(1);let t0="start";try{t0=localStorage.getItem(SKEY+"t")||"start"}catch(e){}
+showTab(TABS.includes(h)?h:t0);
+})();
+</script>
+</body>
+</html>
