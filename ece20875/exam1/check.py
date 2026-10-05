@@ -1,8 +1,8 @@
-"""Check ece20875.html: every code solution passes its own tests, every starter still has blanks,
-and the page scripts parse. Needs node on PATH. Run: python check_ece20875.py"""
-import json, math, re, subprocess, sys
+"""Check the ECE 20875 Exam 1 page: every code solution passes its own tests, every starter still has blanks,
+and the page scripts parse. Needs node on PATH. Run: python ece20875/exam1/check.py"""
+import json, math, os, re, subprocess, sys
 
-html = open("ece20875.html", encoding="utf-8").read()
+html = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"), encoding="utf-8").read()
 scripts = re.findall(r"<script>(.*?)</script>", html, re.S)
 data = next(s for s in scripts if "const P=[" in s)
 dump = data + "\nconsole.log(JSON.stringify({P, W: Object.entries(LEARN).flatMap(([k, L]) => L.warm)}));"

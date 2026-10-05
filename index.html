@@ -36,7 +36,7 @@ html,body{margin:0}
       <h2>Multivariate Calculus</h2>
       <p>Multiple choice, no notes, no calculator.</p>
       <div class="exams">
-        <a class="exam" href="ma261.html"><b>Exam 1</b><span>72 past questions · 6 exams · 12 topics</span><span data-k="ma261e1"></span></a>
+        <a class="exam" href="ma261/exam1/"><b>Exam 1</b><span>72 past questions · 6 exams · 12 topics</span><span data-k="ma261e1"></span></a>
       </div>
     </section>
     <section class="course">
@@ -44,7 +44,7 @@ html,body{margin:0}
       <h2>Python for Data Science</h2>
       <p>Written free response with code to fill in. Printed course materials and handwritten notes allowed, no calculator.</p>
       <div class="exams">
-        <a class="exam" href="ece20875.html"><b>Exam 1</b><span>2 official mocks + extras · 10 topics</span><span data-k="ece20875e1"></span></a>
+        <a class="exam" href="ece20875/exam1/"><b>Exam 1</b><span>2 official mocks + extras · 10 topics</span><span data-k="ece20875e1"></span></a>
       </div>
     </section>
   </div>
@@ -52,7 +52,7 @@ html,body{margin:0}
 </div>
 <script>
 // old MA 261 links (…/#practice) pointed at the root; send them on
-if(["#start","#practice","#mock","#topics"].includes(location.hash))location.replace("ma261.html"+location.hash);
+if(["#start","#practice","#mock","#topics"].includes(location.hash))location.replace("ma261/exam1/"+location.hash);
 document.querySelectorAll("[data-k]").forEach(el=>{
   let n=0;try{n=Object.keys(JSON.parse(localStorage.getItem(el.dataset.k)||"{}")).length}catch(e){}
   if(n)el.textContent="you: "+n+" answered";
