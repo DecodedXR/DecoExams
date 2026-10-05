@@ -1,4 +1,4 @@
-# Boiler Exam Lab
+# DecoExams
 
 Exam prep labs for Purdue courses. `index.html` is the picker: choose a course, then an exam.
 
