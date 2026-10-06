@@ -978,6 +978,8 @@ Probabilities 0.4, 0.4, 0.2; divide by width 5: <b>0.08, 0.08, 0.04</b>. Check: 
 prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likely each value is. Discrete ones list probabilities (PMF). Continuous ones give a curve (PDF) where probability is <b>area</b>.</p>
 <ul><li><b>PMF</b> \(P(X=k)\) for discrete. <b>PDF</b> \(f(x)\) for continuous; \(P(X=x)=0\) for any single value.</li>
 <li><b>CDF</b> \(F(x)=P(X\le x)\). Then \(P(X>x)=1-F(x)\) and \(P(a<X\le b)=F(b)-F(a)\).</li></ul>
+<p><b>Lowercase f vs capital F:</b> \(f(x)\) is the <b>height</b> of the curve at x. It shows where values are likely, but it is not a probability. \(F(x)\) is the <b>area</b> under that curve from the far left up to x, which <i>is</i> a probability ("cumulative": it adds up everything up to x). Exam probabilities come from \(F\): "at most" → \(F(x)\), "more than" → \(1-F(x)\).</p>
+<div class="ex"><b>Example:</b> bus delays, Exponential with λ = 0.1. \(f(10)=0.1e^{-1}=0.0368\) is just the curve's height at 10 minutes. \(F(10)=1-e^{-1}=0.632\) means 63.2% of buses are at most 10 minutes late.</div>
 <p><b>The four you need:</b></p>
 <ul><li><b>Bernoulli(p):</b> one yes/no trial. Estimate \(p\) = successes / trials.</li>
 <li><b>Binomial(n, p):</b> successes in \(n\) trials. \(P(X=k)=\binom nk p^k(1-p)^{n-k}\). Mean \(np\), variance \(np(1-p)\).</li>
