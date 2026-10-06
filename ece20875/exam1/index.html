@@ -1263,7 +1263,7 @@ function partEl(p,mode,label){
     el.review=()=>{lock(el.pick);if(el.pick!=null)mark(el.pick===ai,true);else{mark(false,true);v.textContent="Not answered · correct: "+p.a}reveal()};
     if(live&&st[p.id]){lock(st[p.id].ok?ai:-1);mark(st[p.id].ok,true)}
   } else if(p.kind==="num"){
-    inp.innerHTML=`<div class="nums">${p.ans.map((a,i)=>`<label>${p.lab?p.lab[i]:"answer"}<input inputmode="decimal" autocomplete="off" spellcheck="false"></label>`).join("")}${mode==="mock"?"":`<button class="btn" type="button">Check</button>`}</div>`;
+    inp.innerHTML=`<div class="nums">${p.ans.map((a,i)=>`<label>${p.lab?p.lab[i]:"answer"}<input inputmode="decimal" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" autocomplete="off" spellcheck="false"></label>`).join("")}${mode==="mock"?"":`<button class="btn" type="button">Check</button>`}</div>`;
     const ins=[...inp.querySelectorAll("input")],btn=inp.querySelector(".btn");
     if(dk&&drafts[dk])ins.forEach((x,i)=>x.value=drafts[dk][i]||"");
     ins.forEach(x=>x.addEventListener("input",()=>{x.classList.remove("right","wrong");if(dk){drafts[dk]=ins.map(y=>y.value);saveDrafts()}el.oninput&&el.oninput()}));
@@ -1280,7 +1280,7 @@ function partEl(p,mode,label){
     el.review=()=>{ins.forEach(x=>x.readOnly=true);check(true);if(!el.answered())v.textContent="Not answered";reveal()};
     if(live&&st[p.id])mark(st[p.id].ok,true);
   } else if(p.kind==="code"){
-    inp.innerHTML=`<textarea class="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code" rows="${p.start.split("\n").length+1}"></textarea>
+    inp.innerHTML=`<textarea class="code" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code" rows="${p.start.split("\n").length+1}"></textarea>
       <div class="foot">${mode==="mock"?"":`<button class="btn primary run" type="button">Run tests</button>`}<button class="btn ghost rst" type="button">Reset code</button></div><pre class="out" hidden></pre>`;
     const ta=inp.querySelector("textarea"),out=inp.querySelector(".out"),run=inp.querySelector(".run");
     ta.value=(dk&&drafts[dk])||p.start;
@@ -1306,7 +1306,7 @@ function partEl(p,mode,label){
       const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="Run tests on my answer";b.onclick=()=>go(true);inp.querySelector(".foot").prepend(b)};
     if(live&&st[p.id])mark(st[p.id].ok,true);
   } else {
-    inp.innerHTML=`<textarea class="work" aria-label="Your answer" placeholder="Write your answer the way you would on paper, then show the solution and grade yourself."></textarea>`;
+    inp.innerHTML=`<textarea class="work" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" aria-label="Your answer" placeholder="Write your answer the way you would on paper, then show the solution and grade yourself."></textarea>`;
     const ta=inp.querySelector("textarea");if(dk&&drafts[dk])ta.value=drafts[dk];
     ta.addEventListener("input",()=>{if(dk){drafts[dk]=ta.value;saveDrafts()}el.oninput&&el.oninput()});
     el.answered=()=>ta.value.trim()!=="";
@@ -1516,7 +1516,7 @@ const COFFEE=[37,43,48,41,46,19,28,35,34,38,31,32,32,23,23,33,35,39,34,28,39,28,
 function playground(h,presets){
   const box=document.createElement("div");box.className="vplay play";
   box.innerHTML=`<div class="filters" style="margin:0"><label>Example<select>${presets.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join("")}</select></label><button class="btn primary" type="button">Run</button></div>
-  <textarea class="code" spellcheck="false" autocapitalize="off" aria-label="Python code"></textarea><pre class="out" hidden></pre>
+  <textarea class="code" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" spellcheck="false" autocapitalize="off" aria-label="Python code"></textarea><pre class="out" hidden></pre>
   <p class="vhint">Real Python 3, running in your browser. Change anything and press Run.</p>`;
   h.appendChild(box);
   const sel=box.querySelector("select"),ta=box.querySelector("textarea"),out=box.querySelector(".out"),run=box.querySelector(".btn");
