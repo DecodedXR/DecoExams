@@ -93,7 +93,7 @@ table.dt th{background:var(--paper);font-weight:500}
     <p class="sub">A plain-language refresher for each topic, something to play with, then warm-ups that build up to exam shape.</p>
     <ol class="steps">
       <li><b>Read the refresher.</b> The few ideas each topic really tests, plus the traps.</li>
-      <li><b>Do the warm-ups.</b> Numbers are checked instantly; code runs real Python in your browser.</li>
+      <li><b>Do the warm-ups.</b> Each set opens with what the exam asks on that topic, then builds it one piece at a time. The last warm-up is an exam-style question with new numbers. Numbers are checked instantly; code runs real Python in your browser.</li>
       <li><b>Try the exam questions.</b> Each topic ends with a link to every mock exam part on it.</li>
     </ol>
     <div class="meter" id="meter"></div>
@@ -743,10 +743,11 @@ py:{learn:R`<p class="idea"><b>The big idea:</b> most exam code is a loop that w
             result.append(item)
     return result        # after the loop, not inside it`)}</div>
 <p><b>Common mistakes:</b> <code>return</code> indented inside the loop (returns after one item); <code>range(len(x))</code> off by one; <code>b = a</code> makes an alias, not a copy.</p>`,
+exam:R`Fill-in-the-blank functions: walk a list, check each item, append, and <code>return</code> after the loop. Part B reuses Part A (Mock 1a: remove duplicates, then count how many were removed) or looks back at earlier items (Mock 1b: check a Fibonacci list, then build one of length \(n+1\)).`,
 warm:[
- {step:"Slicing",kind:"mc",q:R`<p><code>nums = [10, 20, 30, 40, 50]</code>. What is <code>nums[1:3]</code>?</p>`,o:["[20, 30]","[10, 20, 30]","[20, 30, 40]","[10, 20]"],a:"A",sol:R`Start at index 1 (20), stop before index 3.`},
- {step:"Step slices",kind:"mc",q:R`<p>Same list. <code>nums[::2]</code>?</p>`,o:["[10, 30, 50]","[20, 40]","[50, 30, 10]","[10, 20]"],a:"A",sol:R`Every second item from the start.`},
- {step:"range",kind:"mc",q:R`<p><code>list(range(2, 10, 3))</code>?</p>`,o:["[2, 5, 8]","[2, 5, 8, 11]","[3, 6, 9]","[2, 3, 4]"],a:"A",sol:R`2, 5, 8. The next one, 11, is past the stop (10).`},
+ {step:"Slicing",kind:"mc",q:R`<p><code>nums = [10, 20, 30, 40, 50]</code>. What is <code>nums[1:3]</code>?</p>`,o:["[10, 20, 30]","[20, 30]","[20, 30, 40]","[10, 20]"],a:"B",sol:R`Start at index 1 (20), stop before index 3.`},
+ {step:"Step slices",kind:"mc",q:R`<p>Same list. <code>nums[1::2]</code>?</p>`,o:["[10, 30, 50]","[50, 30, 10]","[20, 40]","[20, 30, 40, 50]"],a:"C",sol:R`Start at index 1, then every second item. You'll need this for "every 7th day" in the dict questions.`},
+ {step:"range end",kind:"mc",q:R`<p>You need the indexes 2, 3, …, <code>n</code> (including <code>n</code>). Which loop?</p>`,o:["for i in range(2, n)","for i in range(1, n + 1)","for i in range(2, n - 1)","for i in range(2, n + 1)"],a:"D",sol:R`<code>range</code> stops before its end, so to include <code>n</code> the end is <code>n + 1</code>. Mock 1b's <code>fib(n)</code> part is exactly this.`},
  {step:"Write a loop",kind:"code",q:R`<p>Write <code>evens(lst)</code> that returns the even numbers, in order.</p>`,
   start:`def evens(lst):
     out = []
@@ -759,17 +760,47 @@ warm:[
         if x % 2 == 0:
             out.append(x)
     return out`},
- {step:"Exam shape",kind:"code",q:R`<p>Write <code>first_index(lst, target)</code>: the index of the first match, or −1. Use <code>enumerate</code>.</p>`,
-  start:`def first_index(lst, target):
-    for i, v in ____:
+ {step:"Reuse Part A",kind:"code",q:R`<p><code>evens</code> from the last warm-up is already defined. Use it to write <code>count_odds(lst)</code> in one line.</p>`,
+  pre:`def evens(lst):
+    return [x for x in lst if x % 2 == 0]`,
+  start:`def count_odds(lst):
+    return ____`,need:["evens"],tests:[["count_odds([1, 2, 3, 4, 5])","3"],["count_odds([])","0"],["count_odds([2, 4])","0"]],
+  sol:`def count_odds(lst):
+    return len(lst) - len(evens(lst))`,why:R`Same move as Mock 1a Part B: everything minus what Part A kept.`},
+ {step:"Return after the loop",kind:"code",q:R`<p>Write <code>all_positive(lst)</code>: <code>True</code> if every item is above 0. An empty list counts as <code>True</code>.</p>`,
+  start:`def all_positive(lst):
+    for x in lst:
         if ____:
             return ____
-    return -1`,need:["enumerate"],tests:[["first_index([5, 7, 7], 7)","1"],["first_index([5], 9)","-1"],["first_index([], 1)","-1"]],
-  sol:`def first_index(lst, target):
-    for i, v in enumerate(lst):
-        if v == target:
-            return i
-    return -1`,why:R`<code>return -1</code> sits after the loop: only reached if nothing matched.`}
+    return ____`,tests:[["all_positive([1, 2, 3])","True"],["all_positive([1, -2, 3])","False"],["all_positive([])","True"],["all_positive([5, 0])","False"]],
+  sol:`def all_positive(lst):
+    for x in lst:
+        if x <= 0:
+            return False
+    return True`,why:R`Return <code>False</code> the moment one item fails. Only after the loop has checked everything can you return <code>True</code>.`},
+ {step:"Look back",kind:"code",q:R`<p>Write <code>is_increasing(seq)</code>: <code>True</code> if every item is bigger than the one before it.</p>`,
+  start:`def is_increasing(seq):
+    for i in range(____, len(seq)):
+        if ____:
+            return False
+    return True`,tests:[["is_increasing([1, 3, 7])","True"],["is_increasing([1, 3, 3])","False"],["is_increasing([5, 2])","False"],["is_increasing([4])","True"]],
+  sol:`def is_increasing(seq):
+    for i in range(1, len(seq)):
+        if seq[i] <= seq[i-1]:
+            return False
+    return True`,why:R`Start at 1 so <code>seq[i-1]</code> exists. The Fibonacci check starts at 2 because it looks back two: <code>seq[i] != seq[i-1] + seq[i-2]</code>.`},
+ {step:"Exam shape",kind:"code",q:R`<p>Write <code>doubles(n)</code>: the list 1, 2, 4, …, \(2^n\) (length \(n+1\)), each item built from the one before.</p>${C(`doubles(3) -> [1, 2, 4, 8]
+doubles(0) -> [1]`)}`,
+  start:`def doubles(n):
+    seq = [1]
+    for i in range(1, ____):
+        seq.append(____)
+    return seq`,tests:[["doubles(3)","[1, 2, 4, 8]"],["doubles(0)","[1]"],["doubles(1)","[1, 2]"]],
+  sol:`def doubles(n):
+    seq = [1]
+    for i in range(1, n + 1):
+        seq.append(seq[i-1] * 2)
+    return seq`,why:R`Same skeleton as Mock 1b's <code>fib(n)</code>: length \(n+1\) means the loop ends at <code>n + 1</code>, and each new item uses the ones already in the list.`}
 ]},
 dict:{learn:R`<p class="idea"><b>The big idea:</b> a dict maps keys to values. The exam's favorite move is "group or total things by key": check if the key is there, then create it or add to it.</p>
 ${C(`totals = {}
@@ -786,10 +817,10 @@ for name, amount in pairs:
 <p><b>Sets</b> <code>{1, 2, 3}</code>: no duplicates, no order, no indexing. <code>set(lst)</code> removes duplicates; <code>|</code>, <code>&amp;</code>, <code>-</code> are union, intersection, difference.</p>
 <p><b>Tuples</b> <code>(1, 2)</code>: like lists but can't change. A one-item tuple needs a comma: <code>("a",)</code>. Unpack them: <code>for name, n in pairs</code>.</p>
 <p><b>Common mistake:</b> <code>d2 = d</code> is the same dict. Use <code>d.copy()</code>.</p>`,
+exam:R`Group or total by key with an if/else (Mock 1a: meals per student), then find the key with the biggest value using <code>.items()</code>. Mock 1b buckets a list by position with <code>enumerate</code> and <code>[i::7]</code>, then counts entries over a threshold across several keys.`,
 warm:[
- {step:"Add and update",kind:"mc",q:R`<p><code>d = {"a": 1}; d["b"] = 2; d["a"] += 5</code>. Now <code>d</code> is</p>`,o:[`{"a": 6, "b": 2}`,`{"a": 1, "b": 2}`,`{"a": 5, "b": 2}`,"KeyError"],a:"A",sol:R`Assigning a new key adds it; <code>+=</code> updates an existing one.`},
- {step:"Sets",kind:"num",q:R`<p><code>len(set([1, 2, 2, 3, 3, 3]))</code></p>`,ans:[3],lab:["length"],sol:R`{1, 2, 3}.`},
- {step:"Tuples",kind:"mc",q:R`<p><code>type(("apple"))</code></p>`,o:["str","tuple","list","set"],a:"A",sol:R`No comma, no tuple.`},
+ {step:"Add and update",kind:"mc",q:R`<p><code>d = {"a": 1}; d["b"] = 2; d["a"] += 5</code>. Now <code>d</code> is</p>`,o:[`{"a": 1, "b": 2}`,`{"a": 6, "b": 2}`,`{"a": 5, "b": 2}`,"KeyError"],a:"B",sol:R`Assigning a new key adds it; <code>+=</code> updates an existing one.`},
+ {step:"Looping a dict",kind:"mc",q:R`<p><code>d = {"x": 3, "y": 9}</code>. What does <code>for k in d: print(k)</code> print?</p>`,o:["3 then 9","(x, 3) then (y, 9)","x then y","Error"],a:"C",sol:R`Looping over a dict gives the keys. Use <code>d.items()</code> for (key, value) pairs.`},
  {step:"Counting",kind:"code",q:R`<p>Write <code>count_letters(s)</code>: a dict of how many times each character appears.</p>`,
   start:`def count_letters(s):
     counts = {}
@@ -801,7 +832,24 @@ warm:[
     for ch in s:
         counts[ch] = counts.get(ch, 0) + 1
     return counts`},
- {step:"Exam shape",kind:"code",q:R`<p>Write <code>top_key(d)</code>: the key with the largest value (assume no ties, all values positive).</p>`,
+ {step:"Totals with if/else",kind:"code",q:R`<p>Each purchase is a tuple <code>(name, cost)</code>. Fill in the if/else version of "create or add".</p>`,
+  start:`def total_spent(purchases):
+    totals = {}
+    for name, cost in purchases:
+        if ____:
+            totals[name] = ____
+        else:
+            ____
+    return totals`,tests:[[`total_spent([("Ann", 5), ("Ben", 2), ("Ann", 3)])`,`{"Ann": 8, "Ben": 2}`],["total_spent([])","{}"]],
+  sol:`def total_spent(purchases):
+    totals = {}
+    for name, cost in purchases:
+        if name not in totals:
+            totals[name] = cost
+        else:
+            totals[name] += cost
+    return totals`,why:R`The exam's blanks follow this exact if/else shape, so practice it even though <code>.get</code> is shorter.`},
+ {step:"Best key",kind:"code",q:R`<p>Write <code>top_key(d)</code>: the key with the largest value (assume no ties, all values positive).</p>`,
   start:`def top_key(d):
     best, best_v = None, 0
     for k, v in ____:
@@ -813,7 +861,36 @@ warm:[
     for k, v in d.items():
         if v > best_v:
             best, best_v = k, v
-    return best`}
+    return best`},
+ {step:"Every k-th item",kind:"num",q:R`<p><code>vals = [10, 11, 12, 13, 14, 15, 16]</code>. How many items are in <code>vals[1::3]</code>, and what is the last one?</p>`,ans:[2,14],lab:["length","last item"],sol:R`Start at index 1 (11), jump 3: index 4 (14), then index 7 doesn't exist. So [11, 14].`},
+ {step:"Bucket by position",kind:"code",q:R`<p>Hours are logged in a repeating cycle AM, PM, Night, AM, PM, … Return a dict from each shift to its list of hours.</p>${C(`by_shift([1, 2, 3, 4, 5]) -> {"AM": [1, 4], "PM": [2, 5], "Night": [3]}`)}`,
+  start:`def by_shift(hours):
+    shifts = ["AM", "PM", "Night"]
+    out = {s: [] for s in shifts}
+    for i, s in enumerate(shifts):
+        ____
+    return out`,tests:[["by_shift([1, 2, 3, 4, 5])",`{"AM": [1, 4], "PM": [2, 5], "Night": [3]}`],["by_shift([])",`{"AM": [], "PM": [], "Night": []}`]],
+  sol:`def by_shift(hours):
+    shifts = ["AM", "PM", "Night"]
+    out = {s: [] for s in shifts}
+    for i, s in enumerate(shifts):
+        out[s] = hours[i::3]
+    return out`,why:R`Mock 1b is the same with 7 days: <code>visits[i::7]</code>.`},
+ {step:"Exam shape",kind:"code",q:R`<p>Given a dict from names to lists of scores, count how many scores are at least <code>threshold</code>, but only for the names in <code>names</code>.</p>${C(`count_over({"a": [5, 9], "b": [1], "c": [10]}, ["a", "b"], 5) -> 2`)}`,
+  start:`def count_over(scores, names, threshold):
+    count = 0
+    for name in names:
+        for s in ____:
+            if ____:
+                count += 1
+    return count`,tests:[[`count_over({"a": [5, 9], "b": [1], "c": [10]}, ["a", "b"], 5)`,"2"],[`count_over({"a": [5, 9], "b": [1], "c": [10]}, ["c"], 11)`,"0"],[`count_over({"a": [], "b": [7, 8]}, ["a", "b"], 1)`,"2"]],
+  sol:`def count_over(scores, names, threshold):
+    count = 0
+    for name in names:
+        for s in scores[name]:
+            if s >= threshold:
+                count += 1
+    return count`,why:R`Outer loop picks the key, inner loop walks that key's list. Mock 1b's <code>count_busy_days</code> is this with weekdays.`}
 ]},
 hof:{learn:R`<p class="idea"><b>The big idea:</b> instead of writing a loop, hand a small function to a tool that loops for you. <code>map</code> transforms every item, <code>filter</code> keeps some items, <code>reduce</code> rolls everything into one value.</p>
 <p><b>lambda</b> is a one-line function with no name: <code>lambda x, y: x + y</code> is the same as a <code>def</code> that returns <code>x + y</code>.</p>
@@ -830,17 +907,33 @@ ${C(`[n ** 2 for n in nums if n > 2]            # filter: if goes AFTER the for
 ["odd" if n % 2 else "even" for n in nums]  # if-else goes BEFORE the for
 [x for row in grid for x in row]            # nested: outer loop first`)}
 <p><b>Common mistakes:</b> forgetting <code>from functools import reduce</code>; forgetting <code>list()</code>; putting <code>else</code> after the <code>for</code>; inside the dict data, writing <code>s.name</code> instead of <code>s['name']</code>.</p>`,
+exam:R`One list of dicts, three blanks: a list comprehension with two conditions, <code>filter</code> with a lambda, then <code>map</code> to transform and <code>reduce</code> to sum (often with <code>A if cond else B</code> inside the lambda). Mock 1b adds a nested comprehension turned into a set.`,
 warm:[
  {step:"reduce",kind:"num",q:R`<p><code>reduce(lambda x, y: x * y, [1, 2, 3, 4])</code></p>`,ans:[24],lab:["result"],sol:R`1·2 = 2, ·3 = 6, ·4 = 24.`},
- {step:"map",kind:"mc",q:R`<p><code>list(map(lambda x: x ** 2, [1, 2, 3]))</code></p>`,o:["[1, 4, 9]","[2, 4, 6]","14","<map object>"],a:"A",sol:R`Squares each item.`},
- {step:"Comprehension filter",kind:"mc",q:R`<p><code>[n for n in range(10) if n % 3 == 0]</code></p>`,o:["[0, 3, 6, 9]","[3, 6, 9]","[0, 3, 6]","[1, 4, 7]"],a:"A",sol:R`0 counts: 0 % 3 == 0.`},
- {step:"Nested",kind:"code",q:R`<p>Flatten <code>grid</code> into one list with a nested comprehension.</p>`,
-  pre:"grid = [[1, 2], [3], [4, 5]]",start:`flat = [____ for row in grid ____]`,need:["for row in grid"],tests:[["flat","[1, 2, 3, 4, 5]"]],
-  sol:`flat = [x for row in grid for x in row]`},
- {step:"Exam shape",kind:"code",q:R`<p>Given <code>prices</code> (a list of dicts), use <code>filter</code> to keep items under 10, then <code>map</code> to get their names.</p>${C(`prices = [{'name': 'tea', 'cost': 3}, {'name': 'cake', 'cost': 12}, {'name': 'bun', 'cost': 5}]`)}`,
+ {step:"map",kind:"mc",q:R`<p><code>list(map(lambda x: x ** 2, [1, 2, 3]))</code></p>`,o:["[2, 4, 6]","14","[1, 4, 9]","<map object>"],a:"C",sol:R`Squares each item. Without <code>list()</code> you'd get the map object.`},
+ {step:"Comprehension filter",kind:"mc",q:R`<p><code>[n for n in range(10) if n % 3 == 0]</code></p>`,o:["[3, 6, 9]","[0, 3, 6, 9]","[0, 3, 6]","[1, 4, 7]"],a:"B",sol:R`0 counts: 0 % 3 == 0.`},
+ {step:"if-else in a lambda",kind:"mc",q:R`<p><code>list(map(lambda x: x + 10 if x < 60 else x + 2, [55, 80]))</code></p>`,o:["[65, 82]","[57, 90]","[65, 90]","SyntaxError"],a:"A",sol:R`55 < 60 → 65; 80 is not → 82. The whole <code>A if cond else B</code> is the lambda's return value.`},
+ {step:"Records",kind:"code",q:R`<p>List the names of dogs aged 5 or more, with a list comprehension.</p>${C(`pets = [{'name': 'Rex', 'kind': 'dog', 'age': 3},
+        {'name': 'Tom', 'kind': 'cat', 'age': 5},
+        {'name': 'Ace', 'kind': 'dog', 'age': 8}]`)}`,
+  pre:"pets = [{'name': 'Rex', 'kind': 'dog', 'age': 3},{'name': 'Tom', 'kind': 'cat', 'age': 5},{'name': 'Ace', 'kind': 'dog', 'age': 8}]",
+  start:`old_dogs = [____ for p in pets if ____]`,need:["for p in pets"],tests:[["old_dogs","['Ace']"]],
+  sol:`old_dogs = [p['name'] for p in pets if p['kind'] == 'dog' and p['age'] >= 5]`,why:R`Each record is a dict, so it's <code>p['age']</code>, not <code>p.age</code>. Join the two conditions with <code>and</code>.`},
+ {step:"Chain them",kind:"code",q:R`<p>Use <code>filter</code> to keep items under 10, then <code>map</code> to get their names.</p>${C(`prices = [{'name': 'tea', 'cost': 3}, {'name': 'cake', 'cost': 12}, {'name': 'bun', 'cost': 5}]`)}`,
   pre:"prices = [{'name': 'tea', 'cost': 3}, {'name': 'cake', 'cost': 12}, {'name': 'bun', 'cost': 5}]",
   start:`cheap_names = list(map(____, filter(____, prices)))`,need:["map","filter","lambda"],tests:[["cheap_names","['tea', 'bun']"]],
-  sol:`cheap_names = list(map(lambda p: p['name'], filter(lambda p: p['cost'] < 10, prices)))`}
+  sol:`cheap_names = list(map(lambda p: p['name'], filter(lambda p: p['cost'] < 10, prices)))`},
+ {step:"Nested",kind:"code",q:R`<p>Make a set of every unique item in <code>grid</code> with a nested comprehension.</p>`,
+  pre:"grid = [[1, 2], [2], [1, 5]]",start:`unique = set([____ for row in grid ____])`,need:["for row in grid"],tests:[["unique","{1, 2, 5}"]],
+  sol:`unique = set([x for row in grid for x in row])`,why:R`Outer loop first, then the inner one, just like writing the two <code>for</code> lines.`},
+ {step:"Exam shape",kind:"code",q:R`<p>Curve each score: below 60 gets +10, otherwise +5. Use <code>map</code> to curve and <code>reduce</code> to sum, then divide for the average.</p>${C(`scores = [50, 70, 90, 40]`)}`,
+  pre:"scores = [50, 70, 90, 40]",
+  start:`from functools import reduce
+curved = list(map(lambda x: ____, scores))
+avg = reduce(____, curved) / len(scores)`,need:["map","reduce","lambda"],tests:[["curved","[60, 75, 95, 50]"],["avg","70.0"]],
+  sol:`from functools import reduce
+curved = list(map(lambda x: x + 10 if x < 60 else x + 5, scores))
+avg = reduce(lambda a, b: a + b, curved) / len(scores)`,why:R`Same moves as Mock 1a Part C: the if-else lives inside the map's lambda; reduce adds two at a time.`}
 ]},
 hist:{learn:R`<p class="idea"><b>The big idea:</b> a histogram sorts data into bins and draws a bar per bin. The only thing that changes between the three kinds is what you divide by.</p>
 <ul><li><b>Count:</b> \(c_i\) = number of points in bin \(i\). Bars add up to \(n\).</li>
@@ -851,13 +944,18 @@ hist:{learn:R`<p class="idea"><b>The big idea:</b> a histogram sorts data into b
 <p><b>How many bins?</b> Rules of thumb: \(\sqrt n\), Sturges \(\lceil\log_2 n\rceil+1\). Too few bins hide the shape; too many make it noisy. Lecture picks the width that minimizes an estimate of the error between the histogram and the true distribution.</p>
 <p><b>Discrete data</b> (counts like "7 of 10 packets") gets a probability <b>mass</b> histogram: one bar per value, height = fraction of trials.</p>
 <p><b>Common mistake:</b> forgetting to divide by the width for density, so the area isn't 1.</p>`,
+exam:R`Build a density histogram from about 10 raw values (count carefully at the bin edges; the last bin includes its right edge), or turn a table of counts into a probability mass histogram.`,
 warm:[
  {step:"Probability",kind:"num",q:R`<p>50 data points, 10 of them in a bin. Probability of that bin?</p>`,ans:[0.2],lab:["p"],sol:R`10/50.`},
  {step:"Density",kind:"num",q:R`<p>Same bin, width 5. Density?</p>`,ans:[0.04],lab:["density"],sol:R`0.2/5.`},
+ {step:"Edges",kind:"mc",q:R`<p>Bins \([0,10),\ [10,20),\ [20,30]\). Where do the values 10 and 30 go?</p>`,o:["10 → [0, 10), 30 → [20, 30]","10 → [10, 20), 30 → nowhere","10 → [10, 20), 30 → [20, 30]","both are dropped"],a:"C",sol:R`\([0,10)\) stops just before 10, so 10 starts the next bin. The last bin is closed, so 30 is in.`},
  {step:"Build one",kind:"num",q:R`<p>Data <code>[2, 4, 4, 7, 9, 11, 12, 13]</code>, bins \([0,5),[5,10),[10,15]\). Density of each bin?</p>`,ans:[0.075,0.05,0.075],lab:["[0,5)","[5,10)","[10,15]"],
   sol:R`Counts 3, 2, 3 out of 8 → 0.375, 0.25, 0.375 → divide by 5 → 0.075, 0.05, 0.075. Area: 5(0.2) = 1.`},
+ {step:"Mass histogram",kind:"num",q:R`<p>Over 20 trials you count successes:</p>${T(["successes","2","3","4"],[["trials",5,10,5]])}<p>Height of each bar?</p>`,ans:[0.25,0.5,0.25],lab:["2","3","4"],sol:R`Divide by the 20 trials. Discrete data: no bin width to divide by.`},
  {step:"Bin count",kind:"num",q:R`<p>Sturges' rule for \(n=64\)?</p>`,ans:[7],lab:["bins"],sol:R`\(\log_2 64+1=7\).`},
- {step:"Exam shape",kind:"mc",q:R`<p>A density histogram has bars 0.06, 0.03, 0.01 on bins of width 10. What's the total area?</p>`,o:["1","0.1","10","0.6"],a:"A",sol:R`10(0.06 + 0.03 + 0.01) = 1. It always is for density.`}
+ {step:"Exam shape",kind:"num",q:R`<p>Wait times (min): <code>[1, 4, 6, 3, 15, 9, 2, 5, 11, 7]</code>. Density histogram with bins \([0,5),\ [5,10),\ [10,15]\). Height of each bar?</p>`,ans:[0.08,0.08,0.04],lab:["[0,5)","[5,10)","[10,15]"],
+  sol:R`Counts: \([0,5)\): 1, 4, 3, 2 → 4. \([5,10)\): 6, 9, 5, 7 → 4 (5 goes right). \([10,15]\): 15, 11 → 2 (15 is in the closed last bin).
+Probabilities 0.4, 0.4, 0.2; divide by width 5: <b>0.08, 0.08, 0.04</b>. Check: 5(0.08 + 0.08 + 0.04) = 1.`}
 ]},
 prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likely each value is. Discrete ones list probabilities (PMF). Continuous ones give a curve (PDF) where probability is <b>area</b>.</p>
 <ul><li><b>PMF</b> \(P(X=k)\) for discrete. <b>PDF</b> \(f(x)\) for continuous; \(P(X=x)=0\) for any single value.</li>
@@ -871,12 +969,16 @@ prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likel
 <div class="ex"><b>Example:</b> Binomial(10, 0.9). \(P(X=9)=\binom{10}9(0.9)^9(0.1)=10(0.39)(0.1)=0.39\). \(\binom{10}{9}=10\) because choosing 9 is the same as leaving 1 out.</div>
 <p><b>Normal tail cheat-table</b> (one tail beyond ±z): z = 1 → 0.16, z = 2 → 0.025, z = 3 → 0.0015.</p>
 <p><b>Common mistake:</b> using \(F(x)\) when the question asks "more than". "More than" is \(1-F\).</p>`,
+exam:R`Exponential: \(P(X\le x)=1-e^{-\lambda x}\) and \(P(X>x)=e^{-\lambda x}\), with the \(e^{-k}\) values given. Binomial: estimate \(p\) from the mean of a count table, then \(P(X=k)\) and \(P(X\ge k)\) with the powers given.`,
 warm:[
  {step:"Binomial mean",kind:"num",q:R`<p>Binomial(10, 0.9). Mean?</p>`,ans:[9],lab:["mean"],sol:R`\(np=9\).`},
  {step:"Binomial SD",kind:"num",q:R`<p>Binomial(100, 0.8). Standard deviation?</p>`,ans:[4],lab:["σ"],sol:R`\(\sqrt{100(0.8)(0.2)}=\sqrt{16}=4\).`},
- {step:"Exponential",kind:"num",q:R`<p>Exponential with λ = 0.5. \(P(X>2)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P"],sol:R`\(e^{-0.5\cdot2}=e^{-1}\).`},
- {step:"CDF sums",kind:"num",q:R`<p>Binomial(10, 0.9) with \(P(9)=0.39,\ P(10)=0.35\). \(P(X\ge9)\)?</p>`,ans:[0.74],lab:["P"],sol:R`Add them: 0.74.`},
- {step:"Exam shape",kind:"num",q:R`<p>\(X\sim\mathcal N(50, 5^2)\). Using 68–95–99.7, \(P(X>60)\)?</p>`,ans:[0.025],lab:["P"],sol:R`60 is 2σ above. 5% outside ±2σ, half on the right: 0.025.`}
+ {step:"More than",kind:"num",q:R`<p>Exponential with λ = 0.5. \(P(X>2)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P"],sol:R`\(e^{-0.5\cdot2}=e^{-1}\).`},
+ {step:"At most",kind:"num",q:R`<p>Exponential with λ = 0.2. \(P(X\le5)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.632],lab:["P"],sol:R`\(F(5)=1-e^{-0.2\cdot5}=1-0.368\).`},
+ {step:"Normal tail",kind:"num",q:R`<p>\(X\sim\mathcal N(50, 5^2)\). Using 68–95–99.7, \(P(X>60)\)?</p>`,ans:[0.025],lab:["P"],sol:R`60 is 2σ above. 5% outside ±2σ, half on the right: 0.025.`},
+ {step:"Estimate p",kind:"num",q:R`<p>5 packets per trial, 10 trials:</p>${T(["successes","3","4","5"],[["trials",2,6,2]])}<p>Sample mean, then \(p\)?</p>`,ans:[4,0.8],lab:["x̄","p"],sol:R`\(\bar x=(3\cdot2+4\cdot6+5\cdot2)/10=40/10=4\). Binomial mean is \(np\), so \(p=4/5=0.8\).`},
+ {step:"Exam shape",kind:"num",q:R`<p>Same model: Binomial(5, 0.8). Given \(0.8^4=0.41\), \(0.8^5=0.33\). Find \(P(X=4)\) and \(P(X\ge4)\).</p>`,ans:[0.41,0.74],lab:["P(X = 4)","P(X ≥ 4)"],
+  sol:R`\(P(4)=\binom54(0.8)^4(0.2)=5(0.41)(0.2)=0.41\). \(P(5)=0.8^5=0.33\). \(P(X\ge4)=0.41+0.33=0.74\).`}
 ]},
 clt:{learn:R`<p class="idea"><b>The big idea:</b> if you average \(n\) independent samples, the average itself is random, and it's approximately <b>normal</b>, no matter what shape the data has. It's centered at \(\mu\) and its spread shrinks like \(1/\sqrt n\).</p>
 \[\bar X\approx\mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),\qquad SE=\frac{\sigma}{\sqrt n}\]
@@ -887,12 +989,16 @@ clt:{learn:R`<p class="idea"><b>The big idea:</b> if you average \(n\) independe
 <div class="ex"><b>Example:</b> \(\mu=10,\ \sigma=4,\ n=64\). \(SE=4/8=0.5\). \(P(\bar X>10.5)\): \(z=(10.5-10)/0.5=1\) → about 0.16.</div>
 <div class="ex"><b>Recipe for "probability the sample mean is above/below c":</b> find SE, find \(z=(c-\mu)/SE\), then read the tail off 68–95–99.7.</div>
 <p><b>Common mistake:</b> using \(\sigma\) instead of \(\sigma/\sqrt n\) for a question about the <i>mean</i>.</p>`,
+exam:R`One chain of parts: population μ and σ (often from a Binomial), then the mean and SE of \(\bar x\), then \(P(\bar x>c)\) with 68–95–99.7, then the \(n\) that makes the SE a target value.`,
 warm:[
  {step:"SE",kind:"num",q:R`<p>\(\sigma=12,\ n=36\). SE?</p>`,ans:[2],lab:["SE"],sol:R`12/6.`},
- {step:"Tail",kind:"num",q:R`<p>\(\mu=50,\ \sigma=10,\ n=100\). \(P(\bar X>52)\)?</p>`,ans:[0.025],lab:["P"],sol:R`SE = 1, z = 2, upper tail 0.025.`},
+ {step:"Population first",kind:"num",q:R`<p>Each day's count is Binomial(25, 0.2). Population mean and SD?</p>`,ans:[5,2],lab:["μ","σ"],sol:R`\(\mu=25(0.2)=5\), \(\sigma=\sqrt{25(0.2)(0.8)}=\sqrt4=2\).`},
+ {step:"Shape",kind:"mc",q:R`<p>Does the CLT need the population to be normal?</p>`,o:["Yes, always","Only for discrete data","No, any shape works for large n","Only if σ is known"],a:"C",sol:R`That's what makes it so useful.`},
+ {step:"One SE up",kind:"num",q:R`<p>\(\mu=20,\ \sigma=6,\ n=36\). \(P(\bar X>21)\)?</p>`,ans:[0.16],lab:["P"],sol:R`SE = 1, z = 1. 32% is outside ±1, half above: 0.16.`},
+ {step:"Two SE up",kind:"num",q:R`<p>\(\mu=50,\ \sigma=10,\ n=100\). \(P(\bar X>52)\)?</p>`,ans:[0.025],lab:["P"],sol:R`SE = 1, z = 2, upper tail 0.025.`},
  {step:"Sample size",kind:"num",q:R`<p>With \(n=25\) the SE is 2. What \(n\) gives SE = 1?</p>`,ans:[100],lab:["n"],sol:R`Halving SE needs 4× the data.`},
- {step:"Shape",kind:"mc",q:R`<p>Does the CLT need the population to be normal?</p>`,o:["No, any shape works for large n","Yes, always","Only for discrete data","Only if σ is known"],a:"A",sol:R`That's what makes it so useful.`},
- {step:"Exam shape",kind:"num",q:R`<p>Daily count is Binomial(50, 0.2). Over 100 days, what is \(\text{Var}(\bar X)\)?</p>`,ans:[0.08],lab:["Var"],sol:R`\(\sigma^2=50(0.2)(0.8)=8\); divided by 100: 0.08.`}
+ {step:"Exam shape",kind:"num",q:R`<p>Daily count is Binomial(25, 0.2); you average \(n=16\) days. Find μ, σ, the SE of \(\bar x\), \(P(\bar x>5.5)\), and the \(n\) that makes SE = 0.25.</p>`,ans:[5,2,0.5,0.16,64],lab:["μ","σ","SE","P(x̄ > 5.5)","n"],
+  sol:R`\(\mu=5,\ \sigma=2\). \(SE=2/\sqrt{16}=0.5\). \(z=(5.5-5)/0.5=1\) → 0.16. \(0.25=2/\sqrt n\Rightarrow\sqrt n=8\Rightarrow n=64\).`}
 ]},
 hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\)), then ask how surprising your sample would be. If it would be very surprising (p-value below \(\alpha\)), reject \(H_0\).</p>
 <p><b>The z-test in four lines</b> (the exam gives points for each):</p>
@@ -905,12 +1011,16 @@ hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\
 <div class="ex"><b>Example:</b> \(\mu_0=250,\ \sigma=6,\ n=36,\ \bar x=253\). \(z=3/1=3\), two-sided \(p=0.003<0.01\) → reject.</div>
 <p><b>t-test:</b> when \(\sigma\) is unknown and \(n<30\), use \(s\) and the t-distribution with \(n-1\) degrees of freedom (fatter tails).</p>
 <p><b>Common mistakes:</b> "accept \(H_0\)" (say "fail to reject"); forgetting to double the tail for two-sided; putting the sample mean in \(H_0\).</p>`,
+exam:R`State \(H_0\) and \(H_1\) (one sample, or two samples compared), write the z formula and compute it, call it one- or two-tailed and estimate the p-value with 68–95–99.7, then decide at α and say it in context.`,
 warm:[
- {step:"Hypotheses",kind:"mc",q:R`<p>Testing whether the mean fill "differs from 250 mL". \(H_1\)?</p>`,o:["μ ≠ 250","μ > 250","μ = 250","x̄ ≠ 250"],a:"A",sol:R`"Differs" is two-sided. Hypotheses are about μ, never x̄.`},
+ {step:"Hypotheses",kind:"mc",q:R`<p>Testing whether the mean fill "differs from 250 mL". \(H_1\)?</p>`,o:["μ > 250","μ = 250","x̄ ≠ 250","μ ≠ 250"],a:"D",sol:R`"Differs" is two-sided. Hypotheses are about μ, never x̄.`},
+ {step:"Two samples",kind:"mc",q:R`<p>Do two algorithms have different mean load times? \(H_0\)?</p>`,o:["μ_A ≠ μ_B","μ_A = μ_B","x̄_A = x̄_B","μ_A > μ_B"],a:"B",sol:R`\(H_0\) is always "no difference": \(\mu_A=\mu_B\). The claim you're testing goes in \(H_1\).`},
  {step:"z-score",kind:"num",q:R`<p>\(\bar x=103,\ \mu_0=100,\ \sigma=12,\ n=16\). z?</p>`,ans:[1],lab:["z"],sol:R`SE = 12/4 = 3. z = 3/3 = 1.`},
- {step:"p-value",kind:"num",q:R`<p>Two-sided p-value for z = 2 (empirical rule)?</p>`,ans:[0.05],lab:["p"],sol:R`5% is outside ±2.`},
- {step:"Decide",kind:"mc",q:R`<p>p = 0.03, α = 0.01.</p>`,o:["Fail to reject H₀","Reject H₀","Accept H₁","Accept H₀"],a:"A",sol:R`0.03 is not below 0.01.`},
- {step:"Exam shape",kind:"num",q:R`<p>Two samples, \(\sigma=10\) for both, \(n=50\) each, means 54 and 50. z?</p>`,ans:[2],lab:["z"],sol:R`SE = √(2 + 2) = 2. z = 4/2 = 2.`}
+ {step:"p-values",kind:"num",q:R`<p>Two-sided p-values (empirical rule) for z = 2 and z = 3?</p>`,ans:[0.05,0.003],lab:["z = 2","z = 3"],sol:R`5% is outside ±2; 0.3% is outside ±3. One-sided would be half.`},
+ {step:"Decide",kind:"mc",q:R`<p>p = 0.03, α = 0.01.</p>`,o:["Reject H₀","Fail to reject H₀","Accept H₁","Accept H₀"],a:"B",sol:R`0.03 is not below 0.01. Never "accept" either hypothesis.`},
+ {step:"Two-sample z",kind:"num",q:R`<p>\(\sigma=10\) for both, \(n=50\) each, means 54 and 50. z?</p>`,ans:[2],lab:["z"],sol:R`SE = √(100/50 + 100/50) = √4 = 2. z = 4/2 = 2.`},
+ {step:"Exam shape",kind:"num",q:R`<p>A battery claims a mean life of \(\mu_0=80\) h, \(\sigma=10\). You test \(n=25\) and get \(\bar x=86\). Two-sided test. SE, z, and p-value?</p>`,ans:[2,3,0.003],lab:["SE","z","p"],
+  sol:R`\(SE=10/\sqrt{25}=2\). \(z=(86-80)/2=3\). Two-tailed (\(H_1:\mu\ne80\)): \(p=2(0.0015)=0.003\). Below α = 0.01 or 0.05: reject \(H_0\); the mean life differs from 80 h.`}
 ]},
 ci:{learn:R`<p class="idea"><b>The big idea:</b> a confidence interval is "my estimate, plus or minus a margin". The margin is a z-value times the standard error.</p>
 \[\bar x\pm z_c\cdot\frac{\sigma}{\sqrt n}\]
@@ -921,12 +1031,15 @@ ci:{learn:R`<p class="idea"><b>The big idea:</b> a confidence interval is "my es
 <li>Small \(n\), unknown \(\sigma\): swap \(z_c\) for \(t_c\) with \(n-1\) degrees of freedom.</li></ul>
 <div class="ex"><b>Example:</b> \(n=64,\ \bar x=57,\ s=24\). SE = 24/8 = 3. 90%: \(57\pm1.5(3)=[52.5,\ 61.5]\).</div>
 <p><b>Common mistakes:</b> forgetting the \(\sqrt n\); using the one-sided z for a two-sided interval; saying "95% chance μ is in this interval".</p>`,
+exam:R`SE from \(s/\sqrt n\), a two-sided interval using the exam's z (1.5 / 2 / 2.5), then a concept question: what more data does to the SE and width, and which picture of a new interval makes sense (μ never moves).`,
 warm:[
  {step:"SE",kind:"num",q:R`<p>\(\bar x=57,\ s=24,\ n=64\). SE?</p>`,ans:[3],lab:["SE"],sol:R`24/8.`},
- {step:"Interval",kind:"num",q:R`<p>Same data, 95% (z = 2). Lower bound?</p>`,ans:[51],lab:["lower"],sol:R`57 − 6.`},
- {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400. The width</p>`,o:["halves","quarters","doubles","stays"],a:"A",sol:R`\(\sqrt{4}=2\).`},
- {step:"Confidence",kind:"mc",q:R`<p>A 99% interval vs a 95% interval from the same data:</p>`,o:["99% is wider","99% is narrower","Same width","Can't tell"],a:"A",sol:R`More confidence needs a bigger net.`},
- {step:"Exam shape",kind:"num",q:R`<p>\(n=900,\ \bar x=7.2,\ s=1.5\). 99% CI with z = 2.5?</p>`,ans:[7.075,7.325],lab:["lower","upper"],sol:R`SE = 0.05; margin 0.125.`}
+ {step:"Interval",kind:"num",q:R`<p>Same data, 95% (z = 2). Lower bound?</p>`,ans:[51],lab:["lower"],sol:R`57 − 2(3).`},
+ {step:"More data",kind:"num",q:R`<p>Same \(s=24\), but \(n=400\). New SE?</p>`,ans:[1.2],lab:["SE"],sol:R`24/20. Smaller SE → narrower interval.`},
+ {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400. The width</p>`,o:["quarters","doubles","halves","stays"],a:"C",sol:R`\(\sqrt{4}=2\).`},
+ {step:"Confidence",kind:"mc",q:R`<p>A 99% interval vs a 95% interval from the same data:</p>`,o:["99% is narrower","99% is wider","Same width","Can't tell"],a:"B",sol:R`More confidence needs a bigger net.`},
+ {step:"What's fixed",kind:"mc",q:R`<p>You take a new, bigger sample. Which one does <b>not</b> change?</p>`,o:["The sample mean x̄","The interval's center","The SE","The true mean μ"],a:"D",sol:R`μ is a fixed fact about the population. Everything computed from the sample moves.`},
+ {step:"Exam shape",kind:"num",q:R`<p>\(n=100,\ \bar x=40,\ s=20\). SE, then the two-sided 90% interval (z = 1.5).</p>`,ans:[2,37,43],lab:["SE","lower","upper"],sol:R`\(SE=20/10=2\). \(40\pm1.5(2)=40\pm3\Rightarrow[37,\ 43]\).`}
 ]},
 reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the features, \(\hat y=a_1x_1+\dots+a_mx_m+b\), choosing the weights that make the average squared error (MSE) as small as possible.</p>
 <p><b>Matrix form:</b> one row per data point, one column per feature, plus a column of <b>1s</b> for \(b\).</p>
@@ -939,12 +1052,16 @@ reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the feat
 <p><b>One feature by hand:</b> \(a=\dfrac{\sum x_iy_i-n\bar x\bar y}{\sum x_i^2-n\bar x^2}\), \(b=\bar y-a\bar x\).</p>
 <p><b>Comparing weights:</b> only fair after standardizing features \((x-\bar x)/s\); otherwise scale decides the size.</p>
 <p><b>Common mistakes:</b> forgetting the 1s column; dividing the MSE by the wrong count; using \(1-\sigma_y^2/MSE\).</p>`,
+exam:R`Write \(X\) (with the 1s column), \(y\), and \(X^TX\beta=X^Ty\) without solving; predict a few test points, then MSE and \(R^2\) and say if it's a good fit; explain why too few data points means no unique β; spot that \(x^2\) is just another column.`,
 warm:[
  {step:"Predict",kind:"num",q:R`<p>\(\hat y=2x_1+3x_2+1\) at \(x_1=1,\ x_2=2\)?</p>`,ans:[9],lab:["ŷ"],sol:R`2 + 6 + 1.`},
  {step:"MSE",kind:"num",q:R`<p>Residuals 1, −2, 1. MSE?</p>`,ans:[2],lab:["MSE"],sol:R`(1 + 4 + 1)/3.`},
- {step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`1 − 2/8.`},
- {step:"Dimensions",kind:"mc",q:R`<p>10 points, 3 features, with intercept. Shape of X?</p>`,o:["10×4","10×3","4×10","4×4"],a:"A",sol:R`3 features + the 1s column.`},
- {step:"Exam shape",kind:"num",q:R`<p>Fit \(\hat y=ax+b\) to (0, 1), (1, 3), (2, 5). Slope and intercept?</p>`,ans:[2,1],lab:["a","b"],sol:R`The points lie exactly on y = 2x + 1.`}
+ {step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`1 − 2/8. 0.75 is a decent fit; near 0 would be bad.`},
+ {step:"Dimensions",kind:"mc",q:R`<p>10 points, 3 features, with intercept. Shape of X?</p>`,o:["10×3","4×10","10×4","4×4"],a:"C",sol:R`3 features + the 1s column. \(X^TX\) is then 4×4.`},
+ {step:"Squared feature",kind:"mc",q:R`<p>Model \(\hat y=a_1x+a_2x^2+b\). The data point has \(x=30\). Its row of \(X\)?</p>`,o:["[30, 60, 1]","[1, 30, 900]","[30, 900]","[30, 900, 1]"],a:"D",sol:R`Columns follow \(\beta=[a_1,a_2,b]\): \(x\), \(x^2\), then 1.`},
+ {step:"Too few points",kind:"mc",q:R`<p>3 data points, 4 features plus an intercept. Why is there no unique β?</p>`,o:["X is not square","XᵀX (5×5) can't be inverted: 5 unknowns, only 3 equations","y is too short to multiply","The 1s column always makes XᵀX singular"],a:"B",sol:R`More parameters than points → columns are dependent → infinitely many perfect fits. That's where ridge comes in.`},
+ {step:"Exam shape",kind:"num",q:R`<p>\(\hat y=0.5x_1-2x_2+10\). Test points: \((x_1,x_2,y)=(4,1,9)\) and \((6,2,10)\). Predict both, then MSE, then \(R^2\) if the variance of \(y\) is 4.</p>`,ans:[10,9,1,0.75],lab:["ŷ₁","ŷ₂","MSE","R²"],
+  sol:R`\(\hat y_1=2-2+10=10\), \(\hat y_2=3-4+10=9\). Residuals −1, 1 → \(MSE=(1+1)/2=1\). \(R^2=1-1/4=0.75\).`}
 ]},
 fit:{learn:R`<p class="idea"><b>The big idea:</b> a model can fit the training data <i>too</i> well and then fail on new data (overfitting). Ridge regression fights this by charging a price for big weights; cross-validation picks how big that price should be.</p>
 <ul><li><b>Overfitting:</b> low training error, high test error. Too many parameters for the data. <b>Underfitting:</b> high error on both.</li>
@@ -955,12 +1072,17 @@ fit:{learn:R`<p class="idea"><b>The big idea:</b> a model can fit the training d
 <p><b>Evaluating:</b> split into train/test (80/20 or 90/10). The test set is the "real exam": never used for training or tuning.</p>
 <p><b>k-fold CV:</b> split into k parts; train on k−1, test on the one left out; repeat k times and average the test MSE. To pick λ: run CV for each λ (k models each), take the best, retrain on all the data. Leave-one-out: k = n. Trade-off: more stable estimate, k times the training.</p>
 <p><b>Common mistakes:</b> tuning on the test set; penalizing the intercept; forgetting to square in the penalty.</p>`,
+exam:R`With more parameters than points, ridge picks the β with the smaller \(\|\beta\|^2\) and fights overfitting. Compute a penalty (b is not penalized), spot when feature scale made it unfair, and know the k-fold trade-off and that the test set stays untouched.`,
 warm:[
  {step:"Penalty",kind:"num",q:R`<p>λ = 3, weights \(a_1=1,\ a_2=2\). Penalty?</p>`,ans:[15],lab:["penalty"],sol:R`3(1 + 4).`},
- {step:"Which β",kind:"mc",q:R`<p>Two perfect fits: \(\|\beta_1\|^2=13\), \(\|\beta_2\|^2=8\). Ridge picks</p>`,o:["β₂","β₁","either","neither"],a:"A",sol:R`Smaller norm.`},
+ {step:"Skip b",kind:"num",q:R`<p>λ = 2, \(a_1=3,\ a_2=1,\ b=50\). Penalty?</p>`,ans:[20],lab:["penalty"],sol:R`2(9 + 1) = 20. The intercept isn't penalized.`},
+ {step:"Which β",kind:"mc",q:R`<p>Both fit the data perfectly: \(\beta_1=[3\ 0\ 1]\), \(\beta_2=[1\ 1\ 1]\) (penalty on every entry). Ridge picks</p>`,o:["β₁","either","β₂","neither"],a:"C",sol:R`\(\|\beta_1\|^2=10\), \(\|\beta_2\|^2=3\). Smaller wins.`},
+ {step:"Diagnose",kind:"mc",q:R`<p>Train R² = 0.99, test R² = 0.2.</p>`,o:["Underfitting","Overfitting","Good fit","Data leak only"],a:"B",sol:R`Great on training, bad on new data.`},
  {step:"CV count",kind:"num",q:R`<p>5-fold CV over 4 λ values. Models trained (before the final refit)?</p>`,ans:[20],lab:["models"],sol:R`4 × 5.`},
- {step:"Diagnose",kind:"mc",q:R`<p>Train R² = 0.99, test R² = 0.2.</p>`,o:["Overfitting","Underfitting","Good fit","Data leak only"],a:"A",sol:R`Great on training, bad on new data.`},
- {step:"Exam shape",kind:"num",q:R`<p>One feature, no intercept: \(x=[1,2],\ y=[2,4]\), λ = 5. Ridge weight \(a=\sum xy/(\sum x^2+\lambda)\)?</p>`,ans:[1],lab:["a"],sol:R`10/(5 + 5).`}
+ {step:"CV trade-off",kind:"mc",q:R`<p>Compared with one validation split, k-fold CV</p>`,o:["trains only once","always lowers training error","gives a steadier error estimate but trains k times","lets you tune on the test set"],a:"C",sol:R`Every point gets a turn in the validation fold, at the cost of k trainings.`},
+ {step:"Test set",kind:"mc",q:R`<p>When do you use the hold-out test set?</p>`,o:["Once, after all tuning, for the final error","To pick λ","Inside the CV folds","Whenever training error looks low"],a:"A",sol:R`Touch it during tuning and its error is no longer an honest estimate.`},
+ {step:"Exam shape",kind:"mc",q:R`<p>Features: age (20–60) and income in dollars (20,000–90,000). Ridge without standardizing gives age weight 4 and income weight 0.001. Which statement is right?</p>`,o:["Fair: ridge treats every weight the same","Income was over-penalized because its weight is smallest","Age's weight is big only because age's numbers are small, so ridge punishes it unfairly; standardize first","The intercept should have been penalized too"],a:"C",
+  sol:R`Small-scale features need big weights, and ridge charges for big weights. Same idea as Mock 1b's \(x_1\) vs \(x_1^2\) question.`}
 ]}
 };
 const HOOKS={
@@ -998,8 +1120,8 @@ const PARTS=P.flatMap(q=>q.parts);
 const setOrder=Object.keys(SETS);
 const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||"null")||d}catch(e){return d}};
 const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-let prog=load(SKEY,{}),warm=load(SKEY+"w",{}),drafts=load(SKEY+"d",{});
-const save=()=>store(SKEY,prog),saveWarm=()=>store(SKEY+"w",warm);
+let prog=load(SKEY,{}),warm=load(SKEY+"w2",{}),drafts=load(SKEY+"d",{});
+const save=()=>store(SKEY,prog),saveWarm=()=>store(SKEY+"w2",warm);
 let draftT;const saveDrafts=()=>{clearTimeout(draftT);draftT=setTimeout(()=>store(SKEY+"d",drafts),400)};
 
 /* math typesetting: only once elements are visible (same trick as the MA 261 page) */
@@ -1110,7 +1232,7 @@ function partEl(p,mode,label){
   sh.onclick=()=>{if(sol.hidden)reveal();else{sol.hidden=true;sh.textContent="Show solution"}};
   self.querySelectorAll("button").forEach(b=>b.onclick=()=>mark(b.dataset.g==="1"));
   if(mode==="mock")sh.hidden=true;
-  const dk=mode==="mock"?null:(mode==="warm"?"w:":"")+p.id;
+  const dk=mode==="mock"?null:(mode==="warm"?"w2:":"")+p.id;
 
   if(p.kind==="mc"){
     inp.innerHTML=`<div class="opts">${p.o.map((o,i)=>`<button class="opt" type="button"><span class="L">${LET[i]}</span><span>${o}</span></button>`).join("")}</div>`;
@@ -1251,13 +1373,13 @@ function renderLessons(){
     L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k});
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
     d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
-      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="qlist"></div>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}</div></div><div class="qlist"></div>
       <div class="lfoot"><button class="btn primary next" type="button">Now try the ${n} exam part${n===1?"":"s"} on this →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
     const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach((w,i)=>{
       const c=document.createElement("article");c.className="qc";c.innerHTML=`<div class="meta"><span>Warm-up ${i+1} of ${L.warm.length} · ${w.step}</span></div>`;
       c.appendChild(partEl(w,"warm",false));ql.appendChild(c)})};fill();
-    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>{delete warm[w.id];delete drafts["w:"+w.id]});saveWarm();saveDrafts();fill();renderLessonProg()});
-    typeset(d.querySelector(".refresh"));
+    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>{delete warm[w.id];delete drafts["w2:"+w.id]});saveWarm();saveDrafts();fill();renderLessonProg()});
+    d.querySelectorAll(".refresh").forEach(el=>typeset(el));
     d.addEventListener("toggle",()=>{if(d.open&&!d.built){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
     d.querySelector(".next").onclick=()=>drill(k);
     box.appendChild(d);
