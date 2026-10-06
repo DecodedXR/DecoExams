@@ -969,9 +969,9 @@ warm:[
  {step:"Edges",kind:"mc",q:R`<p>Bins \([0,10),\ [10,20),\ [20,30]\). Where do the values 10 and 30 go?</p>`,o:["10 → [0, 10), 30 → [20, 30]","10 → [10, 20), 30 → nowhere","10 → [10, 20), 30 → [20, 30]","both are dropped"],a:"C",sol:R`\([0,10)\) stops just before 10, so 10 starts the next bin. The last bin is closed, so 30 is in.`},
  {step:"Build one",kind:"num",q:R`<p>Data <code>[2, 4, 4, 7, 9, 11, 12, 13]</code>, bins \([0,5),[5,10),[10,15]\). Density of each bin?</p>`,ans:[0.075,0.05,0.075],lab:["[0,5)","[5,10)","[10,15]"],
   sol:R`Counts 3, 2, 3 out of 8 → 0.375, 0.25, 0.375 → divide by 5 → 0.075, 0.05, 0.075. Area: 5(0.2) = 1.`},
- {step:"Mass histogram",kind:"num",q:R`<p>Over 20 trials you count successes:</p>${T(["successes","2","3","4"],[["trials",5,10,5]])}<p>Height of each bar?</p>`,ans:[0.25,0.5,0.25],lab:["2","3","4"],sol:R`Divide by the 20 trials. Discrete data: no bin width to divide by.`},
+ {step:"Mass histogram",kind:"num",q:R`<p>Over 20 trials you count successes:</p>${T(["successes","2","3","4"],[["trials",5,10,5]])}<p>Draw a probability mass histogram: one bar per number of successes, and each bar's height is the <b>fraction of trials</b> with that many successes. What is each height?</p>`,ans:[0.25,0.5,0.25],lab:["2","3","4"],sol:R`Divide by the 20 trials. Discrete data: no bin width to divide by.`},
  {step:"Bin count",kind:"num",q:R`<p>Sturges' rule for \(n=64\)?</p>`,ans:[7],lab:["bins"],sol:R`\(\log_2 64+1=7\).`},
- {step:"Exam shape",kind:"num",q:R`<p>Wait times (min): <code>[1, 4, 6, 3, 15, 9, 2, 5, 11, 7]</code>. Density histogram with bins \([0,5),\ [5,10),\ [10,15]\). Height of each bar?</p>`,ans:[0.08,0.08,0.04],lab:["[0,5)","[5,10)","[10,15]"],
+ {step:"Exam shape",kind:"num",q:R`<p>Wait times (min): <code>[1, 4, 6, 3, 15, 9, 2, 5, 11, 7]</code>. Density histogram with bins \([0,5),\ [5,10),\ [10,15]\). Each bar's height is its density (probability ÷ bin width, so the total area is 1). What is each height?</p>`,ans:[0.08,0.08,0.04],lab:["[0,5)","[5,10)","[10,15]"],
   sol:R`Counts: \([0,5)\): 1, 4, 3, 2 → 4. \([5,10)\): 6, 9, 5, 7 → 4 (5 goes right). \([10,15]\): 15, 11 → 2 (15 is in the closed last bin).
 Probabilities 0.4, 0.4, 0.2; divide by width 5: <b>0.08, 0.08, 0.04</b>. Check: 5(0.08 + 0.08 + 0.04) = 1.`}
 ]},
