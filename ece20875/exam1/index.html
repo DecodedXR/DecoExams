@@ -93,7 +93,7 @@ table.dt th{background:var(--paper);font-weight:500}
     <p class="sub">A plain-language refresher for each topic, something to play with, then warm-ups that build up to exam shape.</p>
     <ol class="steps">
       <li><b>Read the refresher.</b> The few ideas each topic really tests, plus the traps.</li>
-      <li><b>Do the warm-ups.</b> Each set opens with what the exam asks on that topic, then builds it one piece at a time. The last warm-up is an exam-style question with new numbers. Numbers are checked instantly; code runs real Python in your browser.</li>
+      <li><b>Do the warm-ups.</b> In code warm-ups, replace every <code>____</code> with your code and press <b>Run tests</b>; number answers take decimals (0.25) or fractions (1/4). Each set opens with what the exam asks on that topic, then builds it one piece at a time. The last warm-up is an exam-style question with new numbers. Numbers are checked instantly; code runs real Python in your browser.</li>
       <li><b>Try the exam questions.</b> Each topic ends with a link to every mock exam part on it.</li>
     </ol>
     <div class="meter" id="meter"></div>
@@ -734,6 +734,7 @@ py:{learn:R`<p class="idea"><b>The big idea:</b> most exam code is a loop that w
 <div class="ex"><b>Example:</b> <code>a = [10, 20, 30, 40, 50]</code>. <code>a[1:3]</code> → [20, 30]. <code>a[::2]</code> → [10, 30, 50]. <code>a[::-1]</code> → reversed.</div>
 <ul><li><code>append(x)</code> adds to the end. <code>insert(i, x)</code>, <code>remove(x)</code> (first match), <code>pop(i)</code>.</li>
 <li><code>x in lst</code> checks membership. <code>len(lst)</code> is the length.</li>
+<li><b>Operators:</b> <code>%</code> is the remainder (<code>7 % 2</code> → 1, so <code>x % 2 == 0</code> means "x is even"); <code>**</code> is a power (<code>3 ** 2</code> → 9); <code>==</code> equal, <code>!=</code> not equal, <code>&lt;=</code> at most; combine checks with <code>and</code> (both true) or <code>or</code> (at least one true).</li>
 <li><code>range(start, stop, step)</code> also stops before <code>stop</code>: <code>range(2, 10, 3)</code> → 2, 5, 8.</li>
 <li><code>for i, v in enumerate(lst)</code> gives the index and the value.</li></ul>
 <div class="ex"><b>Exam pattern:</b>${C(`def keep_unique(lst):
@@ -742,6 +743,8 @@ py:{learn:R`<p class="idea"><b>The big idea:</b> most exam code is a loop that w
         if item not in result:
             result.append(item)
     return result        # after the loop, not inside it`)}</div>
+<p><b>Looking back:</b> inside <code>for i in range(1, len(seq))</code>, <code>seq[i]</code> is the current item and <code>seq[i-1]</code> the one before it. Start at 1 so <code>i-1</code> is never −1 (which would wrap around to the last item). Looking back two (<code>seq[i-2]</code>, as in Fibonacci) means starting at 2.</p>
+<p><b>True/False functions:</b> return <code>False</code> as soon as one item fails, and <code>return True</code> only after the loop, once everything has passed.</p>
 <p><b>Common mistakes:</b> <code>return</code> indented inside the loop (returns after one item); <code>range(len(x))</code> off by one; <code>b = a</code> makes an alias, not a copy.</p>`,
 exam:R`Fill-in-the-blank functions: walk a list, check each item, append, and <code>return</code> after the loop. Part B reuses Part A (Mock 1a: remove duplicates, then count how many were removed) or looks back at earlier items (Mock 1b: check a Fibonacci list, then build one of length \(n+1\)).`,
 warm:[
@@ -813,7 +816,13 @@ for name, amount in pairs:
 <ul><li><code>d[k]</code> on a missing key raises <code>KeyError</code>. <code>d.get(k, default)</code> doesn't.</li>
 <li>Loop over <code>d</code> → keys. <code>d.values()</code> → values. <code>d.items()</code> → (key, value) pairs.</li>
 <li>Dict comprehension: <code>{day: [] for day in days}</code> starts every key with its own empty list.</li>
-<li>Key with the biggest value: <code>max(d, key=d.get)</code>, or loop over <code>.items()</code> tracking the best.</li></ul>
+<li>Key with the biggest value: <code>max(d, key=d.get)</code>. <code>max(d)</code> alone would compare the keys themselves (alphabetically); <code>key=d.get</code> tells it to compare each key's <i>value</i> instead. Or loop over <code>.items()</code> keeping the best so far.</li></ul>
+<p><b>Dict of lists:</b> when each value is a list, loop over the keys you want, then over that key's list:</p>
+${C(`scores = {"a": [5, 9], "b": [1]}
+for name in ["a", "b"]:
+    for s in scores[name]:     # scores[name] is a list
+        print(name, s)          # a 5, a 9, b 1`)}
+<p><b>Bucket by position:</b> if items repeat in a cycle of length k (7 days, 3 shifts), <code>lst[i::k]</code> grabs every item in slot i. With <code>for i, day in enumerate(days)</code>, i is 0 for "Mon", 1 for "Tue", …, so <code>visits[i::7]</code> is every visit on that day.</p>
 <p><b>Telling them apart:</b> look at the brackets, then at what's inside.</p>
 ${T(["Type","Looks like","Empty one","Can change?","Use it for"],[
 ["list",'<code>[1, 2, 2]</code>','<code>[]</code>',"yes","ordered items, duplicates allowed, <code>lst[0]</code>"],
@@ -911,7 +920,10 @@ list(filter(lambda x: x % 2 == 1, nums))  # [1, 3, 5]
 reduce(lambda a, b: a + b, nums)       # ((((1+2)+3)+4)+5) = 15`)}
 <ul><li><code>map</code> and <code>filter</code> return iterators. Wrap them in <code>list(...)</code>.</li>
 <li><code>filter</code>'s function must return True/False. Items where it's True are <b>kept</b>.</li>
-<li><code>reduce</code> calls the function on the first two items, then on (result, next item), and so on.</li></ul>
+<li><code>reduce</code> calls the function on the first two items, then on (result, next item), and so on.</li>
+<li><b>Chaining:</b> <code>list(map(f, filter(g, data)))</code> runs from the inside out: <code>filter</code> keeps items first, then <code>map</code> transforms only those.</li>
+<li><b>Choosing inside a lambda:</b> <code>A if cond else B</code> is one expression that gives A when cond is true, otherwise B. <code>lambda x: x + 10 if x &lt; 60 else x + 2</code> adds 10 to scores under 60 and 2 to the rest.</li>
+<li><b>Lists of dicts:</b> each item is one record. Get a field with square brackets and quotes: <code>s['final']</code> (not <code>s.final</code>).</li></ul>
 <p><b>List comprehensions</b> are a one-line way to build a list from a loop. These two do the same thing:</p>
 ${C(`squares = []
 for n in nums:
@@ -959,12 +971,12 @@ hist:{learn:R`<p class="idea"><b>The big idea:</b> a histogram sorts data into b
 <li><b>Density:</b> \(d_i=p_i/w\) where \(w\) is the bin width. The <b>area</b> adds up to 1. This is <code>plt.hist(data, density=True)</code>.</li></ul>
 <div class="ex"><b>Example:</b> 10 bus delays, bins of width 10. The \([0,10)\) bin holds 6 points → probability 0.6 → density 0.6/10 = 0.06.</div>
 <p><b>Bins:</b> \([a,b)\) includes \(a\) but not \(b\); the last bin usually includes its right edge. A point exactly on an edge goes to the bin on its right.</p>
-<p><b>How many bins?</b> Rules of thumb: \(\sqrt n\), Sturges \(\lceil\log_2 n\rceil+1\). Too few bins hide the shape; too many make it noisy. Lecture picks the width that minimizes an estimate of the error between the histogram and the true distribution.</p>
-<p><b>Discrete data</b> (counts like "7 of 10 packets") gets a probability <b>mass</b> histogram: one bar per value, height = fraction of trials.</p>
+<p><b>How many bins?</b> Rules of thumb: \(\sqrt n\), Sturges \(\lceil\log_2 n\rceil+1\) (\(\log_2 n\) asks "2 to what power is n?", and \(\lceil\ \rceil\) means round up). Too few bins hide the shape; too many make it noisy. Lecture picks the width that minimizes an estimate of the error between the histogram and the true distribution.</p>
+<p><b>Discrete data</b> (counts like "7 of 10 packets") gets a probability <b>mass</b> histogram: one bar per value, height = fraction of trials with that value. No bin width to divide by.</p>
 <p><b>Common mistake:</b> forgetting to divide by the width for density, so the area isn't 1.</p>`,
 exam:R`Build a density histogram from about 10 raw values (count carefully at the bin edges; the last bin includes its right edge), or turn a table of counts into a probability mass histogram.`,
 warm:[
- {step:"Probability",kind:"num",q:R`<p>50 data points, 10 of them in a bin. Probability of that bin?</p>`,ans:[0.2],lab:["p"],sol:R`10/50.`},
+ {step:"Probability",kind:"num",q:R`<p>50 data points, 10 of them in a bin. Probability of that bin (the fraction of points in it)?</p>`,ans:[0.2],lab:["p"],sol:R`10/50.`},
  {step:"Density",kind:"num",q:R`<p>Same bin, width 5. Density?</p>`,ans:[0.04],lab:["density"],sol:R`0.2/5.`},
  {step:"Edges",kind:"mc",q:R`<p>Bins \([0,10),\ [10,20),\ [20,30]\). Where do the values 10 and 30 go?</p>`,o:["10 → [0, 10), 30 → [20, 30]","10 → [10, 20), 30 → nowhere","10 → [10, 20), 30 → [20, 30]","both are dropped"],a:"C",sol:R`\([0,10)\) stops just before 10, so 10 starts the next bin. The last bin is closed, so 30 is in.`},
  {step:"Build one",kind:"num",q:R`<p>Data <code>[2, 4, 4, 7, 9, 11, 12, 13]</code>, bins \([0,5),[5,10),[10,15]\). Density of each bin?</p>`,ans:[0.075,0.05,0.075],lab:["[0,5)","[5,10)","[10,15]"],
@@ -982,9 +994,12 @@ prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likel
 <div class="ex"><b>Example:</b> bus delays, Exponential with λ = 0.1. \(f(10)=0.1e^{-1}=0.0368\) is just the curve's height at 10 minutes. \(F(10)=1-e^{-1}=0.632\) means 63.2% of buses are at most 10 minutes late.</div>
 <p><b>The four you need:</b></p>
 <ul><li><b>Bernoulli(p):</b> one yes/no trial. Estimate \(p\) = successes / trials.</li>
-<li><b>Binomial(n, p):</b> successes in \(n\) trials. \(P(X=k)=\binom nk p^k(1-p)^{n-k}\). Mean \(np\), variance \(np(1-p)\).</li>
+<li><b>Binomial(n, p):</b> successes in \(n\) trials. \(P(X=k)=\binom nk p^k(1-p)^{n-k}\). Mean \(np\), variance \(np(1-p)\), standard deviation (SD) \(\sqrt{np(1-p)}\).</li>
+<li>\(\binom nk\) ("n choose k") counts the ways to pick which k of the n trials succeed. \(\binom n0=\binom nn=1\) and \(\binom n1=\binom n{n-1}=n\). Anything to the power 0 is 1.</li>
+<li><b>"At least" for discrete:</b> add the PMF values. \(P(X\ge9)\) out of 10 is \(P(9)+P(10)\).</li>
+<li><b>Estimating p from a table:</b> sample mean \(\bar x=\dfrac{\sum(\text{value}\times\text{how many trials})}{\text{total trials}}\). The binomial mean is \(np\), so \(p=\bar x/n\).</li>
 <li><b>Exponential(λ):</b> waiting time. \(f(x)=\lambda e^{-\lambda x}\), \(F(x)=1-e^{-\lambda x}\), so \(P(X>x)=e^{-\lambda x}\). Mean \(1/\lambda\).</li>
-<li><b>Normal(μ, σ²):</b> bell curve. About 68% within 1σ, 95% within 2σ, 99.7% within 3σ.</li></ul>
+<li><b>Normal(μ, σ²):</b> bell curve. About 68% within 1σ, 95% within 2σ, 99.7% within 3σ. Written \(\mathcal N(50, 5^2)\): mean 50, SD 5 (the second number is the variance, σ²).</li></ul>
 <div class="ex"><b>Example:</b> Exponential with λ = 0.1. \(P(X>20)=e^{-0.1\cdot20}=e^{-2}=0.135\). The exam gives you the value of \(e^{-2}\).</div>
 <div class="ex"><b>Example:</b> Binomial(10, 0.9). \(P(X=9)=\binom{10}9(0.9)^9(0.1)=10(0.39)(0.1)=0.39\). \(\binom{10}{9}=10\) because choosing 9 is the same as leaving 1 out.</div>
 <p><b>Normal tail cheat-table</b> (one tail beyond ±z): z = 1 → 0.16, z = 2 → 0.025, z = 3 → 0.0015.</p>
@@ -996,7 +1011,7 @@ warm:[
  {step:"More than",kind:"num",q:R`<p>Exponential with λ = 0.5. \(P(X>2)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P"],sol:R`\(e^{-0.5\cdot2}=e^{-1}\).`},
  {step:"At most",kind:"num",q:R`<p>Exponential with λ = 0.2. \(P(X\le5)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.632],lab:["P"],sol:R`\(F(5)=1-e^{-0.2\cdot5}=1-0.368\).`},
  {step:"Normal tail",kind:"num",q:R`<p>\(X\sim\mathcal N(50, 5^2)\). Using 68–95–99.7, \(P(X>60)\)?</p>`,ans:[0.025],lab:["P"],sol:R`60 is 2σ above. 5% outside ±2σ, half on the right: 0.025.`},
- {step:"Estimate p",kind:"num",q:R`<p>5 packets per trial, 10 trials:</p>${T(["successes","3","4","5"],[["trials",2,6,2]])}<p>Sample mean, then \(p\)?</p>`,ans:[4,0.8],lab:["x̄","p"],sol:R`\(\bar x=(3\cdot2+4\cdot6+5\cdot2)/10=40/10=4\). Binomial mean is \(np\), so \(p=4/5=0.8\).`},
+ {step:"Estimate p",kind:"num",q:R`<p>Each trial sends 5 packets; over 10 trials you record how many got through:</p>${T(["successes","3","4","5"],[["trials",2,6,2]])}<p>Find the sample mean number of successes per trial, then estimate \(p\) for Binomial(5, p).</p>`,ans:[4,0.8],lab:["x̄","p"],sol:R`\(\bar x=(3\cdot2+4\cdot6+5\cdot2)/10=40/10=4\). Binomial mean is \(np\), so \(p=4/5=0.8\).`},
  {step:"Exam shape",kind:"num",q:R`<p>Same model: Binomial(5, 0.8). Given \(0.8^4=0.41\), \(0.8^5=0.33\). Find \(P(X=4)\) and \(P(X\ge4)\).</p>`,ans:[0.41,0.74],lab:["P(X = 4)","P(X ≥ 4)"],
   sol:R`\(P(4)=\binom54(0.8)^4(0.2)=5(0.41)(0.2)=0.41\). \(P(5)=0.8^5=0.33\). \(P(X\ge4)=0.41+0.33=0.74\).`}
 ]},
@@ -1005,7 +1020,9 @@ clt:{learn:R`<p class="idea"><b>The big idea:</b> if you average \(n\) independe
 <ul><li><b>Parameters</b> describe the population (\(\mu,\sigma\)). <b>Statistics</b> describe a sample (\(\bar x, s\)).</li>
 <li>Sample variance divides by \(n-1\): \(s^2=\frac1{n-1}\sum(x_i-\bar x)^2\).</li>
 <li>Rule of thumb: \(n\ge30\) for the CLT. If \(\sigma\) is unknown, use \(s\) in its place.</li>
-<li>4× the samples → half the SE. To cut SE to a target: \(n=(\sigma/SE)^2\).</li></ul>
+<li>4× the samples → half the SE. To cut SE to a target: \(n=(\sigma/SE)^2\).</li>
+<li>\(\bar X\) (capital) and \(\bar x\) (lowercase) are the same sample mean: capital when talking about it as a random quantity, lowercase for the number you got.</li>
+<li>A <b>z-score</b> counts how many SEs a value is above the mean. One-tail areas: z = 1 → 0.16, z = 2 → 0.025, z = 3 → 0.0015 (half of what's outside ±z).</li></ul>
 <div class="ex"><b>Example:</b> \(\mu=10,\ \sigma=4,\ n=64\). \(SE=4/8=0.5\). \(P(\bar X>10.5)\): \(z=(10.5-10)/0.5=1\) → about 0.16.</div>
 <div class="ex"><b>Recipe for "probability the sample mean is above/below c":</b> find SE, find \(z=(c-\mu)/SE\), then read the tail off 68–95–99.7.</div>
 <p><b>Common mistake:</b> using \(\sigma\) instead of \(\sigma/\sqrt n\) for a question about the <i>mean</i>.</p>`,
@@ -1021,12 +1038,15 @@ warm:[
   sol:R`\(\mu=5,\ \sigma=2\). \(SE=2/\sqrt{16}=0.5\). \(z=(5.5-5)/0.5=1\) → 0.16. \(0.25=2/\sqrt n\Rightarrow\sqrt n=8\Rightarrow n=64\).`}
 ]},
 hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\)), then ask how surprising your sample would be. If it would be very surprising (p-value below \(\alpha\)), reject \(H_0\).</p>
+<ul><li>The <b>p-value</b> is the probability of a sample at least this far from \(\mu_0\) <i>if \(H_0\) were true</i>. Small p → the data would be surprising under \(H_0\).</li>
+<li>\(\alpha\) (the significance level) is the cutoff the question gives you, usually 0.05 or 0.01.</li>
+<li><b>One or two tails?</b> "Differs" / "is different" / "≠" → two-sided. "Greater", "increased", "less" → one-sided.</li></ul>
 <p><b>The z-test in four lines</b> (the exam gives points for each):</p>
 <ol><li>\(H_0:\mu=\mu_0\). \(H_1:\mu\ne\mu_0\) (two-sided) or \(\mu>\mu_0\) / \(\mu<\mu_0\) (one-sided).</li>
 <li>\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}\). Name each quantity.</li>
 <li>p-value: two-sided \(p=2P(Z>|z|)\); one-sided \(p=P(Z>z)\) in the direction of \(H_1\).</li>
 <li>Decide: \(p<\alpha\) → reject \(H_0\), else fail to reject. Say what it means in context.</li></ol>
-<p><b>Two-sided p-values from 68–95–99.7:</b> \(|z|=1\to0.32\), \(|z|=2\to0.05\), \(|z|=3\to0.003\). Halve them for one-sided.</p>
+<p><b>Two-sided p-values from 68–95–99.7:</b> \(|z|=1\to0.32\), \(|z|=2\to0.05\), \(|z|=3\to0.003\). Halve them for one-sided. Equivalent shortcut: two-sided, reject at α = 0.05 when \(|z|>2\), at α = 0.01 when \(|z|>2.5\) (these are the <b>critical values</b>).</p>
 <p><b>Two samples:</b> \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}\), \(z=(\bar x_1-\bar x_2)/SE\), \(H_0:\mu_1=\mu_2\).</p>
 <div class="ex"><b>Example:</b> \(\mu_0=250,\ \sigma=6,\ n=36,\ \bar x=253\). \(z=3/1=3\), two-sided \(p=0.003<0.01\) → reject.</div>
 <p><b>t-test:</b> when \(\sigma\) is unknown and \(n<30\), use \(s\) and the t-distribution with \(n-1\) degrees of freedom (fatter tails).</p>
@@ -1044,7 +1064,9 @@ warm:[
 ]},
 ci:{learn:R`<p class="idea"><b>The big idea:</b> a confidence interval is "my estimate, plus or minus a margin". The margin is a z-value times the standard error.</p>
 \[\bar x\pm z_c\cdot\frac{\sigma}{\sqrt n}\]
-<ul><li>Exam z-values (from its table): 90% → 1.5, 95% → 2, 99% → 2.5 two-sided. The real values are 1.645, 1.96, 2.576.</li>
+<ul><li>With the sample SD \(s\) (the usual case), use \(SE=s/\sqrt n\) in place of \(\sigma/\sqrt n\).</li>
+<li>The <b>margin</b> is \(z_c\cdot SE\). The <b>width</b> is the whole interval, 2 × margin.</li>
+<li>Exam z-values (from its table): 90% → 1.5, 95% → 2, 99% → 2.5 two-sided. The real values are 1.645, 1.96, 2.576.</li>
 <li><b>Wider</b> when you want more confidence or the data is more spread out. <b>Narrower</b> with more data: 4× n → half the width.</li>
 <li><b>Meaning:</b> if you repeated the experiment many times, about 95% of the intervals would contain \(\mu\). \(\mu\) is fixed; the interval moves.</li>
 <li>One-sided bound: use the one-sided z (all the error in one tail), and one end is \(\pm\infty\).</li>
@@ -1056,16 +1078,18 @@ warm:[
  {step:"SE",kind:"num",q:R`<p>\(\bar x=57,\ s=24,\ n=64\). SE?</p>`,ans:[3],lab:["SE"],sol:R`24/8.`},
  {step:"Interval",kind:"num",q:R`<p>Same data, 95% (z = 2). Lower bound?</p>`,ans:[51],lab:["lower"],sol:R`57 − 2(3).`},
  {step:"More data",kind:"num",q:R`<p>Same \(s=24\), but \(n=400\). New SE?</p>`,ans:[1.2],lab:["SE"],sol:R`24/20. Smaller SE → narrower interval.`},
- {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400. The width</p>`,o:["quarters","doubles","halves","stays"],a:"C",sol:R`\(\sqrt{4}=2\).`},
+ {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400 (same s, same confidence). The interval's width</p>`,o:["is cut to a quarter","doubles","is cut in half","stays the same"],a:"C",sol:R`\(\sqrt{4}=2\).`},
  {step:"Confidence",kind:"mc",q:R`<p>A 99% interval vs a 95% interval from the same data:</p>`,o:["99% is narrower","99% is wider","Same width","Can't tell"],a:"B",sol:R`More confidence needs a bigger net.`},
  {step:"What's fixed",kind:"mc",q:R`<p>You take a new, bigger sample. Which one does <b>not</b> change?</p>`,o:["The sample mean x̄","The interval's center","The SE","The true mean μ"],a:"D",sol:R`μ is a fixed fact about the population. Everything computed from the sample moves.`},
  {step:"Exam shape",kind:"num",q:R`<p>\(n=100,\ \bar x=40,\ s=20\). SE, then the two-sided 90% interval (z = 1.5).</p>`,ans:[2,37,43],lab:["SE","lower","upper"],sol:R`\(SE=20/10=2\). \(40\pm1.5(2)=40\pm3\Rightarrow[37,\ 43]\).`}
 ]},
 reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the features, \(\hat y=a_1x_1+\dots+a_mx_m+b\), choosing the weights that make the average squared error (MSE) as small as possible.</p>
-<p><b>Matrix form:</b> one row per data point, one column per feature, plus a column of <b>1s</b> for \(b\).</p>
+<p>\(\hat y\) ("y-hat") is the model's <b>prediction</b>; \(y\) is the actual value.</p>
+<p><b>Matrix form:</b> one row per data point, one column per feature, plus a column of <b>1s</b> for \(b\). Columns go in the same order as \(\beta\). \(x_{ij}\) is data point i's value of feature j.</p>
 \[X=\begin{bmatrix}x_{11}&x_{12}&1\\x_{21}&x_{22}&1\\\vdots&\vdots&\vdots\end{bmatrix},\quad \beta=\begin{bmatrix}a_1\\a_2\\b\end{bmatrix},\quad X^TX\beta=X^Ty\ \Rightarrow\ \beta=(X^TX)^{-1}X^Ty\]
 <ul><li>\(X\) is \(n\times(m+1)\); \(X^TX\) is \((m+1)\times(m+1)\).</li>
-<li>\(X^TX\) can't be inverted when columns are linearly dependent, e.g. more parameters than data points. Then infinitely many solutions.</li>
+<li>\(X^T\) ("X transpose") is X flipped so rows become columns.</li>
+<li>\(X^TX\) can't be inverted when columns are <b>linearly dependent</b> (some column can be built from the others), which always happens with more parameters than data points. Then infinitely many β fit perfectly.</li>
 <li>A feature like \(x_1^2\) is just another column. Still "linear" regression.</li></ul>
 <p><b>Judging a fit:</b> residual \(y_i-\hat y_i\); \(MSE=\frac1n\sum(y_i-\hat y_i)^2\); \(R^2=1-\dfrac{MSE}{\sigma_y^2}\) (fraction of variance explained, 1 is perfect, near 0 is bad).</p>
 <div class="ex"><b>Example:</b> \(\hat y=4x_1+0.2x_2+30\) at \((5, 80)\) → 66. Actual 76 → residual 10, squared 100.</div>
@@ -1087,9 +1111,10 @@ fit:{learn:R`<p class="idea"><b>The big idea:</b> a model can fit the training d
 <ul><li><b>Overfitting:</b> low training error, high test error. Too many parameters for the data. <b>Underfitting:</b> high error on both.</li>
 <li><b>Ridge:</b> minimize \(\|y-X\beta\|^2+\lambda\|\beta\|^2\). Solution \(\beta=(X^TX+\lambda I)^{-1}X^Ty\). The intercept is usually not penalized.</li>
 <li>Bigger \(\lambda\) → smaller weights, smoother model. \(\lambda=0\) is plain least squares.</li>
-<li>Penalty value: \(\lambda(a_1^2+a_2^2+\dots)\). Among several perfect fits, ridge picks the one with the smallest \(\|\beta\|^2\).</li>
-<li><b>Scale matters:</b> a feature with small numbers needs a big weight and gets punished more. Standardize first.</li></ul>
-<p><b>Evaluating:</b> split into train/test (80/20 or 90/10). The test set is the "real exam": never used for training or tuning.</p>
+<li>\(\|\beta\|^2\) is the sum of the squared entries: \(\|[1\ 2]\|^2=1+4=5\).</li>
+<li>Penalty value: \(\lambda(a_1^2+a_2^2+\dots)\), leaving out b. If a question says the penalty is on the full vector (Mock 1a), include b. Among several perfect fits, ridge picks the one with the smallest \(\|\beta\|^2\).</li>
+<li><b>Scale matters:</b> a feature with small numbers needs a big weight and gets punished more. Standardize first: replace each feature with \((x-\bar x)/s\) so all are on the same scale.</li></ul>
+<p><b>Evaluating:</b> split into train/test (80/20 or 90/10). The test set is the "real exam": never used for training or tuning. A <b>validation</b> set is different: a slice of the training data held back to compare settings like λ.</p>
 <p><b>k-fold CV:</b> split into k parts; train on k−1, test on the one left out; repeat k times and average the test MSE. To pick λ: run CV for each λ (k models each), take the best, retrain on all the data. Leave-one-out: k = n. Trade-off: more stable estimate, k times the training.</p>
 <p><b>Common mistakes:</b> tuning on the test set; penalizing the intercept; forgetting to square in the penalty.</p>`,
 exam:R`With more parameters than points, ridge picks the β with the smaller \(\|\beta\|^2\) and fights overfitting. Compute a penalty (b is not penalized), spot when feature scale made it unfair, and know the k-fold trade-off and that the test set stays untouched.`,
