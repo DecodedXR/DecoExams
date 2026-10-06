@@ -814,12 +814,22 @@ for name, amount in pairs:
 <li>Loop over <code>d</code> → keys. <code>d.values()</code> → values. <code>d.items()</code> → (key, value) pairs.</li>
 <li>Dict comprehension: <code>{day: [] for day in days}</code> starts every key with its own empty list.</li>
 <li>Key with the biggest value: <code>max(d, key=d.get)</code>, or loop over <code>.items()</code> tracking the best.</li></ul>
-<p><b>Sets</b> <code>{1, 2, 3}</code>: no duplicates, no order, no indexing. <code>set(lst)</code> removes duplicates; <code>|</code>, <code>&amp;</code>, <code>-</code> are union, intersection, difference.</p>
-<p><b>Tuples</b> <code>(1, 2)</code>: like lists but can't change. A one-item tuple needs a comma: <code>("a",)</code>. Unpack them: <code>for name, n in pairs</code>.</p>
+<p><b>Telling them apart:</b> look at the brackets, then at what's inside.</p>
+${T(["Type","Looks like","Empty one","Can change?","Use it for"],[
+["list",'<code>[1, 2, 2]</code>','<code>[]</code>',"yes","ordered items, duplicates allowed, <code>lst[0]</code>"],
+["tuple",'<code>("Alice", 2)</code>','<code>()</code>',"no","a fixed group, like one record; unpack with <code>name, n = t</code>"],
+["dict",'<code>{"Alice": 3}</code>','<code>{}</code>',"yes",'<b>key: value</b> lookups, <code>d["Alice"]</code>'],
+["set",'<code>{1, 2}</code>','<code>set()</code>',"yes","unique values only, no order, no indexing"]])}
+<ul><li><b>Curly braces:</b> colons inside means a dict, no colons means a set. <code>{}</code> alone is an empty <b>dict</b>.</li>
+<li><b>Commas make tuples</b>, not parentheses: <code>("a")</code> is just a string, <code>("a",)</code> is a one-item tuple.</li>
+<li><b>Lists of tuples</b> are the exam's favorite input: <code>pairs = [("Alice", 2), ("Bob", 3)]</code> is a list (outer <code>[ ]</code>) holding tuples (inner <code>( )</code>). <code>for name, n in pairs</code> unpacks each tuple.</li>
+<li>Set operations: <code>set(lst)</code> drops duplicates; <code>|</code>, <code>&amp;</code>, <code>-</code> are union, intersection, difference.</li></ul>
 <p><b>Common mistake:</b> <code>d2 = d</code> is the same dict. Use <code>d.copy()</code>.</p>`,
 exam:R`Group or total by key with an if/else (Mock 1a: meals per student), then find the key with the biggest value using <code>.items()</code>. Mock 1b buckets a list by position with <code>enumerate</code> and <code>[i::7]</code>, then counts entries over a threshold across several keys.`,
 warm:[
  {step:"Add and update",kind:"mc",q:R`<p><code>d = {"a": 1}; d["b"] = 2; d["a"] += 5</code>. Now <code>d</code> is</p>`,o:[`{"a": 1, "b": 2}`,`{"a": 6, "b": 2}`,`{"a": 5, "b": 2}`,"KeyError"],a:"B",sol:R`Assigning a new key adds it; <code>+=</code> updates an existing one.`},
+ {step:"Read the brackets",kind:"mc",q:R`<p><code>pairs = [("Alice", 2), ("Bob", 3)]</code> and <code>totals = {}</code>. What are <code>pairs</code>, <code>pairs[0]</code>, and <code>totals</code>?</p>`,o:["set, list, set","list, tuple, dict","list, tuple, set","tuple, list, dict"],a:"B",sol:R`Outer <code>[ ]</code> → list. <code>("Alice", 2)</code> → tuple. <code>{}</code> is an empty dict; an empty set is <code>set()</code>.`},
+ {step:"Set or dict?",kind:"mc",q:R`<p>Which of these is a <b>set</b>?</p>`,o:['<code>{"a": 1}</code>','<code>{}</code>','<code>{"a", "b"}</code>','<code>("a", "b")</code>'],a:"C",sol:R`Curly braces with no colons. <code>{}</code> is an empty dict, and parentheses with commas make a tuple.`},
  {step:"Looping a dict",kind:"mc",q:R`<p><code>d = {"x": 3, "y": 9}</code>. What does <code>for k in d: print(k)</code> print?</p>`,o:["3 then 9","(x, 3) then (y, 9)","x then y","Error"],a:"C",sol:R`Looping over a dict gives the keys. Use <code>d.items()</code> for (key, value) pairs.`},
  {step:"Counting",kind:"code",q:R`<p>Write <code>count_letters(s)</code>: a dict of how many times each character appears.</p>`,
   start:`def count_letters(s):
@@ -1120,8 +1130,8 @@ const PARTS=P.flatMap(q=>q.parts);
 const setOrder=Object.keys(SETS);
 const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||"null")||d}catch(e){return d}};
 const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-let prog=load(SKEY,{}),warm=load(SKEY+"w2",{}),drafts=load(SKEY+"d",{});
-const save=()=>store(SKEY,prog),saveWarm=()=>store(SKEY+"w2",warm);
+let prog=load(SKEY,{}),warm=load(SKEY+"w3",{}),drafts=load(SKEY+"d",{});
+const save=()=>store(SKEY,prog),saveWarm=()=>store(SKEY+"w3",warm);
 let draftT;const saveDrafts=()=>{clearTimeout(draftT);draftT=setTimeout(()=>store(SKEY+"d",drafts),400)};
 
 /* math typesetting: only once elements are visible (same trick as the MA 261 page) */
@@ -1232,7 +1242,7 @@ function partEl(p,mode,label){
   sh.onclick=()=>{if(sol.hidden)reveal();else{sol.hidden=true;sh.textContent="Show solution"}};
   self.querySelectorAll("button").forEach(b=>b.onclick=()=>mark(b.dataset.g==="1"));
   if(mode==="mock")sh.hidden=true;
-  const dk=mode==="mock"?null:(mode==="warm"?"w2:":"")+p.id;
+  const dk=mode==="mock"?null:(mode==="warm"?"w3:":"")+p.id;
 
   if(p.kind==="mc"){
     inp.innerHTML=`<div class="opts">${p.o.map((o,i)=>`<button class="opt" type="button"><span class="L">${LET[i]}</span><span>${o}</span></button>`).join("")}</div>`;
@@ -1378,7 +1388,7 @@ function renderLessons(){
     const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach((w,i)=>{
       const c=document.createElement("article");c.className="qc";c.innerHTML=`<div class="meta"><span>Warm-up ${i+1} of ${L.warm.length} · ${w.step}</span></div>`;
       c.appendChild(partEl(w,"warm",false));ql.appendChild(c)})};fill();
-    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>{delete warm[w.id];delete drafts["w2:"+w.id]});saveWarm();saveDrafts();fill();renderLessonProg()});
+    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>{delete warm[w.id];delete drafts["w3:"+w.id]});saveWarm();saveDrafts();fill();renderLessonProg()});
     d.querySelectorAll(".refresh").forEach(el=>typeset(el));
     d.addEventListener("toggle",()=>{if(d.open&&!d.built){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
     d.querySelector(".next").onclick=()=>drill(k);
