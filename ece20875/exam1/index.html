@@ -912,7 +912,15 @@ reduce(lambda a, b: a + b, nums)       # ((((1+2)+3)+4)+5) = 15`)}
 <ul><li><code>map</code> and <code>filter</code> return iterators. Wrap them in <code>list(...)</code>.</li>
 <li><code>filter</code>'s function must return True/False. Items where it's True are <b>kept</b>.</li>
 <li><code>reduce</code> calls the function on the first two items, then on (result, next item), and so on.</li></ul>
-<p><b>List comprehensions</b> do map and filter in one line:</p>
+<p><b>List comprehensions</b> are a one-line way to build a list from a loop. These two do the same thing:</p>
+${C(`squares = []
+for n in nums:
+    if n > 2:
+        squares.append(n ** 2)
+
+squares = [n ** 2 for n in nums if n > 2]`)}
+<p>Read it in three parts: <code>for n in nums</code> is the loop, <code>if n > 2</code> keeps only some items (optional), and <code>n ** 2</code>, the part <b>before</b> <code>for</code>, is what goes into the new list. So a comprehension does map (the front part) and filter (the <code>if</code>) at once.</p>
+<p>The brackets decide what you get: <code>[x for …]</code> a list, <code>{x for …}</code> a set, <code>{k: v for …}</code> a dict (it has a colon).</p>
 ${C(`[n ** 2 for n in nums if n > 2]            # filter: if goes AFTER the for
 ["odd" if n % 2 else "even" for n in nums]  # if-else goes BEFORE the for
 [x for row in grid for x in row]            # nested: outer loop first`)}
