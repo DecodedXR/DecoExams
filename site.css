@@ -102,6 +102,8 @@ h2{font-size:24px;font-weight:600;margin:0 0 6px}
 .lesson h3{font-size:18px;font-weight:600}
 .lesson .st{display:flex;flex-direction:column;gap:3px;min-width:0}
 .lesson .hook{font-size:13px;color:var(--muted)}
+.diff{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;vertical-align:middle;white-space:nowrap}
+.diff.d1{color:var(--good);background:var(--good-soft)} .diff.d2{color:var(--gold);background:var(--gold-soft)} .diff.d3{color:var(--bad);background:var(--bad-soft)}
 .lesson .dots{display:flex;gap:4px;margin-left:auto;flex:none}
 .dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--rule)}
 .dots i.ok{background:var(--good);border-color:var(--good)} .dots i.no{background:var(--bad);border-color:var(--bad)}

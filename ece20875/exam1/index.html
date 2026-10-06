@@ -1103,6 +1103,20 @@ warm:[
   sol:R`Small-scale features need big weights, and ridge charges for big weights. Same idea as Mock 1b's \(x_1\) vs \(x_1^2\) question.`}
 ]}
 };
+// exam difficulty per topic, judged from Mocks 1a/1b: [1 easy | 2 medium | 3 hard, why]
+const DIFF={
+  py:[2,"The blanks are short, but Mock 1b is built around off-by-one traps (range(2, n + 1)) and where return goes."],
+  dict:[3,"The hardest coding on the mocks: bucketing by position with enumerate and [i::7], then a nested loop over a dict of lists. Even the official key got one wrong."],
+  hof:[2,"Three short blanks, but you must remember list(), import reduce, s['name'] not s.name, and where the if-else goes."],
+  hist:[1,"Count, divide by n, divide by the width. The only trap is a value sitting on a bin edge."],
+  prob:[1,"Formulas and e⁻ᵏ / 0.9ⁿ values are given. Estimating p from the table's mean is the one extra step."],
+  clt:[1,"A plug-in chain with friendly numbers (√64 = 8). Use σ/√n, not σ, and you're fine."],
+  hyp:[2,"Easy arithmetic, but points are lost on wording: μ not x̄, two-tailed means double the tail, say “fail to reject”."],
+  ci:[2,"The interval is quick; the concept question (which picture of the new interval?) is the one people miss."],
+  reg:[2,"Mostly writing X by hand and plugging in, but the “why no unique β” explanation and the x² column catch people."],
+  fit:[3,"Almost all concept MC with tempting wrong answers: which β ridge picks, scale bias, the k-fold trade-off, test-set rules."]
+};
+const DLAB=["","Easy","Medium","Hard"];
 const HOOKS={
   py:"Loop, check, append, return after the loop.",
   dict:"Is the key there? Create it or add to it.",
@@ -1390,8 +1404,8 @@ function renderLessons(){
     const L=LEARN[k],n=PARTS.filter(p=>p.t===k).length;
     L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k});
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
-    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
-      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}</div></div><div class="qlist"></div>
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]} <span class="diff d${DIFF[k][0]}">${DLAB[DIFF[k][0]]}</span></h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}<br><b>Difficulty: ${DLAB[DIFF[k][0]]}.</b> ${DIFF[k][1]}</div></div><div class="qlist"></div>
       <div class="lfoot"><button class="btn primary next" type="button">Now try the ${n} exam part${n===1?"":"s"} on this →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
     const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach((w,i)=>{
       const c=document.createElement("article");c.className="qc";c.innerHTML=`<div class="meta"><span>Warm-up ${i+1} of ${L.warm.length} · ${w.step}</span></div>`;
