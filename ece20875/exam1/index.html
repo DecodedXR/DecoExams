@@ -277,10 +277,15 @@ Check: area = 10(0.06 + 0.03 + 0.01) = 1.`},
 By the CLT, \(\bar x\) is approximately <b>Normal</b> with mean \(\mu_{\bar x}=80\) and \(SE=\sigma/\sqrt n=4/\sqrt{64}=4/8=0.5\).`},
  {p:"B",pts:6,kind:"num",q:R`<p>Using the CLT and the 68–95–99.7 rule, estimate \(P(\bar x>81)\).</p>`,
   ans:[0.025],lab:["P(x̄ > 81)"],
-  sol:R`81 is \((81-80)/0.5=2\) standard errors above the mean. 95% lies within ±2 SE, so 5% is in the two tails and the upper tail has half: <b>0.025</b>.`},
+  sol:R`From part A, \(\bar x\) is approximately Normal with mean 80 and SE 0.5.
+1. How far is 81 from the mean, in SEs? \(z=\dfrac{81-80}{0.5}=2\).
+2. 68–95–99.7: 95% of sample means land within ±2 SE of 80, so 5% land outside, split evenly between the two ends.
+3. "\(\bar x>81\)" is only the upper end: 5% ÷ 2 = <b>0.025</b>.`},
  {p:"C",pts:5,kind:"num",q:R`<p>How many days \(n\) would make the standard error exactly 0.25 (same \(\sigma\))?</p>`,
   ans:[256],lab:["n"],
-  sol:R`\(0.25=4/\sqrt n\Rightarrow\sqrt n=16\Rightarrow n=\mathbf{256}\). Halving the SE takes 4 times as many samples.`}
+  sol:R`Set the SE formula equal to the target and solve for \(n\): \(SE=\sigma/\sqrt n\), with \(\sigma=4\).
+\(0.25=\dfrac4{\sqrt n}\Rightarrow\sqrt n=\dfrac4{0.25}=16\Rightarrow n=16^2=\mathbf{256}\).
+Check: the SE went from 0.5 to 0.25 (half) and \(n\) went from 64 to 256 (4×). Halving the SE always takes 4 times the data, because \(n\) is under a square root.`}
 ]},
 {s:"A",n:5,t:"hyp",
  ctx:R`<p>An A/B test compares mean session time for two recommendation algorithms. Known \(\sigma_A=\sigma_B=10\) min. Samples: \(n_A=50,\ \bar x_A=46\); \(n_B=50,\ \bar x_B=40\).</p>`,
@@ -293,17 +298,27 @@ By the CLT, \(\bar x\) is approximately <b>Normal</b> with mean \(\mu_{\bar x}=8
 \(z=(46-40)/2=\mathbf{3}\).`},
  {p:"C",pts:5,kind:"mc",q:R`<p>At \(\alpha=0.05\), what is the decision?</p>`,
   o:["Reject H₀: |z| = 3 is beyond the ±2 critical values","Fail to reject H₀: z = 3 is inside 99.7%","Reject H₁","Not enough information"],a:"A",
-  sol:R`Two-sided at \(\alpha=0.05\): critical values about ±2, and 3 is outside. Or: \(p\approx1-0.997=0.003<0.05\). <b>Reject \(H_0\)</b>.`}
+  sol:R`\(H_1\) is "different" (≠), so the test is two-sided: a big z in either direction counts.
+1. p-value: 99.7% of the bell is within ±3, so the chance of landing 3 or more SEs away (either side) is 1 − 0.997 = 0.003.
+2. Compare with \(\alpha\): 0.003 is less than 0.05, so the data would be very surprising if the means were equal.
+3. <b>Reject \(H_0\)</b>: the two algorithms have different mean session times.
+(Shortcut: at α = 0.05 two-sided, reject whenever |z| > 2. Here |z| = 3.)`}
 ]},
 {s:"A",n:6,t:"ci",
  ctx:R`<p>A professor samples 64 students: sample mean 57, sample SD 24. z-scores: 99% two-sided 2.5, 95% two-sided 2, 90% two-sided 1.5 (one-sided: 2.25, 1.75, 1.25).</p>`,
  parts:[
- {p:"A",pts:6,kind:"num",q:R`<p>Compute the standard error.</p>`,ans:[3],lab:["SE"],sol:R`\(SE=s/\sqrt n=24/\sqrt{64}=24/8=\mathbf3\).`},
+ {p:"A",pts:6,kind:"num",q:R`<p>Compute the standard error.</p>`,ans:[3],lab:["SE"],sol:R`The standard error of the mean is the sample SD divided by \(\sqrt n\). We only have the sample SD \(s=24\) (not \(\sigma\)), so use it.
+\(SE=\dfrac s{\sqrt n}=\dfrac{24}{\sqrt{64}}=\dfrac{24}8=\mathbf3\).`},
  {p:"B",pts:6,kind:"num",q:R`<p>Compute the two-sided 90% confidence interval. Write the formula first.</p>`,ans:[52.5,61.5],lab:["Lower","Upper"],
-  sol:R`\(\bar x\pm z\cdot SE=57\pm1.5(3)=57\pm4.5\Rightarrow[\mathbf{52.5},\ \mathbf{61.5}]\).`},
+  sol:R`Formula: \(\bar x\pm z\cdot SE\) (estimate ± margin).
+1. From the table, two-sided 90% → z = 1.5.
+2. Margin = \(z\cdot SE=1.5\times3=4.5\).
+3. \(57-4.5=\mathbf{52.5}\) and \(57+4.5=\mathbf{61.5}\). Interval \([52.5,\ 61.5]\).`},
  {p:"C",pts:4,kind:"mc",q:R`<p>If the professor samples 400 students instead, which is correct?</p>`,
   o:["The SE becomes larger, so the CI becomes wider.","The SE becomes smaller, so the CI becomes narrower.","The SE stays the same, so the CI stays the same.","The sample mean must change because the sample size changed.","The CI becomes wider because more data increases variability."],a:"B",
-  sol:R`\(SE=s/\sqrt n\): going from 64 to 400 shrinks it from 3 to 1.2, so the interval narrows. <b>B</b>.`}
+  sol:R`The interval is \(\bar x\pm z\cdot SE\) and \(SE=s/\sqrt n\). More students → bigger \(\sqrt n\) → smaller SE → smaller margin.
+\(SE=24/\sqrt{400}=24/20=1.2\), down from 3. So the interval gets narrower: <b>B</b>.
+The others: A and E have it backwards (more data means less uncertainty); C ignores n; D is wrong because a new sample's mean will usually be a bit different, but it doesn't <i>have</i> to change.`}
 ]},
 {s:"A",n:7,t:"reg",
  ctx:R`<p>Battery-life tests on a phone. \(x_1\) = brightness (nits), \(x_2\) = charge cycles, \(y\) = battery life (h).</p>${T(["Device","x₁","x₂","y"],[[1,500,100,14],[2,800,200,10],[3,1000,50,11],[4,600,300,9]])}<p>Model: \(\hat y=a_1x_1+a_2x_2+b\), \(\beta=[a_1\ a_2\ b]^T\).</p>`,
@@ -318,7 +333,9 @@ The column of 1s is for \(b\). Writing out \(X^T\) on both sides gets full credi
 \(MSE=\dfrac{(12.5-11)^2+(8.5-7)^2}{2}=\dfrac{2.25+2.25}{2}=\mathbf{2.25}\)`},
  {p:"C",pts:4,kind:"num",q:R`<p>Training MSE is 0.8 and the variance of \(y\) in the training set is 4.0. Compute \(R^2=1-\dfrac{MSE}{\sigma_y^2}\). Is it a good fit?</p>`,
   ans:[0.8],lab:["R²"],
-  sol:R`\(R^2=1-0.8/4.0=\mathbf{0.8}\). Yes: the model explains 80% of the variance in the training data.`}
+  sol:R`\(R^2\) compares the model's error to the error of just guessing the average every time (that error is the variance of \(y\)).
+\(R^2=1-\dfrac{0.8}{4.0}=1-0.2=\mathbf{0.8}\).
+Yes, a good fit: the model's error is only 20% of the guess-the-average error, so it explains 80% of the variation in battery life.`}
 ]},
 {s:"A",n:8,t:"fit",
  ctx:R`<p>You can only afford to test 3 vehicle prototypes. Each has 4 features, and the model is \(\hat y=a_1x_1+a_2x_2+a_3x_3+a_4x_4+b\), so \(\beta=[a_1\ a_2\ a_3\ a_4\ b]^T\).</p>`,
@@ -328,13 +345,18 @@ The column of 1s is for \(b\). Writing out \(X^T\) on both sides gets full credi
 5 unknowns but only 3 data points: the columns of \(X\) are linearly dependent, so \(X^TX\) is not invertible and infinitely many \(\beta\) fit the data perfectly.`},
  {p:"B",pts:6,kind:"mc",q:R`<p>Two parameter vectors both fit the 3 points perfectly: \(\beta_1=[2\ 0\ 0\ 0\ 3]^T\), \(\beta_2=[1\ {-1}\ 1\ 1\ 2]^T\). With ridge regression (penalty on the full vector), which does ridge prefer, and does ridge mainly fight overfitting or underfitting?</p>`,
   o:["β₁, overfitting","β₂, overfitting","β₁, underfitting","β₂, underfitting"],a:"B",
-  sol:R`\(\|\beta_1\|^2=2^2+3^2=13\), \(\|\beta_2\|^2=1+1+1+1+4=8\). Ridge picks the smaller norm: <b>\(\beta_2\)</b>. It mitigates <b>overfitting</b>.`},
+  sol:R`Both fit the data perfectly, so the error part is 0 for both and ridge decides on the penalty alone: the sum of squared entries \(\|\beta\|^2\).
+\(\|\beta_1\|^2=2^2+0^2+0^2+0^2+3^2=13\).
+\(\|\beta_2\|^2=1^2+(-1)^2+1^2+1^2+2^2=8\).
+Ridge picks the smaller one: <b>\(\beta_2\)</b>. Ridge keeps weights small so the model can't twist itself to match noise in the training data, which is <b>overfitting</b>. Answer B.`},
  {p:"C (i)",pts:3,kind:"mc",q:R`<p>What is the main trade-off of k-fold cross-validation versus a single validation split?</p>`,
   o:["k-fold CV reduces training cost but increases the risk of underfitting.","k-fold CV gives a more stable performance estimate but trains the model k times.","k-fold CV is only useful if the test set is used during training to tune hyperparameters.","Increasing k gives a larger test set, so the model generalizes better."],a:"B",
-  sol:R`More stable estimate (every point gets tested once), at the cost of k trainings. <b>B</b>.`},
+  sol:R`A single validation split tests on one slice of the data, so the score depends on which points happened to land in that slice.
+k-fold CV rotates: every fold takes one turn as the validation set, and the k scores are averaged. That is steadier, but you train the model k times instead of once. <b>B</b>.`},
  {p:"C (ii)",pts:3,kind:"mc",q:R`<p>How should a hold-out test set be treated?</p>`,
   o:["Include it in the CV folds so the model sees more data while tuning λ.","Use it to decide when to stop training.","Leave it untouched during model selection and tuning; use it only for the final unbiased error estimate.","Use it to compute the rank of X."],a:"C",
-  sol:R`The test set is the "real exam": never used to train or tune. <b>C</b>.`}
+  sol:R`The test set is the final exam the model has never seen. If you use it to pick λ or decide anything during training, the model has effectively studied the answers, and its test error is no longer an honest estimate of how it does on new data.
+So: leave it untouched until everything is chosen, then use it once for the final error. <b>C</b>.`}
 ]},
 {s:"A",n:9,t:"hof",
  ctx:R`<p>You are a TA processing exam scores:</p>${C(`students = [
@@ -491,7 +513,10 @@ There is a 74% chance that at least 9 of 10 packets get through in a trial.`}
   sol:R`\(\bar X_n\approx\mathcal N\!\left(\mu,\ \sigma^2/n\right)=\mathcal N(10,\ 4^2/64)=\mathcal N(10,\ 0.5^2)\). Mean <b>10</b>, SE <b>0.5</b>. The population need not be normal.`},
  {p:"B",pts:8,kind:"num",q:R`<p>Estimate \(P(\bar X_{64}>10.5)\).</p>`,
   ans:[0.16],lab:["P(X̄ > 10.5)"],
-  sol:R`\(z=(10.5-10)/0.5=1\). About 68% is within ±1 SE, so 32% is outside, split evenly: \(P(Z>1)\approx\mathbf{0.16}\).`}
+  sol:R`From part A, \(\bar X_{64}\) is approximately Normal with mean 10 and SE 0.5.
+1. How far is 10.5 from the mean, in SEs? \(z=\dfrac{10.5-10}{0.5}=1\).
+2. 68% of sample means land within ±1 SE, so 32% land outside, half on each end.
+3. "Greater than 10.5" is the upper end only: 32% ÷ 2 = <b>0.16</b>.`}
 ]},
 {s:"B",n:5,t:"hyp",
  ctx:R`<p>A coffee machine claims a mean fill of \(\mu_0=250\) mL with known \(\sigma=6\) mL. A sample of \(n=36\) cups has \(\bar x=253\) mL. Use a z-test for whether the true mean differs from 250.</p>`,
@@ -509,9 +534,13 @@ There is a 74% chance that at least 9 of 10 packets get through in a trial.`}
 {s:"B",n:6,t:"ci",
  ctx:R`<p>A lab samples \(n=900\) titanium bolts: \(\bar x=7.2\) MPa, \(s=1.5\) MPa. Use z = 1.5 for 90%, 2 for 95%, 2.5 for 99%.</p>`,
  parts:[
- {p:"A",pts:4,kind:"num",q:R`<p>Standard error?</p>`,ans:[0.05],lab:["SE"],sol:R`\(1.5/\sqrt{900}=1.5/30=\mathbf{0.05}\).`},
+ {p:"A",pts:4,kind:"num",q:R`<p>Standard error?</p>`,ans:[0.05],lab:["SE"],sol:R`\(SE=\dfrac s{\sqrt n}\) with the sample SD \(s=1.5\) and \(n=900\).
+\(\sqrt{900}=30\), so \(SE=1.5/30=\mathbf{0.05}\).`},
  {p:"B",pts:8,kind:"num",q:R`<p>Two-sided 99% confidence interval for the mean (3 decimals).</p>`,ans:[7.075,7.325],lab:["Lower","Upper"],
-  sol:R`\(7.2\pm2.5(0.05)=7.2\pm0.125\Rightarrow(\mathbf{7.075},\ \mathbf{7.325})\).`},
+  sol:R`Formula: \(\bar x\pm z\cdot SE\).
+1. 99% two-sided → z = 2.5 (given).
+2. Margin = \(2.5\times0.05=0.125\).
+3. \(7.2-0.125=\mathbf{7.075}\), \(7.2+0.125=\mathbf{7.325}\).`},
  {p:"C",pts:4,kind:"mc",q:R`<p>With \(n=100\) you got the top interval below (the true \(\mu\) is marked). With a new sample of \(n=400\), which 95% interval is most likely?</p>
 <svg class="cifig" viewBox="0 0 440 230" role="img" aria-label="Six horizontal intervals. Top: n=100, centered at x-bar with mu to the right inside. A: narrow at the same x-bar, mu shifted. B: wider, centered near mu. C: narrow at the same x-bar, mu outside. D: about half width, x-bar moved toward mu, contains mu. E: same width as n=100 with mu moved.">
 <g stroke="var(--rule)" stroke-dasharray="3 3"><path d="M160 10V220M260 10V220"/></g>
@@ -532,7 +561,9 @@ There is a 74% chance that at least 9 of 10 packets get through in a trial.`}
   sol:R`\(\hat y_A=20+16+30=66\), \(\hat y_B=40+18+30=88\), \(\hat y_C=32+14+30=76\).
 Residuals \(y-\hat y\): 10, −8, −10. \(MSE=\dfrac{100+64+100}{3}=\mathbf{88}\).`},
  {p:"B",pts:5,kind:"num",q:R`<p>The variance of the satisfaction scores is 100. Compute \(R^2=1-MSE/\sigma_y^2\). Is this a good model?</p>`,ans:[0.12],lab:["R²"],
-  sol:R`\(R^2=1-88/100=\mathbf{0.12}\). No: the model explains only 12% of the variance.`},
+  sol:R`\(R^2=1-\dfrac{MSE}{\sigma_y^2}\) compares the model's error (88, from part A) with the error of always guessing the average score (the variance, 100).
+\(R^2=1-88/100=\mathbf{0.12}\).
+Not a good model: it's barely better than guessing the average. It explains only 12% of the variation in satisfaction.`},
  {p:"C",pts:3,kind:"free",q:R`<p>A model with \(R^2=0.5\) predicts 95 for an employee whose actual score was 70, a much bigger residual than everyone else. Give one possible reason.</p>`,
   sol:R`Any one: the point is an <b>outlier</b>; the employee has circumstances the features don't capture; a data recording error.`}
 ]},
@@ -543,7 +574,9 @@ Residuals \(y-\hat y\): 10, −8, −10. \(MSE=\dfrac{100+64+100}{3}=\mathbf{88}
   sol:R`\[X=\begin{bmatrix}40&1600&1500&1\\50&2500&2000&1\\60&3600&2500&1\end{bmatrix},\quad y=\begin{bmatrix}800\\900\\950\end{bmatrix},\quad X^TX\beta=X^Ty\ \text{ or }\ \beta=(X^TX)^{-1}X^Ty\]
 The \(x_1^2\) column is just 40², 50², 60². The model is still linear in the parameters.`},
  {p:"B [1]",pts:5,t:"fit",kind:"num",q:R`<p>Ridge with \(\lambda=2\) gives \(a_1=6.0,\ a_2=0.8,\ a_3=0.6,\ b=100\). Compute the penalty \(\lambda(a_1^2+a_2^2+a_3^2)\).</p>`,ans:[74],lab:["penalty"],
-  sol:R`\(2(36+0.64+0.36)=2(37)=\mathbf{74}\). \(b\) is not penalized.`},
+  sol:R`Square each weight (not b), add, multiply by λ.
+\(a_1^2=36,\ a_2^2=0.64,\ a_3^2=0.36\). Sum = 37.
+Penalty = \(2\times37=\mathbf{74}\). The intercept \(b\) is left out of the penalty, as the formula says.`},
  {p:"B [2]",pts:3,t:"fit",kind:"mc",q:R`<p>Is this a fair parameterization, or was it biased by the different feature scales?</p>`,
   o:["(a) This is a fair parameterization","(b) a₁ may have been over-penalized because it is the largest coefficient by a factor","(c) a₂ and a₃ may have been over-penalized, making them small","(d) b did not get penalized and that is not fair"],a:"B",
   sol:R`\(x_1\) is small (30–70) next to \(x_1^2\) (900–4900) and \(x_2\) (1000–3000), so it needs a big coefficient, and ridge punishes big coefficients. <b>(b)</b>. Fix: standardize features before ridge.`}
@@ -627,7 +660,11 @@ total_duration = reduce(lambda x, y: x + y, durations)`},
  ctx:R`<p>Higher-order functions take functions as arguments. Trace these by hand.</p>`,
  parts:[
  {p:"A",pts:3,kind:"num",q:R`<p>${C(`from functools import reduce
-reduce(lambda x, y: x * y, [1, 2, 3, 4])`)}</p>`,ans:[24],lab:["result"],sol:R`Rolling: ((1·2)·3)·4 = 24.`},
+reduce(lambda x, y: x * y, [1, 2, 3, 4])`)}</p>`,ans:[24],lab:["result"],sol:R`<code>reduce</code> combines the list two at a time, carrying the result forward:
+1. x = 1, y = 2 → 1 × 2 = 2
+2. x = 2 (the result so far), y = 3 → 6
+3. x = 6, y = 4 → <b>24</b>
+So it's 1 × 2 × 3 × 4.`},
  {p:"B",pts:3,kind:"mc",q:R`<p><code>[x if x % 2 else -x for x in range(1, 6)]</code></p>`,o:["[1, -2, 3, -4, 5]","[-1, 2, -3, 4, -5]","[1, 3, 5]","SyntaxError"],a:"A",
   sol:R`<code>x % 2</code> is 1 (truthy) for odd x, so odds stay and evens flip. An if-<b>else</b> goes <i>before</i> the <code>for</code>; a filter-only <code>if</code> goes after.`},
  {p:"C",pts:6,kind:"code",q:R`<p>Using <code>filter</code>, <code>map</code> and <code>reduce</code>, compute the sum of the squares of the odd numbers in <code>nums</code>.</p>`,
@@ -648,8 +685,10 @@ result = reduce(lambda a, b: a + b,
  ctx:R`<p>The coffee shop from lecture logged customers for 100 days and plotted a histogram with 8 bins of width 5 from 15 to 55.</p>`,
  parts:[
  {p:"A",pts:4,kind:"num",q:R`<p>The bin \([30,35)\) holds 21 days. What is its probability (relative frequency) and its density?</p>`,ans:[0.21,0.042],lab:["probability","density"],
-  sol:R`Probability = 21/100 = <b>0.21</b>. Density = 0.21 / 5 = <b>0.042</b>.`},
- {p:"B",pts:4,kind:"num",q:R`<p>Sturges' rule: \(k=\lceil\log_2 n\rceil+1\). How many bins for \(n=64\)?</p>`,ans:[7],lab:["k"],sol:R`\(\log_2 64=6\), so \(k=7\).`},
+  sol:R`1. Probability (relative frequency) = the fraction of days in that bin: 21 ÷ 100 = <b>0.21</b>.
+2. Density = probability ÷ bin width, so the bar's <i>area</i> (height × width) equals its probability: 0.21 ÷ 5 = <b>0.042</b>.`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Sturges' rule: \(k=\lceil\log_2 n\rceil+1\). How many bins for \(n=64\)?</p>`,ans:[7],lab:["k"],sol:R`\(\log_2 64\) asks "2 to what power gives 64?" \(2^6=64\), so it's 6. It's already a whole number, so rounding up changes nothing.
+\(k=6+1=\mathbf7\) bins.`},
  {p:"C",pts:4,kind:"mc",q:R`<p>What happens if you use far too many bins for 100 points?</p>`,
   o:["Each bin has few points, so the estimate is noisy and spiky","The histogram becomes smoother","The total area grows past 1","Nothing changes"],a:"A",
   sol:R`Too small a bin width: few samples per bin, high variance. Too wide: rare and common values lumped together. The lecture picks the width that minimizes estimated error.`}
@@ -658,48 +697,72 @@ result = reduce(lambda a, b: a + b,
  ctx:R`<p>Problems straight from the probability lecture examples.</p>`,
  parts:[
  {p:"A",pts:4,kind:"num",q:R`<p>Time between website visits is Exponential with \(\lambda=2\) (per minute). Find \(P(X>0.5)\). Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P(X > 0.5)"],
-  sol:R`\(P(X>x)=1-F(x)=e^{-\lambda x}=e^{-2(0.5)}=e^{-1}=\mathbf{0.368}\).`},
- {p:"B",pts:4,kind:"num",q:R`<p>Of 200 machine outputs, 20 were out of spec. Model the next output as Bernoulli. What is \(p\) = P(out of spec)?</p>`,ans:[0.1],lab:["p"],sol:R`\(p=20/200=\mathbf{0.1}\).`},
- {p:"C",pts:4,kind:"num",q:R`<p>Binomial(\(n=4, p=0.5\)). Find \(P(X=2)\).</p>`,ans:[0.375],lab:["P(X = 2)"],sol:R`\(\binom42(0.5)^2(0.5)^2=6/16=\mathbf{0.375}\).`},
+  sol:R`"More than 0.5 minutes" is the area to the <b>right</b> of 0.5, so use \(1-F(x)\).
+For the Exponential, \(F(x)=1-e^{-\lambda x}\), so \(1-F(x)=e^{-\lambda x}\).
+Plug in \(\lambda=2,\ x=0.5\): \(e^{-2\times0.5}=e^{-1}=\mathbf{0.368}\) (given).`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Of 200 machine outputs, 20 were out of spec. Model the next output as Bernoulli. What is \(p\) = P(out of spec)?</p>`,ans:[0.1],lab:["p"],sol:R`A Bernoulli is one yes/no event with success chance \(p\). Estimate \(p\) as the fraction of past outputs that were "yes" (out of spec):
+\(p=20/200=\mathbf{0.1}\).`},
+ {p:"C",pts:4,kind:"num",q:R`<p>Binomial(\(n=4, p=0.5\)). Find \(P(X=2)\).</p>`,ans:[0.375],lab:["P(X = 2)"],sol:R`Binomial formula: \(P(X=k)=\binom nk p^k(1-p)^{n-k}\) with \(n=4,\ k=2,\ p=0.5\).
+1. \(\binom42\) = ways to pick which 2 of the 4 tries succeed = \(\dfrac{4!}{2!\,2!}=\dfrac{24}{4}=6\).
+2. \(p^k=0.5^2=0.25\) (2 successes) and \((1-p)^{n-k}=0.5^2=0.25\) (2 failures).
+3. \(6\times0.25\times0.25=6/16=\mathbf{0.375}\).`},
  {p:"D",pts:4,kind:"num",q:R`<p>\(X\sim\mathcal N(\mu,\sigma^2)\). Using 68–95–99.7, find \(P(\mu-\sigma\lt X\lt \mu+2\sigma)\).</p>`,ans:[0.815],lab:["probability"],
-  sol:R`Left half of 68% is 0.34, right half of 95% is 0.475. Total <b>0.815</b>.`}
+  sol:R`The range is lopsided (1σ left, 2σ right), so split it at \(\mu\) and do each side separately:
+1. Left, \(\mu-\sigma\) to \(\mu\): 68% is within 1σ on <i>both</i> sides, so one side is 68% ÷ 2 = 0.34.
+2. Right, \(\mu\) to \(\mu+2\sigma\): 95% is within 2σ on both sides, so one side is 95% ÷ 2 = 0.475.
+3. Add: 0.34 + 0.475 = <b>0.815</b>. (In the picture in Start here → Distributions: 34% + 34% + 13.5%.)`}
 ]},
 {s:"X",n:6,t:"clt",
  ctx:R`<p>From lecture: the number of YouTube videos Bob watches per day is Binomial(50, 0.2). Look at the mean over a random sample of 100 days.</p>`,
  parts:[
  {p:"A",pts:6,kind:"num",q:R`<p>Mean and variance of one day, then the mean and variance of \(\bar X\).</p>`,ans:[10,8,10,0.08],lab:["μ","σ²","mean of X̄","Var(X̄)"],
-  sol:R`\(\mu=np=10\), \(\sigma^2=np(1-p)=50(0.2)(0.8)=8\). By the CLT \(\bar X\approx\mathcal N(10,\ 8/100)=\mathcal N(10,\ 0.08)\).`},
+  sol:R`One day is Binomial(n = 50, p = 0.2):
+1. Mean \(\mu=np=50\times0.2=\mathbf{10}\). Variance \(\sigma^2=np(1-p)=50\times0.2\times0.8=\mathbf8\).
+2. \(\bar X\) averages 100 days. By the CLT its mean is the same as one day's, <b>10</b>, and its variance is one day's divided by n: \(8/100=\mathbf{0.08}\).
+So \(\bar X\approx\mathcal N(10,\ 0.08)\). (The SE is \(\sqrt{0.08}\approx0.28\); the question asks for variance, so no square root.)`},
  {p:"B",pts:4,kind:"mc",q:R`<p>Bob's daily count is Binomial (discrete and skewed). Why can we still call \(\bar X\) normal?</p>`,
-  o:["The CLT works for any population shape once n is large (n ≥ 30 rule of thumb)","Because the binomial is always normal","Because the variance is small","We can't"],a:"A",sol:R`That is the point of the CLT: the sample <i>mean</i> is approximately normal whatever the population looks like.`},
- {p:"C",pts:4,kind:"mc",q:R`<p>If Bob's sample were 400 days instead of 100, the SD of \(\bar X\) would</p>`,o:["halve","double","quarter","stay the same"],a:"A",sol:R`\(SE=\sigma/\sqrt n\): 4× the data → \(\sqrt4=2\)× smaller.`}
+  o:["The CLT works for any population shape once n is large (n ≥ 30 rule of thumb)","Because the binomial is always normal","Because the variance is small","We can't"],a:"A",sol:R`One day's count is lopsided, but \(\bar X\) is an <b>average</b> of 100 days. Averaging cancels out the odd high and low days, and the CLT says the average comes out approximately Normal whatever shape a single day has, once n is large (rule of thumb n ≥ 30). Here n = 100.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>If Bob's sample were 400 days instead of 100, the SD of \(\bar X\) would</p>`,o:["halve","double","quarter","stay the same"],a:"A",sol:R`The SD of \(\bar X\) is the SE, \(\sigma/\sqrt n\). \(n\) goes from 100 to 400 (4×), so \(\sqrt n\) goes from 10 to 20 (2×), and dividing by twice as much <b>halves</b> it.
+Numbers: \(\sqrt8/10\approx0.28\) → \(\sqrt8/20\approx0.14\).`}
 ]},
 {s:"X",n:7,t:"hyp",
  ctx:R`<p>Lecture example: a factory claims widgets weigh \(\mu_0=100\) g with \(\sigma=22\) g. You weigh 100 new widgets and get \(\bar x=95\) g.</p>`,
  parts:[
  {p:"A",pts:4,kind:"num",q:R`<p>Standard error and z-score.</p>`,ans:[2.2,-2.27],lab:["SE","z"],
-  sol:R`\(SE=22/\sqrt{100}=2.2\). \(z=(95-100)/2.2=\mathbf{-2.27}\).`},
+  sol:R`1. \(SE=\dfrac{\sigma}{\sqrt n}=\dfrac{22}{\sqrt{100}}=\dfrac{22}{10}=\mathbf{2.2}\).
+2. \(z=\dfrac{\bar x-\mu_0}{SE}=\dfrac{95-100}{2.2}=\dfrac{-5}{2.2}=\mathbf{-2.27}\).
+Negative means the sample came in <i>below</i> the claimed 100 g, by about 2.27 SEs.`},
  {p:"B",pts:4,kind:"mc",q:R`<p>The two-sided p-value is 0.023. Decision?</p>`,
   o:["Reject at α = 0.05 and 0.1, but not at α = 0.01","Reject at every α","Fail to reject at every α","Reject only at α = 0.01"],a:"A",
-  sol:R`Reject when \(p\lt \alpha\): 0.023 < 0.05 and < 0.1, but 0.023 > 0.01.`},
+  sol:R`Rule: reject \(H_0\) when the p-value is <b>smaller</b> than α.
+α = 0.1: 0.023 &lt; 0.1 → reject.
+α = 0.05: 0.023 &lt; 0.05 → reject.
+α = 0.01: 0.023 is bigger than 0.01 → fail to reject.`},
  {p:"C",pts:4,kind:"mc",q:R`<p>If instead \(H_1:\mu<100\) (one-sided), the p-value would be</p>`,o:["0.0115","0.023","0.046","0.977"],a:"A",
-  sol:R`All the area is in one tail, so it is half the two-sided p: 0.0115.`},
+  sol:R`The two-sided p-value 0.023 counts both ends of the bell (below −2.27 <i>and</i> above +2.27). A one-sided test with \(H_1:\mu\lt 100\) only counts the low end, which is half: 0.023 ÷ 2 = <b>0.0115</b>.`},
  {p:"D",pts:4,kind:"free",q:R`<p>Why do we say "fail to reject \(H_0\)" instead of "accept \(H_0\)"?</p>`,
-  sol:R`Not finding evidence against \(H_0\) does not prove it is true; the sample may just be too small to detect a difference.`}
+  sol:R`A test can only find evidence <i>against</i> \(H_0\). If the data isn't surprising enough, that just means you didn't find a difference, not that there is none. The real difference might be small, or the sample too small to show it. (Like a "not guilty" verdict: it doesn't prove innocence.)`}
 ]},
 {s:"X",n:8,t:"hyp",
  ctx:R`<p>Two production lines. Known \(\sigma_1=\sigma_2=6\). Line 1: \(n_1=36,\ \bar x_1=52\). Line 2: \(n_2=36,\ \bar x_2=49\).</p>`,
  parts:[
  {p:"A",pts:6,kind:"num",q:R`<p>Two-sample z: compute SE and z (2 decimals).</p>`,ans:[1.41,2.12],lab:["SE","z"],
-  sol:R`\(SE=\sqrt{36/36+36/36}=\sqrt2\approx1.41\). \(z=(52-49)/1.41\approx\mathbf{2.12}\).`},
- {p:"B",pts:4,kind:"mc",q:R`<p>Two-sided test at \(\alpha=0.05\), critical value ≈ 2:</p>`,o:["Reject H₀: the line means differ","Fail to reject H₀","Accept H₀","Need a t-test"],a:"A",sol:R`\(|z|=2.12>2\). Reject.`}
+  sol:R`Comparing two means: the SE of the difference adds both lines' variances-of-the-mean, then takes the square root.
+1. \(SE=\sqrt{\dfrac{\sigma_1^2}{n_1}+\dfrac{\sigma_2^2}{n_2}}=\sqrt{\dfrac{36}{36}+\dfrac{36}{36}}=\sqrt{1+1}=\sqrt2\approx\mathbf{1.41}\).
+2. \(z=\dfrac{\bar x_1-\bar x_2}{SE}=\dfrac{52-49}{1.41}=\dfrac3{1.41}\approx\mathbf{2.12}\).`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>Two-sided test at \(\alpha=0.05\), critical value ≈ 2:</p>`,o:["Reject H₀: the line means differ","Fail to reject H₀","Accept H₀","Need a t-test"],a:"A",sol:R`Two-sided at α = 0.05: 95% of the bell is within ±2, so anything beyond ±2 is in the outer 5% and counts as surprising. That's the <b>critical value</b>.
+\(|z|=2.12\) is beyond 2, so <b>reject \(H_0\)</b>: the two lines have different mean outputs.`}
 ]},
 {s:"X",n:9,t:"ci",
  ctx:R`<p>Widgets again: \(\bar x=95,\ \sigma=22,\ n=100\). Use z = 2 for 95%.</p>`,
  parts:[
- {p:"A",pts:4,kind:"num",q:R`<p>95% confidence interval.</p>`,ans:[90.6,99.4],lab:["Lower","Upper"],sol:R`\(95\pm2(2.2)=95\pm4.4\Rightarrow(90.6,\ 99.4)\). (Lecture uses 1.96: (90.69, 99.31).)`},
+ {p:"A",pts:4,kind:"num",q:R`<p>95% confidence interval.</p>`,ans:[90.6,99.4],lab:["Lower","Upper"],sol:R`1. \(SE=\sigma/\sqrt n=22/10=2.2\).
+2. Margin = \(z\cdot SE=2\times2.2=4.4\).
+3. \(95-4.4=\mathbf{90.6}\), \(95+4.4=\mathbf{99.4}\).
+(Lecture uses the exact z = 1.96: (90.69, 99.31).)`},
  {p:"B",pts:4,kind:"mc",q:R`<p>Which is the right interpretation of a 95% CI?</p>`,
-  o:["If we repeated the experiment many times, about 95% of the intervals would contain μ","There is a 95% chance this data is correct","95% of widgets weigh between the bounds","μ moves around inside the interval 95% of the time"],a:"A",sol:R`The randomness is in the interval, not in \(\mu\).`},
- {p:"C",pts:4,kind:"mc",q:R`<p>When should you use a t-distribution instead of z?</p>`,o:["σ unknown and n < 30","Always for two-sample tests","When n > 30","When the data is discrete"],a:"A",sol:R`Use \(s\) and \(t\) with \(df=n-1\) degrees of freedom. The t has fatter tails, so intervals are wider.`}
+  o:["If we repeated the experiment many times, about 95% of the intervals would contain μ","There is a 95% chance this data is correct","95% of widgets weigh between the bounds","μ moves around inside the interval 95% of the time"],a:"A",sol:R`\(\mu\) is one fixed number; it doesn't move. What changes from sample to sample is the interval. "95% confidence" describes the method: if you repeated the experiment many times, about 95% of the intervals you built would cover \(\mu\). <b>A</b>.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>When should you use a t-distribution instead of z?</p>`,o:["σ unknown and n < 30","Always for two-sample tests","When n > 30","When the data is discrete"],a:"A",sol:R`z assumes you know the true \(\sigma\). When you only have the sample SD \(s\) and n is small (under 30), \(s\) itself is shaky, so you use the t-distribution with \(n-1\) degrees of freedom. It has fatter tails than z, which makes the interval a bit wider to account for the extra uncertainty. <b>A</b>.`}
 ]},
 {s:"X",n:10,t:"reg",
  ctx:R`<p>Fit a simple line \(\hat y=ax+b\) to the points (1, 2), (2, 3), (3, 5).</p><p>\(a=\dfrac{\sum x_iy_i-n\bar x\bar y}{\sum x_i^2-n\bar x^2},\quad b=\bar y-a\bar x\)</p>`,
@@ -707,26 +770,33 @@ result = reduce(lambda a, b: a + b,
  {p:"A",pts:6,kind:"num",q:R`<p>Find \(a\) and \(b\) (3 decimals).</p>`,ans:[1.5,0.333],lab:["a","b"],
   sol:R`\(\bar x=2,\ \bar y=10/3\). \(\sum xy=2+6+15=23\), \(n\bar x\bar y=20\). \(\sum x^2=14\), \(n\bar x^2=12\).
 \(a=3/2=\mathbf{1.5}\), \(b=10/3-3=\mathbf{0.333}\).`},
- {p:"B",pts:3,kind:"num",q:R`<p>Predict \(y\) at \(x=4\).</p>`,ans:[6.333],lab:["ŷ"],sol:R`\(1.5(4)+1/3=6.333\).`},
+ {p:"B",pts:3,kind:"num",q:R`<p>Predict \(y\) at \(x=4\).</p>`,ans:[6.333],lab:["ŷ"],sol:R`Plug \(x=4\) into the fitted line \(\hat y=1.5x+0.333\):
+\(1.5\times4+0.333=6+0.333=\mathbf{6.333}\).`},
  {p:"C",pts:3,kind:"mc",q:R`<p>A model is \(\hat y=10x_1+100x_2+5\). Does \(x_2\) matter more?</p>`,o:["Not necessarily: the features may have different scales; normalize first","Yes, its weight is 10 times bigger","No, x₁ always matters more","Only if R² > 0.5"],a:"A",
-  sol:R`Standardize each feature (subtract mean, divide by SD) before comparing weights.`}
+  sol:R`A weight's size depends on the feature's units. If \(x_2\) is measured in big numbers, it needs a small weight; in small numbers, a big weight. So a weight of 100 vs 10 says nothing on its own. Standardize each feature first (subtract its mean, divide by its SD) so they're on the same scale; then bigger weight means bigger effect. <b>A</b>.`}
 ]},
 {s:"X",n:11,t:"fit",
  ctx:R`<p>One feature, no intercept: \(x=[1,2]\), \(y=[2,4]\). Ridge: \(a=\dfrac{\sum x_iy_i}{\sum x_i^2+\lambda}\) (this is \((X^TX+\lambda I)^{-1}X^Ty\) for one column).</p>`,
  parts:[
- {p:"A",pts:4,kind:"num",q:R`<p>Find \(a\) for \(\lambda=0\) and \(\lambda=5\).</p>`,ans:[2,1],lab:["λ = 0","λ = 5"],sol:R`\(\sum xy=10,\ \sum x^2=5\). \(\lambda=0\): 10/5 = 2. \(\lambda=5\): 10/10 = 1. Bigger λ, smaller coefficient.`},
- {p:"B",pts:4,kind:"num",q:R`<p>You try λ ∈ {0.01, 0.1, 1, 10} with 5-fold CV. How many models are trained before the final refit?</p>`,ans:[20],lab:["models"],sol:R`4 values × 5 folds = <b>20</b>. Then one more on all the data with the best λ.`},
- {p:"C",pts:4,kind:"mc",q:R`<p>Train MSE is tiny but test MSE is huge. This is</p>`,o:["overfitting: lower the degree or raise λ","underfitting: add features","a perfect model","a sign the test set is too big"],a:"A",sol:R`Overfitting: memorized the training data. Underfitting has high error on both.`}
+ {p:"A",pts:4,kind:"num",q:R`<p>Find \(a\) for \(\lambda=0\) and \(\lambda=5\).</p>`,ans:[2,1],lab:["λ = 0","λ = 5"],sol:R`1. \(\sum x_iy_i=1(2)+2(4)=10\) and \(\sum x_i^2=1^2+2^2=5\).
+2. \(\lambda=0\): \(a=\dfrac{10}{5+0}=\mathbf2\) (plain least squares; y = 2x fits exactly).
+3. \(\lambda=5\): \(a=\dfrac{10}{5+5}=\mathbf1\).
+Adding λ to the bottom shrinks the weight. Bigger λ → smaller weights.`},
+ {p:"B",pts:4,kind:"num",q:R`<p>You try λ ∈ {0.01, 0.1, 1, 10} with 5-fold CV. How many models are trained before the final refit?</p>`,ans:[20],lab:["models"],sol:R`Each λ gets its own 5-fold CV, and 5-fold means 5 trainings (each fold takes one turn as the validation set).
+4 λ values × 5 trainings each = <b>20</b>. After picking the best λ you train once more on all the data, but the question asks before that.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>Train MSE is tiny but test MSE is huge. This is</p>`,o:["overfitting: lower the degree or raise λ","underfitting: add features","a perfect model","a sign the test set is too big"],a:"A",sol:R`Tiny error on the data it trained on but huge error on new data means the model memorized the training points (noise included) instead of learning the pattern: <b>overfitting</b>. Fix it by making the model simpler (lower degree) or penalizing big weights more (raise λ). Underfitting would show high error on <i>both</i>. <b>A</b>.`}
 ]},
 {s:"X",n:12,t:"reg",
  ctx:R`<p>You have 50 data points, 3 features, and an intercept.</p>`,
  parts:[
- {p:"A",pts:4,kind:"mc",q:R`<p>Dimensions of \(X\) and \(X^TX\)?</p>`,o:["50×4 and 4×4","50×3 and 3×3","4×50 and 50×50","50×4 and 50×50"],a:"A",sol:R`3 feature columns + 1 column of 1s = 4. \(X^TX\) is (4×50)(50×4) = 4×4.`},
- {p:"B",pts:4,kind:"mc",q:R`<p>Feature 3 is always exactly 2 × feature 1. What happens?</p>`,o:["XᵀX is not invertible; infinitely many solutions","Nothing","R² becomes negative","The intercept is 0"],a:"A",sol:R`Linearly dependent columns make \(X^TX\) singular. Ridge (\(+\lambda I\)) makes it invertible again.`}
+ {p:"A",pts:4,kind:"mc",q:R`<p>Dimensions of \(X\) and \(X^TX\)?</p>`,o:["50×4 and 4×4","50×3 and 3×3","4×50 and 50×50","50×4 and 50×50"],a:"A",sol:R`\(X\) has one <b>row per data point</b> (50) and one <b>column per feature</b> (3) plus a column of 1s for the intercept: <b>50×4</b>.
+\(X^T\) flips it to 4×50. Multiplying (4×50)(50×4): the inner 50s match and the result takes the outer sizes, <b>4×4</b>. <b>A</b>.`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>Feature 3 is always exactly 2 × feature 1. What happens?</p>`,o:["XᵀX is not invertible; infinitely many solutions","Nothing","R² becomes negative","The intercept is 0"],a:"A",sol:R`If column 3 is exactly 2 × column 1, it adds no new information: the model could put weight on either one and get the same predictions. So infinitely many β fit equally well, and \(X^TX\) has no inverse (it's "singular"), meaning \(\beta=(X^TX)^{-1}X^Ty\) can't be computed. Ridge adds \(\lambda I\), which makes it invertible again. <b>A</b>.`}
 ]}
 ];
 
 /* Start here: refresher + warm-ups per topic. Warm-ups use the same part format. */
+const BELL=`<svg class="cifig bell" viewBox="0 0 440 178" role="img" aria-label="Bell curve split at mu plus or minus 1, 2 and 3 sigma. Each side holds 34% between mu and 1 sigma, 13.5% between 1 and 2 sigma, 2.35% between 2 and 3 sigma, and 0.15% beyond 3 sigma."><path d="M220.0 150L220.0 45.0L221.4 45.0L222.9 45.1L224.3 45.3L225.7 45.5L227.1 45.8L228.6 46.2L230.0 46.6L231.4 47.1L232.9 47.6L234.3 48.2L235.7 48.9L237.1 49.6L238.6 50.4L240.0 51.2L241.4 52.1L242.9 53.1L244.3 54.1L245.7 55.1L247.1 56.2L248.6 57.3L250.0 58.5L251.4 59.7L252.9 61.0L254.3 62.3L255.7 63.6L257.1 65.0L258.6 66.4L260.0 67.8L261.4 69.3L262.9 70.7L264.3 72.2L265.7 73.8L267.1 75.3L268.6 76.8L270.0 78.4L271.4 80.0L272.9 81.5L274.3 83.1L275.7 84.7L277.1 86.3L277.1 150Z" fill="var(--gold)" fill-opacity="0.45"/><path d="M162.9 150L162.9 86.3L164.3 84.7L165.7 83.1L167.1 81.5L168.6 80.0L170.0 78.4L171.4 76.8L172.9 75.3L174.3 73.8L175.7 72.2L177.1 70.7L178.6 69.3L180.0 67.8L181.4 66.4L182.9 65.0L184.3 63.6L185.7 62.3L187.1 61.0L188.6 59.7L190.0 58.5L191.4 57.3L192.9 56.2L194.3 55.1L195.7 54.1L197.1 53.1L198.6 52.1L200.0 51.2L201.4 50.4L202.9 49.6L204.3 48.9L205.7 48.2L207.1 47.6L208.6 47.1L210.0 46.6L211.4 46.2L212.9 45.8L214.3 45.5L215.7 45.3L217.1 45.1L218.6 45.0L220.0 45.0L220.0 150Z" fill="var(--gold)" fill-opacity="0.45"/><path d="M277.1 150L277.1 86.3L278.6 87.9L280.0 89.5L281.4 91.1L282.9 92.7L284.3 94.2L285.7 95.8L287.1 97.4L288.6 98.9L290.0 100.4L291.4 101.9L292.9 103.4L294.3 104.9L295.7 106.4L297.1 107.8L298.6 109.2L300.0 110.6L301.4 112.0L302.9 113.3L304.3 114.6L305.7 115.9L307.1 117.2L308.6 118.4L310.0 119.6L311.4 120.8L312.9 122.0L314.3 123.1L315.7 124.2L317.1 125.2L318.6 126.3L320.0 127.3L321.4 128.3L322.9 129.2L324.3 130.1L325.7 131.0L327.1 131.9L328.6 132.7L330.0 133.5L331.4 134.3L332.9 135.1L334.3 135.8L334.3 150Z" fill="var(--gold)" fill-opacity="0.28"/><path d="M105.7 150L105.7 135.8L107.1 135.1L108.6 134.3L110.0 133.5L111.4 132.7L112.9 131.9L114.3 131.0L115.7 130.1L117.1 129.2L118.6 128.3L120.0 127.3L121.4 126.3L122.9 125.2L124.3 124.2L125.7 123.1L127.1 122.0L128.6 120.8L130.0 119.6L131.4 118.4L132.9 117.2L134.3 115.9L135.7 114.6L137.1 113.3L138.6 112.0L140.0 110.6L141.4 109.2L142.9 107.8L144.3 106.4L145.7 104.9L147.1 103.4L148.6 101.9L150.0 100.4L151.4 98.9L152.9 97.4L154.3 95.8L155.7 94.2L157.1 92.7L158.6 91.1L160.0 89.5L161.4 87.9L162.9 86.3L162.9 150Z" fill="var(--gold)" fill-opacity="0.28"/><path d="M334.3 150L334.3 135.8L335.7 136.5L337.1 137.2L338.6 137.8L340.0 138.4L341.4 139.0L342.9 139.6L344.3 140.1L345.7 140.7L347.1 141.2L348.6 141.6L350.0 142.1L351.4 142.5L352.9 143.0L354.3 143.4L355.7 143.7L357.1 144.1L358.6 144.5L360.0 144.8L361.4 145.1L362.9 145.4L364.3 145.7L365.7 145.9L367.1 146.2L368.6 146.4L370.0 146.7L371.4 146.9L372.9 147.1L374.3 147.3L375.7 147.4L377.1 147.6L378.6 147.8L380.0 147.9L381.4 148.1L382.9 148.2L384.3 148.3L385.7 148.4L387.1 148.5L388.6 148.6L390.0 148.7L391.4 148.8L391.4 150Z" fill="var(--gold)" fill-opacity="0.14"/><path d="M48.6 150L48.6 148.8L50.0 148.7L51.4 148.6L52.9 148.5L54.3 148.4L55.7 148.3L57.1 148.2L58.6 148.1L60.0 147.9L61.4 147.8L62.9 147.6L64.3 147.4L65.7 147.3L67.1 147.1L68.6 146.9L70.0 146.7L71.4 146.4L72.9 146.2L74.3 145.9L75.7 145.7L77.1 145.4L78.6 145.1L80.0 144.8L81.4 144.5L82.9 144.1L84.3 143.7L85.7 143.4L87.1 143.0L88.6 142.5L90.0 142.1L91.4 141.6L92.9 141.2L94.3 140.7L95.7 140.1L97.1 139.6L98.6 139.0L100.0 138.4L101.4 137.8L102.9 137.2L104.3 136.5L105.7 135.8L105.7 150Z" fill="var(--gold)" fill-opacity="0.14"/><path d="M20.0 149.8 L22.9 149.7 L25.7 149.7 L28.6 149.6 L31.4 149.5 L34.3 149.5 L37.1 149.4 L40.0 149.3 L42.9 149.1 L45.7 149.0 L48.6 148.8 L51.4 148.6 L54.3 148.4 L57.1 148.2 L60.0 147.9 L62.9 147.6 L65.7 147.3 L68.6 146.9 L71.4 146.4 L74.3 145.9 L77.1 145.4 L80.0 144.8 L82.9 144.1 L85.7 143.4 L88.6 142.5 L91.4 141.6 L94.3 140.7 L97.1 139.6 L100.0 138.4 L102.9 137.2 L105.7 135.8 L108.6 134.3 L111.4 132.7 L114.3 131.0 L117.1 129.2 L120.0 127.3 L122.9 125.2 L125.7 123.1 L128.6 120.8 L131.4 118.4 L134.3 115.9 L137.1 113.3 L140.0 110.6 L142.9 107.8 L145.7 104.9 L148.6 101.9 L151.4 98.9 L154.3 95.8 L157.1 92.7 L160.0 89.5 L162.9 86.3 L165.7 83.1 L168.6 80.0 L171.4 76.8 L174.3 73.8 L177.1 70.7 L180.0 67.8 L182.9 65.0 L185.7 62.3 L188.6 59.7 L191.4 57.3 L194.3 55.1 L197.1 53.1 L200.0 51.2 L202.9 49.6 L205.7 48.2 L208.6 47.1 L211.4 46.2 L214.3 45.5 L217.1 45.1 L220.0 45.0 L222.9 45.1 L225.7 45.5 L228.6 46.2 L231.4 47.1 L234.3 48.2 L237.1 49.6 L240.0 51.2 L242.9 53.1 L245.7 55.1 L248.6 57.3 L251.4 59.7 L254.3 62.3 L257.1 65.0 L260.0 67.8 L262.9 70.7 L265.7 73.8 L268.6 76.8 L271.4 80.0 L274.3 83.1 L277.1 86.3 L280.0 89.5 L282.9 92.7 L285.7 95.8 L288.6 98.9 L291.4 101.9 L294.3 104.9 L297.1 107.8 L300.0 110.6 L302.9 113.3 L305.7 115.9 L308.6 118.4 L311.4 120.8 L314.3 123.1 L317.1 125.2 L320.0 127.3 L322.9 129.2 L325.7 131.0 L328.6 132.7 L331.4 134.3 L334.3 135.8 L337.1 137.2 L340.0 138.4 L342.9 139.6 L345.7 140.7 L348.6 141.6 L351.4 142.5 L354.3 143.4 L357.1 144.1 L360.0 144.8 L362.9 145.4 L365.7 145.9 L368.6 146.4 L371.4 146.9 L374.3 147.3 L377.1 147.6 L380.0 147.9 L382.9 148.2 L385.7 148.4 L388.6 148.6 L391.4 148.8 L394.3 149.0 L397.1 149.1 L400.0 149.3 L402.9 149.4 L405.7 149.5 L408.6 149.5 L411.4 149.6 L414.3 149.7 L417.1 149.7 L420.0 149.8" fill="none" stroke="var(--ink)" stroke-width="1.5"/><g stroke="var(--muted)"><path d="M20 150H420"/><path d="M48.6 150V155"/><path d="M105.7 150V155"/><path d="M162.9 150V155"/><path d="M220.0 150V155"/><path d="M277.1 150V155"/><path d="M334.3 150V155"/><path d="M391.4 150V155"/></g><text x="248.6" y="143" text-anchor="middle">34%</text><text x="191.4" y="143" text-anchor="middle">34%</text><text x="305.7" y="143" text-anchor="middle">13.5%</text><text x="134.3" y="143" text-anchor="middle">13.5%</text><text x="362.9" y="112" text-anchor="middle">2.35%</text><text x="77.1" y="112" text-anchor="middle">2.35%</text><text x="48.6" y="168" text-anchor="middle">μ−3σ</text><text x="105.7" y="168" text-anchor="middle">μ−2σ</text><text x="162.9" y="168" text-anchor="middle">μ−σ</text><text x="220.0" y="168" text-anchor="middle">μ</text><text x="277.1" y="168" text-anchor="middle">μ+σ</text><text x="334.3" y="168" text-anchor="middle">μ+2σ</text><text x="391.4" y="168" text-anchor="middle">μ+3σ</text><text x="405.7" y="102" text-anchor="middle">0.15%</text><text x="34.3" y="102" text-anchor="middle">0.15%</text></svg><p><b>Reading the picture:</b> each side of μ is a mirror image. Within 1σ: 34% + 34% = <b>68%</b>. Within 2σ: 68% + 13.5% + 13.5% = <b>95%</b>. Within 3σ: <b>99.7%</b>. So the area <b>above</b> μ+σ is 50% − 34% = <b>16%</b>, above μ+2σ is 2.5%, above μ+3σ is 0.15%. To get any range, add the pieces it covers.</p>`;
 const LEARN={
 py:{learn:R`<p class="idea"><b>The big idea:</b> most exam code is a loop that walks a list and builds a result. Know how lists index, slice and grow, and where <code>return</code> goes.</p>
 <p><b>Indexing</b> starts at 0. Negative indexes count from the end: <code>lst[-1]</code> is the last item.</p>
@@ -748,8 +818,10 @@ py:{learn:R`<p class="idea"><b>The big idea:</b> most exam code is a loop that w
 <p><b>Common mistakes:</b> <code>return</code> indented inside the loop (returns after one item); <code>range(len(x))</code> off by one; <code>b = a</code> makes an alias, not a copy.</p>`,
 exam:R`Fill-in-the-blank functions: walk a list, check each item, append, and <code>return</code> after the loop. Part B reuses Part A (Mock 1a: remove duplicates, then count how many were removed) or looks back at earlier items (Mock 1b: check a Fibonacci list, then build one of length \(n+1\)).`,
 warm:[
- {step:"Slicing",kind:"mc",q:R`<p><code>nums = [10, 20, 30, 40, 50]</code>. What is <code>nums[1:3]</code>?</p>`,o:["[10, 20, 30]","[20, 30]","[20, 30, 40]","[10, 20]"],a:"B",sol:R`Start at index 1 (20), stop before index 3.`},
- {step:"Step slices",kind:"mc",q:R`<p>Same list. <code>nums[1::2]</code>?</p>`,o:["[10, 30, 50]","[50, 30, 10]","[20, 40]","[20, 30, 40, 50]"],a:"C",sol:R`Start at index 1, then every second item. You'll need this for "every 7th day" in the dict questions.`},
+ {step:"Slicing",kind:"mc",q:R`<p><code>nums = [10, 20, 30, 40, 50]</code>. What is <code>nums[1:3]</code>?</p>`,o:["[10, 20, 30]","[20, 30]","[20, 30, 40]","[10, 20]"],a:"B",sol:R`Indexes: 0 → 10, 1 → 20, 2 → 30, 3 → 40, 4 → 50.
+<code>[1:3]</code> starts at index 1 and stops <i>before</i> index 3, so it takes indexes 1 and 2: <b>[20, 30]</b>.`},
+ {step:"Step slices",kind:"mc",q:R`<p>Same list. <code>nums[1::2]</code>?</p>`,o:["[10, 30, 50]","[50, 30, 10]","[20, 40]","[20, 30, 40, 50]"],a:"C",sol:R`<code>[start:stop:step]</code>. Start at index 1 (20), no stop (go to the end), step 2 (skip one each time): index 1 → 20, index 3 → 40, index 5 doesn't exist. <b>[20, 40]</b>.
+You'll need this for "every 7th day" in the dict questions.`},
  {step:"range end",kind:"mc",q:R`<p>You need the indexes 2, 3, …, <code>n</code> (including <code>n</code>). Which loop?</p>`,o:["for i in range(2, n)","for i in range(1, n + 1)","for i in range(2, n - 1)","for i in range(2, n + 1)"],a:"D",sol:R`<code>range</code> stops before its end, so to include <code>n</code> the end is <code>n + 1</code>. Mock 1b's <code>fib(n)</code> part is exactly this.`},
  {step:"Write a loop",kind:"code",q:R`<p>Write <code>evens(lst)</code> that returns the even numbers, in order.</p>`,
   start:`def evens(lst):
@@ -939,9 +1011,11 @@ ${C(`[n ** 2 for n in nums if n > 2]            # filter: if goes AFTER the for
 <p><b>Common mistakes:</b> forgetting <code>from functools import reduce</code>; forgetting <code>list()</code>; putting <code>else</code> after the <code>for</code>; inside the dict data, writing <code>s.name</code> instead of <code>s['name']</code>.</p>`,
 exam:R`One list of dicts, three blanks: a list comprehension with two conditions, <code>filter</code> with a lambda, then <code>map</code> to transform and <code>reduce</code> to sum (often with <code>A if cond else B</code> inside the lambda). Mock 1b adds a nested comprehension turned into a set.`,
 warm:[
- {step:"reduce",kind:"num",q:R`<p><code>reduce(lambda x, y: x * y, [1, 2, 3, 4])</code></p>`,ans:[24],lab:["result"],sol:R`1·2 = 2, ·3 = 6, ·4 = 24.`},
- {step:"map",kind:"mc",q:R`<p><code>list(map(lambda x: x ** 2, [1, 2, 3]))</code></p>`,o:["[2, 4, 6]","14","[1, 4, 9]","<map object>"],a:"C",sol:R`Squares each item. Without <code>list()</code> you'd get the map object.`},
- {step:"Comprehension filter",kind:"mc",q:R`<p><code>[n for n in range(10) if n % 3 == 0]</code></p>`,o:["[3, 6, 9]","[0, 3, 6, 9]","[0, 3, 6]","[1, 4, 7]"],a:"B",sol:R`0 counts: 0 % 3 == 0.`},
+ {step:"reduce",kind:"num",q:R`<p><code>reduce(lambda x, y: x * y, [1, 2, 3, 4])</code></p>`,ans:[24],lab:["result"],sol:R`<code>reduce</code> combines two at a time and carries the result forward: 1 × 2 = 2, then 2 × 3 = 6, then 6 × 4 = <b>24</b>.`},
+ {step:"map",kind:"mc",q:R`<p><code>list(map(lambda x: x ** 2, [1, 2, 3]))</code></p>`,o:["[2, 4, 6]","14","[1, 4, 9]","<map object>"],a:"C",sol:R`<code>map</code> runs the function on every item: 1 → 1, 2 → 4, 3 → 9. <code>list(...)</code> collects the results: <b>[1, 4, 9]</b>.
+Without <code>list()</code> you'd just see a map object, not the numbers.`},
+ {step:"Comprehension filter",kind:"mc",q:R`<p><code>[n for n in range(10) if n % 3 == 0]</code></p>`,o:["[3, 6, 9]","[0, 3, 6, 9]","[0, 3, 6]","[1, 4, 7]"],a:"B",sol:R`<code>range(10)</code> is 0, 1, …, 9. The <code>if</code> keeps only n where <code>n % 3 == 0</code> (the remainder after dividing by 3 is 0, i.e. multiples of 3).
+That's 0, 3, 6, 9. Don't forget 0: 0 ÷ 3 leaves remainder 0. <b>[0, 3, 6, 9]</b>.`},
  {step:"if-else in a lambda",kind:"mc",q:R`<p><code>list(map(lambda x: x + 10 if x < 60 else x + 2, [55, 80]))</code></p>`,o:["[65, 82]","[57, 90]","[65, 90]","SyntaxError"],a:"A",sol:R`55 < 60 → 65; 80 is not → 82. The whole <code>A if cond else B</code> is the lambda's return value.`},
  {step:"Records",kind:"code",q:R`<p>List the names of dogs aged 5 or more, with a list comprehension.</p>${C(`pets = [{'name': 'Rex', 'kind': 'dog', 'age': 3},
         {'name': 'Tom', 'kind': 'cat', 'age': 5},
@@ -976,13 +1050,19 @@ hist:{learn:R`<p class="idea"><b>The big idea:</b> a histogram sorts data into b
 <p><b>Common mistake:</b> forgetting to divide by the width for density, so the area isn't 1.</p>`,
 exam:R`Build a density histogram from about 10 raw values (count carefully at the bin edges; the last bin includes its right edge), or turn a table of counts into a probability mass histogram.`,
 warm:[
- {step:"Probability",kind:"num",q:R`<p>50 data points, 10 of them in a bin. Probability of that bin (the fraction of points in it)?</p>`,ans:[0.2],lab:["p"],sol:R`10/50.`},
- {step:"Density",kind:"num",q:R`<p>Same bin, width 5. Density?</p>`,ans:[0.04],lab:["density"],sol:R`0.2/5.`},
+ {step:"Probability",kind:"num",q:R`<p>50 data points, 10 of them in a bin. Probability of that bin (the fraction of points in it)?</p>`,ans:[0.2],lab:["p"],sol:R`Probability of a bin = fraction of all points that fall in it = 10 ÷ 50 = <b>0.2</b>.`},
+ {step:"Density",kind:"num",q:R`<p>Same bin, width 5. Density?</p>`,ans:[0.04],lab:["density"],sol:R`Density = probability ÷ bin width = 0.2 ÷ 5 = <b>0.04</b>.
+Why divide: the bar's area (height × width = 0.04 × 5) then equals the probability 0.2, so all the bars' areas add up to 1.`},
  {step:"Edges",kind:"mc",q:R`<p>Bins \([0,10),\ [10,20),\ [20,30]\). Where do the values 10 and 30 go?</p>`,o:["10 → [0, 10), 30 → [20, 30]","10 → [10, 20), 30 → nowhere","10 → [10, 20), 30 → [20, 30]","both are dropped"],a:"C",sol:R`\([0,10)\) stops just before 10, so 10 starts the next bin. The last bin is closed, so 30 is in.`},
  {step:"Build one",kind:"num",q:R`<p>Data <code>[2, 4, 4, 7, 9, 11, 12, 13]</code>, bins \([0,5),[5,10),[10,15]\). Density of each bin?</p>`,ans:[0.075,0.05,0.075],lab:["[0,5)","[5,10)","[10,15]"],
-  sol:R`Counts 3, 2, 3 out of 8 → 0.375, 0.25, 0.375 → divide by 5 → 0.075, 0.05, 0.075. Area: 5(0.2) = 1.`},
- {step:"Mass histogram",kind:"num",q:R`<p>Over 20 trials you count successes:</p>${T(["successes","2","3","4"],[["trials",5,10,5]])}<p>Draw a probability mass histogram: one bar per number of successes, and each bar's height is the <b>fraction of trials</b> with that many successes. What is each height?</p>`,ans:[0.25,0.5,0.25],lab:["2","3","4"],sol:R`Divide by the 20 trials. Discrete data: no bin width to divide by.`},
- {step:"Bin count",kind:"num",q:R`<p>Sturges' rule for \(n=64\)?</p>`,ans:[7],lab:["bins"],sol:R`\(\log_2 64+1=7\).`},
+  sol:R`1. Count: \([0,5)\): 2, 4, 4 → 3. \([5,10)\): 7, 9 → 2. \([10,15]\): 11, 12, 13 → 3.
+2. Probability = count ÷ 8 points: 0.375, 0.25, 0.375.
+3. Density = probability ÷ width 5: <b>0.075, 0.05, 0.075</b>.
+Check: total area = 5 × (0.075 + 0.05 + 0.075) = 5 × 0.2 = 1.`},
+ {step:"Mass histogram",kind:"num",q:R`<p>Over 20 trials you count successes:</p>${T(["successes","2","3","4"],[["trials",5,10,5]])}<p>Draw a probability mass histogram: one bar per number of successes, and each bar's height is the <b>fraction of trials</b> with that many successes. What is each height?</p>`,ans:[0.25,0.5,0.25],lab:["2","3","4"],sol:R`Each bar = fraction of the 20 trials with that many successes:
+2 successes: 5 ÷ 20 = <b>0.25</b>. 3 successes: 10 ÷ 20 = <b>0.5</b>. 4 successes: 5 ÷ 20 = <b>0.25</b>.
+They add to 1. The values are whole numbers (discrete), so there's no bin width to divide by.`},
+ {step:"Bin count",kind:"num",q:R`<p>Sturges' rule for \(n=64\)?</p>`,ans:[7],lab:["bins"],sol:R`Sturges: \(\lceil\log_2 n\rceil+1\). \(\log_2 64\) = "2 to what power is 64?" = 6, since \(2^6=64\). Then 6 + 1 = <b>7</b> bins.`},
  {step:"Exam shape",kind:"num",q:R`<p>Wait times (min): <code>[1, 4, 6, 3, 15, 9, 2, 5, 11, 7]</code>. Density histogram with bins \([0,5),\ [5,10),\ [10,15]\). Each bar's height is its density (probability ÷ bin width, so the total area is 1). What is each height?</p>`,ans:[0.08,0.08,0.04],lab:["[0,5)","[5,10)","[10,15]"],
   sol:R`Counts: \([0,5)\): 1, 4, 3, 2 → 4. \([5,10)\): 6, 9, 5, 7 → 4 (5 goes right). \([10,15]\): 15, 11 → 2 (15 is in the closed last bin).
 Probabilities 0.4, 0.4, 0.2; divide by width 5: <b>0.08, 0.08, 0.04</b>. Check: 5(0.08 + 0.08 + 0.04) = 1.`}
@@ -1000,20 +1080,30 @@ prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likel
 <li><b>Estimating p from a table:</b> sample mean \(\bar x=\dfrac{\sum(\text{value}\times\text{how many trials})}{\text{total trials}}\). The binomial mean is \(np\), so \(p=\bar x/n\).</li>
 <li><b>Exponential(λ):</b> waiting time. \(f(x)=\lambda e^{-\lambda x}\), \(F(x)=1-e^{-\lambda x}\), so \(P(X>x)=e^{-\lambda x}\). Mean \(1/\lambda\).</li>
 <li><b>Normal(μ, σ²):</b> bell curve. About 68% within 1σ, 95% within 2σ, 99.7% within 3σ. Written \(\mathcal N(50, 5^2)\): mean 50, SD 5 (the second number is the variance, σ²).</li></ul>
+${BELL}
 <div class="ex"><b>Example:</b> Exponential with λ = 0.1. \(P(X>20)=e^{-0.1\cdot20}=e^{-2}=0.135\). The exam gives you the value of \(e^{-2}\).</div>
 <div class="ex"><b>Example:</b> Binomial(10, 0.9). \(P(X=9)=\binom{10}9(0.9)^9(0.1)=10(0.39)(0.1)=0.39\). \(\binom{10}{9}=10\) because choosing 9 is the same as leaving 1 out.</div>
 <p><b>Normal tail cheat-table</b> (one tail beyond ±z): z = 1 → 0.16, z = 2 → 0.025, z = 3 → 0.0015.</p>
 <p><b>Common mistake:</b> using \(F(x)\) when the question asks "more than". "More than" is \(1-F\).</p>`,
 exam:R`Exponential: \(P(X\le x)=1-e^{-\lambda x}\) and \(P(X>x)=e^{-\lambda x}\), with the \(e^{-k}\) values given. Binomial: estimate \(p\) from the mean of a count table, then \(P(X=k)\) and \(P(X\ge k)\) with the powers given.`,
 warm:[
- {step:"Binomial mean",kind:"num",q:R`<p>Binomial(10, 0.9). Mean?</p>`,ans:[9],lab:["mean"],sol:R`\(np=9\).`},
- {step:"Binomial SD",kind:"num",q:R`<p>Binomial(100, 0.8). Standard deviation?</p>`,ans:[4],lab:["σ"],sol:R`\(\sqrt{100(0.8)(0.2)}=\sqrt{16}=4\).`},
- {step:"More than",kind:"num",q:R`<p>Exponential with λ = 0.5. \(P(X>2)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P"],sol:R`\(e^{-0.5\cdot2}=e^{-1}\).`},
- {step:"At most",kind:"num",q:R`<p>Exponential with λ = 0.2. \(P(X\le5)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.632],lab:["P"],sol:R`\(F(5)=1-e^{-0.2\cdot5}=1-0.368\).`},
- {step:"Normal tail",kind:"num",q:R`<p>\(X\sim\mathcal N(50, 5^2)\). Using 68–95–99.7, \(P(X>60)\)?</p>`,ans:[0.025],lab:["P"],sol:R`60 is 2σ above. 5% outside ±2σ, half on the right: 0.025.`},
- {step:"Estimate p",kind:"num",q:R`<p>Each trial sends 5 packets; over 10 trials you record how many got through:</p>${T(["successes","3","4","5"],[["trials",2,6,2]])}<p>Find the sample mean number of successes per trial, then estimate \(p\) for Binomial(5, p).</p>`,ans:[4,0.8],lab:["x̄","p"],sol:R`\(\bar x=(3\cdot2+4\cdot6+5\cdot2)/10=40/10=4\). Binomial mean is \(np\), so \(p=4/5=0.8\).`},
+ {step:"Binomial mean",kind:"num",q:R`<p>Binomial(10, 0.9). Mean?</p>`,ans:[9],lab:["mean"],sol:R`The Binomial mean is \(np\): 10 tries, each succeeding with chance 0.9, so on average \(10\times0.9=\mathbf9\) successes.`},
+ {step:"Binomial SD",kind:"num",q:R`<p>Binomial(100, 0.8). Standard deviation?</p>`,ans:[4],lab:["σ"],sol:R`Binomial variance = \(np(1-p)\) = 100 × 0.8 × 0.2 = 16. SD is its square root: \(\sqrt{16}=\mathbf4\).`},
+ {step:"More than",kind:"num",q:R`<p>Exponential with λ = 0.5. \(P(X>2)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.368],lab:["P"],sol:R`"More than 2" is the area to the right of 2: \(P(X>x)=1-F(x)=e^{-\lambda x}\).
+Plug in \(\lambda=0.5,\ x=2\): \(e^{-0.5\times2}=e^{-1}=\mathbf{0.368}\).`},
+ {step:"At most",kind:"num",q:R`<p>Exponential with λ = 0.2. \(P(X\le5)\)? Given \(e^{-1}=0.368\).</p>`,ans:[0.632],lab:["P"],sol:R`"At most 5" is the area to the left of 5, which is the CDF: \(F(x)=1-e^{-\lambda x}\).
+\(F(5)=1-e^{-0.2\times5}=1-e^{-1}=1-0.368=\mathbf{0.632}\).`},
+ {step:"Normal tail",kind:"num",q:R`<p>\(X\sim\mathcal N(50, 5^2)\). Using 68–95–99.7, \(P(X>60)\)?</p>`,ans:[0.025],lab:["P"],sol:R`\(\mathcal N(50,5^2)\): mean 50, SD 5.
+1. How many SDs above the mean is 60? \((60-50)/5=2\).
+2. 95% is within ±2σ, so 5% is outside, half on each end.
+3. "More than 60" is the right end: 5% ÷ 2 = <b>0.025</b>.`},
+ {step:"Estimate p",kind:"num",q:R`<p>Each trial sends 5 packets; over 10 trials you record how many got through:</p>${T(["successes","3","4","5"],[["trials",2,6,2]])}<p>Find the sample mean number of successes per trial, then estimate \(p\) for Binomial(5, p).</p>`,ans:[4,0.8],lab:["x̄","p"],sol:R`1. Sample mean = total successes ÷ number of trials. Each "successes" value counts as many times as it happened: \(\bar x=\dfrac{3(2)+4(6)+5(2)}{10}=\dfrac{6+24+10}{10}=\mathbf4\).
+2. A Binomial(5, p) has mean \(np=5p\). Set it equal to what we saw: \(5p=4\Rightarrow p=\mathbf{0.8}\).`},
  {step:"Exam shape",kind:"num",q:R`<p>Same model: Binomial(5, 0.8). Given \(0.8^4=0.41\), \(0.8^5=0.33\). Find \(P(X=4)\) and \(P(X\ge4)\).</p>`,ans:[0.41,0.74],lab:["P(X = 4)","P(X ≥ 4)"],
-  sol:R`\(P(4)=\binom54(0.8)^4(0.2)=5(0.41)(0.2)=0.41\). \(P(5)=0.8^5=0.33\). \(P(X\ge4)=0.41+0.33=0.74\).`}
+  sol:R`Binomial formula \(P(X=k)=\binom nk p^k(1-p)^{n-k}\), with \(n=5,\ p=0.8\).
+1. \(P(X=4)\): \(\binom54=5\) (pick which 1 of the 5 fails). \(0.8^4=0.41\) (given) and \(0.2^1=0.2\). So \(5\times0.41\times0.2=\mathbf{0.41}\).
+2. \(P(X=5)\): \(\binom55=1\), \(0.8^5=0.33\), \(0.2^0=1\). So <b>0.33</b>.
+3. "At least 4" = 4 or 5: \(0.41+0.33=\mathbf{0.74}\).`}
 ]},
 clt:{learn:R`<p class="idea"><b>The big idea:</b> if you average \(n\) independent samples, the average itself is random, and it's approximately <b>normal</b>, no matter what shape the data has. It's centered at \(\mu\) and its spread shrinks like \(1/\sqrt n\).</p>
 \[\bar X\approx\mathcal N\!\left(\mu,\ \frac{\sigma^2}{n}\right),\qquad SE=\frac{\sigma}{\sqrt n}\]
@@ -1023,19 +1113,36 @@ clt:{learn:R`<p class="idea"><b>The big idea:</b> if you average \(n\) independe
 <li>4× the samples → half the SE. To cut SE to a target: \(n=(\sigma/SE)^2\).</li>
 <li>\(\bar X\) (capital) and \(\bar x\) (lowercase) are the same sample mean: capital when talking about it as a random quantity, lowercase for the number you got.</li>
 <li>A <b>z-score</b> counts how many SEs a value is above the mean. One-tail areas: z = 1 → 0.16, z = 2 → 0.025, z = 3 → 0.0015 (half of what's outside ±z).</li></ul>
-<div class="ex"><b>Example:</b> \(\mu=10,\ \sigma=4,\ n=64\). \(SE=4/8=0.5\). \(P(\bar X>10.5)\): \(z=(10.5-10)/0.5=1\) → about 0.16.</div>
-<div class="ex"><b>Recipe for "probability the sample mean is above/below c":</b> find SE, find \(z=(c-\mu)/SE\), then read the tail off 68–95–99.7.</div>
+<p><b>What is the SE?</b> One sample mean \(\bar x\) won't land exactly on \(\mu\). If you repeated the whole sampling many times, the \(\bar x\)'s would pile up in a bell curve around \(\mu\). The <b>standard error</b> (SE) is the SD of that pile: how far a typical \(\bar x\) lands from \(\mu\). It's smaller than \(\sigma\) because averaging cancels out the noise, and it shrinks as \(n\) grows.</p>
+<p><b>Recipe for "probability the sample mean is above (or below) c":</b></p>
+<ol><li><b>SE</b> \(=\sigma/\sqrt n\).</li>
+<li><b>z</b> \(=(c-\mu)/SE\): how many SEs c sits above the mean. Turn the question into "how much of the bell is beyond z SEs?"</li>
+<li><b>Read the area</b> off the picture below (the same bell, now measured in SEs instead of σ): beyond +1 → 0.16, beyond +2 → 0.025, beyond +3 → 0.0015. For "below c" with c under the mean, z is negative and the same numbers apply on the left.</li></ol>
+${BELL}
+<div class="ex"><b>Worked example:</b> \(\mu=20,\ \sigma=6,\ n=36\). Find \(P(\bar X>21)\).<br>1. \(SE=6/\sqrt{36}=6/6=1\). A typical sample mean lands about 1 away from 20.<br>2. \(z=(21-20)/1=1\). 21 is one SE above the mean.<br>3. Area above +1 SE: 68% is within ±1, so 32% is outside, and the curve is symmetric, so half of that, <b>16%</b>, is above. Answer 0.16.</div>
 <p><b>Common mistake:</b> using \(\sigma\) instead of \(\sigma/\sqrt n\) for a question about the <i>mean</i>.</p>`,
 exam:R`One chain of parts: population μ and σ (often from a Binomial), then the mean and SE of \(\bar x\), then \(P(\bar x>c)\) with 68–95–99.7, then the \(n\) that makes the SE a target value.`,
 warm:[
- {step:"SE",kind:"num",q:R`<p>\(\sigma=12,\ n=36\). SE?</p>`,ans:[2],lab:["SE"],sol:R`12/6.`},
- {step:"Population first",kind:"num",q:R`<p>Each day's count is Binomial(25, 0.2). Population mean and SD?</p>`,ans:[5,2],lab:["μ","σ"],sol:R`\(\mu=25(0.2)=5\), \(\sigma=\sqrt{25(0.2)(0.8)}=\sqrt4=2\).`},
- {step:"Shape",kind:"mc",q:R`<p>Does the CLT need the population to be normal?</p>`,o:["Yes, always","Only for discrete data","No, any shape works for large n","Only if σ is known"],a:"C",sol:R`That's what makes it so useful.`},
- {step:"One SE up",kind:"num",q:R`<p>\(\mu=20,\ \sigma=6,\ n=36\). \(P(\bar X>21)\)?</p>`,ans:[0.16],lab:["P"],sol:R`SE = 1, z = 1. 32% is outside ±1, half above: 0.16.`},
- {step:"Two SE up",kind:"num",q:R`<p>\(\mu=50,\ \sigma=10,\ n=100\). \(P(\bar X>52)\)?</p>`,ans:[0.025],lab:["P"],sol:R`SE = 1, z = 2, upper tail 0.025.`},
- {step:"Sample size",kind:"num",q:R`<p>With \(n=25\) the SE is 2. What \(n\) gives SE = 1?</p>`,ans:[100],lab:["n"],sol:R`Halving SE needs 4× the data.`},
+ {step:"SE",kind:"num",q:R`<p>\(\sigma=12,\ n=36\). SE?</p>`,ans:[2],lab:["SE"],sol:R`\(SE=\sigma/\sqrt n=12/\sqrt{36}=12/6=\mathbf2\). It's how far a typical sample mean of 36 values lands from the true mean.`},
+ {step:"Population first",kind:"num",q:R`<p>Each day's count is Binomial(25, 0.2). Population mean and SD?</p>`,ans:[5,2],lab:["μ","σ"],sol:R`One day is Binomial(n = 25, p = 0.2), so use the Binomial formulas:
+Mean \(\mu=np=25\times0.2=\mathbf5\).
+SD \(\sigma=\sqrt{np(1-p)}=\sqrt{25\times0.2\times0.8}=\sqrt4=\mathbf2\).`},
+ {step:"Shape",kind:"mc",q:R`<p>Does the CLT need the population to be normal?</p>`,o:["Yes, always","Only for discrete data","No, any shape works for large n","Only if σ is known"],a:"C",sol:R`No. The data can be any shape (skewed, discrete, anything). The CLT is about the <b>average</b> of many values: averaging cancels out the extremes, so the average comes out approximately Normal once n is large (rule of thumb n ≥ 30). That's what makes it so useful. <b>C</b>.`},
+ {step:"One SE up",kind:"num",q:R`<p>\(\mu=20,\ \sigma=6,\ n=36\). \(P(\bar X>21)\)?</p>`,ans:[0.16],lab:["P"],sol:R`The question is about \(\bar X\), the average of 36 values. By the CLT, \(\bar X\) is approximately Normal around \(\mu=20\) with spread SE.
+1. \(SE=\sigma/\sqrt n=6/\sqrt{36}=6/6=1\).
+2. How many SEs above the mean is 21? \(z=(21-20)/1=1\).
+3. 68% of the bell is within ±1, so 32% is outside: 16% below −1 and 16% above +1. "Greater than 21" is the part above: <b>0.16</b>.
+See the bell picture in Start here → CLT.`},
+ {step:"Two SE up",kind:"num",q:R`<p>\(\mu=50,\ \sigma=10,\ n=100\). \(P(\bar X>52)\)?</p>`,ans:[0.025],lab:["P"],sol:R`1. \(SE=\sigma/\sqrt n=10/\sqrt{100}=10/10=1\).
+2. \(z=(52-50)/1=2\): 52 is 2 SEs above the mean.
+3. 95% is within ±2, so 5% is outside, half on each end. Above +2: 5% ÷ 2 = <b>0.025</b>.`},
+ {step:"Sample size",kind:"num",q:R`<p>With \(n=25\) the SE is 2. What \(n\) gives SE = 1?</p>`,ans:[100],lab:["n"],sol:R`\(SE=\sigma/\sqrt n\). Going from SE 2 to SE 1 means halving it, so \(\sqrt n\) has to double: from \(\sqrt{25}=5\) to 10, so \(n=10^2=\mathbf{100}\).
+Rule: halving the SE takes 4× the data (25 → 100).`},
  {step:"Exam shape",kind:"num",q:R`<p>Daily count is Binomial(25, 0.2); you average \(n=16\) days. Find μ, σ, the SE of \(\bar x\), \(P(\bar x>5.5)\), and the \(n\) that makes SE = 0.25.</p>`,ans:[5,2,0.5,0.16,64],lab:["μ","σ","SE","P(x̄ > 5.5)","n"],
-  sol:R`\(\mu=5,\ \sigma=2\). \(SE=2/\sqrt{16}=0.5\). \(z=(5.5-5)/0.5=1\) → 0.16. \(0.25=2/\sqrt n\Rightarrow\sqrt n=8\Rightarrow n=64\).`}
+  sol:R`1. One day, Binomial(25, 0.2): \(\mu=np=\mathbf5\), \(\sigma=\sqrt{np(1-p)}=\sqrt{25(0.2)(0.8)}=\sqrt4=\mathbf2\).
+2. Average of 16 days: \(SE=\sigma/\sqrt n=2/\sqrt{16}=2/4=\mathbf{0.5}\). By the CLT, \(\bar x\) is about Normal(5, 0.5²).
+3. \(P(\bar x>5.5)\): \(z=(5.5-5)/0.5=1\). Above +1 SE is 16%: <b>0.16</b>.
+4. Target SE 0.25: \(0.25=2/\sqrt n\Rightarrow\sqrt n=2/0.25=8\Rightarrow n=\mathbf{64}\).`}
 ]},
 hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\)), then ask how surprising your sample would be. If it would be very surprising (p-value below \(\alpha\)), reject \(H_0\).</p>
 <ul><li>The <b>p-value</b> is the probability of a sample at least this far from \(\mu_0\) <i>if \(H_0\) were true</i>. Small p → the data would be surprising under \(H_0\).</li>
@@ -1053,14 +1160,22 @@ hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\
 <p><b>Common mistakes:</b> "accept \(H_0\)" (say "fail to reject"); forgetting to double the tail for two-sided; putting the sample mean in \(H_0\).</p>`,
 exam:R`State \(H_0\) and \(H_1\) (one sample, or two samples compared), write the z formula and compute it, call it one- or two-tailed and estimate the p-value with 68–95–99.7, then decide at α and say it in context.`,
 warm:[
- {step:"Hypotheses",kind:"mc",q:R`<p>Testing whether the mean fill "differs from 250 mL". \(H_1\)?</p>`,o:["μ > 250","μ = 250","x̄ ≠ 250","μ ≠ 250"],a:"D",sol:R`"Differs" is two-sided. Hypotheses are about μ, never x̄.`},
+ {step:"Hypotheses",kind:"mc",q:R`<p>Testing whether the mean fill "differs from 250 mL". \(H_1\)?</p>`,o:["μ > 250","μ = 250","x̄ ≠ 250","μ ≠ 250"],a:"D",sol:R`"Differs" means higher <i>or</i> lower counts, so \(H_1:\mu\ne250\) (two-sided). Hypotheses are always about the true mean μ, never the sample mean x̄ (you already know x̄ exactly). <b>D</b>.`},
  {step:"Two samples",kind:"mc",q:R`<p>Do two algorithms have different mean load times? \(H_0\)?</p>`,o:["μ_A ≠ μ_B","μ_A = μ_B","x̄_A = x̄_B","μ_A > μ_B"],a:"B",sol:R`\(H_0\) is always "no difference": \(\mu_A=\mu_B\). The claim you're testing goes in \(H_1\).`},
- {step:"z-score",kind:"num",q:R`<p>\(\bar x=103,\ \mu_0=100,\ \sigma=12,\ n=16\). z?</p>`,ans:[1],lab:["z"],sol:R`SE = 12/4 = 3. z = 3/3 = 1.`},
- {step:"p-values",kind:"num",q:R`<p>Two-sided p-values (empirical rule) for z = 2 and z = 3?</p>`,ans:[0.05,0.003],lab:["z = 2","z = 3"],sol:R`5% is outside ±2; 0.3% is outside ±3. One-sided would be half.`},
- {step:"Decide",kind:"mc",q:R`<p>p = 0.03, α = 0.01.</p>`,o:["Reject H₀","Fail to reject H₀","Accept H₁","Accept H₀"],a:"B",sol:R`0.03 is not below 0.01. Never "accept" either hypothesis.`},
- {step:"Two-sample z",kind:"num",q:R`<p>\(\sigma=10\) for both, \(n=50\) each, means 54 and 50. z?</p>`,ans:[2],lab:["z"],sol:R`SE = √(100/50 + 100/50) = √4 = 2. z = 4/2 = 2.`},
+ {step:"z-score",kind:"num",q:R`<p>\(\bar x=103,\ \mu_0=100,\ \sigma=12,\ n=16\). z?</p>`,ans:[1],lab:["z"],sol:R`1. \(SE=\sigma/\sqrt n=12/\sqrt{16}=12/4=3\).
+2. \(z=\dfrac{\bar x-\mu_0}{SE}=\dfrac{103-100}{3}=\mathbf1\): the sample came in 1 SE above the claimed mean.`},
+ {step:"p-values",kind:"num",q:R`<p>Two-sided p-values (empirical rule) for z = 2 and z = 3?</p>`,ans:[0.05,0.003],lab:["z = 2","z = 3"],sol:R`Two-sided p-value = chance of landing at least |z| SEs away from the mean, in <i>either</i> direction.
+z = 2: 95% is within ±2, so 5% is outside → <b>0.05</b>.
+z = 3: 99.7% is within ±3, so 0.3% is outside → <b>0.003</b>.
+One-sided would be half (only one end counts).`},
+ {step:"Decide",kind:"mc",q:R`<p>p = 0.03, α = 0.01.</p>`,o:["Reject H₀","Fail to reject H₀","Accept H₁","Accept H₀"],a:"B",sol:R`Reject only when p is <b>smaller</b> than α. 0.03 is bigger than 0.01, so <b>fail to reject \(H_0\)</b>. Never say "accept": not finding evidence isn't proof. <b>B</b>.`},
+ {step:"Two-sample z",kind:"num",q:R`<p>\(\sigma=10\) for both, \(n=50\) each, means 54 and 50. z?</p>`,ans:[2],lab:["z"],sol:R`1. Two samples: \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}=\sqrt{100/50+100/50}=\sqrt{2+2}=\sqrt4=2\).
+2. \(z=\dfrac{\bar x_1-\bar x_2}{SE}=\dfrac{54-50}{2}=\mathbf2\).`},
  {step:"Exam shape",kind:"num",q:R`<p>A battery claims a mean life of \(\mu_0=80\) h, \(\sigma=10\). You test \(n=25\) and get \(\bar x=86\). Two-sided test. SE, z, and p-value?</p>`,ans:[2,3,0.003],lab:["SE","z","p"],
-  sol:R`\(SE=10/\sqrt{25}=2\). \(z=(86-80)/2=3\). Two-tailed (\(H_1:\mu\ne80\)): \(p=2(0.0015)=0.003\). Below α = 0.01 or 0.05: reject \(H_0\); the mean life differs from 80 h.`}
+  sol:R`1. \(SE=\sigma/\sqrt n=10/\sqrt{25}=10/5=\mathbf2\).
+2. \(z=(86-80)/2=\mathbf3\).
+3. Two-sided (\(H_1:\mu\ne80\)), so count both ends: 99.7% is within ±3, leaving 0.3% outside. \(p=\mathbf{0.003}\).
+4. 0.003 is below α = 0.05 (and 0.01): reject \(H_0\). The mean battery life differs from 80 h.`}
 ]},
 ci:{learn:R`<p class="idea"><b>The big idea:</b> a confidence interval is "my estimate, plus or minus a margin". The margin is a z-value times the standard error.</p>
 \[\bar x\pm z_c\cdot\frac{\sigma}{\sqrt n}\]
@@ -1075,13 +1190,15 @@ ci:{learn:R`<p class="idea"><b>The big idea:</b> a confidence interval is "my es
 <p><b>Common mistakes:</b> forgetting the \(\sqrt n\); using the one-sided z for a two-sided interval; saying "95% chance μ is in this interval".</p>`,
 exam:R`SE from \(s/\sqrt n\), a two-sided interval using the exam's z (1.5 / 2 / 2.5), then a concept question: what more data does to the SE and width, and which picture of a new interval makes sense (μ never moves).`,
 warm:[
- {step:"SE",kind:"num",q:R`<p>\(\bar x=57,\ s=24,\ n=64\). SE?</p>`,ans:[3],lab:["SE"],sol:R`24/8.`},
- {step:"Interval",kind:"num",q:R`<p>Same data, 95% (z = 2). Lower bound?</p>`,ans:[51],lab:["lower"],sol:R`57 − 2(3).`},
- {step:"More data",kind:"num",q:R`<p>Same \(s=24\), but \(n=400\). New SE?</p>`,ans:[1.2],lab:["SE"],sol:R`24/20. Smaller SE → narrower interval.`},
- {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400 (same s, same confidence). The interval's width</p>`,o:["is cut to a quarter","doubles","is cut in half","stays the same"],a:"C",sol:R`\(\sqrt{4}=2\).`},
- {step:"Confidence",kind:"mc",q:R`<p>A 99% interval vs a 95% interval from the same data:</p>`,o:["99% is narrower","99% is wider","Same width","Can't tell"],a:"B",sol:R`More confidence needs a bigger net.`},
- {step:"What's fixed",kind:"mc",q:R`<p>You take a new, bigger sample. Which one does <b>not</b> change?</p>`,o:["The sample mean x̄","The interval's center","The SE","The true mean μ"],a:"D",sol:R`μ is a fixed fact about the population. Everything computed from the sample moves.`},
- {step:"Exam shape",kind:"num",q:R`<p>\(n=100,\ \bar x=40,\ s=20\). SE, then the two-sided 90% interval (z = 1.5).</p>`,ans:[2,37,43],lab:["SE","lower","upper"],sol:R`\(SE=20/10=2\). \(40\pm1.5(2)=40\pm3\Rightarrow[37,\ 43]\).`}
+ {step:"SE",kind:"num",q:R`<p>\(\bar x=57,\ s=24,\ n=64\). SE?</p>`,ans:[3],lab:["SE"],sol:R`\(SE=s/\sqrt n=24/\sqrt{64}=24/8=\mathbf3\).`},
+ {step:"Interval",kind:"num",q:R`<p>Same data, 95% (z = 2). Lower bound?</p>`,ans:[51],lab:["lower"],sol:R`Interval = \(\bar x\pm z\cdot SE\). Margin = 2 × 3 = 6. Lower bound = 57 − 6 = <b>51</b> (upper is 63).`},
+ {step:"More data",kind:"num",q:R`<p>Same \(s=24\), but \(n=400\). New SE?</p>`,ans:[1.2],lab:["SE"],sol:R`\(SE=24/\sqrt{400}=24/20=\mathbf{1.2}\), down from 3. Smaller SE → smaller margin → narrower interval.`},
+ {step:"Width",kind:"mc",q:R`<p>n goes from 100 to 400 (same s, same confidence). The interval's width</p>`,o:["is cut to a quarter","doubles","is cut in half","stays the same"],a:"C",sol:R`Width = 2 × z × \(s/\sqrt n\). n goes up 4×, so \(\sqrt n\) goes up \(\sqrt4=2\)×, and the width is divided by 2: <b>cut in half</b>. <b>C</b>.`},
+ {step:"Confidence",kind:"mc",q:R`<p>A 99% interval vs a 95% interval from the same data:</p>`,o:["99% is narrower","99% is wider","Same width","Can't tell"],a:"B",sol:R`99% uses z = 2.5 instead of 2, so the margin \(z\cdot SE\) is bigger. To be more sure you've caught μ, you need a wider net: <b>99% is wider</b>. <b>B</b>.`},
+ {step:"What's fixed",kind:"mc",q:R`<p>You take a new, bigger sample. Which one does <b>not</b> change?</p>`,o:["The sample mean x̄","The interval's center","The SE","The true mean μ"],a:"D",sol:R`μ is a fixed fact about the whole population; taking a new sample can't change it. x̄, the interval's center (which is x̄) and the SE are all computed from the sample, so they change. <b>D</b>.`},
+ {step:"Exam shape",kind:"num",q:R`<p>\(n=100,\ \bar x=40,\ s=20\). SE, then the two-sided 90% interval (z = 1.5).</p>`,ans:[2,37,43],lab:["SE","lower","upper"],sol:R`1. \(SE=s/\sqrt n=20/\sqrt{100}=20/10=\mathbf2\).
+2. Margin = z × SE = 1.5 × 2 = 3.
+3. 40 − 3 = <b>37</b>, 40 + 3 = <b>43</b>.`}
 ]},
 reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the features, \(\hat y=a_1x_1+\dots+a_mx_m+b\), choosing the weights that make the average squared error (MSE) as small as possible.</p>
 <p>\(\hat y\) ("y-hat") is the model's <b>prediction</b>; \(y\) is the actual value.</p>
@@ -1098,14 +1215,17 @@ reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the feat
 <p><b>Common mistakes:</b> forgetting the 1s column; dividing the MSE by the wrong count; using \(1-\sigma_y^2/MSE\).</p>`,
 exam:R`Write \(X\) (with the 1s column), \(y\), and \(X^TX\beta=X^Ty\) without solving; predict a few test points, then MSE and \(R^2\) and say if it's a good fit; explain why too few data points means no unique β; spot that \(x^2\) is just another column.`,
 warm:[
- {step:"Predict",kind:"num",q:R`<p>\(\hat y=2x_1+3x_2+1\) at \(x_1=1,\ x_2=2\)?</p>`,ans:[9],lab:["ŷ"],sol:R`2 + 6 + 1.`},
- {step:"MSE",kind:"num",q:R`<p>Residuals 1, −2, 1. MSE?</p>`,ans:[2],lab:["MSE"],sol:R`(1 + 4 + 1)/3.`},
- {step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`1 − 2/8. 0.75 is a decent fit; near 0 would be bad.`},
- {step:"Dimensions",kind:"mc",q:R`<p>10 points, 3 features, with intercept. Shape of X?</p>`,o:["10×3","4×10","10×4","4×4"],a:"C",sol:R`3 features + the 1s column. \(X^TX\) is then 4×4.`},
- {step:"Squared feature",kind:"mc",q:R`<p>Model \(\hat y=a_1x+a_2x^2+b\). The data point has \(x=30\). Its row of \(X\)?</p>`,o:["[30, 60, 1]","[1, 30, 900]","[30, 900]","[30, 900, 1]"],a:"D",sol:R`Columns follow \(\beta=[a_1,a_2,b]\): \(x\), \(x^2\), then 1.`},
- {step:"Too few points",kind:"mc",q:R`<p>3 data points, 4 features plus an intercept. Why is there no unique β?</p>`,o:["X is not square","XᵀX (5×5) can't be inverted: 5 unknowns, only 3 equations","y is too short to multiply","The 1s column always makes XᵀX singular"],a:"B",sol:R`More parameters than points → columns are dependent → infinitely many perfect fits. That's where ridge comes in.`},
+ {step:"Predict",kind:"num",q:R`<p>\(\hat y=2x_1+3x_2+1\) at \(x_1=1,\ x_2=2\)?</p>`,ans:[9],lab:["ŷ"],sol:R`Plug in: \(2(1)+3(2)+1=2+6+1=\mathbf9\).`},
+ {step:"MSE",kind:"num",q:R`<p>Residuals 1, −2, 1. MSE?</p>`,ans:[2],lab:["MSE"],sol:R`MSE = average of the squared residuals. Square each: 1, 4, 1. Average: \((1+4+1)/3=6/3=\mathbf2\).`},
+ {step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`\(R^2=1-\dfrac{MSE}{\sigma_y^2}=1-\dfrac28=1-0.25=\mathbf{0.75}\). The model explains 75% of the variation in y: a decent fit (1 is perfect, near 0 is no better than guessing the average).`},
+ {step:"Dimensions",kind:"mc",q:R`<p>10 points, 3 features, with intercept. Shape of X?</p>`,o:["10×3","4×10","10×4","4×4"],a:"C",sol:R`One row per data point (10), one column per feature (3) plus a column of 1s for the intercept (1): <b>10×4</b>. \(X^TX\) is then 4×4. <b>C</b>.`},
+ {step:"Squared feature",kind:"mc",q:R`<p>Model \(\hat y=a_1x+a_2x^2+b\). The data point has \(x=30\). Its row of \(X\)?</p>`,o:["[30, 60, 1]","[1, 30, 900]","[30, 900]","[30, 900, 1]"],a:"D",sol:R`The columns match \(\beta=[a_1,a_2,b]\) in order: \(a_1\) multiplies \(x\) (30), \(a_2\) multiplies \(x^2\) (900), \(b\) multiplies 1. Row: <b>[30, 900, 1]</b>. <b>D</b>.`},
+ {step:"Too few points",kind:"mc",q:R`<p>3 data points, 4 features plus an intercept. Why is there no unique β?</p>`,o:["X is not square","XᵀX (5×5) can't be inverted: 5 unknowns, only 3 equations","y is too short to multiply","The 1s column always makes XᵀX singular"],a:"B",sol:R`5 unknowns (4 weights + b) but only 3 equations (one per data point). With more unknowns than equations, infinitely many β fit perfectly, so \(X^TX\) (5×5) can't be inverted. That's where ridge comes in. <b>B</b>.`},
  {step:"Exam shape",kind:"num",q:R`<p>\(\hat y=0.5x_1-2x_2+10\). Test points: \((x_1,x_2,y)=(4,1,9)\) and \((6,2,10)\). Predict both, then MSE, then \(R^2\) if the variance of \(y\) is 4.</p>`,ans:[10,9,1,0.75],lab:["ŷ₁","ŷ₂","MSE","R²"],
-  sol:R`\(\hat y_1=2-2+10=10\), \(\hat y_2=3-4+10=9\). Residuals −1, 1 → \(MSE=(1+1)/2=1\). \(R^2=1-1/4=0.75\).`}
+  sol:R`1. Predict: \(\hat y_1=0.5(4)-2(1)+10=2-2+10=\mathbf{10}\). \(\hat y_2=0.5(6)-2(2)+10=3-4+10=\mathbf9\).
+2. Residuals \(y-\hat y\): 9 − 10 = −1 and 10 − 9 = 1.
+3. \(MSE=\dfrac{(-1)^2+1^2}{2}=\dfrac22=\mathbf1\).
+4. \(R^2=1-\dfrac{MSE}{\sigma_y^2}=1-\dfrac14=\mathbf{0.75}\).`}
 ]},
 fit:{learn:R`<p class="idea"><b>The big idea:</b> a model can fit the training data <i>too</i> well and then fail on new data (overfitting). Ridge regression fights this by charging a price for big weights; cross-validation picks how big that price should be.</p>
 <ul><li><b>Overfitting:</b> low training error, high test error. Too many parameters for the data. <b>Underfitting:</b> high error on both.</li>
@@ -1119,15 +1239,17 @@ fit:{learn:R`<p class="idea"><b>The big idea:</b> a model can fit the training d
 <p><b>Common mistakes:</b> tuning on the test set; penalizing the intercept; forgetting to square in the penalty.</p>`,
 exam:R`With more parameters than points, ridge picks the β with the smaller \(\|\beta\|^2\) and fights overfitting. Compute a penalty (b is not penalized), spot when feature scale made it unfair, and know the k-fold trade-off and that the test set stays untouched.`,
 warm:[
- {step:"Penalty",kind:"num",q:R`<p>λ = 3, weights \(a_1=1,\ a_2=2\). Penalty?</p>`,ans:[15],lab:["penalty"],sol:R`3(1 + 4).`},
- {step:"Skip b",kind:"num",q:R`<p>λ = 2, \(a_1=3,\ a_2=1,\ b=50\). Penalty?</p>`,ans:[20],lab:["penalty"],sol:R`2(9 + 1) = 20. The intercept isn't penalized.`},
- {step:"Which β",kind:"mc",q:R`<p>Both fit the data perfectly: \(\beta_1=[3\ 0\ 1]\), \(\beta_2=[1\ 1\ 1]\) (penalty on every entry). Ridge picks</p>`,o:["β₁","either","β₂","neither"],a:"C",sol:R`\(\|\beta_1\|^2=10\), \(\|\beta_2\|^2=3\). Smaller wins.`},
- {step:"Diagnose",kind:"mc",q:R`<p>Train R² = 0.99, test R² = 0.2.</p>`,o:["Underfitting","Overfitting","Good fit","Data leak only"],a:"B",sol:R`Great on training, bad on new data.`},
- {step:"CV count",kind:"num",q:R`<p>5-fold CV over 4 λ values. Models trained (before the final refit)?</p>`,ans:[20],lab:["models"],sol:R`4 × 5.`},
- {step:"CV trade-off",kind:"mc",q:R`<p>Compared with one validation split, k-fold CV</p>`,o:["trains only once","always lowers training error","gives a steadier error estimate but trains k times","lets you tune on the test set"],a:"C",sol:R`Every point gets a turn in the validation fold, at the cost of k trainings.`},
- {step:"Test set",kind:"mc",q:R`<p>When do you use the hold-out test set?</p>`,o:["Once, after all tuning, for the final error","To pick λ","Inside the CV folds","Whenever training error looks low"],a:"A",sol:R`Touch it during tuning and its error is no longer an honest estimate.`},
+ {step:"Penalty",kind:"num",q:R`<p>λ = 3, weights \(a_1=1,\ a_2=2\). Penalty?</p>`,ans:[15],lab:["penalty"],sol:R`Penalty = λ × (sum of squared weights) = \(3(1^2+2^2)=3(1+4)=\mathbf{15}\).`},
+ {step:"Skip b",kind:"num",q:R`<p>λ = 2, \(a_1=3,\ a_2=1,\ b=50\). Penalty?</p>`,ans:[20],lab:["penalty"],sol:R`Square the weights, leave out b: \(3^2+1^2=10\). Times λ: \(2\times10=\mathbf{20}\). The intercept isn't penalized.`},
+ {step:"Which β",kind:"mc",q:R`<p>Both fit the data perfectly: \(\beta_1=[3\ 0\ 1]\), \(\beta_2=[1\ 1\ 1]\) (penalty on every entry). Ridge picks</p>`,o:["β₁","either","β₂","neither"],a:"C",sol:R`Both fit perfectly, so ridge decides on the penalty alone: the smaller sum of squares wins.
+\(\|\beta_1\|^2=3^2+0^2+1^2=10\). \(\|\beta_2\|^2=1+1+1=3\). Ridge picks <b>β₂</b>. <b>C</b>.`},
+ {step:"Diagnose",kind:"mc",q:R`<p>Train R² = 0.99, test R² = 0.2.</p>`,o:["Underfitting","Overfitting","Good fit","Data leak only"],a:"B",sol:R`Near-perfect on the training data (0.99) but poor on new data (0.2): it memorized the training set instead of learning the pattern. That's <b>overfitting</b>. <b>B</b>.`},
+ {step:"CV count",kind:"num",q:R`<p>5-fold CV over 4 λ values. Models trained (before the final refit)?</p>`,ans:[20],lab:["models"],sol:R`Each of the 4 λ values gets a full 5-fold CV, which trains 5 models. 4 × 5 = <b>20</b>.`},
+ {step:"CV trade-off",kind:"mc",q:R`<p>Compared with one validation split, k-fold CV</p>`,o:["trains only once","always lowers training error","gives a steadier error estimate but trains k times","lets you tune on the test set"],a:"C",sol:R`Every point gets one turn in the validation fold and the k scores are averaged, so the estimate doesn't hinge on one lucky or unlucky split. The cost: k trainings instead of one. <b>C</b>.`},
+ {step:"Test set",kind:"mc",q:R`<p>When do you use the hold-out test set?</p>`,o:["Once, after all tuning, for the final error","To pick λ","Inside the CV folds","Whenever training error looks low"],a:"A",sol:R`Only once, at the very end. If you use the test set while choosing λ, you've tuned to it, and its error stops being an honest estimate for new data. <b>A</b>.`},
  {step:"Exam shape",kind:"mc",q:R`<p>Features: age (20–60) and income in dollars (20,000–90,000). Ridge without standardizing gives age weight 4 and income weight 0.001. Which statement is right?</p>`,o:["Fair: ridge treats every weight the same","Income was over-penalized because its weight is smallest","Age's weight is big only because age's numbers are small, so ridge punishes it unfairly; standardize first","The intercept should have been penalized too"],a:"C",
-  sol:R`Small-scale features need big weights, and ridge charges for big weights. Same idea as Mock 1b's \(x_1\) vs \(x_1^2\) question.`}
+  sol:R`Age is in small numbers (20–60) and income in huge ones (20,000–90,000). To have any effect, age needs a big weight and income a tiny one. Ridge charges for big weights, so age gets squeezed unfairly. That's about units, not importance. Fix: standardize both first. <b>C</b>.
+Same idea as Mock 1b's \(x_1\) vs \(x_1^2\) question.`}
 ]}
 };
 // exam difficulty per topic, judged from Mocks 1a/1b: [1 easy | 2 medium | 3 hard, why]
