@@ -55,6 +55,18 @@ table.dt th{background:var(--paper);font-weight:500}
   body{background:#fff}
   .sheet{grid-template-columns:1fr 1fr;gap:8px} .card{break-inside:avoid;padding:8px 10px} .card h3{font-size:14px} .card li{font-size:11px;margin:1px 0} .trap{font-size:10.5px}
 }
+.prio{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;vertical-align:middle;white-space:nowrap;color:var(--ink);border:1px solid var(--rule)}
+.prio-box{border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:18px 0;background:var(--surface)}
+.prio-box h3{margin:0 0 4px}
+#prio{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+#prio button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:52px 90px 1fr;grid-template-areas:"sc bar tn" "sc bar pts" ". . why";column-gap:12px;align-items:center;padding:8px 10px;border-radius:6px;border:1px solid transparent}
+#prio button:hover,#prio button:focus-visible{border-color:var(--rule);background:var(--paper)}
+#prio .sc{grid-area:sc;font:12px var(--f-mono);color:var(--muted)}#prio .sc b{font-size:20px;color:var(--ink)}
+#prio .bar{grid-area:bar;height:8px;border-radius:4px;background:var(--rule);overflow:hidden}#prio .bar i{display:block;height:100%;background:var(--gold)}
+#prio .tn{grid-area:tn;font-weight:600}
+#prio .pts{grid-area:pts;font:11px var(--f-mono);color:var(--muted)}
+#prio .why{grid-area:why;font-size:14px;color:var(--muted);margin-top:2px}
+@media (max-width:640px){#prio button{grid-template-columns:44px 1fr;grid-template-areas:"sc tn" "sc pts" "bar bar" "why why";row-gap:4px}}
 </style>
 </head>
 <body>
@@ -96,6 +108,7 @@ table.dt th{background:var(--paper);font-weight:500}
       <li><b>Do the warm-ups.</b> In code warm-ups, replace every <code>____</code> with your code and press <b>Run tests</b>; number answers take decimals (0.25) or fractions (1/4). Each set opens with what the exam asks on that topic, then builds it one piece at a time. The last warm-up is an exam-style question with new numbers. Numbers are checked instantly; code runs real Python in your browser.</li>
       <li><b>Try the exam questions.</b> Each topic ends with a link to every mock exam part on it.</li>
     </ol>
+    <div class="prio-box"><h3>What to study first</h3><p class="sub">Ranked by importance out of 10: how many points the topic was worth on the two mocks, nudged up where points are easy to lose. Click a topic to open it.</p><ol id="prio"></ol></div>
     <div class="meter" id="meter"></div>
     <div id="lessons"></div>
   </section>
@@ -1266,6 +1279,19 @@ const DIFF={
   fit:[3,"Almost all concept MC with tempting wrong answers: which β ridge picks, scale bias, the k-fold trade-off, test-set rules."]
 };
 const DLAB=["","Easy","Medium","Hard"];
+// study priority /10: points on Mocks 1a + 1b combined (296 total), nudged up where points are easy to lose
+const PRIO={
+  reg:[10,40,"The most points of any topic. Write X with the 1s column, predict, MSE, R², and explain why too few points means no unique β."],
+  hyp:[9,34,"Every step is graded on its own: H₀/H₁, the z formula, one vs two tails, the decision in words. Wording mistakes cost real points."],
+  clt:[9,34,"A full question on both mocks, always the same chain (μ, σ → SE → P(x̄ > c) → n). Cheap points once the recipe is automatic."],
+  dict:[9,32,"The hardest coding on the mocks (bucketing with enumerate, nested loops over a dict of lists). Practice until you can write it cold."],
+  hof:[8,34,"A whole question each mock of short blanks. Easy to lose to small slips: list(), import reduce, where the if-else goes."],
+  py:[8,32,"Fill-in-the-blank loops with off-by-one traps (range(2, n + 1)) and where return goes."],
+  ci:[8,32,"Quick SE and interval, plus a concept question about more data (narrower, μ never moves) that people miss."],
+  fit:[7,26,"Mostly multiple choice, but tricky: which β ridge picks, scale bias, k-fold trade-off, test-set rules."],
+  prob:[6,21,"Formulas and powers are given; know \"at most\" vs \"more than\" and estimating p from a table."],
+  hist:[5,11,"Small and easy: count, divide by n, divide by the width. Just watch values on a bin edge."]
+};
 const HOOKS={
   py:"Loop, check, append, return after the loop.",
   dict:"Is the key there? Create it or add to it.",
@@ -1547,13 +1573,19 @@ function renderSheet(){
 $("#print").onclick=()=>{achFlag("print");window.print()};
 
 /* ---------- start here ---------- */
+function renderPrio(){
+  $("#prio").innerHTML=Object.entries(PRIO).sort((a,b)=>b[1][0]-a[1][0]||b[1][1]-a[1][1]).map(([k,[s,pts,why]])=>
+    `<li><button type="button" data-k="${k}"><span class="sc"><b>${s}</b>/10</span><span class="bar"><i style="width:${s*10}%"></i></span><span class="tn">${TOPICS[k]}</span><span class="pts">${pts} pts on the mocks · ${DLAB[DIFF[k][0]]}</span><span class="why">${why}</span></button></li>`).join("");
+  $("#prio").querySelectorAll("button").forEach(b=>b.onclick=()=>{const d=document.querySelector(`.lesson[data-k="${b.dataset.k}"]`);d.open=true;d.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
+}
 function renderLessons(){
+  renderPrio();
   const box=$("#lessons");
   Object.keys(TOPICS).forEach((k,ti)=>{
     const L=LEARN[k],n=PARTS.filter(p=>p.t===k).length;
     L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k});
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
-    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]} <span class="diff d${DIFF[k][0]}">${DLAB[DIFF[k][0]]}</span></h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]} <span class="diff d${DIFF[k][0]}">${DLAB[DIFF[k][0]]}</span> <span class="prio">Importance ${PRIO[k][0]}/10</span></h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
       <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}<br><b>Difficulty: ${DLAB[DIFF[k][0]]}.</b> ${DIFF[k][1]}</div></div><div class="qlist"></div>
       <div class="lfoot"><button class="btn primary next" type="button">Now try the ${n} exam part${n===1?"":"s"} on this →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
     const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach((w,i)=>{
