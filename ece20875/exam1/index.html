@@ -1213,28 +1213,83 @@ warm:[
 2. Margin = z × SE = 1.5 × 2 = 3.
 3. 40 − 3 = <b>37</b>, 40 + 3 = <b>43</b>.`}
 ]},
-reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the features, \(\hat y=a_1x_1+\dots+a_mx_m+b\), choosing the weights that make the average squared error (MSE) as small as possible.</p>
-<p>\(\hat y\) ("y-hat") is the model's <b>prediction</b>; \(y\) is the actual value.</p>
-<p><b>Matrix form:</b> one row per data point, one column per feature, plus a column of <b>1s</b> for \(b\). Columns go in the same order as \(\beta\). \(x_{ij}\) is data point i's value of feature j.</p>
-\[X=\begin{bmatrix}x_{11}&x_{12}&1\\x_{21}&x_{22}&1\\\vdots&\vdots&\vdots\end{bmatrix},\quad \beta=\begin{bmatrix}a_1\\a_2\\b\end{bmatrix},\quad X^TX\beta=X^Ty\ \Rightarrow\ \beta=(X^TX)^{-1}X^Ty\]
-<ul><li>\(X\) is \(n\times(m+1)\); \(X^TX\) is \((m+1)\times(m+1)\).</li>
-<li>\(X^T\) ("X transpose") is X flipped so rows become columns.</li>
-<li>\(X^TX\) can't be inverted when columns are <b>linearly dependent</b> (some column can be built from the others), which always happens with more parameters than data points. Then infinitely many β fit perfectly.</li>
-<li>A feature like \(x_1^2\) is just another column. Still "linear" regression.</li></ul>
-<p><b>Judging a fit:</b> residual \(y_i-\hat y_i\); \(MSE=\frac1n\sum(y_i-\hat y_i)^2\); \(R^2=1-\dfrac{MSE}{\sigma_y^2}\) (fraction of variance explained, 1 is perfect, near 0 is bad).</p>
-<div class="ex"><b>Example:</b> \(\hat y=4x_1+0.2x_2+30\) at \((5, 80)\) → 66. Actual 76 → residual 10, squared 100.</div>
-<p><b>One feature by hand:</b> \(a=\dfrac{\sum x_iy_i-n\bar x\bar y}{\sum x_i^2-n\bar x^2}\), \(b=\bar y-a\bar x\).</p>
-<p><b>Comparing weights:</b> only fair after standardizing features \((x-\bar x)/s\); otherwise scale decides the size.</p>
-<p><b>Common mistakes:</b> forgetting the 1s column; dividing the MSE by the wrong count; using \(1-\sigma_y^2/MSE\).</p>`,
-exam:R`Write \(X\) (with the 1s column), \(y\), and \(X^TX\beta=X^Ty\) without solving; predict a few test points, then MSE and \(R^2\) and say if it's a good fit; explain why too few data points means no unique β; spot that \(x^2\) is just another column.`,
+reg:{learn:R`<p class="idea"><b>The big idea:</b> fit a weighted sum of the features, \(\hat y=a_1x_1+\dots+a_mx_m+b\), choosing the weights that make the average squared error (MSE) as small as possible. On the exam you mostly have to <b>write the problem as matrices</b> (not solve it), then judge a fit.</p>
+<p>\(\hat y\) ("y-hat") is the model's <b>prediction</b>; \(y\) is the actual value. The <b>features</b> \(x_1, x_2,\dots\) are the inputs; the <b>parameters</b> \(a_1, a_2,\dots, b\) are the unknown weights we're solving for.</p>
+
+<h4>What a matrix is</h4>
+<p>A grid of numbers. Its size is written <b>rows × columns</b>: \(\begin{bmatrix}1&2&3\\4&5&6\end{bmatrix}\) is 2×3. A single column like \(\begin{bmatrix}14\\10\end{bmatrix}\) is a 2×1 matrix (a column vector).</p>
+
+<h4>Building X, β and y from a data table: the exam's part A</h4>
+<p>Take Mock 1a: model \(\hat y=a_1x_1+a_2x_2+b\), and four devices:</p>
+${T(["Device","x₁","x₂","y"],[[1,500,100,14],[2,800,200,10],[3,1000,50,11],[4,600,300,9]])}
+<p><b>Step 1. Each data point gives one equation.</b> Plug its numbers into the model and set it equal to its \(y\):</p>
+\[\begin{aligned}500a_1+100a_2+1\cdot b&=14\\800a_1+200a_2+1\cdot b&=10\\1000a_1+50a_2+1\cdot b&=11\\600a_1+300a_2+1\cdot b&=9\end{aligned}\]
+<p>The unknowns are the same in every equation; only the numbers change. Notice \(b\) is multiplied by <b>1</b> in every row.</p>
+<p><b>Step 2. Pull the unknowns out into β</b>, in the order the question gives: \(\beta=[a_1\ a_2\ b]^T\) (the T just means "written as a column").</p>
+<p><b>Step 3. What's left is X.</b> One <b>row per data point</b>, one <b>column per entry of β</b>, and each column holds whatever that entry multiplies: column 1 is \(x_1\), column 2 is \(x_2\), column 3 is the <b>1</b> that multiplies \(b\). The \(y\) values go in their own column, same row order:</p>
+\[\underbrace{\begin{bmatrix}500&100&1\\800&200&1\\1000&50&1\\600&300&1\end{bmatrix}}_{X\ (4\times3)}\underbrace{\begin{bmatrix}a_1\\a_2\\b\end{bmatrix}}_{\beta\ (3\times1)}=\underbrace{\begin{bmatrix}14\\10\\11\\9\end{bmatrix}}_{y\ (4\times1)}\]
+<p>Multiplying \(X\beta\) row by row gives back exactly the four equations from step 1. That's all "\(X\beta=y\)" means.</p>
+<p><b>Step 4. Write the least squares equation.</b> Four equations, three unknowns: no β makes all four exact, so least squares picks the β with the smallest total squared error. That β solves the <b>normal equation</b>:</p>
+\[X^TX\beta=X^Ty\qquad\text{(or }\beta=(X^TX)^{-1}X^Ty\text{)}\]
+<p>On the exam, write X, y and this equation; "do not solve" means you stop there. Writing \(X^T\) out in full on both sides also gets full credit.</p>
+
+<h4>Transpose \(X^T\)</h4>
+<p>Flip X so its rows become columns: row 1 of X becomes column 1 of \(X^T\). A 4×3 X gives a 3×4 \(X^T\).</p>
+\[X=\begin{bmatrix}500&100&1\\800&200&1\\1000&50&1\\600&300&1\end{bmatrix}\ \Rightarrow\ X^T=\begin{bmatrix}500&800&1000&600\\100&200&50&300\\1&1&1&1\end{bmatrix}\]
+
+<h4>Sizes</h4>
+<p>To multiply \((r\times c)(c\times k)\), the <b>inner</b> numbers must match, and the answer is the <b>outer</b> size \(r\times k\). With \(n\) data points and \(m\) features plus an intercept:</p>
+${T(["","size","why"],[["X","n × (m+1)","n rows of data; m feature columns + the 1s column"],["β","(m+1) × 1","one unknown per column of X"],["y","n × 1","one output per data point"],["XᵀX","(m+1) × (m+1)","(m+1)×n times n×(m+1)"],["Xᵀy","(m+1) × 1","(m+1)×n times n×1"]])}
+
+<h4>Squared features (Mock 1b)</h4>
+<p>A model like \(\hat y=a_1x_1+a_2x_1^2+a_3x_2+b\) is still "linear" because it's linear in the unknowns. \(x_1^2\) is just another column: compute it for each row. For \(x_1=40\): the row is \([40,\ 1600,\ x_2,\ 1]\).</p>
+
+<h4>When there's no unique β (Mock 1a part 8)</h4>
+<p>If there are <b>more unknowns than data points</b> (say 5 parameters, 3 points), there are fewer equations than unknowns, so infinitely many β fit perfectly. Then the columns of X are <b>linearly dependent</b> (some column can be built from the others) and \(X^TX\) has no inverse. Ridge regression fixes this.</p>
+
+<h4>Judging a fit: the exam's parts B and C</h4>
+<p><b>Predict:</b> plug a new point into \(\hat y\). <b>Residual:</b> \(y-\hat y\). <b>MSE</b> \(=\frac1n\sum(y_i-\hat y_i)^2\), the average squared residual. <b>\(R^2=1-\dfrac{MSE}{\sigma_y^2}\)</b>: the fraction of variation in \(y\) the model explains (1 is perfect, near 0 is no better than guessing the average).</p>
+<div class="ex"><b>Example:</b> \(\hat y=4x_1+0.2x_2+30\) at \((5, 80)\) → 20 + 16 + 30 = 66. Actual 76 → residual 10, squared 100.</div>
+<p><b>Comparing weights:</b> only fair after standardizing features \((x-\bar x)/s\); otherwise each feature's units decide how big its weight is.</p>
+<p><b>Common mistakes:</b> forgetting the 1s column; putting columns in a different order from β; writing \(XX^T\) instead of \(X^TX\); dividing the MSE by the wrong count; using \(1-\sigma_y^2/MSE\).</p>`,
+exam:R`Part A: from a data table, write \(X\) (with the 1s column), \(y\), and \(X^TX\beta=X^Ty\) without solving (Mock 1b adds an \(x_1^2\) column). Then predict a few test points, MSE and \(R^2\), and say if it's a good fit. Mock 1a also asks the sizes of \(X\) and \(X^TX\) and why too few points means no unique β.`,
 warm:[
- {step:"Predict",kind:"num",q:R`<p>\(\hat y=2x_1+3x_2+1\) at \(x_1=1,\ x_2=2\)?</p>`,ans:[9],lab:["ŷ"],sol:R`Plug in: \(2(1)+3(2)+1=2+6+1=\mathbf9\).`},
- {step:"MSE",kind:"num",q:R`<p>Residuals 1, −2, 1. MSE?</p>`,ans:[2],lab:["MSE"],sol:R`MSE = average of the squared residuals. Square each: 1, 4, 1. Average: \((1+4+1)/3=6/3=\mathbf2\).`},
- {step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`\(R^2=1-\dfrac{MSE}{\sigma_y^2}=1-\dfrac28=1-0.25=\mathbf{0.75}\). The model explains 75% of the variation in y: a decent fit (1 is perfect, near 0 is no better than guessing the average).`},
- {step:"Dimensions",kind:"mc",q:R`<p>10 points, 3 features, with intercept. Shape of X?</p>`,o:["10×3","4×10","10×4","4×4"],a:"C",sol:R`One row per data point (10), one column per feature (3) plus a column of 1s for the intercept (1): <b>10×4</b>. \(X^TX\) is then 4×4. <b>C</b>.`},
- {step:"Squared feature",kind:"mc",q:R`<p>Model \(\hat y=a_1x+a_2x^2+b\). The data point has \(x=30\). Its row of \(X\)?</p>`,o:["[30, 60, 1]","[1, 30, 900]","[30, 900]","[30, 900, 1]"],a:"D",sol:R`The columns match \(\beta=[a_1,a_2,b]\) in order: \(a_1\) multiplies \(x\) (30), \(a_2\) multiplies \(x^2\) (900), \(b\) multiplies 1. Row: <b>[30, 900, 1]</b>. <b>D</b>.`},
- {step:"Too few points",kind:"mc",q:R`<p>3 data points, 4 features plus an intercept. Why is there no unique β?</p>`,o:["X is not square","XᵀX (5×5) can't be inverted: 5 unknowns, only 3 equations","y is too short to multiply","The 1s column always makes XᵀX singular"],a:"B",sol:R`5 unknowns (4 weights + b) but only 3 equations (one per data point). With more unknowns than equations, infinitely many β fit perfectly, so \(X^TX\) (5×5) can't be inverted. That's where ridge comes in. <b>B</b>.`},
- {step:"Exam shape",kind:"num",q:R`<p>\(\hat y=0.5x_1-2x_2+10\). Test points: \((x_1,x_2,y)=(4,1,9)\) and \((6,2,10)\). Predict both, then MSE, then \(R^2\) if the variance of \(y\) is 4.</p>`,ans:[10,9,1,0.75],lab:["ŷ₁","ŷ₂","MSE","R²"],
+ {key:"m1",step:"One point = one equation",kind:"mc",q:R`<p>Model \(\hat y=a_1x_1+a_2x_2+b\). One data point has \(x_1=500,\ x_2=100,\ y=14\). Which equation does it give?</p>`,o:["14 = a₁ + a₂ + b","500a₁ + 100a₂ = 14","500a₁ + 100a₂ + b = 14","14a₁ + 500a₂ + 100b = 0"],a:"C",
+  sol:R`Plug the point's feature values into the model and set it equal to its actual \(y\): \(500a_1+100a_2+b=14\).
+The unknowns are \(a_1, a_2, b\); the numbers come from the data. B forgets \(b\) (the intercept is in every equation). <b>C</b>.`},
+ {key:"m2",step:"Its row of X",kind:"num",q:R`<p>Same point, and \(\beta=[a_1\ a_2\ b]^T\). Its equation is \(500a_1+100a_2+1\cdot b=14\). Write its row of \(X\): the number that multiplies each entry of β, in β's order.</p>`,ans:[500,100,1],lab:["column 1 (× a₁)","column 2 (× a₂)","column 3 (× b)"],
+  sol:R`Read the multipliers off the equation in β's order: \(a_1\) is multiplied by 500, \(a_2\) by 100, \(b\) by 1.
+Row: <b>[500, 100, 1]</b>. The 1 is there because \(b\) is multiplied by 1. That's the "column of 1s".`},
+ {key:"m3",step:"Column order",kind:"mc",q:R`<p>Same point, but now the question says \(\beta=[b\ a_1\ a_2]^T\). Its row of \(X\) is</p>`,o:["[500, 100, 1]","[1, 500, 100]","[14, 500, 100]","[500, 1, 100]"],a:"B",
+  sol:R`Columns always follow β's order. β now starts with \(b\), so the 1 comes first: <b>[1, 500, 100]</b>. Always check the order the question gives for β before writing X. <b>B</b>.`},
+ {key:"m4",step:"Build all of X and y",kind:"num",q:R`<p>Model \(\hat y=a_1x_1+a_2x_2+b\), \(\beta=[a_1\ a_2\ b]^T\). Two data points:</p>${T(["Point","x₁","x₂","y"],[[1,3,7,20],[2,5,2,11]])}<p>Fill in \(X\) (2×3) and \(y\) (2×1).</p>`,ans:[3,7,1,5,2,1,20,11],lab:["X row 1, col 1","X row 1, col 2","X row 1, col 3","X row 2, col 1","X row 2, col 2","X row 2, col 3","y row 1","y row 2"],
+  sol:R`One row per point; columns \(x_1\), \(x_2\), 1 (β's order); \(y\) is the outputs in the same row order.
+\[X=\begin{bmatrix}3&7&1\\5&2&1\end{bmatrix},\qquad y=\begin{bmatrix}20\\11\end{bmatrix}\]
+Check: row 1 times β is \(3a_1+7a_2+b\), which should match \(y=20\). That's point 1's equation.`},
+ {key:"m5",step:"Squared feature",kind:"num",q:R`<p>Model \(\hat y=a_1x_1+a_2x_1^2+a_3x_2+b\), \(\beta=[a_1\ a_2\ a_3\ b]^T\). A data point has \(x_1=40,\ x_2=1500\). Its row of \(X\)?</p>`,ans:[40,1600,1500,1],lab:["× a₁","× a₂","× a₃","× b"],
+  sol:R`Each column holds what that parameter multiplies: \(a_1\) multiplies \(x_1=40\), \(a_2\) multiplies \(x_1^2=40^2=1600\), \(a_3\) multiplies \(x_2=1500\), \(b\) multiplies 1.
+Row: <b>[40, 1600, 1500, 1]</b>. The squared column is just computed from \(x_1\); this is exactly Mock 1b part A.`},
+ {key:"m6",step:"Transpose",kind:"num",q:R`<p>\(X=\begin{bmatrix}3&7&1\\5&2&1\end{bmatrix}\). What size is \(X^T\), and what is its first row?</p>`,ans:[3,2,3,5],lab:["rows","columns","row 1, entry 1","row 1, entry 2"],
+  sol:R`Transposing flips rows into columns, so a 2×3 matrix becomes <b>3×2</b>. Column 1 of X (3, 5) becomes row 1 of \(X^T\):
+\[X^T=\begin{bmatrix}3&5\\7&2\\1&1\end{bmatrix}\]
+First row: <b>[3, 5]</b>.`},
+ {key:"m7",step:"Sizes",kind:"num",q:R`<p>50 data points, 3 features, plus an intercept. Give the sizes.</p>`,ans:[50,4,4,4,4,1],lab:["X rows","X columns","XᵀX rows","XᵀX columns","Xᵀy rows","Xᵀy columns"],
+  sol:R`1. \(X\): one row per point (50), one column per feature (3) + the 1s column → <b>50×4</b>.
+2. \(X^T\) is 4×50. \(X^TX\) = (4×50)(50×4): inner 50s match, outer sizes give <b>4×4</b>.
+3. \(X^Ty\) = (4×50)(50×1) = <b>4×1</b>, the same size as β, as it should be.`},
+ {key:"m8",step:"The equation",kind:"mc",q:R`<p>You've written \(X\) and \(y\). Which is the least squares equation for β?</p>`,o:["Xβ = Xᵀy","XXᵀβ = Xy","XᵀXβ = Xᵀy","β = Xᵀy"],a:"C",
+  sol:R`The normal equation is \(X^TX\beta=X^Ty\) (equivalently \(\beta=(X^TX)^{-1}X^Ty\)). Both sides get \(X^T\) on the left. Sizes check: \(X^TX\) is square, so it can be inverted when the columns are independent. <b>C</b>.`},
+ {key:"m9",step:"Too few points",kind:"mc",q:R`<p>3 data points, 4 features plus an intercept. Why is there no unique β?</p>`,o:["X is not square","XᵀX (5×5) can't be inverted: 5 unknowns, only 3 equations","y is too short to multiply","The 1s column always makes XᵀX singular"],a:"B",
+  sol:R`Each data point is one equation; there are 5 unknowns (4 weights + b) but only 3 equations. With more unknowns than equations, infinitely many β fit perfectly. The columns of X are linearly dependent, so \(X^TX\) (5×5) has no inverse. That's where ridge comes in. <b>B</b>.`},
+ {key:"m10",step:"Exam shape: write it out",kind:"free",q:R`<p>Phone tests. \(x_1\) = screen hours, \(x_2\) = apps open, \(y\) = battery drain (%). Model \(\hat y=a_1x_1+a_2x_2+b\), \(\beta=[a_1\ a_2\ b]^T\).</p>${T(["Phone","x₁","x₂","y"],[[1,2,10,30],[2,5,4,45],[3,3,8,35],[4,6,2,50]])}<p>Write \(X\), \(y\), and the least squares equation. Do not solve. Then give the sizes of \(X\) and \(X^TX\).</p>`,
+  sol:R`One row per phone, columns in β's order (\(x_1\), \(x_2\), 1):
+\[X=\begin{bmatrix}2&10&1\\5&4&1\\3&8&1\\6&2&1\end{bmatrix},\qquad y=\begin{bmatrix}30\\45\\35\\50\end{bmatrix},\qquad X^TX\beta=X^Ty\]
+Sizes: \(X\) is <b>4×3</b> (4 phones, 2 features + the 1s column), \(X^TX\) is <b>3×3</b>.
+Full credit checklist: 1s column ✓, columns match β's order ✓, y in the same row order ✓, equation written ✓.`},
+ {key:"m11",step:"Predict",kind:"num",q:R`<p>\(\hat y=2x_1+3x_2+1\) at \(x_1=1,\ x_2=2\)?</p>`,ans:[9],lab:["ŷ"],sol:R`Plug in: \(2(1)+3(2)+1=2+6+1=\mathbf9\).`},
+ {key:"m12",step:"MSE",kind:"num",q:R`<p>Residuals 1, −2, 1. MSE?</p>`,ans:[2],lab:["MSE"],sol:R`MSE = average of the squared residuals. Square each: 1, 4, 1. Average: \((1+4+1)/3=6/3=\mathbf2\).`},
+ {key:"m13",step:"R²",kind:"num",q:R`<p>MSE = 2, variance of y = 8. R²?</p>`,ans:[0.75],lab:["R²"],sol:R`\(R^2=1-\dfrac{MSE}{\sigma_y^2}=1-\dfrac28=1-0.25=\mathbf{0.75}\). The model explains 75% of the variation in y: a decent fit (1 is perfect, near 0 is no better than guessing the average).`},
+ {key:"m14",step:"Exam shape: judge the fit",kind:"num",q:R`<p>\(\hat y=0.5x_1-2x_2+10\). Test points: \((x_1,x_2,y)=(4,1,9)\) and \((6,2,10)\). Predict both, then MSE, then \(R^2\) if the variance of \(y\) is 4.</p>`,ans:[10,9,1,0.75],lab:["ŷ₁","ŷ₂","MSE","R²"],
   sol:R`1. Predict: \(\hat y_1=0.5(4)-2(1)+10=2-2+10=\mathbf{10}\). \(\hat y_2=0.5(6)-2(2)+10=3-4+10=\mathbf9\).
 2. Residuals \(y-\hat y\): 9 − 10 = −1 and 10 − 9 = 1.
 3. \(MSE=\dfrac{(-1)^2+1^2}{2}=\dfrac22=\mathbf1\).
@@ -1583,7 +1638,8 @@ function renderLessons(){
   const box=$("#lessons");
   Object.keys(TOPICS).forEach((k,ti)=>{
     const L=LEARN[k],n=PARTS.filter(p=>p.t===k).length;
-    L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k});
+    // key: stable id for reordered sets, so old progress doesn't land on new questions
+    L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+(w.key||i);w.t=k});
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
     d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]} <span class="diff d${DIFF[k][0]}">${DLAB[DIFF[k][0]]}</span> <span class="prio">Importance ${PRIO[k][0]}/10</span></h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
       <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}<br><b>Difficulty: ${DLAB[DIFF[k][0]]}.</b> ${DIFF[k][1]}</div></div><div class="qlist"></div>
