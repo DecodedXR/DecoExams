@@ -661,7 +661,7 @@ result = reduce(lambda a, b: a + b,
   sol:R`\(P(X>x)=1-F(x)=e^{-\lambda x}=e^{-2(0.5)}=e^{-1}=\mathbf{0.368}\).`},
  {p:"B",pts:4,kind:"num",q:R`<p>Of 200 machine outputs, 20 were out of spec. Model the next output as Bernoulli. What is \(p\) = P(out of spec)?</p>`,ans:[0.1],lab:["p"],sol:R`\(p=20/200=\mathbf{0.1}\).`},
  {p:"C",pts:4,kind:"num",q:R`<p>Binomial(\(n=4, p=0.5\)). Find \(P(X=2)\).</p>`,ans:[0.375],lab:["P(X = 2)"],sol:R`\(\binom42(0.5)^2(0.5)^2=6/16=\mathbf{0.375}\).`},
- {p:"D",pts:4,kind:"num",q:R`<p>\(X\sim\mathcal N(\mu,\sigma^2)\). Using 68–95–99.7, find \(P(\mu-\sigma<X<\mu+2\sigma)\).</p>`,ans:[0.815],lab:["probability"],
+ {p:"D",pts:4,kind:"num",q:R`<p>\(X\sim\mathcal N(\mu,\sigma^2)\). Using 68–95–99.7, find \(P(\mu-\sigma\lt X\lt \mu+2\sigma)\).</p>`,ans:[0.815],lab:["probability"],
   sol:R`Left half of 68% is 0.34, right half of 95% is 0.475. Total <b>0.815</b>.`}
 ]},
 {s:"X",n:6,t:"clt",
@@ -680,7 +680,7 @@ result = reduce(lambda a, b: a + b,
   sol:R`\(SE=22/\sqrt{100}=2.2\). \(z=(95-100)/2.2=\mathbf{-2.27}\).`},
  {p:"B",pts:4,kind:"mc",q:R`<p>The two-sided p-value is 0.023. Decision?</p>`,
   o:["Reject at α = 0.05 and 0.1, but not at α = 0.01","Reject at every α","Fail to reject at every α","Reject only at α = 0.01"],a:"A",
-  sol:R`Reject when \(p<\alpha\): 0.023 < 0.05 and < 0.1, but 0.023 > 0.01.`},
+  sol:R`Reject when \(p\lt \alpha\): 0.023 < 0.05 and < 0.1, but 0.023 > 0.01.`},
  {p:"C",pts:4,kind:"mc",q:R`<p>If instead \(H_1:\mu<100\) (one-sided), the p-value would be</p>`,o:["0.0115","0.023","0.046","0.977"],a:"A",
   sol:R`All the area is in one tail, so it is half the two-sided p: 0.0115.`},
  {p:"D",pts:4,kind:"free",q:R`<p>Why do we say "fail to reject \(H_0\)" instead of "accept \(H_0\)"?</p>`,
@@ -989,7 +989,7 @@ Probabilities 0.4, 0.4, 0.2; divide by width 5: <b>0.08, 0.08, 0.04</b>. Check: 
 ]},
 prob:{learn:R`<p class="idea"><b>The big idea:</b> a distribution says how likely each value is. Discrete ones list probabilities (PMF). Continuous ones give a curve (PDF) where probability is <b>area</b>.</p>
 <ul><li><b>PMF</b> \(P(X=k)\) for discrete. <b>PDF</b> \(f(x)\) for continuous; \(P(X=x)=0\) for any single value.</li>
-<li><b>CDF</b> \(F(x)=P(X\le x)\). Then \(P(X>x)=1-F(x)\) and \(P(a<X\le b)=F(b)-F(a)\).</li></ul>
+<li><b>CDF</b> \(F(x)=P(X\le x)\). Then \(P(X>x)=1-F(x)\) and \(P(a\lt X\le b)=F(b)-F(a)\).</li></ul>
 <p><b>Lowercase f vs capital F:</b> \(f(x)\) is the <b>height</b> of the curve at x. It shows where values are likely, but it is not a probability. \(F(x)\) is the <b>area</b> under that curve from the far left up to x, which <i>is</i> a probability ("cumulative": it adds up everything up to x). Exam probabilities come from \(F\): "at most" → \(F(x)\), "more than" → \(1-F(x)\).</p>
 <div class="ex"><b>Example:</b> bus delays, Exponential with λ = 0.1. \(f(10)=0.1e^{-1}=0.0368\) is just the curve's height at 10 minutes. \(F(10)=1-e^{-1}=0.632\) means 63.2% of buses are at most 10 minutes late.</div>
 <p><b>The four you need:</b></p>
@@ -1042,10 +1042,10 @@ hyp:{learn:R`<p class="idea"><b>The big idea:</b> assume nothing changed (\(H_0\
 <li>\(\alpha\) (the significance level) is the cutoff the question gives you, usually 0.05 or 0.01.</li>
 <li><b>One or two tails?</b> "Differs" / "is different" / "≠" → two-sided. "Greater", "increased", "less" → one-sided.</li></ul>
 <p><b>The z-test in four lines</b> (the exam gives points for each):</p>
-<ol><li>\(H_0:\mu=\mu_0\). \(H_1:\mu\ne\mu_0\) (two-sided) or \(\mu>\mu_0\) / \(\mu<\mu_0\) (one-sided).</li>
+<ol><li>\(H_0:\mu=\mu_0\). \(H_1:\mu\ne\mu_0\) (two-sided) or \(\mu>\mu_0\) / \(\mu\lt \mu_0\) (one-sided).</li>
 <li>\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}\). Name each quantity.</li>
 <li>p-value: two-sided \(p=2P(Z>|z|)\); one-sided \(p=P(Z>z)\) in the direction of \(H_1\).</li>
-<li>Decide: \(p<\alpha\) → reject \(H_0\), else fail to reject. Say what it means in context.</li></ol>
+<li>Decide: \(p\lt \alpha\) → reject \(H_0\), else fail to reject. Say what it means in context.</li></ol>
 <p><b>Two-sided p-values from 68–95–99.7:</b> \(|z|=1\to0.32\), \(|z|=2\to0.05\), \(|z|=3\to0.003\). Halve them for one-sided. Equivalent shortcut: two-sided, reject at α = 0.05 when \(|z|>2\), at α = 0.01 when \(|z|>2.5\) (these are the <b>critical values</b>).</p>
 <p><b>Two samples:</b> \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}\), \(z=(\bar x_1-\bar x_2)/SE\), \(H_0:\mu_1=\mu_2\).</p>
 <div class="ex"><b>Example:</b> \(\mu_0=250,\ \sigma=6,\ n=36,\ \bar x=253\). \(z=3/1=3\), two-sided \(p=0.003<0.01\) → reject.</div>
@@ -1163,7 +1163,7 @@ const SHEET={
   hist:{f:[R`count \(c_i\); probability \(p_i=c_i/n\) (sum 1)`,R`density \(d_i=p_i/w\) (area 1)`,R`\([a,b)\) bins; last bin closed`,R`bins: \(\sqrt n\), Sturges \(\lceil\log_2n\rceil+1\)`],trap:"Density needs ÷ bin width. Edge values go to the right-hand bin."},
   prob:{f:[R`Binomial: \(\binom nk p^k(1-p)^{n-k}\), mean \(np\), var \(np(1-p)\)`,R`Exponential: \(F=1-e^{-\lambda x}\), \(P(X>x)=e^{-\lambda x}\), mean \(1/\lambda\)`,R`Normal: 68 / 95 / 99.7 within 1 / 2 / 3 σ`,R`one tail beyond z = 1, 2, 3: 0.16, 0.025, 0.0015`],trap:"“More than” is 1 − CDF. Estimate p as (sample mean)/(trials)."},
   clt:{f:[R`\(\bar X\approx\mathcal N(\mu,\sigma^2/n)\), \(SE=\sigma/\sqrt n\)`,R`\(s^2=\frac1{n-1}\sum(x_i-\bar x)^2\)`,R`\(z=(c-\mu)/SE\) for "P(mean > c)"`,R`\(n=(\sigma/SE)^2\); 4× n halves SE`],trap:"Questions about the mean use SE, not σ. Population shape doesn't matter for n ≥ 30."},
-  hyp:{f:[R`\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}\)`,R`two-sided \(p=2P(Z>|z|)\): z = 1, 2, 3 → 0.32, 0.05, 0.003`,R`two-sample: \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}\)`,R`reject if \(p<\alpha\); t-test if σ unknown and n < 30 (df = n − 1)`],trap:"Say “fail to reject”, never “accept”. Hypotheses use μ, not x̄. State the decision in context."},
+  hyp:{f:[R`\(z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}\)`,R`two-sided \(p=2P(Z>|z|)\): z = 1, 2, 3 → 0.32, 0.05, 0.003`,R`two-sample: \(SE=\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}\)`,R`reject if \(p\lt \alpha\); t-test if σ unknown and n < 30 (df = n − 1)`],trap:"Say “fail to reject”, never “accept”. Hypotheses use μ, not x̄. State the decision in context."},
   ci:{f:[R`\(\bar x\pm z_c\,\sigma/\sqrt n\)`,R`exam z: 90% 1.5, 95% 2, 99% 2.5 (real 1.645, 1.96, 2.576)`,R`wider: more confidence, more spread; narrower: more n`,R`95% of intervals from repeated samples contain μ`],trap:"μ is fixed, the interval moves. 4× the data halves the width."},
   reg:{f:[R`\(X\) rows = points, columns = features + 1s`,R`\(X^TX\beta=X^Ty\), \(\beta=(X^TX)^{-1}X^Ty\)`,R`\(MSE=\frac1n\sum(y-\hat y)^2\), \(R^2=1-MSE/\sigma_y^2\)`,R`\(a=\frac{\sum xy-n\bar x\bar y}{\sum x^2-n\bar x^2}\), \(b=\bar y-a\bar x\)`],trap:"Dependent columns or more parameters than points → XᵀX not invertible. Compare weights only after standardizing."},
   fit:{f:[R`ridge: \(\min\|y-X\beta\|^2+\lambda\|\beta\|^2\), \(\beta=(X^TX+\lambda I)^{-1}X^Ty\)`,R`penalty \(\lambda\sum a_i^2\) (not b)`,R`overfit: low train, high test error; underfit: both high`,R`k-fold: k models per λ, average test MSE, refit on all data`],trap:"Never tune on the test set. Small-scale features get over-penalized: standardize first."}
