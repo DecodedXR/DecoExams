@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="ECE 29401 CMPE final prep: every CMPE Practice Quiz question with answers, reworded versions in case the final changes the wording, questions from the earlier course quizzes, a fact sheet, and a mock final.">
+<meta name="description" content="ECE 29401 CMPE final prep: every CMPE Practice Quiz question with answers, reworded versions in case the final changes the wording, questions from the earlier course quizzes, a fact sheet, flashcards, and a mock final for the CMPE or BSEE practice quiz.">
 <title>ECE 29401 Final Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +22,22 @@ dl.gloss dt{font:600 13px var(--f-mono);color:var(--gold)} dl.gloss dd{margin:0}
 .opt .box{flex:none;width:14px;height:14px;border:1.5px solid var(--muted);border-radius:3px}
 .opt.sel .box{background:var(--ink);border-color:var(--ink)}
 .hint{font:12px var(--f-mono);color:var(--muted);margin:0 0 6px}
+.mockpick{display:flex;flex-wrap:wrap;gap:8px}
+.fcwrap{perspective:1400px;margin:12px 0}
+.fc{position:relative;height:clamp(300px,52vh,440px);cursor:pointer;transform-style:preserve-3d;transition:transform .45s}
+.fc.flip{transform:rotateY(180deg)}
+.fc .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:22px 24px;display:flex;flex-direction:column;overflow:auto}
+.fc .face>.mid{margin:auto 0}
+.fc .back{transform:rotateY(180deg)}
+.fc .fq{font:600 clamp(18px,2.6vw,24px)/1.35 var(--f-display);color:var(--ink);margin:0}
+.fc .recap{font-size:13px;color:var(--muted);margin:0 0 10px}
+.fc .ans{margin:0;padding-left:1.1em;font:600 clamp(17px,2.3vw,21px)/1.4 var(--f-body);color:var(--good)}
+.fc .why{font-size:14px;color:var(--muted);margin:14px 0 0}
+.fc .tip{font:12px var(--f-mono);color:var(--muted);text-align:center;margin:12px 0 0}
+.fcbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.fcbar .grp{display:flex;gap:8px;flex-wrap:wrap}
+.fcbar .btn.know{border-color:var(--good);color:var(--good)} .fcbar .btn.learn{border-color:var(--gold);color:var(--gold)}
+.fcstat{font:13px var(--f-mono);color:var(--muted);margin:6px 0 0}
 </style>
 </head>
 <body>
@@ -36,6 +52,7 @@ dl.gloss dt{font:600 13px var(--f-mono);color:var(--gold)} dl.gloss dd{margin:0}
   <nav class="tabs" role="tablist">
     <button role="tab" aria-selected="true" data-tab="start">Start here</button>
     <button role="tab" aria-selected="false" data-tab="practice">Practice</button>
+    <button role="tab" aria-selected="false" data-tab="cards">Flashcards</button>
     <button role="tab" aria-selected="false" data-tab="mock">Mock final</button>
     <button role="tab" aria-selected="false" data-tab="sheet">Fact sheet</button>
   </nav>
@@ -84,7 +101,7 @@ dl.gloss dt{font:600 13px var(--f-mono);color:var(--gold)} dl.gloss dd{margin:0}
     <div class="notes" style="margin-top:0">
       <p><span class="tag v">confirmed</span> Brightspace graded this answer correct, either on the practice quiz itself or on one of your earlier course quizzes (Scavenger Hunt, Degree Requirements, Ethics, area quizzes).</p>
       <p><span class="tag b">not confirmed</span> Brightspace hasn't fully graded this answer. The explanation says what Brightspace did show.</p>
-      <p>29 of the 30 CMPE practice answers are confirmed by graded practice attempts (best score 29.78/30). The one gap is a single box on the CMPE Selectives question. Each question is labeled <b>CMPE only</b>, <b>BSEE only</b> or <b>CMPE &amp; BSEE</b>. In Practice, the Major menu picks which ones you see.</p>
+      <p>All 30 CMPE practice answers are confirmed: practice attempt 9 scored 30/30 with exactly the answers shown here. Each question is labeled <b>CMPE only</b>, <b>BSEE only</b> or <b>CMPE &amp; BSEE</b>. In Practice, the Major menu picks which ones you see.</p>
     </div>
   </section>
 
@@ -99,6 +116,24 @@ dl.gloss dt{font:600 13px var(--f-mono);color:var(--gold)} dl.gloss dd{margin:0}
     </div>
     <p class="count" id="count"></p>
     <div class="qlist" id="qlist"></div>
+  </section>
+
+  <section id="cards" hidden>
+    <div class="filters">
+      <label for="cDeg">Major<select id="cDeg"><option value="C">CMPE (your final)</option><option value="E">BSEE</option><option value="">Both</option></select></label>
+      <label for="cTopic">Topic<select id="cTopic"></select></label>
+      <label for="cSrc">Source<select id="cSrc"></select></label>
+      <label class="chk" for="cLearn"><input type="checkbox" id="cLearn"> Still learning only</label>
+      <button class="btn" id="cShuf">Shuffle</button>
+      <button class="btn ghost" id="cReset">Reset cards</button>
+    </div>
+    <div class="fcwrap"><div class="fc" id="fc" tabindex="0" role="button" aria-label="Flashcard: press to flip"><div class="face front" id="fcFront"></div><div class="face back" id="fcBack"></div></div></div>
+    <div class="fcbar">
+      <div class="grp"><button class="btn" id="cPrev">&larr; Prev</button><button class="btn primary" id="cFlip">Flip</button><button class="btn" id="cNext">Next &rarr;</button></div>
+      <div class="grp"><button class="btn learn" id="cLearnBtn">Still learning</button><button class="btn know" id="cKnow">Know it</button></div>
+    </div>
+    <p class="fcstat" id="fcStat"></p>
+    <p class="hint">Keys: Space flips &middot; &larr; &rarr; move &middot; 1 still learning &middot; 2 know it</p>
   </section>
 
   <section id="mock" hidden></section>
@@ -152,9 +187,9 @@ const Q=[
 {id:"b29",d:"C",t:"deg",s:"B",c:"v",q:"True or false: a CMPE student must take ECE 20002, so they must also take ECE 20008.",o:["True","False"],a:[1],w:"False. ECE 20008 isn't required for CMPE; it can count as Special Content."},
 {id:"b36",d:"C",t:"deg",s:"B",c:"v",q:"When can a CMPE student take senior design?",o:["When a project they like is available","When all 20000-level courses are completed","In their final semester","When all core courses are completed"],a:[3],w:"After all core courses are done."},
 // ---- Selectives & concentrations
-{id:"p2",d:"C",t:"sel",s:"P",c:"b",m:1,q:"Which courses below are CMPE Selectives (not Special Content) for the CMPE degree? (Choose all that apply)",o:["ECE 40400","ECE 50836","ECE 32100","ECE 43800","ECE 43700","ECE 30864","ECE 33700","ECE 38200"],a:[0,1,3,4,5,6],w:"Not fully confirmed. Seven practice attempts with different picks each scored 7 of 9 boxes (Brightspace gives credit box by box, and ECE 40400 appears twice). Those scores prove ECE 40400 (both boxes), 50836, 30864 and 33700 are right. Exactly one more box is off, and it's one of these: 43800 isn't on the key, 43700 isn't on the key, 38200 is on the key, or 32100 is on the key. Your graded quizzes count 43800 and 43700 as CMPE Selectives and say 32100 isn't one, which leaves 38200 as the likely odd one out, but no attempt has confirmed it. Ticking the six shown here gets at least 8 of 9 boxes whichever it is."},
+{id:"p2",d:"C",t:"sel",s:"P",c:"v",m:1,q:"Which courses below are CMPE Selectives (not Special Content) for the CMPE degree? (Choose all that apply)",o:["ECE 40400","ECE 50836","ECE 32100","ECE 43800","ECE 43700","ECE 30864","ECE 33700","ECE 38200"],a:[0,1,4,5,6],w:"Graded 30/30 on practice attempt 9. Tick ECE 40400 (it appears twice on Brightspace: tick both boxes), 50836, 43700, 30864 and 33700. Leave 43800, 32100 and 38200 unticked. Watch out for 43800: your Degree Requirements quiz graded 'ECE 43800 can count as a CMPE Selective' True, but this practice question's key leaves it out, so on this question don't tick it. 30864 is easy to doubt (30861 and 30862 are the better-known ones), but it is on the key."},
 {id:"r2a",d:"C",t:"sel",s:"R",c:"v",q:"Which of the following courses is NOT on the list of CMPE Selectives?",o:["ECE 57000","ECE 32100","ECE 40400","ECE 43700"],a:[1],w:"ECE 32100 is a Power & Energy Systems course and isn't a CMPE Selective."},
-{id:"r2b",d:"C",t:"sel",s:"R",c:"v",q:"True or false: students who take ECE 43800 can count it as a CMPE Selective.",o:["True","False"],a:[0],w:"True."},
+{id:"r2b",d:"C",t:"sel",s:"R",c:"v",q:"True or false: students who take ECE 43800 can count it as a CMPE Selective.",o:["True","False"],a:[0],w:"True on your graded Degree Requirements quiz. But on the practice quiz's choose-all Selectives question, 43800 is NOT on the key (graded 30/30 without it). If the final asks this true/false, answer True; on the choose-all list, leave 43800 unticked."},
 {id:"r2c",d:"C",t:"sel",s:"R",c:"v",q:"True or false: a student who takes ECE 46300 as a CMPE Selective may also count ECE 50863 as a selective.",o:["True","False"],a:[1],w:"False. They overlap, so only one of the two counts."},
 {id:"p6",d:"C",t:"sel",s:"P",c:"v",q:"What do ECE 30500, 31033 and 38200 have in common for CMPE students?",o:["They are all in the same professional area","They count as Complementary Selectives because they are not on the pre-selected CMPE Selectives list and are below the 40000 level","They are all on the AI/ML Concentration","They are all Special Content"],a:[1],w:"Graded correct on practice attempt 2. They come from three different areas, but none is on the CMPE list and all are below 40000, so they count as Complementary Selectives."},
 {id:"r6a",d:"C",t:"sel",s:"R",c:"v",q:"A CMPE student takes ECE 38200, which is not on the CMPE Selectives list and is below the 40000 level. How does it count?",o:["CMPE Selective","Special Content","Complementary Selective","It doesn't count toward the degree"],a:[2],w:"Same fact as the practice question (graded correct): off the CMPE list and below 40000 means Complementary Selective."},
@@ -336,7 +371,7 @@ const Q=[
 {id:"o133",d:"C",t:"deg",s:"B",c:"v",q:"How many ECE credits do you need to graduate with a CMPE degree?",o:["50", "51", "52", "53"],a:[3],w:"Answer key from your graded CMPE Degree Requirements quiz."},
 {id:"o134",d:"C",t:"deg",s:"B",c:"v",m:1,q:"Which core courses require a C or higher for CMPE students? (Choose all that Apply)",o:["ECE 20001", "ECE 20007", "ECE 20002", "ECE 20875", "ECE 26400", "ECE 26400 only if you plan to take ECE 30861 as a CMPE Selective", "ECE 27000", "ECE 27000 only if you plan to take ECE 33700 as a CMPE Selective", "ECE 30100", "ECE 30200", "ECE 36200", "ECE 36800"],a:[0,2,4,6],w:"Answer key from your graded CMPE Degree Requirements quiz."},
 {id:"o135",d:"C",t:"sel",s:"B",c:"v",q:"True or false: Students who take ECE 46300 as a CMPE Selective may also take ECE 50863 as a selective as well.",o:["True", "False"],a:[1],w:"Answer key from your graded CMPE Degree Requirements quiz."},
-{id:"o136",d:"C",t:"sel",s:"B",c:"v",q:"True or false: Students who take ECE 43800 can count it as a CMPE Selective.",o:["True", "False"],a:[0],w:"Answer key from your graded CMPE Degree Requirements quiz."},
+{id:"o136",d:"C",t:"sel",s:"B",c:"v",q:"True or false: Students who take ECE 43800 can count it as a CMPE Selective.",o:["True", "False"],a:[0],w:"Answer key from your graded CMPE Degree Requirements quiz. Careful: the practice quiz's choose-all Selectives question leaves 43800 off its key."},
 {id:"o138",t:"deg",s:"B",c:"v",m:1,q:"Which of the following count toward Special Content? (Choose all that Apply)",o:["ECE 20008", "ECE 32100", "ECE 33700", "EPICS", "VIP", "ECE 29600/39600/49600 Undergraduate Research"],a:[0,3,4,5],w:"Answer key from your graded CMPE Degree Requirements quiz."},
 {id:"o139",t:"exp",s:"B",c:"v",m:1,q:"Why should you do experiential learning? (Choose all that Apply)",o:["I get to apply what I am learning in the classroom to real-world projects.", "It gives me a talking point during interviews", "It makes me stand out against other applicants who just did coursework", "It's easier than taking courses with exams"],a:[0,1,2],w:"Answer key from your graded CMPE Degree Requirements quiz."},
 {id:"o140",d:"C",t:"sel",s:"B",c:"v",m:1,q:"Choose all of the concentrations that CMPE students are eligible to complete?",o:["Artificial Intelligence and Machine Learning", "Automatic Controls", "Computer Systems", "Electric Power and Energy Systems", "Microelectronics and Semiconductors", "Quantum Technology", "Software Engineering", "Wireless & Optical Engineering"],a:[0,1,2,3,4,5,6,7],w:"Answer key from your graded CMPE Degree Requirements quiz."},
@@ -353,7 +388,7 @@ const Q=[
 const FACTS=[
 ["Degree numbers",["125 total credits; 53 ECE credits","16 credits of CMPE Selectives","Up to 6 Special Content credits (EPICS, VIP, research ECE 29600/39600/49600, ECE 20008)","ECE GPA ≥ 2.0 to graduate (no 2.5 cumulative rule)","Senior design after all core courses are done"]],
 ["Minimum grades",["C or higher: ECE 20001, 20002, 26400, 27000 (always, no 'only if')","ECE 30100 just needs a D-","P/NP 'Pass' = C- or better","P/NP fits General Education electives and Complementary Selectives (not science, senior design or engineering breadth)","Retake = same grade mode as before"]],
-["Selectives",["Not CMPE Selectives: ECE 32100 (power), ECE 38200 (controls)","CMPE Selectives on the quiz: 40400 (tick both boxes), 50836, 30864, 33700 are certain; 43800 and 43700 per your graded quizzes. One box is still unconfirmed (see the question)","Off the list and below 40000 → Complementary Selective (e.g. 30500, 31033, 38200)","Can't count both ECE 46300 and ECE 50863"]],
+["Selectives",["Choose-all Selectives question (graded 30/30): tick 40400 (both boxes), 50836, 43700, 30864, 33700","Leave unticked on that question: 43800, 32100, 38200 (even though the Degree Requirements quiz said 43800 counts)","Off the list and below 40000 → Complementary Selective (e.g. 30500, 31033, 38200)","Can't count both ECE 46300 and ECE 50863"]],
 ["Concentrations",["Optional; take none, one, or as many as you want","All listed concentrations are open to all ECE students (EE and CMPE)","Picking more than two defeats the purpose (graded true)","Not every VIP project counts toward every concentration"]],
 ["Course policies",["3 attempts per course; a W counts as one","Switch sections only through week 1","No auditing or P/NP of an ECE course until everything it could count for is done","Credits understate the workload","Grade replacement only by retaking at Purdue","Only calculator: TI-30X-IIS"]],
 ["Advising",["Book appointments through BoilerConnect","Drop-in (quick): add/drop, grade mode change","Appointment needed: only registration/CRF and the first API meeting. CODO, plan review, research sign-up are drop-in","Register via your advisor's Brightspace advising community, not by email","Office: MSEE 140","Academic Success Center = study skills, not degree requirements","CCO / myCCO = jobs"]],
@@ -388,7 +423,7 @@ function card(q,{num,reveal=true,done}={}){
     opts.appendChild(b);return[b,i]});
   if(multi(q)){const c=document.createElement("button");c.className="btn primary";c.textContent=reveal?"Check":"Save answer";c.onclick=()=>sel.length&&finish();foot.appendChild(c)}
   function finish(){locked=true;const ok=same(sel,q.a);
-    if(!q.a.length){btns.forEach(([b])=>b.disabled=true);foot.innerHTML=`<span class="verdict">No answer key</span>`;const s=document.createElement("div");s.className="sol";s.textContent=q.w;el.appendChild(s);return}
+    if(!q.a.length&&reveal){btns.forEach(([b])=>b.disabled=true);foot.innerHTML=`<span class="verdict">No answer key</span>`;const s=document.createElement("div");s.className="sol";s.textContent=q.w;el.appendChild(s);return}
     btns.forEach(([b,i])=>{b.disabled=true;if(reveal){if(q.a.includes(i))b.classList.add("right");else if(sel.includes(i))b.classList.add("wrong")}else if(sel.includes(i))b.classList.add("sel")});
     if(reveal){el.classList.add(ok?"ok":"no");foot.innerHTML=`<span class="verdict ${ok?"ok":"no"}">${ok?"Right":"Not quite"}</span>`;
       const s=document.createElement("div");s.className="sol";s.textContent=q.w;el.appendChild(s)}else foot.innerHTML="";
@@ -408,27 +443,55 @@ $("#shuffle").onclick=()=>{pool=shuf(pool);renderPractice()};
 $("#reset").onclick=()=>{prog={};save();renderPractice()};
 
 // Mock: 30 random questions, one per page, no going back
-function mockIntro(){$("#mock").innerHTML=`<div class="intro"><h2>Mock final</h2><p class="sub">Like the Brightspace quiz:</p><ul><li>All 30 practice-quiz questions in random order, each shown either in its original wording or a reworded version (the final rewords things), with the options shuffled</li><li>One per page, and you can't go back</li><li>No answers until the end, then a full review</li></ul><button class="btn primary" id="go">Start</button></div>`;$("#go").onclick=mockRun}
-function mockRun(){const set=shuf(Q.filter(q=>q.s=="P").map(p=>{const v=Q.filter(q=>q.id==p.id||(q.s=="R"&&q.id.replace(/[a-z]$/,"")=="r"+p.id.slice(1)));return v[Math.floor(Math.random()*v.length)]})),res=[];let k=0;
-  const step=()=>{const m=$("#mock");m.innerHTML=`<div class="mockbar"><span class="timer">${k+1} / 30</span><span>no going back</span></div>`;
-    const q=set[k];m.appendChild(card(q,{num:"Question "+(k+1),reveal:false,done:(ok,sel)=>{res.push({q,ok,sel});const nb=document.createElement("button");nb.className="btn primary";nb.textContent=k<29?"Next page":"Finish";nb.onclick=()=>{k++;k<30?step():mockEnd(res)};m.appendChild(nb);nb.focus()}}))};
+function mockIntro(){$("#mock").innerHTML=`<div class="intro"><h2>Mock final</h2><p class="sub">Like the Brightspace quiz:</p><ul><li>All 30 questions of the practice quiz you pick, in random order, each shown either in its original wording or a reworded version (the final rewords things), with the options shuffled</li><li>One per page, and you can't go back</li><li>No answers until the end, then a full review</li></ul><p class="sub">Which quiz?</p><div class="mockpick"><button class="btn primary" data-deg="C">CMPE Practice Quiz (your final)</button><button class="btn" data-deg="E">BSEE Practice Quiz</button></div><p class="hint">BSEE: the 26 questions it shares with CMPE (worded for BSEE) plus its 4 BSEE-only ones. Two of those have no answer key yet, so they're asked but not scored.</p></div>`;
+  $("#mock").querySelectorAll("[data-deg]").forEach(b=>b.onclick=()=>mockRun(b.dataset.deg))}
+// the 30 questions of one practice quiz; each practice question may come back as one of its rewordings
+function mockSet(deg){const base=Q.filter(q=>deg=="E"?(q.s=="P"&&!q.d)||q.s=="E":q.s=="P");
+  return shuf(base.map(p=>{if(p.s=="E")return p;const v=Q.filter(q=>q.id==p.id||(q.s=="R"&&q.id.replace(/[a-z]$/,"")=="r"+p.id.slice(1)));return v[Math.floor(Math.random()*v.length)]}))
+    .map(q=>deg=="E"&&!q.d?{...q,q:q.q.replace(/\bCMPE\b/g,"BSEE")}:q)}
+function mockRun(deg){const set=mockSet(deg),n=set.length,res=[];let k=0;
+  const step=()=>{const m=$("#mock");m.innerHTML=`<div class="mockbar"><span class="timer">${k+1} / ${n}</span><span>${deg=="E"?"BSEE":"CMPE"} · no going back</span></div>`;
+    const q=set[k];m.appendChild(card(q,{num:"Question "+(k+1),reveal:false,done:(ok,sel)=>{res.push({q,ok,sel});const nb=document.createElement("button");nb.className="btn primary";nb.textContent=k<n-1?"Next page":"Finish";nb.onclick=()=>{k++;k<n?step():mockEnd(res,deg)};m.appendChild(nb);nb.focus()}}))};
   step()}
-function mockEnd(res){const r=res.filter(x=>x.ok).length,m=$("#mock");res.forEach(x=>prog[x.q.id]=x.ok);save();
-  m.innerHTML=`<div class="intro"><div class="score">${r} / 30</div><p class="sub">Review below. Wrong answers are marked red, right ones green.</p><button class="btn primary" id="again">New mock</button></div><div class="qlist" id="rev" style="margin-top:14px"></div>`;
-  $("#again").onclick=mockRun;
+function mockEnd(res,deg){const g=res.filter(x=>x.q.a.length),r=g.filter(x=>x.ok).length,m=$("#mock"),nm=deg=="E"?"BSEE":"CMPE";g.forEach(x=>prog[x.q.id]=x.ok);save();
+  m.innerHTML=`<div class="intro"><div class="score">${r} / ${g.length}</div><p class="sub">${nm} Practice Quiz.${g.length<res.length?` ${res.length-g.length} question(s) with no answer key weren't scored.`:""} Review below. Wrong answers are marked red, right ones green.</p><div class="mockpick"><button class="btn primary" id="again">New ${nm} mock</button><button class="btn" id="pick">Pick a different quiz</button></div></div><div class="qlist" id="rev" style="margin-top:14px"></div>`;
+  $("#again").onclick=()=>mockRun(deg);$("#pick").onclick=mockIntro;
   res.forEach((x,i)=>{const c=card(x.q,{num:"Question "+(i+1)});$("#rev").appendChild(c);
     // replay the saved answer so the card shows it graded
     c.querySelectorAll(".opt").forEach(b=>{const txt=b.lastElementChild.textContent;if(x.sel.some(j=>x.q.o[j]===txt))b.click()});
     if(multi(x.q))c.querySelector(".foot .btn").click()})}
 
+// Flashcards: front = question, back = answer; "know it" / "still learning" is remembered per card
+const FKEY=SKEY+"fc",cDeg=$("#cDeg"),cTopic=$("#cTopic"),cSrc=$("#cSrc"),fcEl=$("#fc");
+let fcs={};try{fcs=JSON.parse(localStorage.getItem(FKEY)||"{}")}catch(e){}
+cTopic.innerHTML=fTopic.innerHTML;cSrc.innerHTML=fSet.innerHTML;
+let deck=[],fi=0,mixed=false;
+function buildDeck(){deck=Q.filter(q=>q.a.length&&(!cDeg.value||!q.d||q.d==cDeg.value)&&(!cTopic.value||q.t==cTopic.value)&&(!cSrc.value||q.s==cSrc.value)&&(!$("#cLearn").checked||fcs[q.id]!="k"));
+  if(mixed)deck=shuf(deck);fi=0;drawCard()}
+function drawCard(){fcEl.classList.remove("flip");const k=deck.filter(q=>fcs[q.id]=="k").length,l=deck.filter(q=>fcs[q.id]=="l").length;
+  if(!deck.length){$("#fcFront").innerHTML=`<div class="mid"><p class="fq">No cards here.</p><p class="sub">Change the filters, or untick "Still learning only".</p></div>`;$("#fcBack").innerHTML="";$("#fcStat").textContent="";return}
+  const q=deck[fi],mark=fcs[q.id]=="k"?" · you know this":fcs[q.id]=="l"?" · still learning":"";
+  $("#fcFront").innerHTML=`<div class="meta"><span class="chip">${T[q.t]}</span><span class="chip">${D[q.d]||"CMPE & BSEE"}</span></div><div class="mid"><p class="fq">${esc(q.q)}</p>${multi(q)?`<p class="hint">${q.a.length} answers</p>`:""}</div><p class="tip">tap to flip</p>`;
+  $("#fcBack").innerHTML=`<p class="recap">${esc(q.q)}</p><ul class="ans">${q.a.map(i=>`<li>${esc(q.o[i])}</li>`).join("")}</ul><p class="why">${esc(q.w)}</p>`;
+  $("#fcStat").textContent=`Card ${fi+1} of ${deck.length}${mark} · ${k} known · ${l} still learning`}
+const flip=()=>deck.length&&fcEl.classList.toggle("flip"),move=d=>{if(!deck.length)return;fi=(fi+d+deck.length)%deck.length;drawCard()};
+const rate=v=>{if(!deck.length)return;fcs[deck[fi].id]=v;try{localStorage.setItem(FKEY,JSON.stringify(fcs))}catch(e){}
+  if($("#cLearn").checked&&v=="k"){deck.splice(fi,1);if(fi>=deck.length)fi=0;drawCard()}else move(1)};
+fcEl.onclick=flip;$("#cFlip").onclick=flip;$("#cPrev").onclick=()=>move(-1);$("#cNext").onclick=()=>move(1);
+$("#cKnow").onclick=()=>rate("k");$("#cLearnBtn").onclick=()=>rate("l");
+$("#cShuf").onclick=()=>{mixed=true;buildDeck()};$("#cReset").onclick=()=>{fcs={};try{localStorage.removeItem(FKEY)}catch(e){}buildDeck()};
+[cDeg,cTopic,cSrc,$("#cLearn")].forEach(e=>e.onchange=buildDeck);
+document.addEventListener("keydown",e=>{if($("#cards").hidden||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||(e.target.tagName=="BUTTON"&&/^( |Enter)$/.test(e.key)))return;
+  if(e.key==" "||(e.key=="Enter"&&e.target==fcEl)){e.preventDefault();flip()}else if(e.key=="ArrowRight")move(1);else if(e.key=="ArrowLeft")move(-1);else if(e.key=="1")rate("l");else if(e.key=="2")rate("k")});
+
 $("#facts").innerHTML=FACTS.map(([h,l])=>`<div class="card"><h3>${esc(h)}</h3><ul>${l.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("");
 
 // tabs
 const tabs=[...document.querySelectorAll("nav.tabs button")];
-function show(t){tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==t));["start","practice","mock","sheet"].forEach(id=>$("#"+id).hidden=id!=t);try{localStorage.setItem(SKEY+"t",t)}catch(e){}}
+function show(t){tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.tab==t));["start","practice","cards","mock","sheet"].forEach(id=>$("#"+id).hidden=id!=t);try{localStorage.setItem(SKEY+"t",t)}catch(e){}}
 tabs.forEach(b=>b.onclick=()=>show(b.dataset.tab));
 let t0="start";try{t0=localStorage.getItem(SKEY+"t")||"start"}catch(e){}
-stats();renderPractice();mockIntro();show(t0);
+stats();renderPractice();buildDeck();mockIntro();show(t0);
 </script>
 </body>
 </html>
