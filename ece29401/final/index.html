@@ -38,6 +38,8 @@ dl.gloss dt{font:600 13px var(--f-mono);color:var(--gold)} dl.gloss dd{margin:0}
 .fcbar .grp{display:flex;gap:8px;flex-wrap:wrap}
 .fcbar .btn.know{border-color:var(--good);color:var(--good)} .fcbar .btn.learn{border-color:var(--gold);color:var(--gold)}
 .fcstat{font:13px var(--f-mono);color:var(--muted);margin:6px 0 0}
+.fc .face{transition:background-color .15s,border-color .15s}
+.fc.good .face{background:var(--good-soft);border-color:var(--good)} .fc.bad .face{background:var(--bad-soft);border-color:var(--bad)}
 </style>
 </head>
 <body>
@@ -461,22 +463,37 @@ function mockEnd(res,deg){const g=res.filter(x=>x.q.a.length),r=g.filter(x=>x.ok
     c.querySelectorAll(".opt").forEach(b=>{const txt=b.lastElementChild.textContent;if(x.sel.some(j=>x.q.o[j]===txt))b.click()});
     if(multi(x.q))c.querySelector(".foot .btn").click()})}
 
-// Flashcards: front = question, back = answer; "know it" / "still learning" is remembered per card
+// Flashcards, Quizlet style: rate each card, it flashes green (know it) or red (still learning).
+// A round ends when every card in it is rated; the next round is the missed ones, shuffled, until none are left.
 const FKEY=SKEY+"fc",cDeg=$("#cDeg"),cTopic=$("#cTopic"),cSrc=$("#cSrc"),fcEl=$("#fc");
 let fcs={};try{fcs=JSON.parse(localStorage.getItem(FKEY)||"{}")}catch(e){}
 cTopic.innerHTML=fTopic.innerHTML;
-let deck=[],fi=0,mixed=false;
-function buildDeck(){deck=Q.filter(q=>q.a.length&&(!cDeg.value||!q.d||q.d==cDeg.value)&&(!cTopic.value||q.t==cTopic.value)&&(!cSrc.value||q.s=="E"||cSrc.value.includes(q.s))&&(!$("#cLearn").checked||fcs[q.id]!="k"));
-  if(mixed)deck=shuf(deck);fi=0;drawCard()}
-function drawCard(){fcEl.classList.remove("flip");const k=deck.filter(q=>fcs[q.id]=="k").length,l=deck.filter(q=>fcs[q.id]=="l").length;
+let deck=[],fi=0,mixed=false,round=1,total=0,missed=[],rated=new Set(),roundDone=false,busy=false;
+const cardPool=()=>Q.filter(q=>q.a.length&&(!cDeg.value||!q.d||q.d==cDeg.value)&&(!cTopic.value||q.t==cTopic.value)&&(!cSrc.value||q.s=="E"||cSrc.value.includes(q.s))&&(!$("#cLearn").checked||fcs[q.id]!="k"));
+function startRound(cards){deck=mixed?shuf(cards):cards;fi=0;missed=[];rated=new Set();roundDone=false;drawCard()}
+function buildDeck(){round=1;const c=cardPool();total=c.length;startRound(c)}
+function drawCard(){fcEl.classList.remove("flip","good","bad");
   if(!deck.length){$("#fcFront").innerHTML=`<div class="mid"><p class="fq">No cards here.</p><p class="sub">Change the filters, or untick "Still learning only".</p></div>`;$("#fcBack").innerHTML="";$("#fcStat").textContent="";return}
-  const q=deck[fi],mark=fcs[q.id]=="k"?" · you know this":fcs[q.id]=="l"?" · still learning":"";
-  $("#fcFront").innerHTML=`<div class="meta"><span class="chip">${T[q.t]}</span><span class="chip">${D[q.d]||"CMPE & BSEE"}</span></div><div class="mid"><p class="fq">${esc(q.q)}</p>${multi(q)?`<p class="hint">${q.a.length} answers</p>`:""}</div><p class="tip">tap to flip</p>`;
+  if(roundDone)return endRound();
+  const q=deck[fi],mark=fcs[q.id]=="k"?" · you knew this last time":fcs[q.id]=="l"?" · still learning":"";
+  $("#fcFront").innerHTML=`<div class="meta"><span class="chip">${T[q.t]}</span><span class="chip">${D[q.d]||"CMPE & BSEE"}</span>${round>1?`<span class="chip">round ${round}</span>`:""}</div><div class="mid"><p class="fq">${esc(q.q)}</p>${multi(q)?`<p class="hint">${q.a.length} answers</p>`:""}</div><p class="tip">tap to flip</p>`;
   $("#fcBack").innerHTML=`<p class="recap">${esc(q.q)}</p><ul class="ans">${q.a.map(i=>`<li>${esc(q.o[i])}</li>`).join("")}</ul><p class="why">${esc(q.w)}</p>`;
-  $("#fcStat").textContent=`Card ${fi+1} of ${deck.length}${mark} · ${k} known · ${l} still learning`}
-const flip=()=>deck.length&&fcEl.classList.toggle("flip"),move=d=>{if(!deck.length)return;fi=(fi+d+deck.length)%deck.length;drawCard()};
-const rate=v=>{if(!deck.length)return;fcs[deck[fi].id]=v;try{localStorage.setItem(FKEY,JSON.stringify(fcs))}catch(e){}
-  if($("#cLearn").checked&&v=="k"){deck.splice(fi,1);if(fi>=deck.length)fi=0;drawCard()}else move(1)};
+  $("#fcStat").textContent=`Round ${round} · card ${fi+1} of ${deck.length}${mark} · ${rated.size-missed.length} know it · ${missed.length} still learning`}
+function endRound(){const k=deck.length-missed.length;fcEl.classList.remove("flip");
+  $("#fcFront").innerHTML=missed.length
+    ?`<div class="mid"><p class="fq">Round ${round} done: ${k} know it, ${missed.length} still learning.</p><p class="sub">Keep going with the ${missed.length} you missed, shuffled, until you know them all.</p><div class="mockpick"><button class="btn primary" id="fcAgain">Study the ${missed.length} again</button><button class="btn" id="fcRestart">Start over with all ${cardPool().length}</button></div></div>`
+    :`<div class="mid"><p class="fq">You know all ${total} cards${round>1?` (took ${round} rounds)`:""}.</p><div class="mockpick"><button class="btn primary" id="fcRestart">Go again, shuffled</button></div></div>`;
+  $("#fcBack").innerHTML="";$("#fcStat").textContent=`Round ${round} finished`;
+  const a=$("#fcAgain");if(a)a.onclick=e=>{e.stopPropagation();round++;mixed=true;startRound(missed.slice())};
+  $("#fcRestart").onclick=e=>{e.stopPropagation();mixed=true;buildDeck()}}
+const flip=()=>{if(deck.length&&!roundDone&&!busy)fcEl.classList.toggle("flip")};
+const move=d=>{if(!deck.length||roundDone||busy)return;fi=(fi+d+deck.length)%deck.length;drawCard()};
+const rate=v=>{if(!deck.length||roundDone||busy)return;const q=deck[fi];fcs[q.id]=v;try{localStorage.setItem(FKEY,JSON.stringify(fcs))}catch(e){}
+  rated.add(q.id);const i=missed.indexOf(q);if(v=="l"&&i<0)missed.push(q);if(v=="k"&&i>=0)missed.splice(i,1);
+  busy=true;fcEl.classList.add(v=="k"?"good":"bad");
+  setTimeout(()=>{busy=false;if(rated.size>=deck.length){roundDone=true;return drawCard()}
+    // next card not yet rated this round
+    let j=fi;do{j=(j+1)%deck.length}while(rated.has(deck[j].id));fi=j;drawCard()},420)};
 fcEl.onclick=flip;$("#cFlip").onclick=flip;$("#cPrev").onclick=()=>move(-1);$("#cNext").onclick=()=>move(1);
 $("#cKnow").onclick=()=>rate("k");$("#cLearnBtn").onclick=()=>rate("l");
 $("#cShuf").onclick=()=>{mixed=true;buildDeck()};$("#cReset").onclick=()=>{fcs={};try{localStorage.removeItem(FKEY)}catch(e){}buildDeck()};
