@@ -122,7 +122,7 @@ dl.gloss dt{font:600 13px var(--f-mono);color:var(--gold)} dl.gloss dd{margin:0}
     <div class="filters">
       <label for="cDeg">Major<select id="cDeg"><option value="C">CMPE (your final)</option><option value="E">BSEE</option><option value="">Both</option></select></label>
       <label for="cTopic">Topic<select id="cTopic"></select></label>
-      <label for="cSrc">Source<select id="cSrc"></select></label>
+      <label for="cSrc">Deck<select id="cSrc"><option value="P">Final core: the practice-quiz questions</option><option value="PR">Core + reworded versions</option><option value="">Everything (adds earlier quizzes)</option></select></label>
       <label class="chk" for="cLearn"><input type="checkbox" id="cLearn"> Still learning only</label>
       <button class="btn" id="cShuf">Shuffle</button>
       <button class="btn ghost" id="cReset">Reset cards</button>
@@ -464,9 +464,9 @@ function mockEnd(res,deg){const g=res.filter(x=>x.q.a.length),r=g.filter(x=>x.ok
 // Flashcards: front = question, back = answer; "know it" / "still learning" is remembered per card
 const FKEY=SKEY+"fc",cDeg=$("#cDeg"),cTopic=$("#cTopic"),cSrc=$("#cSrc"),fcEl=$("#fc");
 let fcs={};try{fcs=JSON.parse(localStorage.getItem(FKEY)||"{}")}catch(e){}
-cTopic.innerHTML=fTopic.innerHTML;cSrc.innerHTML=fSet.innerHTML;
+cTopic.innerHTML=fTopic.innerHTML;
 let deck=[],fi=0,mixed=false;
-function buildDeck(){deck=Q.filter(q=>q.a.length&&(!cDeg.value||!q.d||q.d==cDeg.value)&&(!cTopic.value||q.t==cTopic.value)&&(!cSrc.value||q.s==cSrc.value)&&(!$("#cLearn").checked||fcs[q.id]!="k"));
+function buildDeck(){deck=Q.filter(q=>q.a.length&&(!cDeg.value||!q.d||q.d==cDeg.value)&&(!cTopic.value||q.t==cTopic.value)&&(!cSrc.value||q.s=="E"||cSrc.value.includes(q.s))&&(!$("#cLearn").checked||fcs[q.id]!="k"));
   if(mixed)deck=shuf(deck);fi=0;drawCard()}
 function drawCard(){fcEl.classList.remove("flip");const k=deck.filter(q=>fcs[q.id]=="k").length,l=deck.filter(q=>fcs[q.id]=="l").length;
   if(!deck.length){$("#fcFront").innerHTML=`<div class="mid"><p class="fq">No cards here.</p><p class="sub">Change the filters, or untick "Still learning only".</p></div>`;$("#fcBack").innerHTML="";$("#fcStat").textContent="";return}
