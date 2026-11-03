@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ECE 20001 Exam 2 prep: refreshers and warm-ups per topic, every past exam, homework and practice-collection question with answers, a formula sheet, and a timed mock exam.">
+<title>ECE 20001 Exam 2 Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../site.css">
+<style>
+html,body{margin:0}[hidden]{display:none!important}
+header.top{grid-template-columns:1fr}
+.sol{white-space:normal}.sol p{margin:6px 0}
+.xfig{display:block;max-width:100%;height:auto;margin:6px 0 10px;border:1px solid var(--rule);border-radius:4px;background:#fff}
+.ctx{background:var(--paper);border:1px solid var(--rule);padding:8px 12px;border-radius:4px;margin-bottom:8px;font-size:14px}
+.prov{display:inline-block;font:500 11px var(--f-mono);padding:2px 8px;border-radius:99px;border:1px solid var(--rule);color:var(--muted);margin:2px 0 6px}
+.prov.off{color:var(--good);border-color:var(--good)}.prov.warn{color:var(--bad);border-color:var(--bad)}
+.flag{background:var(--bad-soft);border-radius:4px;padding:6px 10px;margin:6px 0;font-size:14px}
+.self{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.self .btn.on{background:var(--ink);color:var(--paper)}
+.more{margin-top:14px}
+.oimg{display:block;max-width:100%;max-height:170px;background:#fff;border-radius:3px}
+.sol .k .oimg{display:inline-block;vertical-align:middle;max-height:120px}
+.fs li{margin:5px 0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xfig{filter:invert(.9) hue-rotate(180deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow"><a href="../../" style="color:inherit">← DecoExams</a> · ECE 20001 · Electrical Engineering Fundamentals I</div>
+      <h1>Exam 2 Lab</h1>
+      <p class="lede">Thursday Nov 5, 8 to 9 PM. Max power transfer from Ch. 4, plus Ch. 5 through 8.10 (resonance and frequency response included, no Ch. 9). One double-sided formula sheet and a 1- or 2-line calculator.</p>
+      <div class="stats" id="stats"></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="start">Start here</button>
+    <button role="tab" aria-selected="false" data-tab="practice">Practice</button>
+    <button role="tab" aria-selected="false" data-tab="mock">Mock exam</button>
+    <button role="tab" aria-selected="false" data-tab="topics">Topics &amp; formulas</button>
+  </nav>
+
+  <section id="start">
+    <h2>Start here</h2>
+    <p class="sub">One card per exam topic. Each says what the real exams ask, explains the idea from scratch, then gives warm-ups that build up to a question shaped like the real ones.</p>
+    <ol class="steps">
+      <li><b>Read the refresher.</b> Every symbol is defined where it first shows up. Skip what you already know.</li>
+      <li><b>Do the warm-ups.</b> Each adds one new step. The last one is shaped like an exam question with new numbers.</li>
+      <li><b>Try the real ones.</b> Each topic ends with a button that opens its past exam questions.</li>
+    </ol>
+    <div class="meter" id="meter"></div>
+    <div id="lessons"></div>
+  </section>
+
+  <section id="practice" hidden>
+    <div class="filters">
+      <label for="fSet">Set<select id="fSet"></select></label>
+      <label for="fSrc">Source<select id="fSrc"></select></label>
+      <label for="fTopic">Topic<select id="fTopic"></select></label>
+      <label class="chk" for="fOpen"><input type="checkbox" id="fOpen"> Unanswered only</label>
+      <label class="chk" for="fCh4"><input type="checkbox" id="fCh4"> Hide Ch. 4 review</label>
+      <button class="btn" id="shuffle">Shuffle</button>
+      <button class="btn ghost" id="reset">Reset all progress</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="qlist" id="qlist"></div>
+    <button class="btn more" id="more" hidden>Show more</button>
+  </section>
+
+  <section id="mock" hidden></section>
+
+  <section id="topics" hidden>
+    <h2>What shows up</h2>
+    <p class="sub">Past exam questions per topic (Fall 2023 through Fall 2025, including Fall 2025 Exam 3). The gold bar is your accuracy on that topic in Practice. Click a topic to drill it.</p>
+    <div class="bars" id="bars"></div>
+    <div class="legend"><span><i style="background:var(--ink)"></i>questions on past exams</span><span><i style="background:var(--gold)"></i>your % correct</span></div>
+    <h2>Formula sheet</h2>
+    <p class="sub">You get one double-sided sheet. These cards are worth copying onto it. Each ends with the mistake the answer keys show most.</p>
+    <div class="sheet" id="sheet"></div>
+  </section>
+
+  <div class="notes">
+    <p>Sources: ECE 20001 Exam 2 from Fall 2023, Spring 2024, Fall 2024, Spring 2025 and Fall 2025 (Version A), Fall 2025 Exam 3 (all Ch. 7 to 8), the Collection of Practice Problems (Ch. 4 max power and Ch. 5 to 8), Brightspace HW 5 to 9, and Boilerexams Spring 2023 Exam 2. Every answer shows where it came from. Boilerexams answers come from a student site, and the six "worked out" answers have no official key.</p>
+    <p>Not affiliated with Purdue or the course staff. Progress is stored in your own browser.</p>
+  </div>
+</div>
+
+<script>
+window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:"global"},startup:{typeset:false},options:{enableMenu:false}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async id="mjx"></script>
+<script>
+const R = String.raw;
+const SHORT = { maxpower:"Max power", lc:"L & C basics", dcss:"DC steady state", first:"First-order transients",
+  phasor:"Phasors", imp:"Impedance & AC analysis", power:"AC power & RMS", resonance:"Resonance", ch4:"Ch. 4 review" };
+const SETS = { past_exam:"Past exams", homework:"Homework (HW 5 to 9)", cop:"Collection of Problems", boilerexams:"Boilerexams S23" };
+
+const HOOKS = {
+  maxpower:"Pick the load that takes the most power, then compute that power.",
+  lc:"Capacitor and inductor laws, energy, and combining them.",
+  dcss:"After a long time at DC: capacitor open, inductor short.",
+  first:"Every RC/RL answer has the form final + (initial − final)·e^(−t/τ).",
+  phasor:"Turn a sinusoid into a single complex number and back.",
+  imp:"Impedance turns AC circuits into DC-style algebra with complex numbers.",
+  power:"Average power, RMS values, and why L and C absorb none.",
+  resonance:"The frequency where L and C cancel, and what the circuit does there."
+};
+
+const LEARN = {
+maxpower: {
+  on: R`Every recent exam has one. F24 P4 and E3 F25 P4 give \(Z_{th}\) and ask for the best load and \(P_{max}\); F25 Q2(c) is the DC version; F23 Q10 and S25 Q8 make you find the Thévenin circuit first. S24 Q10 is the twist: the load is fixed and you choose the source side.`,
+  learn: R`<p class="idea"><b>The big idea:</b> any linear circuit, seen from two terminals, acts like one source \(V_{th}\) (the Thévenin voltage) behind one impedance \(Z_{th}\) (the Thévenin impedance). The load gets the most power when it "matches" \(Z_{th}\).</p>
+<p><b>Finding the Thévenin circuit:</b> \(V_{th}\) is the open-circuit voltage at the terminals. \(Z_{th}\) is what you see looking in with every independent source turned off (voltage source becomes a short, current source becomes an open).</p>
+<p><b>DC (resistors only):</b> choose \(R_L=R_{th}\). Then \(P_{max}=\dfrac{V_{th}^2}{4R_{th}}\).</p>
+<div class="ex"><b>Example:</b> \(V_{th}=60\) V, \(R_{th}=20\ \Omega\). Best \(R_L=20\ \Omega\), and \(P_{max}=\frac{3600}{80}=45\) W (Fall 2025 Q2c).</div>
+<p><b>AC:</b> the load should be the <b>complex conjugate</b> of \(Z_{th}\): same real part, opposite sign on the imaginary part. If \(Z_{th}=R_{th}+jX_{th}\), then \(Z_L=Z_{th}^*=R_{th}-jX_{th}\). The reactances cancel and the source sees \(2R_{th}\).</p>
+<p>Then \(P_{max}=\dfrac{|V_{th}|^2}{8R_{th}}\) when \(V_{th}\) is a <b>peak</b> phasor (the amplitude, the usual case), or \(\dfrac{|V_{th,rms}|^2}{4R_{th}}\) when it is RMS.</p>
+<div class="ex"><b>Example:</b> \(Z_{th}=4-j3\ \Omega\), \(V_{th}=12\) V peak. \(Z_L=4+j3\ \Omega\), \(P_{max}=\frac{144}{32}=4.5\) W (Spring 2025 Q8).</div>
+<p><b>To build \(Z_L\)</b> from parts: a positive imaginary part is an inductor (\(X=\omega L\)); a negative one is a capacitor (\(X=-\frac1{\omega C}\)).</p>
+<p><b>If the load must be a pure resistor</b> (it cannot cancel the reactance): \(R_L=|Z_{th}|=\sqrt{R_{th}^2+X_{th}^2}\). Then compute the power directly: \(P=\tfrac12|I|^2R_L\) with \(I=\frac{V_{th}}{Z_{th}+R_L}\).</p>
+<p><b>If the load is fixed</b> and you choose the source side, matching does not apply: make the source resistance as small as possible (often 0) and cancel the load's reactance.</p>`,
+  warm: [
+    { step:"DC matching", a:1, q:R`A circuit has \(V_{th}=20\) V and \(R_{th}=5\ \Omega\). What load \(R_L\) takes the most power, and how much?`,
+      o:[R`\(R_L=5\ \Omega,\ P=80\) W`,R`\(R_L=5\ \Omega,\ P=20\) W`,R`\(R_L=10\ \Omega,\ P=40\) W`,R`\(R_L=0\ \Omega,\ P=\infty\)`],
+      s:R`\(R_L=R_{th}=5\ \Omega\). The current is \(\frac{20}{5+5}=2\) A, so \(P=I^2R_L=4\cdot5=20\) W. Same as \(\frac{V_{th}^2}{4R_{th}}=\frac{400}{20}\). (80 W forgets that half the voltage drops across \(R_{th}\).)` },
+    { step:"Conjugate", a:2, q:R`\(Z_{th}=6-j8\ \Omega\). Which load \(Z_L\) absorbs the most power?`,
+      o:[R`\(6-j8\ \Omega\)`,R`\(10\ \Omega\)`,R`\(6+j8\ \Omega\)`,R`\(-6+j8\ \Omega\)`],
+      s:R`Conjugate: keep the real part, flip the sign of the imaginary part. \(6+j8\ \Omega\). Then the total is \(12\ \Omega\), purely resistive. (\(10\ \Omega=|Z_{th}|\) is the answer only if the load must be a pure resistor.)` },
+    { step:"Peak vs RMS", a:0, q:R`\(\tilde V_{th}=10\angle0^\circ\) V (peak) and \(Z_{th}=2+j3\ \Omega\). With a conjugate-matched load, what is \(P_{max}\)?`,
+      o:["6.25 W","12.5 W","25 W","8.33 W"],
+      s:R`Matched: the current is \(\frac{10}{2R_{th}}=\frac{10}{4}=2.5\) A peak, and the load resistor absorbs \(\tfrac12(2.5)^2(2)=6.25\) W. Formula: \(\frac{|V|^2}{8R_{th}}=\frac{100}{16}\). 12.5 W is the RMS formula used on a peak value.` },
+    { step:"Exam-style: resistor-only load", a:1, q:R`A source \(50\angle0^\circ\) V (peak) has \(Z_{th}=3+j4\ \Omega\). The load must be a single resistor \(R\). Find \(R\) for maximum power and that power.`,
+      o:[R`\(R=3\ \Omega,\ P\approx104\) W`,R`\(R=5\ \Omega,\ P\approx78.1\) W`,R`\(R=5\ \Omega,\ P\approx156\) W`,R`\(R=7\ \Omega,\ P\approx62.5\) W`,"None of the above"],
+      s:R`Resistor only: \(R=|Z_{th}|=\sqrt{9+16}=5\ \Omega\). Current: \(|I|=\frac{50}{|8+j4|}=\frac{50}{\sqrt{80}}\), so \(|I|^2=31.25\). Power: \(\tfrac12(31.25)(5)\approx78.1\) W. (104 W uses the conjugate formula, which does not apply; 156 W forgets the \(\tfrac12\).)` }
+  ]
+},
+lc: {
+  on: R`F23 Q1 and F25 Q4 combine inductors (watch for elements that carry no current); S24 Q2 combines capacitors after turning off a source; S25 Q1 and F25 Q6 use \(v=L\,di/dt\) and \(i=C\,dv/dt\); F24 P5 and F25 Q5 ask for stored energy.`,
+  learn: R`<p class="idea"><b>The big idea:</b> a capacitor stores energy in an electric field and resists sudden changes in <b>voltage</b>. An inductor stores energy in a magnetic field and resists sudden changes in <b>current</b>.</p>
+<p><b>Laws</b> (\(C\) in farads, \(L\) in henries):</p>
+<ul><li>Capacitor: \(i=C\dfrac{dv}{dt}\). Charge \(Q=Cv\). Energy \(W=\tfrac12Cv^2\).</li>
+<li>Inductor: \(v=L\dfrac{di}{dt}\). Energy \(W=\tfrac12Li^2\).</li></ul>
+<div class="ex"><b>Example:</b> \(v_s=5t+2\) V across a 3 F capacitor. \(\frac{dv}{dt}=5\), so \(i=3\cdot5=15\) A (Fall 2025 Q6). The constant 2 does nothing: only changes in voltage push current.</div>
+<p><b>Combining:</b> inductors combine like resistors: series add, parallel \(\frac{L_1L_2}{L_1+L_2}\). Capacitors are the opposite: parallel add, series \(\frac{C_1C_2}{C_1+C_2}\).</p>
+<div class="ex"><b>Example:</b> 6 H \(\parallel\) 3 H \(=\frac{18}{9}=2\) H. 30 F in series with 20 F \(=\frac{600}{50}=12\) F.</div>
+<p><b>Before combining,</b> turn off independent sources (voltage source becomes a short). Then look for elements that drop out: one shorted at both ends, or one hanging off a node that leads nowhere, carries no current.</p>
+<p><b>Energy from \(Q\):</b> since \(Q=Cv\), \(W=\tfrac12Qv\), handy when the problem gives charge.</p>`,
+  warm: [
+    { step:"The core law", a:2, q:R`The voltage across a 2 F capacitor is \(v(t)=4t^2\) V. What is the current?`,
+      o:[R`\(8t^2\) A`,R`\(8t\) A`,R`\(16t\) A`,R`\(4t\) A`],
+      s:R`\(i=C\frac{dv}{dt}=2\cdot8t=16t\) A.` },
+    { step:"Combining capacitors", a:0, q:R`A 6 µF capacitor is in series with a 3 µF capacitor, and that pair is in parallel with a 4 µF capacitor. Total?`,
+      o:["6 µF","13 µF","2 µF","3.25 µF"],
+      s:R`Series: \(\frac{6\cdot3}{9}=2\) µF. Parallel adds: \(2+4=6\) µF. (13 µF treats capacitors like resistors.)` },
+    { step:"Energy", a:1, q:R`A 5 mH inductor carries 2 A. How much energy does it store?`,
+      o:["20 mJ","10 mJ","5 mJ","2.5 mJ"],
+      s:R`\(W=\tfrac12Li^2=\tfrac12(0.005)(4)=0.01\) J \(=10\) mJ.` },
+    { step:"Exam-style: equivalent inductance", a:1, q:R`From terminal a: a 2 H inductor, then a node N. From N to terminal b: a 4 H inductor and a 12 H inductor in parallel. A 6 H inductor connects N to a fourth node that nothing else touches. Find \(L_{ab}\).`,
+      o:["24 H","5 H","3 H","11 H","None of the above"],
+      s:R`The 6 H leads to a dead end, so it carries no current and drops out (the F23 Q1 trick). \(4\parallel12=\frac{48}{16}=3\) H, plus 2 H in series: \(L_{ab}=5\) H.` }
+  ]
+},
+dcss: {
+  on: R`S25 Q2 finds a voltage with capacitors open; F25 Q5 finds \(I_L\) and \(V_C\) then the stored energy; S24 Q1 combines open/short with superposition; F24 P1 and P9 need the value just before a switch.`,
+  learn: R`<p class="idea"><b>The big idea:</b> when DC sources have been on "for a long time," nothing is changing. With \(\frac{dv}{dt}=0\), a capacitor carries no current, so it acts as an <b>open circuit</b>. With \(\frac{di}{dt}=0\), an inductor has no voltage, so it acts as a <b>short circuit</b>.</p>
+<p><b>Recipe:</b> replace every C with a gap and every L with a wire, then solve the resistor circuit that is left. The capacitor voltage is the voltage across its gap; the inductor current is the current in its wire.</p>
+<div class="ex"><b>Example:</b> 80 V, then 10 Ω, then a 10 H inductor, then 30 Ω to ground, with a capacitor across the 30 Ω (Fall 2025 Q5). Inductor short, capacitor open: \(I_L=\frac{80}{40}=2\) A and \(V_C=2\cdot30=60\) V. Energies: \(W_L=\tfrac12(10)(4)=20\) J, \(W_C=\tfrac12(0.05)(3600)=90\) J.</div>
+<p><b>Why it matters for transients:</b> capacitor voltage and inductor current cannot jump. So \(v_C(0^+)=v_C(0^-)\) and \(i_L(0^+)=i_L(0^-)\), and the "before" values come from this DC analysis.</p>
+<p><b>Careful:</b> a capacitor directly across a voltage source simply has that source's voltage, and an element in series with an open capacitor carries no current.</p>`,
+  warm: [
+    { step:"Capacitor open", a:2, q:R`12 V source, a 2 Ω resistor in series, then a 4 Ω resistor to ground with a capacitor across it. After a long time, what is \(v_C\)?`,
+      o:["12 V","0 V","8 V","4 V"],
+      s:R`Capacitor open: the 2 Ω and 4 Ω form a divider. \(v_C=12\cdot\frac{4}{6}=8\) V.` },
+    { step:"Inductor short", a:0, q:R`10 V source, a 2 Ω resistor in series, then a 3 Ω resistor to ground with an inductor in parallel with it. After a long time, what is \(i_L\)?`,
+      o:["5 A","2 A","3.33 A","0 A"],
+      s:R`The inductor is a wire, which shorts out the 3 Ω (no current goes through the 3 Ω). \(i_L=\frac{10}{2}=5\) A.` },
+    { step:"Energy", a:3, q:R`In the previous circuit the inductor is 0.2 H. How much energy does it store?`,
+      o:["1 J","0.5 J","5 J","2.5 J"],
+      s:R`\(W=\tfrac12Li^2=\tfrac12(0.2)(25)=2.5\) J.` },
+    { step:"Exam-style: energy in both", a:1, q:R`24 V source, then 4 Ω to node A. From A to ground: an 8 Ω resistor; a 0.5 F capacitor (across the 8 Ω); and a 2 H inductor in series with a 4 Ω resistor. DC steady state. Find \(W_L\) and \(W_C\).`,
+      o:[R`\(W_L=9\) J, \(W_C=36\) J`,R`\(W_L=5.76\) J, \(W_C=23.04\) J`,R`\(W_L=0\) J, \(W_C=23.04\) J`,R`\(W_L=5.76\) J, \(W_C=0\) J`,"None of the above"],
+      s:R`Capacitor open, inductor short. From A to ground: \(8\parallel4=\frac83\ \Omega\). Divider: \(V_A=24\cdot\frac{8/3}{4+8/3}=9.6\) V. \(I_L=\frac{9.6}{4}=2.4\) A. \(W_L=\tfrac12(2)(2.4)^2=5.76\) J, \(W_C=\tfrac12(0.5)(9.6)^2=23.04\) J.` }
+  ]
+},
+first: {
+  on: R`The biggest topic: at least two questions on every exam. S25 Q3 and F25 Q7 are switch problems; S25 Q9, F25 Q8 and F24 P8 find \(\tau\) with a dependent source (I-V test); F23 Q8 is a pulse \(u(t)-u(t-5)\); S24 Q4 matches a plot.`,
+  learn: R`<p class="idea"><b>The big idea:</b> in a circuit with one capacitor or one inductor, every voltage and current moves exponentially from where it starts to where it would settle:
+\[x(t)=x(\infty)+\big[x(0)-x(\infty)\big]e^{-t/\tau}\]
+Here \(x(0)\) is the value right after the change, \(x(\infty)\) is the final DC value, and \(\tau\) (tau) is the <b>time constant</b>.</p>
+<p><b>Three things to find:</b></p>
+<ul><li>\(x(0)\): do the DC analysis <i>before</i> the switch (C open, L short). Carry over \(v_C\) or \(i_L\), which cannot jump.</li>
+<li>\(x(\infty)\): do the DC analysis for the circuit <i>after</i> the switch.</li>
+<li>\(\tau=R_{th}C\) or \(\tau=\dfrac{L}{R_{th}}\), where \(R_{th}\) is the resistance the C or L sees with independent sources off.</li></ul>
+<div class="ex"><b>Example:</b> Spring 2025 Q3: \(v_C(0)=14\) V. After the switch the capacitor sees \(V_{th}=10\cdot\frac{20}{25}=8\) V and \(R_{th}=5\parallel20=4\ \Omega\), so \(\tau=4(2.5\text{ mF})=0.01\) s and \(v_C=8+6e^{-100t}\) V.</div>
+<p><b>Dependent sources:</b> you cannot just combine resistors. Use the <b>I-V test</b>: remove the C or L, turn off independent sources only, apply a test voltage \(V\) (or current \(I\)) at its terminals, and solve for the other. \(R_{th}=V/I\).</p>
+<p><b>Step functions:</b> \(u(t)\) is 0 for \(t\lt 0\) and 1 for \(t\gt 0\); \(u(-t)\) is the reverse. A pulse \(u(t)-u(t-5)\) turns on at 0 and off at 5: solve each interval, using the end of one as the start of the next.</p>`,
+  warm: [
+    { step:"Time constant", a:1, q:R`A 0.5 F capacitor sees a 6 Ω and a 3 Ω resistor in parallel (sources off). What is \(\tau\)?`,
+      o:["4.5 s","1 s","0.25 s","2 s"],
+      s:R`\(R_{th}=6\parallel3=2\ \Omega\), \(\tau=R_{th}C=2\cdot0.5=1\) s.` },
+    { step:"RL time constant", a:3, q:R`A 2 H inductor sees \(R_{th}=10\ \Omega\). Which exponential appears in \(i_L(t)\)?`,
+      o:[R`\(e^{-20t}\)`,R`\(e^{-t/5}\)`,R`\(e^{-0.2t}\)`,R`\(e^{-5t}\)`],
+      s:R`\(\tau=\frac{L}{R}=0.2\) s, so \(e^{-t/0.2}=e^{-5t}\). (\(e^{-20t}\) uses \(RL\) instead of \(L/R\).)` },
+    { step:"Put it together", a:0, q:R`\(v(0)=2\) V, \(v(\infty)=10\) V, \(\tau=0.5\) s. What is \(v(t)\) for \(t\gt 0\)?`,
+      o:[R`\(10-8e^{-2t}\) V`,R`\(2+8e^{-2t}\) V`,R`\(10-8e^{-0.5t}\) V`,R`\(10+8e^{-2t}\) V`],
+      s:R`\(v=10+(2-10)e^{-t/0.5}=10-8e^{-2t}\). Check: at \(t=0\) it gives 2, at \(\infty\) it gives 10.` },
+    { step:"Exam-style: dependent source", a:2, q:R`A 0.1 F capacitor (charged to 10 V at \(t=0\)) is connected to two branches in parallel: a 5 Ω resistor, and a branch made of a 2 Ω resistor in series with a dependent voltage source \(3i\), where \(i\) is the branch current flowing down from the capacitor's top. The source's + end is toward the top. Find \(v_C(t)\).`,
+      o:[R`\(10e^{-t/0.7}\) V`,R`\(10e^{-2t}\) V`,R`\(10e^{-4t}\) V`,R`\(10e^{-10t}\) V`,"None of the above"],
+      s:R`I-V test on the dependent branch: the top is \(2i+3i=5i\) above the bottom, so that branch acts like 5 Ω. In parallel with the 5 Ω: \(R_{th}=2.5\ \Omega\). \(\tau=2.5\cdot0.1=0.25\) s. No source, so \(v(\infty)=0\): \(v_C=10e^{-4t}\) V. (\(e^{-t/0.7}\) just adds resistors, ignoring that the source scales with \(i\).)` }
+  ]
+},
+phasor: {
+  on: R`Almost free points if you know the conventions. F23 Q3 asks \(f\) from \(\omega\); F23 Q4 and F24 P3.1 turn a sine into a phasor; F24 P3.2 goes back; E3 F25 Q1 has a negative amplitude and a sine answer.`,
+  learn: R`<p class="idea"><b>The big idea:</b> a sinusoid \(v(t)=V_m\cos(\omega t+\phi)\) is fully described by its amplitude \(V_m\) and phase \(\phi\) (the frequency is the same everywhere in the circuit). The <b>phasor</b> packs those into one complex number: \(\tilde V=V_m\angle\phi\).</p>
+<ul><li>\(V_m\): amplitude (peak value). \(\phi\): phase angle in degrees.</li>
+<li>\(\omega\): angular frequency in rad/s. \(f=\frac{\omega}{2\pi}\) in Hz. Period \(T=\frac1f\).</li></ul>
+<p><b>This course references phasors to cosine.</b> Convert sines first: \(\sin x=\cos(x-90^\circ)\), equivalently \(\cos x=\sin(x+90^\circ)\).</p>
+<div class="ex"><b>Example:</b> \(15\sin(100\pi t+30^\circ)=15\cos(100\pi t-60^\circ)\to15\angle-60^\circ\) (Fall 2023 Q4).</div>
+<p><b>Negative amplitude:</b> a minus sign is a 180° shift: \(-2\cos(\omega t-30^\circ)=2\cos(\omega t+150^\circ)\to2\angle150^\circ\).</p>
+<p><b>Rectangular and polar:</b> \(a+jb=r\angle\theta\) with \(r=\sqrt{a^2+b^2}\) and \(\theta=\tan^{-1}(b/a)\), adding 180° when \(a\lt 0\) (the calculator's \(\tan^{-1}\) only covers the right half). Back: \(a=r\cos\theta,\ b=r\sin\theta\).</p>
+<p><b>Arithmetic:</b> add in rectangular form. Multiply/divide in polar: multiply magnitudes and add angles (divide and subtract).</p>`,
+  warm: [
+    { step:"Frequency", a:2, q:R`\(x(t)=7\cos(120\pi t+10^\circ)\). What is the frequency \(f\)?`,
+      o:[R`\(120\pi\) Hz`,"120 Hz","60 Hz",R`\(60\pi\) Hz`],
+      s:R`\(f=\frac{\omega}{2\pi}=\frac{120\pi}{2\pi}=60\) Hz. (\(120\pi\) is \(\omega\) in rad/s, not Hz.)` },
+    { step:"Sine to phasor", a:1, q:R`Phasor for \(8\sin(50t+20^\circ)\)?`,
+      o:[R`\(8\angle20^\circ\)`,R`\(8\angle-70^\circ\)`,R`\(8\angle110^\circ\)`,R`\(50\angle20^\circ\)`],
+      s:R`\(\sin x=\cos(x-90^\circ)\): \(8\cos(50t-70^\circ)\to8\angle-70^\circ\).` },
+    { step:"Rectangular to polar", a:0, q:R`Write \(-3+j4\) in polar form.`,
+      o:[R`\(5\angle126.9^\circ\)`,R`\(5\angle-53.1^\circ\)`,R`\(5\angle53.1^\circ\)`,R`\(7\angle126.9^\circ\)`],
+      s:R`\(r=\sqrt{9+16}=5\). The calculator gives \(\tan^{-1}(4/-3)=-53.1^\circ\), but the point is in the second quadrant (\(a\lt 0\)), so add 180°: \(126.9^\circ\).` },
+    { step:"Exam-style: both conventions", a:3, q:R`Which expression equals the phasor \(3\angle-20^\circ\)?`,
+      o:[R`\(3\sin(\omega t-20^\circ)\)`,R`\(3\sin(\omega t-110^\circ)\)`,R`\(-3\cos(\omega t+20^\circ)\)`,R`\(3\sin(\omega t+70^\circ)\)`,"None of the above"],
+      s:R`\(3\angle-20^\circ\) means \(3\cos(\omega t-20^\circ)\). With \(\cos x=\sin(x+90^\circ)\): \(3\sin(\omega t+70^\circ)\). (\(-3\cos(\omega t+20^\circ)=3\cos(\omega t-160^\circ)\), not the same.)` }
+  ]
+},
+imp: {
+  on: R`The largest topic by count. Series/parallel impedance (F23 Q7, S24 Q6, S25 Q5, E3 Q2), identify an element from \(v\) and \(i\) (S24 Q5), mesh and nodal with phasors (S25 Q6, Q7, Q10), superposition with DC + AC (F24 P6), and AC Thévenin (F24 P10, E3 Q9).`,
+  learn: R`<p class="idea"><b>The big idea:</b> once every sinusoid is a phasor, each element obeys an "AC Ohm's law" \(\tilde V=Z\tilde I\). The <b>impedance</b> \(Z\) is a complex resistance, so every DC method (KVL, KCL, nodal, mesh, superposition, Thévenin, source transformation) works unchanged, just with complex numbers.</p>
+<ul><li>Resistor: \(Z_R=R\).</li>
+<li>Inductor: \(Z_L=j\omega L\) (positive imaginary).</li>
+<li>Capacitor: \(Z_C=\dfrac{1}{j\omega C}=-\dfrac{j}{\omega C}\) (negative imaginary).</li></ul>
+<div class="ex"><b>Example:</b> \(\omega=100\) rad/s, \(L=0.1\) H, \(C=1\) mF: \(Z_L=j10\), \(Z_C=\frac{1}{j(100)(0.001)}=-j10\). In series they cancel (Fall 2024 P7).</div>
+<p><b>Combining:</b> series impedances add. For parallel, add <b>admittances</b> \(Y=1/Z\) (\(Y_R=1/R\), \(Y_L=\frac{1}{j\omega L}\), \(Y_C=j\omega C\)) and then <b>flip back</b>: \(Z=1/Y\). Forgetting to flip back is a classic trap.</p>
+<p><b>Dividing complex numbers:</b> multiply top and bottom by the conjugate of the bottom, e.g. \(\frac{1}{1-j}=\frac{1+j}{2}\).</p>
+<p><b>Which element?</b> \(Z=\tilde V/\tilde I\). Positive imaginary: inductor (\(\omega L=X\)). Negative: capacitor (\(\frac1{\omega C}=|X|\)). Real: resistor.</p>
+<p><b>Different frequencies</b> (including DC, \(\omega=0\)): use superposition. Solve each frequency in its own phasor circuit (at DC, C open and L short), convert each back to time, then add. Never add phasors of different frequencies.</p>`,
+  warm: [
+    { step:"Element impedances", a:1, q:R`At \(\omega=100\) rad/s: a 5 Ω resistor, a 50 mH inductor and a 1 mF capacitor in series. \(Z\)?`,
+      o:[R`\(5+j15\ \Omega\)`,R`\(5-j5\ \Omega\)`,R`\(5+j5\ \Omega\)`,R`\(5-j15\ \Omega\)`],
+      s:R`\(Z_L=j(100)(0.05)=j5\), \(Z_C=\frac{1}{j(100)(0.001)}=-j10\). Sum: \(5+j5-j10=5-j5\ \Omega\).` },
+    { step:"Parallel", a:2, q:R`\(10\ \Omega\) in parallel with \(-j10\ \Omega\). Equivalent impedance?`,
+      o:[R`\(10-j10\ \Omega\)`,R`\(0.1+j0.1\ \Omega\)`,R`\(5-j5\ \Omega\)`,R`\(5+j5\ \Omega\)`],
+      s:R`\(Z=\frac{10(-j10)}{10-j10}=\frac{-j10}{1-j}=\frac{-j10(1+j)}{2}=5-j5\ \Omega\). (\(0.1+j0.1\) is the admittance, not flipped back.)` },
+    { step:"Identify the element", a:0, q:R`\(v=20\cos(10t+30^\circ)\) V and \(i=4\cos(10t-60^\circ)\) A for one element. What is it?`,
+      o:["0.5 H inductor","5 Ω resistor","0.02 F capacitor","2 H inductor"],
+      s:R`\(Z=\frac{20\angle30^\circ}{4\angle-60^\circ}=5\angle90^\circ=j5\). Positive imaginary: inductor, \(\omega L=5\Rightarrow L=0.5\) H.` },
+    { step:"Exam-style: divider", a:3, q:R`\(\tilde V_s=10\angle0^\circ\) V drives a 4 Ω resistor in series with a capacitor of impedance \(-j4\ \Omega\). Find the capacitor voltage.`,
+      o:[R`\(5\angle0^\circ\) V`,R`\(7.07\angle45^\circ\) V`,R`\(10\angle-90^\circ\) V`,R`\(7.07\angle-45^\circ\) V`,"None of the above"],
+      s:R`Divider: \(\tilde V_C=10\cdot\frac{-j4}{4-j4}=10\cdot\frac{-j}{1-j}=10\cdot\frac{-j(1+j)}{2}=5-5j=7.07\angle-45^\circ\) V.` }
+  ]
+},
+power: {
+  on: R`F23 Q5 and Q6 compute average power in a resistor (peak vs RMS); S24 Q7 and E3 Q3 take the RMS of a piecewise waveform; E3 Q6 checks that an inductor absorbs 0 W; E3 Q10 asks the power from a source.`,
+  learn: R`<p class="idea"><b>The big idea:</b> with sinusoids the instantaneous power swings back and forth. What matters is the <b>average power</b> \(P\) (in W). Only resistance absorbs it; ideal inductors and capacitors absorb exactly 0 W on average (they store energy and give it back).</p>
+<p><b>With peak values</b> (\(V_m, I_m\) amplitudes, \(\theta_v,\theta_i\) their phases):
+\[P=\tfrac12V_mI_m\cos(\theta_v-\theta_i),\qquad P_R=\tfrac12I_m^2R=\frac{V_m^2}{2R}.\]</p>
+<p><b>RMS</b> ("root mean square", the effective value) is \(X_{rms}=\sqrt{\frac1T\int_0^Tx^2\,dt}\). For a sinusoid, \(X_{rms}=X_m/\sqrt2\). With RMS values the \(\tfrac12\) disappears: \(P=V_{rms}I_{rms}\cos(\theta_v-\theta_i)\), \(P_R=V_{rms}^2/R\).</p>
+<div class="ex"><b>Example:</b> \(V_{rms}=4\) V across \(2+j2\ \Omega\). \(|I_{rms}|=\frac{4}{2\sqrt2}=\sqrt2\) A, \(P=|I_{rms}|^2R=2\cdot2=4\) W (Fall 2023 Q6).</div>
+<p><b>RMS of a piecewise waveform:</b> square each level, weight by how long it lasts in one period, average, take the root.</p>
+<div class="ex"><b>Example:</b> 4 A for 2 s, 0 for 1 s, \(-1\) A for 1 s, 0 for 1 s (period 5 s): \(I_{rms}=\sqrt{\frac{16\cdot2+1\cdot1}{5}}=\sqrt{33/5}\) A (Fall 2025 Exam 3 Q3).</div>
+<p><b>Complex power</b> \(S=\tilde V_{rms}\tilde I_{rms}^*=P+jQ\): \(P\) is average power, \(Q\) is reactive power (VAR), \(|S|\) apparent power (VA), and the power factor is \(\cos(\theta_v-\theta_i)\).</p>`,
+  warm: [
+    { step:"Peak values", a:1, q:R`\(v(t)=10\cos(\omega t)\) V across a 5 Ω resistor. Average power?`,
+      o:["20 W","10 W","14.1 W","50 W"],
+      s:R`\(P=\frac{V_m^2}{2R}=\frac{100}{10}=10\) W. (20 W forgets the \(\tfrac12\) for peak values.)` },
+    { step:"Phase angle", a:2, q:R`An element has \(\tilde V=10\angle30^\circ\) V and \(\tilde I=2\angle-30^\circ\) A (peak). Average power absorbed?`,
+      o:["20 W","10 W","5 W","8.66 W"],
+      s:R`\(P=\tfrac12(10)(2)\cos(30^\circ-(-30^\circ))=10\cos60^\circ=5\) W.` },
+    { step:"RMS of a waveform", a:0, q:R`A voltage repeats every 4 s: 3 V for 1 s, \(-3\) V for 1 s, 0 V for 2 s. \(V_{rms}\)?`,
+      o:[R`\(3/\sqrt2\approx2.12\) V`,"0 V","1.5 V","3 V"],
+      s:R`\(V_{rms}=\sqrt{\frac{9\cdot1+9\cdot1+0}{4}}=\sqrt{4.5}=2.12\) V. The average is 0, but RMS squares first, so signs do not cancel.` },
+    { step:"Exam-style: who absorbs power", a:3, q:R`A source with \(V_{rms}=10\) V drives \(Z_1=j4\ \Omega\) in series with \(Z_2=3\ \Omega\). Average power absorbed by \(Z_1\) and \(Z_2\)?`,
+      o:["16 W, 12 W","0 W, 20 W","12 W, 0 W","0 W, 12 W","None of the above"],
+      s:R`\(|I_{rms}|=\frac{10}{|3+j4|}=2\) A. The inductor absorbs 0 W; the resistor absorbs \(2^2\cdot3=12\) W.` }
+  ]
+},
+resonance: {
+  on: R`F23 Q9 sketches \(|Z|\) of a parallel RLC; E3 F25 Q7 asks where a series RLC draws maximum current; E3 Q8 writes \(|Z(\omega)|\), finds its minimum and the maximum power; E3 Q10(iii) picks an L for maximum power.`,
+  learn: R`<p class="idea"><b>The big idea:</b> an inductor's reactance \(\omega L\) grows with frequency and a capacitor's \(\frac1{\omega C}\) shrinks. At one frequency they are equal and cancel. That is <b>resonance</b>:
+\[\omega_0=\frac1{\sqrt{LC}}\ \text{rad/s},\qquad f_0=\frac{\omega_0}{2\pi}\ \text{Hz}.\]</p>
+<p><b>Series RLC:</b> \(Z=R+j\left(\omega L-\frac1{\omega C}\right)\), \(|Z|=\sqrt{R^2+\left(\omega L-\frac1{\omega C}\right)^2}\). At \(\omega_0\) the bracket is 0, so \(|Z|=R\) is the <b>minimum</b> and the current \(V/R\) is the <b>maximum</b>. \(|Z|\to\infty\) at both \(\omega\to0\) (capacitor open) and \(\omega\to\infty\) (inductor open).</p>
+<div class="ex"><b>Example:</b> \(L=12\) mH, \(C=3\) mF: \(\omega_0=\frac1{\sqrt{36\times10^{-6}}}=166.7\) rad/s, \(f_0=26.53\) Hz, where the current peaks (Fall 2025 Exam 3 Q7).</div>
+<p><b>Parallel RLC:</b> add admittances, \(Y=\frac1R+j\left(\omega C-\frac1{\omega L}\right)\). At \(\omega_0\) the imaginary part is 0 and \(|Z|=R\) is the <b>maximum</b>; \(|Z|\to0\) at both ends (L shorts at low \(\omega\), C shorts at high \(\omega\)). The source current is smallest at \(\omega_0\).</p>
+<p><b>Frequency response:</b> the same idea for any ratio like \(\tilde V_{out}/\tilde V_{in}\): write it as a function of \(\omega\), check \(\omega\to0\), \(\omega\to\infty\) and \(\omega_0\), and sketch between them.</p>`,
+  warm: [
+    { step:"Resonant frequency", a:2, q:R`\(L=10\) mH and \(C=100\ \mu\)F. What is \(\omega_0\)?`,
+      o:["100 rad/s","159 rad/s","1000 rad/s","10 rad/s"],
+      s:R`\(LC=0.01\cdot10^{-4}=10^{-6}\), so \(\omega_0=\frac{1}{10^{-3}}=1000\) rad/s (\(f_0=159\) Hz).` },
+    { step:"Series at resonance", a:0, q:R`A series RLC with \(R=4\ \Omega\) is driven at its resonant frequency by a 12 V (peak) source. Current amplitude?`,
+      o:["3 A","0 A","12 A","Depends on L and C"],
+      s:R`At \(\omega_0\) the L and C cancel, \(Z=R=4\ \Omega\): \(I=12/4=3\) A, the largest it gets at any frequency.` },
+    { step:"Parallel behaviour", a:1, q:R`A parallel RLC (\(R=10\ \Omega\)) is driven by a sinusoidal source. Which is true?`,
+      o:[R`\(|Z|\) is smallest at \(\omega_0\)`,R`\(|Z|=10\ \Omega\) is the largest it gets, at \(\omega_0\)`,R`\(|Z|\to\infty\) as \(\omega\to0\)`,R`\(|Z|\) does not depend on \(\omega\)`],
+      s:R`Parallel: \(Y=\frac1R+j(\omega C-\frac1{\omega L})\) is smallest at \(\omega_0\), so \(|Z|=R\) is the peak. At \(\omega\to0\) the inductor shorts everything, so \(|Z|\to0\).` },
+    { step:"Exam-style: where is the peak", a:2, q:R`A series circuit: 5 Ω, \(L=20\) mH, \(C=2\) mF, driven by a variable-frequency source. Which holds?`,
+      o:["Min current at 25.16 Hz","Max impedance at 25.16 Hz","Max current at 25.16 Hz","Max current at 158.1 Hz","None of the above"],
+      s:R`\(\omega_0=\frac1{\sqrt{(0.02)(0.002)}}=\frac1{\sqrt{4\times10^{-5}}}=158.1\) rad/s, \(f_0=\frac{158.1}{2\pi}=25.16\) Hz. Series: minimum impedance, maximum current there. (158.1 is in rad/s, not Hz.)` }
+  ]
+}
+};
+
+const SHEET = {
+  maxpower: { f:[R`DC: \(R_L=R_{th}\), \(P_{max}=\dfrac{V_{th}^2}{4R_{th}}\)`,
+    R`AC: \(Z_L=Z_{th}^*=R_{th}-jX_{th}\)`,
+    R`\(P_{max}=\dfrac{|V_{th}|^2}{8R_{th}}\) (peak) \(=\dfrac{|V_{th,rms}|^2}{4R_{th}}\)`,
+    R`Load must be a resistor: \(R_L=|Z_{th}|\), then \(P=\tfrac12|I|^2R_L\)`,
+    R`\(+jX\): inductor \(L=X/\omega\); \(-jX\): capacitor \(C=\frac{1}{\omega X}\)`,
+    R`Load fixed, source side free: source \(R=0\), cancel the load's reactance`],
+    trap:"Using the conjugate when the load must be a pure resistor, and mixing the peak (8R) and RMS (4R) formulas." },
+  lc: { f:[R`\(i=C\frac{dv}{dt}\), \(Q=Cv\), \(W_C=\tfrac12Cv^2=\tfrac12Qv\)`,
+    R`\(v=L\frac{di}{dt}\), \(W_L=\tfrac12Li^2\)`,
+    R`L: series add, parallel \(\frac{L_1L_2}{L_1+L_2}\)`,
+    R`C: parallel add, series \(\frac{C_1C_2}{C_1+C_2}\)`,
+    R`\(v_C\) and \(i_L\) cannot jump`],
+    trap:"Combining capacitors like resistors, and keeping elements that lead to a dead end or are shorted out." },
+  dcss: { f:[R`DC steady state: C is an open circuit, L is a short circuit`,
+    R`\(v_C(0^+)=v_C(0^-)\), \(i_L(0^+)=i_L(0^-)\)`,
+    R`Then solve the resistor circuit (dividers, nodal, superposition)`],
+    trap:"Letting current flow through a capacitor at DC, or leaving a resistor in parallel with an inductor that shorts it." },
+  first: { f:[R`\(x(t)=x(\infty)+[x(0)-x(\infty)]e^{-t/\tau}\)`,
+    R`\(\tau=R_{th}C\) or \(\tau=L/R_{th}\)`,
+    R`\(R_{th}\): independent sources off (V short, I open), dependent sources stay; use a test source`,
+    R`Delayed start: replace \(t\) by \(t-t_0\)`,
+    R`\(u(t)\): 0 before, 1 after; \(u(-t)\): 1 before, 0 after`],
+    trap:"Using RL instead of L/R, combining resistors around a dependent source, and forgetting the value carried over from the previous interval." },
+  phasor: { f:[R`\(V_m\cos(\omega t+\phi)\leftrightarrow V_m\angle\phi\)`,
+    R`\(\sin x=\cos(x-90^\circ)\); \(-\cos x=\cos(x\pm180^\circ)\)`,
+    R`\(\omega=2\pi f\), \(T=1/f\)`,
+    R`\(a+jb=\sqrt{a^2+b^2}\angle\tan^{-1}\frac ba\) (+180° if \(a\lt 0\))`,
+    R`Multiply: magnitudes multiply, angles add`],
+    trap:"Reading a sine's phase as if it were a cosine, and reporting \(\omega\) (rad/s) as \(f\) (Hz)." },
+  imp: { f:[R`\(Z_R=R\), \(Z_L=j\omega L\), \(Z_C=\frac{1}{j\omega C}=-\frac{j}{\omega C}\)`,
+    R`Series: add \(Z\). Parallel: add \(Y=1/Z\), then flip back`,
+    R`\(\frac{1}{a+jb}=\frac{a-jb}{a^2+b^2}\)`,
+    R`\(Z=\tilde V/\tilde I\): \(+j\) inductor, \(-j\) capacitor`,
+    R`Mixed frequencies: superposition, add in the time domain`],
+    trap:"Forgetting to flip the admittance back to impedance, and adding phasors of different frequencies." },
+  power: { f:[R`\(P=\tfrac12V_mI_m\cos(\theta_v-\theta_i)=V_{rms}I_{rms}\cos(\theta_v-\theta_i)\)`,
+    R`Resistor: \(P=\tfrac12I_m^2R=\frac{V_m^2}{2R}=\frac{V_{rms}^2}{R}\)`,
+    R`Sinusoid: \(X_{rms}=X_m/\sqrt2\); waveform: \(\sqrt{\frac1T\int x^2dt}\)`,
+    R`L and C: 0 W average`,
+    R`\(S=\tilde V_{rms}\tilde I_{rms}^*=P+jQ\), pf \(=\cos(\theta_v-\theta_i)\)`],
+    trap:"Using \(\frac{V^2}{R}\) with a peak value (or adding the \(\tfrac12\) to RMS), and averaging a waveform instead of squaring it first." },
+  resonance: { f:[R`\(\omega_0=\frac1{\sqrt{LC}}\), \(f_0=\frac{\omega_0}{2\pi}\)`,
+    R`Series: \(|Z|=\sqrt{R^2+(\omega L-\frac1{\omega C})^2}\), min \(=R\) at \(\omega_0\), max current`,
+    R`Parallel: \(Y=\frac1R+j(\omega C-\frac1{\omega L})\), \(|Z|\) max \(=R\) at \(\omega_0\)`,
+    R`Check \(\omega\to0\) (C open, L short) and \(\omega\to\infty\) (L open, C short)`],
+    trap:"Reporting \(\omega_0\) in rad/s as Hz, and mixing up which circuit (series or parallel) has the impedance minimum." }
+};
+</script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const LET="ABCDEFGHIJ";
+let Q=[],TOPICS={},order=[],shown=0;
+const PAGE=25;
+const KEY="ece20001e2";
+let prog={};try{prog=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(prog))}catch(e){}};
+let warm={};try{warm=JSON.parse(localStorage.getItem(KEY+"w")||"{}")||{}}catch(e){}
+const saveWarm=()=>{try{localStorage.setItem(KEY+"w",JSON.stringify(warm))}catch(e){}};
+
+/* math: only typeset elements that are on screen (hidden ones give NaN-sized SVGs) */
+const pending=new Set();
+function flushMath(){
+  if(!(window.MathJax&&MathJax.typesetPromise))return;
+  const vis=[...pending].filter(e=>e.isConnected&&e.getClientRects().length);
+  if(!vis.length)return;vis.forEach(e=>pending.delete(e));
+  MathJax.typesetPromise(vis).catch(()=>{});
+}
+function typeset(el){pending.add(el);queueMicrotask(flushMath)}
+$("#mjx").addEventListener("load",()=>{const go=()=>{if(MathJax.typesetPromise)flushMath();else setTimeout(go,60)};go()});
+
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const isPast=q=>q.set==="past_exam";
+const label=q=>q.set==="cop"?`COP ${q.number}`:q.set==="homework"?`${q.source.slice(0,5)} · Q${q.number}`:
+  q.set==="boilerexams"?`Boilerexams S23 · Q${q.id.split("-Q")[1]}`:`${q.source.replace(" (Version A)","")} · Q${q.id.split("-Q")[1]}`;
+const provCls=p=>p.startsWith("Official")||p.startsWith("Confirmed")?"off":p.startsWith("Worked")||p.startsWith("Boiler")?"warn":"";
+const nOpts=q=>q.opts?q.opts.length:q.nopt||0;
+const optLab=(q,i)=>q.set==="cop"?String(i+1):LET[i];
+const linkify=s=>esc(s).replace(/(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener">video solution</a>');
+
+/* ---------- question card ---------- */
+function solHTML(q){
+  return `<span class="k">Answer: ${q.key}</span><span class="prov ${provCls(q.prov)}">${q.prov}</span>`+
+    (q.flag?`<div class="flag">${q.flag}</div>`:"")+(q.sol||"")+(q.notes?`<p class="vcap">${linkify(q.notes)}</p>`:"");
+}
+function card(q,mode){
+  const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
+  const mc=q.answer.kind==="mc", n=nOpts(q), multi=mc&&q.ans.length>1;
+  const figs=f=>(f||[]).map(src=>`<img class="xfig" loading="lazy" src="figs/${src}" alt="Figure for ${esc(label(q))}">`).join("");
+  el.innerHTML=`<div class="meta"><span>${esc(q.label||label(q))}</span>${(q.topics||[]).map(t=>`<button class="chip" data-topic="${t}" title="Drill this topic">${SHORT[t]}</button>`).join("")}</div>
+    <div class="stem">${q.ctx?`<div class="ctx">${q.ctx}${figs(q.ctxfigs)}</div>`:""}${isPast(q)?figs(q.figs):""}${q.stem&&q.set!=="cop"?`<p>${q.stem}</p>`:""}${isPast(q)?"":figs(q.figs)}${multi?`<p class="vcap">Pick ${q.ans.length} answers.</p>`:""}</div>
+    ${mc?`<div class="opts">${Array.from({length:n},(_,i)=>`<button class="opt" data-i="${i}"><span class="L">${optLab(q,i)}</span><span>${q.opts?q.opts[i]:""}</span></button>`).join("")}</div>`:""}
+    <div class="foot"><span class="verdict"></span><button class="linkbtn sh">${mc?"Show solution":"Show answer"}</button></div>
+    ${mc?"":`<div class="self" hidden><button class="btn ghost" data-s="got">Got it</button><button class="btn ghost" data-s="part">Partly</button><button class="btn ghost" data-s="miss">Missed it</button></div>`}
+    <div class="sol" hidden>${solHTML(q)}</div>`;
+  const opts=[...el.querySelectorAll(".opt")],sol=el.querySelector(".sol"),sh=el.querySelector(".sh"),v=el.querySelector(".verdict"),self=el.querySelector(".self");
+  const right=q.ans||[];
+  const showSol=()=>{sol.hidden=false;sh.textContent="Hide solution";flushMath()};
+  sh.onclick=()=>{sol.hidden=!sol.hidden;sh.textContent=sol.hidden?(mc?"Show solution":"Show answer"):"Hide solution";if(self&&!sol.hidden)self.hidden=false;flushMath()};
+  function reveal(picks){
+    opts.forEach((b,i)=>{b.disabled=true;b.classList.remove("sel");if(right.includes(i))b.classList.add("right");else if(picks&&picks.includes(i))b.classList.add("wrong")});
+    const ok=!!picks&&picks.length===right.length&&picks.every(i=>right.includes(i));
+    el.classList.add(ok?"ok":"no");v.className="verdict "+(ok?"ok":"no");
+    const corr=right.map(i=>optLab(q,i)).join(" and ");
+    v.textContent=!picks?"Not answered · correct: "+corr:ok?"Correct":"Incorrect · correct: "+corr;
+    return ok;
+  }
+  function selfMark(s){
+    self.querySelectorAll(".btn").forEach(b=>b.classList.toggle("on",b.dataset.s===s));
+    el.classList.remove("ok","no");el.classList.add(s==="got"?"ok":"no");
+  }
+  el.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{if(mode==="mock")return;setFilters({set:"all",src:"all",topic:c.dataset.topic});showTab("practice");window.scrollTo({top:0})});
+  if(mode==="practice"){
+    const p=prog[q.id];
+    if(mc){
+      if(p)reveal(p.pick);
+      let picks=[];
+      opts.forEach((b,i)=>b.onclick=()=>{
+        if(picks.includes(i))return;picks.push(i);b.classList.add("sel");
+        if(picks.length<right.length)return;
+        const ok=reveal(picks);prog[q.id]={pick:picks,ok};save();renderStats();renderBars();if(!ok)showSol();
+      });
+    }else{
+      if(p){self.hidden=false;selfMark(p.s)}
+      self.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{prog[q.id]={s:b.dataset.s,ok:b.dataset.s==="got"};save();selfMark(b.dataset.s);renderStats();renderBars()});
+    }
+  }else if(mode==="warm"){
+    el.querySelectorAll(".chip").forEach(c=>c.hidden=true);
+    if(warm[q.id]!=null)reveal([warm[q.id]]);
+    opts.forEach((b,i)=>b.onclick=()=>{warm[q.id]=i;saveWarm();if(!reveal([i]))showSol();renderLessonProg()});
+  }else if(mode==="mock"){
+    sh.hidden=true;el.querySelectorAll(".chip").forEach(c=>c.hidden=true);
+    if(mc){
+      const sel=()=>opts.forEach((o,i)=>o.classList.toggle("sel",(mockState.ans[q.id]||[]).includes(i)));
+      opts.forEach((b,i)=>b.onclick=()=>{let a=mockState.ans[q.id]||[];a=a.includes(i)?a.filter(x=>x!==i):right.length>1?[...a,i].slice(-right.length):[i];mockState.ans[q.id]=a;sel();updateMockCount()});
+      sel();
+    }else{v.textContent="Work it on paper. You grade it against the key after you submit."}
+  }else if(mode==="review"){
+    if(mc)reveal(mockState.ans[q.id]);
+    else{self.hidden=false;showSol();if(mockState.self[q.id])selfMark(mockState.self[q.id]);
+      self.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{mockState.self[q.id]=b.dataset.s;selfMark(b.dataset.s);mockScore()})}
+  }
+  typeset(el.querySelector(".stem"));if(mc)typeset(el.querySelector(".opts"));typeset(sol);
+  return el;
+}
+
+/* ---------- practice ---------- */
+function setFilters(f){if(f.set)$("#fSet").value=f.set;if(f.src)$("#fSrc").value=f.src;if(f.topic)$("#fTopic").value=f.topic;$("#fOpen").checked=false;renderPractice()}
+function filtered(){
+  const st=$("#fSet").value,src=$("#fSrc").value,tp=$("#fTopic").value,open=$("#fOpen").checked,h4=$("#fCh4").checked;
+  return order.filter(q=>(st==="all"||q.set===st)&&(src==="all"||q.source===src)&&(tp==="all"||q.topics.includes(tp))&&(!open||!prog[q.id])&&(!h4||q.scope!=="ch4-review"));
+}
+function renderPractice(){
+  const list=filtered(),box=$("#qlist");box.innerHTML="";shown=0;
+  const done=list.filter(q=>prog[q.id]).length;
+  $("#count").textContent=`${list.length} question${list.length===1?"":"s"} · ${done} answered`;
+  if(!list.length){box.innerHTML=`<p class="sub">Nothing here. Clear a filter or reset your progress.</p>`;$("#more").hidden=true;return}
+  more(list);
+}
+function more(list){
+  list=list||filtered();
+  list.slice(shown,shown+PAGE).forEach(q=>$("#qlist").appendChild(card(q,"practice")));
+  shown+=PAGE;$("#more").hidden=shown>=list.length;
+  $("#more").textContent=`Show more (${list.length-shown} left)`;flushMath();
+}
+function fillSelects(){
+  $("#fSet").innerHTML=`<option value="all">All sets</option>`+Object.entries(SETS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+  const srcs=[...new Set(Q.filter(isPast).map(q=>q.source)),...new Set(Q.filter(q=>!isPast(q)).map(q=>q.source))];
+  $("#fSrc").innerHTML=`<option value="all">All sources</option>`+srcs.map(s=>`<option value="${esc(s)}">${esc(s.replace(" (Version A)",""))}</option>`).join("");
+  $("#fTopic").innerHTML=`<option value="all">All topics</option>`+Object.keys(SHORT).map(k=>`<option value="${k}">${SHORT[k]}</option>`).join("");
+}
+["#fSet","#fSrc","#fTopic","#fOpen","#fCh4"].forEach(s=>$(s).addEventListener("change",renderPractice));
+$("#more").onclick=()=>more();
+$("#shuffle").onclick=()=>{order=Q.slice().sort(()=>Math.random()-.5);renderPractice()};
+(function(b){let t=null;b.onclick=()=>{
+  if(!t){b.textContent="Click again to erase";t=setTimeout(()=>{t=null;b.textContent="Reset all progress"},3000);return}
+  clearTimeout(t);t=null;b.textContent="Reset all progress";prog={};save();renderStats();renderPractice();renderBars()}})($("#reset"));
+
+function renderStats(){
+  const done=Object.keys(prog).length,right=Object.values(prog).filter(p=>p.ok).length;
+  $("#stats").innerHTML=`<span><b>${Q.length}</b> questions</span><span><b>${Q.filter(isPast).length}</b> from past exams</span><span><b>8</b> topics</span><span>you: <b>${done}</b> answered · <b>${done?Math.round(100*right/done):0}%</b> correct</span>`;
+}
+
+/* ---------- topics ---------- */
+function renderBars(){
+  const rows=Object.keys(LEARN).map(k=>{const qs=Q.filter(q=>q.topics.includes(k)),past=qs.filter(isPast),d=qs.filter(q=>prog[q.id]);
+    return{k,n:past.length,done:d.length,right:d.filter(q=>prog[q.id].ok).length}}).sort((a,b)=>b.n-a.n);
+  const max=Math.max(...rows.map(r=>r.n));
+  $("#bars").innerHTML=rows.map(r=>{const pct=r.done?Math.round(100*r.right/r.done):null;
+    return `<button class="lab" data-k="${r.k}">${SHORT[r.k]}</button><div class="track"><div class="fill" style="width:${100*r.n/max}%"></div>${pct!=null?`<div class="acc" style="width:${pct}%"></div>`:""}</div><span class="num">${r.n} q${pct!=null?` · ${pct}%`:""}</span>`}).join("");
+  $("#bars").querySelectorAll(".lab").forEach(b=>b.onclick=()=>{setFilters({set:"all",src:"all",topic:b.dataset.k});showTab("practice");window.scrollTo({top:0})});
+}
+function renderSheet(){
+  const el=$("#sheet");
+  el.innerHTML=Object.entries(SHEET).map(([k,s])=>`<div class="card"><h3>${SHORT[k]}<span>${Q.filter(q=>isPast(q)&&q.topics.includes(k)).length} past q</span></h3><ul class="fs">${s.f.map(f=>`<li>${f}</li>`).join("")}</ul><div class="trap"><b>Trap</b>${s.trap}</div></div>`).join("");
+  typeset(el);
+}
+
+/* ---------- start here ---------- */
+function renderLessons(){
+  const box=$("#lessons");
+  Object.keys(LEARN).forEach((k,ti)=>{
+    const L=LEARN[k],n=Q.filter(q=>isPast(q)&&q.topics.includes(k)).length;
+    L.warm.forEach((w,i)=>Object.assign(w,{id:`W-${k}-${i}`,topics:[k],label:`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`,
+      answer:{kind:"mc"},opts:w.o,ans:[w.a],key:`${LET[w.a]}. ${w.o[w.a]}`,prov:"Practice warm-up written for this lab",sol:`<p>${w.s}</p>`,set:"warm"}));
+    const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${SHORT[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>On the exam</h4><div class="refresh"><p>${L.on}</p></div><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Warm-ups</h4><div class="qlist"></div>
+      <div class="lfoot"><button class="btn primary next">Now try the ${n} past exam question${n===1?"":"s"} →</button><button class="btn ghost wreset">Reset these warm-ups</button></div></div>`;
+    const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach(w=>ql.appendChild(card(w,"warm")))};fill();
+    d.querySelector(".wreset").onclick=()=>{L.warm.forEach(w=>delete warm[w.id]);saveWarm();fill();renderLessonProg();flushMath()};
+    d.querySelectorAll(".refresh").forEach(typeset);
+    d.addEventListener("toggle",flushMath);
+    d.querySelector(".next").onclick=()=>{setFilters({set:"past_exam",src:"all",topic:k});showTab("practice");window.scrollTo({top:0})};
+    box.appendChild(d);
+  });
+  renderLessonProg();
+}
+function renderLessonProg(){
+  let tot=0,done=0,topics=0;
+  document.querySelectorAll(".lesson").forEach(d=>{
+    const w=LEARN[d.dataset.k].warm,n=w.filter(x=>warm[x.id]!=null).length,full=n===w.length;
+    tot+=w.length;done+=n;topics+=full;
+    d.querySelectorAll(".dots i").forEach((el,i)=>{const p=warm[w[i].id];el.className=p==null?"":p===w[i].a?"ok":"no"});
+    d.classList.toggle("done",full);d.querySelector(".n").textContent=full?"✓":d.dataset.n;
+  });
+  $("#meter").innerHTML=`<div class="mbar"><i style="width:${100*done/tot}%"></i></div><span><b>${done}</b>/${tot} warm-ups · <b>${topics}</b>/8 topics done</span>`;
+}
+
+/* ---------- mock ---------- */
+const MOCK_MIN=60,mockState={qs:[],ans:{},self:{},end:0,timer:null,done:false};
+const MC_SLOTS=["first","lc","phasor","imp","power","maxpower","resonance"];
+const WO_SLOTS=[["first","dcss"],["imp","maxpower"],["power","resonance","lc"]];
+function pick(pool,used){const p=pool.filter(q=>!used.has(q.id));const q=p[Math.floor(Math.random()*p.length)];if(q)used.add(q.id);return q}
+function mockIntro(){
+  $("#mock").innerHTML=`<div class="intro"><h2>Mock Exam 2</h2><p class="sub">Ten questions in the real format, drawn from past exams and the Collection of Problems.</p>
+  <ul><li>Questions 1 to 7: multiple choice, one each on transients, L and C, phasors, impedance, AC power, max power and resonance</li>
+  <li>Questions 8 to 10: work-out problems from past exams. Do them on paper, then grade yourself against the key</li>
+  <li>${MOCK_MIN} minutes, no feedback until you submit. Keep your formula sheet and calculator handy</li>
+  <li>10 points each. Work-outs: Got it 10, Partly 5, Missed it 0</li></ul>
+  <button class="btn primary" id="mStart">Start mock exam</button></div>`;
+  $("#mStart").onclick=startMock;
+}
+function startMock(){
+  const used=new Set(),core=Q.filter(q=>q.scope==="core");
+  // past exams first (COP has twice as many items and would crowd them out); COP when the slot has no past item left
+  const mcPool=(t,past)=>core.filter(q=>q.answer.kind==="mc"&&(past?isPast(q):q.set==="cop")&&q.topics.includes(t)&&!used.has(q.id));
+  const mc=MC_SLOTS.map(t=>pick(Math.random()<.65&&mcPool(t,true).length?mcPool(t,true):mcPool(t,false),used));
+  const wo=WO_SLOTS.map(ts=>pick(core.filter(q=>isPast(q)&&q.answer.kind==="free"&&q.topics.some(t=>ts.includes(t))),used));
+  Object.assign(mockState,{qs:[...mc.sort(()=>Math.random()-.5),...wo].filter(Boolean),ans:{},self:{},done:false,end:Date.now()+MOCK_MIN*60000});
+  $("#mock").innerHTML=`<div class="mockbar"><span class="timer" id="mTime">${MOCK_MIN}:00</span><span id="mCount"></span><button class="btn primary" id="mSubmit">Submit</button></div><div class="qlist" id="mList"></div>`;
+  mockState.qs.forEach((q,i)=>{const c=card(q,"mock");c.querySelector(".meta span").textContent=`Question ${i+1} of ${mockState.qs.length} · ${label(q)}`;$("#mList").appendChild(c)});
+  updateMockCount();$("#mSubmit").onclick=submitMock;
+  clearInterval(mockState.timer);mockState.timer=setInterval(tick,1000);tick();window.scrollTo({top:0});flushMath();
+}
+function tick(){
+  const left=Math.max(0,mockState.end-Date.now()),el=$("#mTime");if(!el){clearInterval(mockState.timer);return}
+  el.textContent=Math.floor(left/60000)+":"+String(Math.floor(left/1000)%60).padStart(2,"0");if(left<=0)submitMock();
+}
+function updateMockCount(){const c=$("#mCount");if(c)c.textContent=Object.keys(mockState.ans).length+" / 7 multiple choice answered"}
+const mcOk=q=>{const a=mockState.ans[q.id]||[];return a.length===q.ans.length&&a.every(i=>q.ans.includes(i))};
+function mockScore(){
+  const mcq=mockState.qs.filter(q=>q.answer.kind==="mc"),wo=mockState.qs.filter(q=>q.answer.kind!=="mc");
+  const pts=mcq.filter(mcOk).length*10+wo.reduce((s,q)=>s+({got:10,part:5}[mockState.self[q.id]]||0),0);
+  const graded=wo.filter(q=>mockState.self[q.id]).length;
+  $("#mScore").textContent=pts;
+  $("#mSub").textContent=`${mcq.filter(mcOk).length} of ${mcq.length} multiple choice correct · ${graded} of ${wo.length} work-outs self-graded`+(graded<wo.length?" (grade them below to finish your score)":"");
+}
+function submitMock(){
+  if(mockState.done)return;mockState.done=true;clearInterval(mockState.timer);
+  const used=Math.round((MOCK_MIN*60000-Math.max(0,mockState.end-Date.now()))/60000);
+  $("#mock").innerHTML=`<div class="intro"><div class="eyebrow">Mock result · about ${used} min used</div><div class="score" id="mScore"></div><p class="sub" id="mSub"></p><button class="btn primary" id="mAgain">New mock exam</button></div><div class="qlist" id="mList" style="margin-top:14px"></div>`;
+  mockState.qs.forEach((q,i)=>{const c=card(q,"review");c.querySelector(".meta span").textContent=`Question ${i+1} · ${label(q)}`;$("#mList").appendChild(c)});
+  mockScore();$("#mAgain").onclick=startMock;window.scrollTo({top:0});flushMath();
+}
+
+/* ---------- tabs ---------- */
+function showTab(t){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  ["start","practice","mock","topics"].forEach(s=>$("#"+s).hidden=s!==t);
+  try{localStorage.setItem(KEY+"t",t)}catch(e){}
+  flushMath();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+
+/* ---------- boot ---------- */
+fetch("data/problems.json").then(r=>r.json()).then(d=>{
+  TOPICS=d.topics;Q=d.problems;
+  const EXAM_ORDER=["Fall 2023 Exam 2","Spring 2024 Exam 2","Fall 2024 Exam 2","Spring 2025 Exam 2","Fall 2025 Exam 2","Fall 2025 Exam 3"];
+  const rank=q=>({past_exam:0,homework:1,cop:2,boilerexams:3})[q.set]*10+Math.max(0,EXAM_ORDER.findIndex(e=>q.source.startsWith(e)));
+  Q.sort((a,b)=>rank(a)-rank(b));order=Q.slice();
+  fillSelects();renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();
+  const h=(location.hash||"").slice(1);let t0="start";try{t0=localStorage.getItem(KEY+"t")||"start"}catch(e){}
+  showTab(["start","practice","mock","topics"].includes(h)?h:t0);
+}).catch(e=>{$("#start").insertAdjacentHTML("afterbegin",`<p class="flag">Could not load the questions (${esc(e.message)}). Open this page from a web server, not as a local file.</p>`)});
+})();
+</script>
+</body>
+</html>
