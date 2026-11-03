@@ -315,6 +315,9 @@ resonance: {
 }
 };
 
+// schematics drawn for the warm-ups that describe a circuit: figs/w_<topic><index>.svg
+const WFIG = ["maxpower0","maxpower1","maxpower2","maxpower3","lc1","lc3","dcss0","dcss1","dcss2","dcss3","first0","first3","imp0","imp3","power3","resonance1","resonance2","resonance3"];
+
 const SHEET = {
   maxpower: { f:[R`DC: \(R_L=R_{th}\), \(P_{max}=\dfrac{V_{th}^2}{4R_{th}}\)`,
     R`AC: \(Z_L=Z_{th}^*=R_{th}-jX_{th}\)`,
@@ -404,7 +407,7 @@ function solHTML(q){
 function card(q,mode){
   const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
   const mc=q.answer.kind==="mc", n=nOpts(q), multi=mc&&q.ans.length>1;
-  const figs=f=>(f||[]).map(src=>`<img class="xfig" loading="lazy" src="figs/${src}" alt="Figure for ${esc(label(q))}">`).join("");
+  const figs=f=>(f||[]).map(src=>`<img class="xfig" loading="lazy" src="figs/${src}" alt="Figure for ${esc(q.label||label(q))}">`).join("");
   el.innerHTML=`<div class="meta"><span>${esc(q.label||label(q))}</span>${(q.topics||[]).map(t=>`<button class="chip" data-topic="${t}" title="Drill this topic">${SHORT[t]}</button>`).join("")}</div>
     <div class="stem">${q.ctx?`<div class="ctx">${q.ctx}${figs(q.ctxfigs)}</div>`:""}${isPast(q)?figs(q.figs):""}${q.stem&&q.set!=="cop"?`<p>${q.stem}</p>`:""}${isPast(q)?"":figs(q.figs)}${multi?`<p class="vcap">Pick ${q.ans.length} answers.</p>`:""}</div>
     ${mc?`<div class="opts">${Array.from({length:n},(_,i)=>`<button class="opt" data-i="${i}"><span class="L">${optLab(q,i)}</span><span>${q.opts?q.opts[i]:""}</span></button>`).join("")}</div>`:""}
@@ -519,7 +522,7 @@ function renderLessons(){
   const box=$("#lessons");
   Object.keys(LEARN).forEach((k,ti)=>{
     const L=LEARN[k],n=Q.filter(q=>isPast(q)&&q.topics.includes(k)).length;
-    L.warm.forEach((w,i)=>Object.assign(w,{id:`W-${k}-${i}`,topics:[k],label:`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`,
+    L.warm.forEach((w,i)=>Object.assign(w,{id:`W-${k}-${i}`,topics:[k],stem:w.q,figs:WFIG.includes(k+i)?[`w_${k}${i}.svg`]:[],label:`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`,
       answer:{kind:"mc"},opts:w.o,ans:[w.a],key:`${LET[w.a]}. ${w.o[w.a]}`,prov:"Practice warm-up written for this lab",sol:`<p>${w.s}</p>`,set:"warm"}));
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
     d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${SHORT[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>

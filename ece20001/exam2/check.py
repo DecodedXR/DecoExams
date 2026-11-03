@@ -7,6 +7,9 @@ P = d["problems"]
 optimgs = lambda p: re.findall(r'src="figs/([^"]+)"', " ".join((p["opts"] or []) + [p["key"]]))
 missing = [(p["id"], f) for p in P for f in p["figs"] + p.get("ctxfigs", []) + optimgs(p)
            if not os.path.isfile(os.path.join(HERE, "figs", f))]
+html = open(os.path.join(HERE, "index.html"), encoding="utf-8").read()
+wfig = re.findall(r'"(\w+?\d)"', re.search(r"const WFIG = \[(.*?)\]", html).group(1))
+missing += [("warm-up", f"w_{w}.svg") for w in wfig if not os.path.isfile(os.path.join(HERE, "figs", f"w_{w}.svg"))]
 assert not missing, f"missing figures: {missing}"
 for p in P:
     assert p["key"] and p["prov"], p["id"]
