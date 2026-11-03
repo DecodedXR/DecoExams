@@ -25,6 +25,18 @@ header.top{grid-template-columns:1fr}
 .sol .k .oimg{display:inline-block;vertical-align:middle;max-height:120px}
 .fs li{margin:5px 0}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xfig{filter:invert(.9) hue-rotate(180deg)}}
+.prio{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;vertical-align:middle;white-space:nowrap;color:var(--ink);border:1px solid var(--rule)}
+.prio-box{border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:18px 0;background:var(--surface)}
+.prio-box h3{margin:0 0 4px}
+#prio{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+#prio button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:52px 90px 1fr;grid-template-areas:"sc bar tn" "sc bar pts" ". . why";column-gap:12px;align-items:center;padding:8px 10px;border-radius:6px;border:1px solid transparent}
+#prio button:hover,#prio button:focus-visible{border-color:var(--rule);background:var(--paper)}
+#prio .sc{grid-area:sc;font:12px var(--f-mono);color:var(--muted)}#prio .sc b{font-size:20px;color:var(--ink)}
+#prio .bar{grid-area:bar;height:8px;border-radius:4px;background:var(--rule);overflow:hidden}#prio .bar i{display:block;height:100%;background:var(--gold)}
+#prio .tn{grid-area:tn;font-weight:600}
+#prio .pts{grid-area:pts;font:11px var(--f-mono);color:var(--muted)}
+#prio .why{grid-area:why;font-size:14px;color:var(--muted);margin-top:2px}
+@media (max-width:640px){#prio button{grid-template-columns:44px 1fr;grid-template-areas:"sc tn" "sc pts" "bar bar" "why why";row-gap:4px}}
 </style>
 </head>
 <body>
@@ -53,6 +65,7 @@ header.top{grid-template-columns:1fr}
       <li><b>Do the warm-ups.</b> Each adds one new step. The last one is shaped like an exam question with new numbers.</li>
       <li><b>Try the real ones.</b> Each topic ends with a button that opens its past exam questions.</li>
     </ol>
+    <div class="prio-box"><h3>What to study first</h3><p class="sub">Ranked by importance out of 10: how many of the 76 past exam questions (Exam 2 from Fall 2023 to Fall 2025, plus Fall 2025 Exam 3) test the topic, nudged up where points are easy to lose. Click a topic to open it.</p><ol id="prio"></ol></div>
     <div class="meter" id="meter"></div>
     <div id="lessons"></div>
   </section>
@@ -318,6 +331,30 @@ resonance: {
 // schematics drawn for the warm-ups that describe a circuit: figs/w_<topic><index>.svg
 const WFIG = ["maxpower0","maxpower1","maxpower2","maxpower3","lc1","lc3","dcss0","dcss1","dcss2","dcss3","first0","first3","imp0","imp3","power3","resonance1","resonance2","resonance3"];
 
+// exam difficulty per topic, judged from the 76 past exam questions: [1 easy | 2 medium | 3 hard, why]
+const DIFF={
+  maxpower:[2,"The matching rule is one line, but you usually have to find the Thévenin equivalent first, and peak vs RMS changes the answer by a factor of 2."],
+  lc:[1,"One derivative or one series/parallel combination. The trap is an inductor that carries no current and has to be dropped first."],
+  dcss:[1,"Replace C with a gap and L with a wire, then it is a resistor circuit. Mistakes come from missing which resistor gets shorted out."],
+  first:[3,"Three separate answers to get right (start, final, τ). Dependent sources need the I-V test, and pulses mean solving two intervals."],
+  phasor:[1,"Pure conventions: cosine reference, sin to cos, negative amplitude is +180°, and the quadrant when converting to polar."],
+  imp:[3,"Series and parallel are quick, but mesh, nodal and AC Thévenin with complex numbers are long, and one arithmetic slip ruins the answer."],
+  power:[2,"Short formulas, but peak vs RMS (the ½) and squaring a piecewise waveform before averaging trip people up."],
+  resonance:[2,"ω₀ = 1/√(LC) is quick; the hard part is knowing whether series or parallel has the impedance minimum, and rad/s vs Hz."]
+};
+const DLAB=["","Easy","Medium","Hard"];
+// study priority /10: share of the 76 past exam questions, nudged up where points are easy to lose
+const PRIO={
+  first:[10,"On every Exam 2, usually twice or more: switch problems, τ with a dependent source, pulses. Hard, so it is worth the most practice."],
+  imp:[10,"The most questions of any topic. Every later AC question (power, max power, resonance) is built on it, so get the complex arithmetic automatic."],
+  maxpower:[8,"On 5 of the 5 Exam 2s and Exam 3. Cheap points once you know conjugate matching, the resistor-only case and the ⅛ for peak values."],
+  lc:[8,"On every Exam 2. Usually quick, so it is points you should not drop: derivatives, combining, stored energy."],
+  dcss:[7,"Its own questions on 4 of 5 Exam 2s, and it is the first step of every transient problem."],
+  power:[6,"Average power and RMS: two Exam 2 questions per exam that has it, plus four on Exam 3. Mostly the ½ for peak values."],
+  phasor:[6,"Fewer questions, but almost free points if you know the conventions, and every AC problem starts with a phasor."],
+  resonance:[4,"Only one Exam 2 question so far (Fall 2023); the rest are from Exam 3. Learn ω₀ and which way |Z| goes, then move on."]
+};
+
 const SHEET = {
   maxpower: { f:[R`DC: \(R_L=R_{th}\), \(P_{max}=\dfrac{V_{th}^2}{4R_{th}}\)`,
     R`AC: \(Z_L=Z_{th}^*=R_{th}-jX_{th}\)`,
@@ -518,6 +555,13 @@ function renderSheet(){
 }
 
 /* ---------- start here ---------- */
+function renderPrio(){
+  const past=Q.filter(isPast),EX=new Set(past.map(q=>q.source)).size;
+  $("#prio").innerHTML=Object.entries(PRIO).sort((a,b)=>b[1][0]-a[1][0]).map(([k,[s,why]])=>{
+    const qs=past.filter(q=>q.topics.includes(k)),ex=new Set(qs.map(q=>q.source)).size;
+    return `<li><button type="button" data-k="${k}"><span class="sc"><b>${s}</b>/10</span><span class="bar"><i style="width:${s*10}%"></i></span><span class="tn">${SHORT[k]}</span><span class="pts">${qs.length} past questions · on ${ex} of ${EX} exams · ${DLAB[DIFF[k][0]]}</span><span class="why">${why}</span></button></li>`}).join("");
+  $("#prio").querySelectorAll("button").forEach(b=>b.onclick=()=>{const d=document.querySelector(`.lesson[data-k="${b.dataset.k}"]`);d.open=true;d.scrollIntoView({block:"start"})});
+}
 function renderLessons(){
   const box=$("#lessons");
   Object.keys(LEARN).forEach((k,ti)=>{
@@ -525,8 +569,8 @@ function renderLessons(){
     L.warm.forEach((w,i)=>Object.assign(w,{id:`W-${k}-${i}`,topics:[k],stem:w.q,figs:WFIG.includes(k+i)?[`w_${k}${i}.svg`]:[],label:`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`,
       answer:{kind:"mc"},opts:w.o,ans:[w.a],key:`${LET[w.a]}. ${w.o[w.a]}`,prov:"Practice warm-up written for this lab",sol:`<p>${w.s}</p>`,set:"warm"}));
     const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
-    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${SHORT[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
-      <div class="body"><h4>On the exam</h4><div class="refresh"><p>${L.on}</p></div><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Warm-ups</h4><div class="qlist"></div>
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${SHORT[k]} <span class="diff d${DIFF[k][0]}">${DLAB[DIFF[k][0]]}</span> <span class="prio">Importance ${PRIO[k][0]}/10</span></h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>On the exam</h4><div class="refresh"><p>${L.on}</p><div class="ex"><b>Difficulty: ${DLAB[DIFF[k][0]]}.</b> ${DIFF[k][1]}</div></div><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Warm-ups</h4><div class="qlist"></div>
       <div class="lfoot"><button class="btn primary next">Now try the ${n} past exam question${n===1?"":"s"} →</button><button class="btn ghost wreset">Reset these warm-ups</button></div></div>`;
     const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach(w=>ql.appendChild(card(w,"warm")))};fill();
     d.querySelector(".wreset").onclick=()=>{L.warm.forEach(w=>delete warm[w.id]);saveWarm();fill();renderLessonProg();flushMath()};
@@ -610,7 +654,7 @@ fetch("data/problems.json").then(r=>r.json()).then(d=>{
   const EXAM_ORDER=["Fall 2023 Exam 2","Spring 2024 Exam 2","Fall 2024 Exam 2","Spring 2025 Exam 2","Fall 2025 Exam 2","Fall 2025 Exam 3"];
   const rank=q=>({past_exam:0,homework:1,cop:2,boilerexams:3})[q.set]*10+Math.max(0,EXAM_ORDER.findIndex(e=>q.source.startsWith(e)));
   Q.sort((a,b)=>rank(a)-rank(b));order=Q.slice();
-  fillSelects();renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();
+  fillSelects();renderStats();renderPractice();renderBars();renderSheet();renderLessons();renderPrio();mockIntro();
   const h=(location.hash||"").slice(1);let t0="start";try{t0=localStorage.getItem(KEY+"t")||"start"}catch(e){}
   showTab(["start","practice","mock","topics"].includes(h)?h:t0);
 }).catch(e=>{$("#start").insertAdjacentHTML("afterbegin",`<p class="flag">Could not load the questions (${esc(e.message)}). Open this page from a web server, not as a local file.</p>`)});
