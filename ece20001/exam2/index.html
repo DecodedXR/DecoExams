@@ -13,6 +13,8 @@
 html,body{margin:0}[hidden]{display:none!important}
 header.top{grid-template-columns:1fr}
 .sol{white-space:normal}.sol p{margin:6px 0}
+.qc.grp .qc{border:0;border-top:1px solid var(--rule);border-radius:0;padding:12px 0 0;margin-top:12px;background:none}
+.qc.grp .qc.ok,.qc.grp .qc.no{border-left:4px solid;padding-left:12px} .qc.grp .qc.ok{border-left-color:var(--good)} .qc.grp .qc.no{border-left-color:var(--bad)}
 .xfig{display:block;max-width:100%;height:auto;margin:6px 0 10px;border:1px solid var(--rule);border-radius:4px;background:#fff}
 .ctx{background:var(--paper);border:1px solid var(--rule);padding:8px 12px;border-radius:4px;margin-bottom:8px;font-size:14px}
 .prov{display:inline-block;font:500 11px var(--f-mono);padding:2px 8px;border-radius:99px;border:1px solid var(--rule);color:var(--muted);margin:2px 0 6px}
@@ -434,6 +436,10 @@ const label=q=>q.set==="cop"?`COP ${q.number}`:q.set==="homework"?`${q.source.sl
   q.set==="boilerexams"?`Boilerexams S23 · Q${q.id.split("-Q")[1]}`:`${q.source.replace(" (Version A)","")} · Q${q.id.split("-Q")[1]}`;
 const provCls=p=>p.startsWith("Official")||p.startsWith("Confirmed")?"off":p.startsWith("Worked")||p.startsWith("Boiler")?"warn":"";
 const nOpts=q=>q.opts?q.opts.length:q.nopt||0;
+// parts printed on one shared figure (F24 Q5.1 and Q5.2, ...) show as one card with an answer row per part
+const figKey=q=>isPast(q)||q.set==="boilerexams"?(q.figs||[])[0]:null;
+const sharedN=q=>figKey(q)?Q.filter(x=>figKey(x)===figKey(q)).length:1;
+const groups=list=>{const m=new Map,out=[];list.forEach(q=>{const k=figKey(q);if(k&&m.has(k))m.get(k).push(q);else{const g=[q];out.push(g);if(k)m.set(k,g)}});return out};
 const optLab=(q,i)=>q.set==="cop"?String(i+1):LET[i];
 const linkify=s=>esc(s).replace(/(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener">video solution</a>');
 
@@ -442,12 +448,12 @@ function solHTML(q){
   return `<span class="k">Answer: ${q.key}</span><span class="prov ${provCls(q.prov)}">${q.prov}</span>`+
     (q.flag?`<div class="flag">${q.flag}</div>`:"")+(q.sol||"")+(q.notes?`<p class="vcap">${linkify(q.notes)}</p>`:"");
 }
-function card(q,mode){
+function card(q,mode,sub){
   const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
   const mc=q.answer.kind==="mc", n=nOpts(q), multi=mc&&q.ans.length>1;
   const figs=f=>(f||[]).map(src=>`<img class="xfig" loading="lazy" src="figs/${src}" alt="Figure for ${esc(q.label||label(q))}">`).join("");
-  el.innerHTML=`<div class="meta"><span>${esc(q.label||label(q))}</span>${(q.topics||[]).map(t=>`<button class="chip" data-topic="${t}" title="Drill this topic">${SHORT[t]}</button>`).join("")}</div>
-    <div class="stem">${q.ctx?`<div class="ctx">${q.ctx}${figs(q.ctxfigs)}</div>`:""}${isPast(q)?figs(q.figs):""}${q.stem&&q.set!=="cop"?`<p>${q.stem}</p>`:""}${isPast(q)?"":figs(q.figs)}${multi?`<p class="vcap">Pick ${q.ans.length} answers.</p>`:""}</div>
+  el.innerHTML=`<div class="meta"><span>${esc(sub?label(q).split(" · ").pop():q.label||label(q))}</span>${(q.topics||[]).map(t=>`<button class="chip" data-topic="${t}" title="Drill this topic">${SHORT[t]}</button>`).join("")}</div>
+    <div class="stem">${q.ctx&&!sub?`<div class="ctx">${q.ctx}${figs(q.ctxfigs)}</div>`:""}${isPast(q)&&!sub?figs(q.figs):""}${q.stem&&q.set!=="cop"?`<p>${q.stem}</p>`:""}${isPast(q)||sub?"":figs(q.figs)}${!sub&&sharedN(q)>1?`<p class="vcap">The figure shows every part of this problem. Answer ${esc(label(q).split(" · ").pop())} only.</p>`:""}${multi?`<p class="vcap">Pick ${q.ans.length} answers.</p>`:""}</div>
     ${mc?`<div class="opts">${Array.from({length:n},(_,i)=>`<button class="opt" data-i="${i}"><span class="L">${optLab(q,i)}</span><span>${q.opts?q.opts[i]:""}</span></button>`).join("")}</div>`:""}
     <div class="foot"><span class="verdict"></span><button class="linkbtn sh">${mc?"Show solution":"Show answer"}</button></div>
     ${mc?"":`<div class="self" hidden><button class="btn ghost" data-s="got">Got it</button><button class="btn ghost" data-s="part">Partly</button><button class="btn ghost" data-s="miss">Missed it</button></div>`}
@@ -517,10 +523,18 @@ function renderPractice(){
   more(list);
 }
 function more(list){
-  list=list||filtered();
-  list.slice(shown,shown+PAGE).forEach(q=>$("#qlist").appendChild(card(q,"practice")));
-  shown+=PAGE;$("#more").hidden=shown>=list.length;
-  $("#more").textContent=`Show more (${list.length-shown} left)`;flushMath();
+  const G=groups(list||filtered());
+  G.slice(shown,shown+PAGE).forEach(g=>$("#qlist").appendChild(groupCard(g,"practice")));
+  shown+=PAGE;$("#more").hidden=shown>=G.length;
+  $("#more").textContent=`Show more (${G.length-shown} left)`;flushMath();
+}
+function groupCard(qs,mode){
+  if(qs.length===1)return card(qs[0],mode);
+  const q=qs[0],el=document.createElement("article");el.className="qc grp";
+  el.innerHTML=`<div class="meta"><span>${esc(label(q).split(" · ")[0])} · Q${esc(String(q.number))} · ${qs.length} parts</span></div>
+    <div class="stem">${q.ctx?`<div class="ctx">${q.ctx}</div>`:""}${q.figs.map(src=>`<img class="xfig" loading="lazy" src="figs/${src}" alt="Figure for ${esc(label(q))}">`).join("")}</div>`;
+  qs.forEach(p=>el.appendChild(card(p,mode,true)));
+  return el;
 }
 function fillSelects(){
   $("#fSet").innerHTML=`<option value="all">All sets</option>`+Object.entries(SETS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
