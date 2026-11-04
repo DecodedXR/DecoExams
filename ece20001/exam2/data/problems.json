@@ -2419,7 +2419,7 @@
     "phasor"
    ],
    "scope": "core",
-   "stem": "Find the phasor form of the following signal:",
+   "stem": "Find the phasor form of the following signal: \\(v(t)=58\\cos(20t-100^\\circ)\\) V",
    "options": [
     "\\(58∠{10}^{∘}\\,\\text{V}\\)",
     "\\(58∠-{100}^{∘}\\,\\text{V}\\)",
@@ -2437,9 +2437,7 @@
     ]
    },
    "answer_basis": "graded attempt: your Brightspace attempt scored full credit on this question",
-   "figs": [
-    "hw/PastedImage_5e810787bd6e4e10aa0b5175ae8a1ad3_image_258006018111664990285402.png"
-   ],
+   "figs": [],
    "notes": null,
    "prov": "Confirmed by a full-credit Brightspace attempt",
    "opts": [
@@ -2468,7 +2466,7 @@
     "phasor"
    ],
    "scope": "core",
-   "stem": "Find the phasor form of the following signal:",
+   "stem": "Find the phasor form of the following signal: \\(i(t)=-63\\sin(50t+90^\\circ)\\) A",
    "options": [
     "\\(31.5∠{90}^{∘}\\,\\text{A}\\)",
     "\\(-63∠{90}^{∘}\\,\\text{A}\\)",
@@ -2486,9 +2484,7 @@
     ]
    },
    "answer_basis": "graded attempt: your Brightspace attempt scored full credit on this question",
-   "figs": [
-    "hw/PastedImage_a24bcff3dad44ef3b242ef4340b7fc80_image_586804240121664990347807.png"
-   ],
+   "figs": [],
    "notes": null,
    "prov": "Confirmed by a full-credit Brightspace attempt",
    "opts": [
@@ -4939,7 +4935,7 @@
     "imp"
    ],
    "scope": "core",
-   "stem": "The diamond is a dependent voltage source of value \\(2\\tilde I\\) (+ on top), where \\(\\tilde I\\) is the capacitor current \\(i\\) (pointing down). The handwritten impedance labels are left over from the scanned solution copy.",
+   "stem": "The circuit is in sinusoidal steady state with \\(i_s(t)=4\\cos(1000t+90^\\circ)\\) A. Find the current through the inductor, \\(i_o(t)\\), as a function of time. The diamond is a dependent voltage source of value \\(2\\tilde I\\) (+ on top), where \\(\\tilde I\\) is the capacitor current \\(i\\) (pointing down). The handwritten impedance labels are left over from the scanned solution copy.",
    "options": null,
    "answer": {
     "kind": "free",
@@ -5933,19 +5929,19 @@
    "ctx": null
   },
   {
-   "id": "E2_S25-Q4",
+   "id": "E2_S25-Q4a",
    "set": "past_exam",
    "source": "Spring 2025 Exam 2 (Version A)",
    "number": 4,
-   "part": null,
+   "part": "a",
    "topics": [
     "first"
    ],
    "scope": "core",
-   "stem": null,
+   "stem": "At \\(t=-2\\) s, \\(i_s(-2)\\) is:",
    "options": null,
    "answer": {
-    "kind": "free",
+    "kind": "mc",
     "letter": null,
     "text": "i_s(-2) = 0.5 A; i_s(1) = -1 A; i_s(4) = 2 A"
    },
@@ -5956,28 +5952,163 @@
    ],
    "notes": null,
    "prov": "Official key",
-   "opts": null,
+   "opts": [
+    "2 A",
+    "3 A",
+    "5 A",
+    "0.1 A",
+    "0.5 A",
+    "0.2 A",
+    "None of the above."
+   ],
    "nopt": null,
-   "ans": null,
-   "key": "i_s(-2) = 0.5 A; i_s(1) = -1 A; i_s(4) = 2 A",
+   "ans": [
+    4
+   ],
+   "key": "E. 0.5 A",
    "sol": "<p>A resistor only: \\(i_s=v_s/2\\) at every instant.</p>\n<p>\\(t=-2\\): \\(3-2=1\\) V, \\(i=0.5\\) A. \\(t=1\\): \\(-2\\) V, \\(i=-1\\) A. \\(t=4\\): \\(-2+6=4\\) V, \\(i=2\\) A.</p>",
    "flag": null,
    "ctx": null
   },
   {
-   "id": "E2_S25-Q5",
+   "id": "E2_S25-Q4b",
+   "set": "past_exam",
+   "source": "Spring 2025 Exam 2 (Version A)",
+   "number": 4,
+   "part": "b",
+   "topics": [
+    "first"
+   ],
+   "scope": "core",
+   "stem": "At \\(t=1\\) s, \\(i_s(1)\\) is:",
+   "options": null,
+   "answer": {
+    "kind": "mc",
+    "letter": null,
+    "text": "i_s(-2) = 0.5 A; i_s(1) = -1 A; i_s(4) = 2 A"
+   },
+   "answer_basis": "official key",
+   "figs": [
+    "exams/e2_s25_q4.png",
+    "exams/e2_s25_q4_p2.png"
+   ],
+   "notes": null,
+   "prov": "Official key",
+   "opts": [
+    "−2 A",
+    "0.5 A",
+    "3 A",
+    "0.1 A",
+    "2 A",
+    "−1 A",
+    "None of the above."
+   ],
+   "nopt": null,
+   "ans": [
+    5
+   ],
+   "key": "F. −1 A",
+   "sol": "<p>A resistor only: \\(i_s=v_s/2\\) at every instant.</p>\n<p>\\(t=-2\\): \\(3-2=1\\) V, \\(i=0.5\\) A. \\(t=1\\): \\(-2\\) V, \\(i=-1\\) A. \\(t=4\\): \\(-2+6=4\\) V, \\(i=2\\) A.</p>",
+   "flag": null,
+   "ctx": null
+  },
+  {
+   "id": "E2_S25-Q4c",
+   "set": "past_exam",
+   "source": "Spring 2025 Exam 2 (Version A)",
+   "number": 4,
+   "part": "c",
+   "topics": [
+    "first"
+   ],
+   "scope": "core",
+   "stem": "At \\(t=4\\) s, \\(i_s(4)\\) is:",
+   "options": null,
+   "answer": {
+    "kind": "mc",
+    "letter": null,
+    "text": "i_s(-2) = 0.5 A; i_s(1) = -1 A; i_s(4) = 2 A"
+   },
+   "answer_basis": "official key",
+   "figs": [
+    "exams/e2_s25_q4.png",
+    "exams/e2_s25_q4_p2.png"
+   ],
+   "notes": null,
+   "prov": "Official key",
+   "opts": [
+    "1.5 A",
+    "0.5 A",
+    "3 A",
+    "2 A",
+    "0.1 A",
+    "1 A",
+    "None of the above."
+   ],
+   "nopt": null,
+   "ans": [
+    3
+   ],
+   "key": "D. 2 A",
+   "sol": "<p>A resistor only: \\(i_s=v_s/2\\) at every instant.</p>\n<p>\\(t=-2\\): \\(3-2=1\\) V, \\(i=0.5\\) A. \\(t=1\\): \\(-2\\) V, \\(i=-1\\) A. \\(t=4\\): \\(-2+6=4\\) V, \\(i=2\\) A.</p>",
+   "flag": null,
+   "ctx": null
+  },
+  {
+   "id": "E2_S25-Q5a",
    "set": "past_exam",
    "source": "Spring 2025 Exam 2 (Version A)",
    "number": 5,
-   "part": null,
+   "part": "a",
    "topics": [
     "imp"
    ],
    "scope": "core",
-   "stem": null,
+   "stem": "The equivalent impedance \\(Z_{eq}\\):",
    "options": null,
    "answer": {
-    "kind": "free",
+    "kind": "mc",
+    "letter": null,
+    "text": "Z_eq = 10 + j20 Ω (first option; bubble left blank but worked value matches); L_eq = 4 H"
+   },
+   "answer_basis": "official key",
+   "figs": [
+    "exams/e2_s25_q5.png"
+   ],
+   "notes": null,
+   "prov": "Official key, letter matched from the worked answer",
+   "opts": [
+    "\\(10+j20\\ \\Omega\\)",
+    "\\(6+j24\\ \\Omega\\)",
+    "\\(18+j12\\ \\Omega\\)",
+    "\\(10-j12\\ \\Omega\\)",
+    "\\(-j8\\ \\Omega\\)",
+    "\\(12+j24\\ \\Omega\\)",
+    "None of the above."
+   ],
+   "nopt": null,
+   "ans": [
+    0
+   ],
+   "key": "A. \\(10+j20\\ \\Omega\\)",
+   "sol": "<p>All in series: \\(Z_{eq}=(6+j24)+(4-j12)+j8=10+j20\\ \\Omega\\).</p>\n<p>The imaginary part is the net reactance \\(\\omega L_{eq}=20\\), so \\(L_{eq}=20/5=4\\) H.</p>",
+   "flag": "The key left the first bubble empty; its worked value \\(10+j20\\ \\Omega\\) matches the first option.",
+   "ctx": null
+  },
+  {
+   "id": "E2_S25-Q5b",
+   "set": "past_exam",
+   "source": "Spring 2025 Exam 2 (Version A)",
+   "number": 5,
+   "part": "b",
+   "topics": [
+    "imp"
+   ],
+   "scope": "core",
+   "stem": "The equivalent inductance \\(L_{eq}\\):",
+   "options": null,
+   "answer": {
+    "kind": "mc",
     "letter": null,
     "text": "Z_eq = 10 + j20 Ω (first option; bubble left blank but worked value matches); L_eq = 4 H"
    },
@@ -5987,28 +6118,38 @@
    ],
    "notes": null,
    "prov": "Official key",
-   "opts": null,
+   "opts": [
+    "5 H",
+    "20 H",
+    "6 H",
+    "12 H",
+    "4 H",
+    "0 H",
+    "None of the above."
+   ],
    "nopt": null,
-   "ans": null,
-   "key": "Z_eq = 10 + j20 Ω (first option; bubble left blank but worked value matches); L_eq = 4 H",
+   "ans": [
+    4
+   ],
+   "key": "E. 4 H",
    "sol": "<p>All in series: \\(Z_{eq}=(6+j24)+(4-j12)+j8=10+j20\\ \\Omega\\).</p>\n<p>The imaginary part is the net reactance \\(\\omega L_{eq}=20\\), so \\(L_{eq}=20/5=4\\) H.</p>",
-   "flag": "The key left the first bubble empty; its worked value \\(10+j20\\ \\Omega\\) matches the first option.",
+   "flag": null,
    "ctx": null
   },
   {
-   "id": "E2_S25-Q6",
+   "id": "E2_S25-Q6a",
    "set": "past_exam",
    "source": "Spring 2025 Exam 2 (Version A)",
    "number": 6,
-   "part": null,
+   "part": "a",
    "topics": [
     "imp"
    ],
    "scope": "core",
-   "stem": null,
+   "stem": "The equation for mesh 1:",
    "options": null,
    "answer": {
-    "kind": "free",
+    "kind": "mc",
     "letter": null,
     "text": "Mesh 1: (5 + j5)I1 + (j2)I2 = 2∠30°; Mesh 2: (j2)I1 + (4 - j2)I2 = 4∠-140°"
    },
@@ -6018,28 +6159,79 @@
    ],
    "notes": null,
    "prov": "Official key",
-   "opts": null,
+   "opts": [
+    "\\((5-j5)\\tilde I_1+(j2)\\tilde I_2=2\\angle-150^\\circ\\)",
+    "\\((j5)\\tilde I_1-(j2)\\tilde I_2=2\\angle30^\\circ\\)",
+    "\\((5+j5)\\tilde I_1-(j2)\\tilde I_2=2\\angle-30^\\circ\\)",
+    "\\((5+j7)\\tilde I_1-(j2)\\tilde I_2=2\\angle30^\\circ\\)",
+    "\\((5+j5)\\tilde I_1+(j2)\\tilde I_2=2\\angle30^\\circ\\)",
+    "\\((9-j7)\\tilde I_1-(j2)\\tilde I_2=2\\angle150^\\circ\\)",
+    "None of the above."
+   ],
    "nopt": null,
-   "ans": null,
-   "key": "Mesh 1: (5 + j5)I1 + (j2)I2 = 2∠30°; Mesh 2: (j2)I1 + (4 - j2)I2 = 4∠-140°",
+   "ans": [
+    4
+   ],
+   "key": "E. \\((5+j5)\\tilde I_1+(j2)\\tilde I_2=2\\angle30^\\circ\\)",
    "sol": "<p>Mesh 1 (clockwise): its own impedances \\(5+j7-j2=5+j5\\); the shared capacitor gives \\(-(-j2)\\tilde I_2=+j2\\tilde I_2\\). Source drives it: \\((5+j5)\\tilde I_1+(j2)\\tilde I_2=2\\angle30^\\circ\\).</p>\n<p>Mesh 2: own impedances \\(4-j2\\), shared term \\(+j2\\tilde I_1\\). The 4∠40° source is entered at its + terminal, so it moves to the right side negative: \\((j2)\\tilde I_1+(4-j2)\\tilde I_2=-4\\angle40^\\circ=4\\angle-140^\\circ\\).</p>",
    "flag": null,
    "ctx": null
   },
   {
-   "id": "E2_S25-Q7",
+   "id": "E2_S25-Q6b",
    "set": "past_exam",
    "source": "Spring 2025 Exam 2 (Version A)",
-   "number": 7,
-   "part": null,
+   "number": 6,
+   "part": "b",
    "topics": [
     "imp"
    ],
    "scope": "core",
-   "stem": null,
+   "stem": "The equation for mesh 2:",
    "options": null,
    "answer": {
-    "kind": "free",
+    "kind": "mc",
+    "letter": null,
+    "text": "Mesh 1: (5 + j5)I1 + (j2)I2 = 2∠30°; Mesh 2: (j2)I1 + (4 - j2)I2 = 4∠-140°"
+   },
+   "answer_basis": "official key",
+   "figs": [
+    "exams/e2_s25_q6.png"
+   ],
+   "notes": null,
+   "prov": "Official key",
+   "opts": [
+    "\\((-j2)\\tilde I_1+(4+j2)\\tilde I_2=4\\angle60^\\circ\\)",
+    "\\((j2)\\tilde I_1+(4-j2)\\tilde I_2=4\\angle-140^\\circ\\)",
+    "\\((j2)\\tilde I_1+(4-j2)\\tilde I_2=4\\angle40^\\circ\\)",
+    "\\((j6)\\tilde I_1+(4+j2)\\tilde I_2=4\\angle40^\\circ\\)",
+    "\\((2)\\tilde I_1+(2)\\tilde I_2=4\\angle-40^\\circ\\)",
+    "\\((4-j5)\\tilde I_1+(4+j2)\\tilde I_2=4\\angle40^\\circ\\)",
+    "None of the above."
+   ],
+   "nopt": null,
+   "ans": [
+    1
+   ],
+   "key": "B. \\((j2)\\tilde I_1+(4-j2)\\tilde I_2=4\\angle-140^\\circ\\)",
+   "sol": "<p>Mesh 1 (clockwise): its own impedances \\(5+j7-j2=5+j5\\); the shared capacitor gives \\(-(-j2)\\tilde I_2=+j2\\tilde I_2\\). Source drives it: \\((5+j5)\\tilde I_1+(j2)\\tilde I_2=2\\angle30^\\circ\\).</p>\n<p>Mesh 2: own impedances \\(4-j2\\), shared term \\(+j2\\tilde I_1\\). The 4∠40° source is entered at its + terminal, so it moves to the right side negative: \\((j2)\\tilde I_1+(4-j2)\\tilde I_2=-4\\angle40^\\circ=4\\angle-140^\\circ\\).</p>",
+   "flag": null,
+   "ctx": null
+  },
+  {
+   "id": "E2_S25-Q7a",
+   "set": "past_exam",
+   "source": "Spring 2025 Exam 2 (Version A)",
+   "number": 7,
+   "part": "a",
+   "topics": [
+    "imp"
+   ],
+   "scope": "core",
+   "stem": "\\(\\alpha\\):",
+   "options": null,
+   "answer": {
+    "kind": "mc",
     "letter": null,
     "text": "α = 1/9; β = -2/3"
    },
@@ -6049,10 +6241,61 @@
    ],
    "notes": null,
    "prov": "Official key",
-   "opts": null,
+   "opts": [
+    "\\(\\alpha=\\frac19\\)",
+    "\\(\\alpha=\\frac1{12}\\)",
+    "\\(\\alpha=9\\)",
+    "\\(\\alpha=\\frac65\\)",
+    "\\(\\alpha=\\frac1{j2}\\)",
+    "\\(\\alpha=j5\\)",
+    "None of the above."
+   ],
    "nopt": null,
-   "ans": null,
-   "key": "α = 1/9; β = -2/3",
+   "ans": [
+    0
+   ],
+   "key": "A. \\(\\alpha=\\frac19\\)",
+   "sol": "<p>Node at \\(\\tilde V_{out}\\). The right source has − on top, so the top-right node is \\(-\\tilde V_{s2}\\). KCL:\n\\[\\frac{\\tilde V_{out}-\\tilde V_{s1}}{j24}+\\frac{\\tilde V_{out}}{j12}+\\frac{\\tilde V_{out}+\\tilde V_{s2}}{j4}=0.\\]</p>\n<p>Multiply by \\(j24\\): \\(9\\tilde V_{out}=\\tilde V_{s1}-6\\tilde V_{s2}\\), so \\(\\alpha=\\frac19\\), \\(\\beta=-\\frac23\\).</p>",
+   "flag": null,
+   "ctx": null
+  },
+  {
+   "id": "E2_S25-Q7b",
+   "set": "past_exam",
+   "source": "Spring 2025 Exam 2 (Version A)",
+   "number": 7,
+   "part": "b",
+   "topics": [
+    "imp"
+   ],
+   "scope": "core",
+   "stem": "\\(\\beta\\):",
+   "options": null,
+   "answer": {
+    "kind": "mc",
+    "letter": null,
+    "text": "α = 1/9; β = -2/3"
+   },
+   "answer_basis": "official key",
+   "figs": [
+    "exams/e2_s25_q7.png"
+   ],
+   "notes": null,
+   "prov": "Official key",
+   "opts": [
+    "\\(\\beta=3\\)",
+    "\\(\\beta=\\frac13\\)",
+    "\\(\\beta=-\\frac23\\)",
+    "\\(\\beta=6\\)",
+    "\\(\\beta=-\\frac13\\)",
+    "\\(\\beta=2\\)",
+    "None of the above."
+   ],
+   "nopt": null,
+   "ans": [
+    2
+   ],
+   "key": "C. \\(\\beta=-\\frac23\\)",
    "sol": "<p>Node at \\(\\tilde V_{out}\\). The right source has − on top, so the top-right node is \\(-\\tilde V_{s2}\\). KCL:\n\\[\\frac{\\tilde V_{out}-\\tilde V_{s1}}{j24}+\\frac{\\tilde V_{out}}{j12}+\\frac{\\tilde V_{out}+\\tilde V_{s2}}{j4}=0.\\]</p>\n<p>Multiply by \\(j24\\): \\(9\\tilde V_{out}=\\tilde V_{s1}-6\\tilde V_{s2}\\), so \\(\\alpha=\\frac19\\), \\(\\beta=-\\frac23\\).</p>",
    "flag": null,
    "ctx": null
@@ -7881,21 +8124,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "0",
-    "0.5",
-    "-0.5",
-    "1",
-    "-1",
-    "2",
-    "-2",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     2
    ],
-   "key": "3) -0.5",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8032,20 +8266,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 million",
-    "10 million",
-    "1 billion",
-    "10 billion",
-    "1 trillion",
-    "10 trillion",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     3
    ],
-   "key": "4) 10 billion",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8085,22 +8311,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "0",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     5
    ],
-   "key": "6) 6",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8139,21 +8355,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "0.1 10J",
-    "1J",
-    "0.5J",
-    "10J",
-    "sin(πt)J",
-    "sin2 (πt)J",
-    "0J",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     1
    ],
-   "key": "2) 1J",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8328,21 +8535,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 ns",
-    "10 ns",
-    "100 ns",
-    "1000 ns",
-    "1000 ns",
-    "10000 ns",
-    "100000 ns",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     2
    ],
-   "key": "3) 100 ns",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8380,21 +8578,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "9H",
-    "20H",
-    "18H",
-    "10H",
-    "12.5H",
-    "11H",
-    "15H",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     3
    ],
-   "key": "4) 10H",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8465,20 +8654,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "7.5",
-    "12",
-    "16",
-    "26",
-    "28",
-    "32",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     3
    ],
-   "key": "4) 26",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8517,22 +8698,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     4
    ],
-   "key": "5) 5",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8571,22 +8742,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     1
    ],
-   "key": "2) 2",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8626,22 +8787,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "15 cos(t)mA",
-    "24 cos(t)mA",
-    "30 cos(t)mA",
-    "36 cos(t)mA",
-    "40 cos(t)mA",
-    "48 cos(t)mA",
-    "56 cos(t)mA",
-    "60 cos(t)mA",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     3
    ],
-   "key": "4) 36 cos(t)mA",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8679,21 +8830,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "L eq = 2.5H",
-    "L eq = 3.33H",
-    "L eq = 5H",
-    "L eq = 6.66H",
-    "L eq = 7.5H",
-    "L eq = 10H",
-    "L eq = 10.83H",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     4
    ],
-   "key": "5) L eq = 7.5H",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8733,23 +8875,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "8mF",
-    "6mF",
-    "12mF",
-    "24mF",
-    "4mF",
-    "3mF",
-    "28mF",
-    "32mF",
-    "20mF",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     2
    ],
-   "key": "3) 12mF",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8892,23 +9023,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "10Ω",
-    "20Ω",
-    "30Ω",
-    "40Ω",
-    "50Ω",
-    "60Ω",
-    "70Ω",
-    "80Ω",
-    "90Ω",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     3
    ],
-   "key": "4) 40Ω",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8945,20 +9065,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "−96 sin(2t)A",
-    "−24 sin(2t)A",
-    "−12 sin(2t)A",
-    "48 sin(2t)A",
-    "24 sin(2t)A",
-    "12 sin(2t)A",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     0
    ],
-   "key": "1) −96 sin(2t)A",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -8995,20 +9107,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
    "prov": "Official key",
-   "opts": [
-    "12A",
-    "3A",
-    "0.25A",
-    "5A",
-    "4A",
-    "1A",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     6
    ],
-   "key": "7) None of the above",
+   "key": "Option 7",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9064,8 +9168,7 @@
    },
    "answer_basis": "official COP answer key (Ch. 5-8)",
    "figs": [
-    "cop/cop_5_29.png",
-    "cop/cop_5_29_1.png"
+    "cop/cop_5_29.png"
    ],
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch5.pdf",
@@ -9111,21 +9214,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "4s",
-    "0.2s",
-    "2s",
-    "0.5s",
-    "5s",
-    "0.25s",
-    "1s",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     2
    ],
-   "key": "3) 2s",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9163,21 +9257,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "-4 V",
-    "5 V",
-    "4 V",
-    "3 V",
-    "-2 V",
-    "8 V",
-    "-3 V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     0
    ],
-   "key": "1) -4 V",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9215,21 +9300,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "12 V",
-    "-8 V",
-    "4 V",
-    "7 V",
-    "-6 V",
-    "8 V",
-    "-7 V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     0
    ],
-   "key": "1) 12 V",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9267,21 +9343,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "4 seconds",
-    "2 seconds",
-    "5 seconds",
-    "0.25 second",
-    "20 seconds",
-    "0.5 second",
-    "1 second",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     1
    ],
-   "key": "2) 2 seconds",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9318,20 +9385,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "The current through the voltage source is a continuous function of time.",
-    "The current through the resistor R2 is a continuous function of time.",
-    "The current through the capacitor is a continuous function of time.",
-    "Reducing the voltage value of the voltage source by half will double the time constant.",
-    "Reducing the voltage value of the voltage source by half will reduce the time constant by half.",
-    "The time constant of the circuit is independent of the value of R 1 .",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     1
    ],
-   "key": "2) The current through the resistor R2 is a continuous function of time.",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9370,21 +9429,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "The time constant is 0.2s",
-    "The initial voltage at t = 0 − is zero.",
-    "Both (4) and (7) are true.",
-    "The steady state value is zero.",
-    "Both (6) and (7) are true.",
-    "The transient response is zero.",
-    "The final voltage at t = ∞ is 10V.",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     3
    ],
-   "key": "4) The steady state value is zero.",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9421,20 +9471,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "0V",
-    "1V",
-    "2V",
-    "3V",
-    "4V",
-    "5V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     5
    ],
-   "key": "6) 5V",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9474,22 +9516,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     2
    ],
-   "key": "3) 3",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9530,23 +9562,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "-1",
-    "-2",
-    "-3",
-    "There is insufficient information",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     7
    ],
-   "key": "8) -3",
+   "key": "Option 8",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9582,19 +9603,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "The time constants of the charging and discharging cycles are the same.",
-    "Both the charging and discharging cycles consume energy.",
-    "The current through the capacitor may not be continuous.",
-    "The energy stored in the capacitor at the end of the charging cycle is higher than the energy stored",
-    "vc 0 − = 0 V  ",
-    "dvC (t) The current through the capacitor can be found by iC (t) = C for 1.1 &lt; t &lt; 2."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     0
    ],
-   "key": "1) The time constants of the charging and discharging cycles are the same.",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9634,23 +9648,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "u(t − 2) + u(t − 6)",
-    "u(t − 2) + u(t − 4) − u(t − 6)",
-    "u(t − 2) − u(t − 4) + 2u(t − 6)",
-    "4u(t − 2) + 2u(t − 4) − 4",
-    "1 + u(t − 4) − 2u(t − 6)",
-    "u(t − 2) + u(t − 4) − 4",
-    "u(t − 2) + u(t − 4) + u(t − 6)",
-    "1 + u(t − 4) − 2",
-    "u(t − 2) + u(t − 4) − 2u(t − 6)",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     8
    ],
-   "key": "9) u(t − 2) + u(t − 4) − 2u(t − 6)",
+   "key": "Option 9",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9720,21 +9723,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "-5V",
-    "0V",
-    "2V",
-    "3V",
-    "5V",
-    "7V",
-    "8V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     1
    ],
-   "key": "2) 0V",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9773,21 +9767,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    " t &lt; 0 − = 5 A; iL (t = ∞) = −2.5 A  iL",
-    "iL t &lt; 0 − = −20 A; iL (t = ∞) = 20 A  ",
-    " t &lt; 0 − = −10 A; iL (t = ∞) = 5 A  iL",
-    "iL t &lt; 0 − = 5 A; iL (t = ∞) = −5 A  ",
-    " t &lt; 0 − = 7.5 A; iL (t = ∞) = −7.5 A  iL",
-    "iL t &lt; 0 − = −2.5 A; iL (t = ∞) = 10 A  ",
-    " t &lt; 0 − = 20 A; iL (t = ∞) = −10 A  iL",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     0
    ],
-   "key": "1)  t &lt; 0 − = 5 A; iL (t = ∞) = −2.5 A  iL",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9825,21 +9810,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "0.02 sec",
-    "0.2 sec",
-    "0.5 sec",
-    "1 sec",
-    "2 sec",
-    "4 sec",
-    "50 sec",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     3
    ],
-   "key": "4) 1 sec",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9877,21 +9853,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "0 A",
-    "0.25 A",
-    "1 A",
-    "0.5 A",
-    "2 A",
-    "4 A",
-    "10 A",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     2
    ],
-   "key": "3) 1 A",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9929,21 +9896,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "0 A",
-    "0.25 A",
-    "1 A",
-    "0.5 A",
-    "4 A",
-    "2 A",
-    "10 A",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     5
    ],
-   "key": "6) 2 A",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -9983,22 +9941,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 − 3e<sup>−2.5t</sup>",
-    "1 − 1e<sup>−2.5t</sup>",
-    "1 − 3e 0.4t",
-    "1 − 1e<sup>−0.4t</sup>",
-    "−1 − 1e<sup>−2.5t</sup>",
-    "−1 − 3e<sup>−2.5t</sup>",
-    "−1 − 3e<sup>−0.4t</sup>",
-    "−1 − 3e<sup>−0.4t</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) 1 − 3e<sup>−2.5t</sup>",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10037,22 +9985,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "e<sup>−0.25(t−1)</sup>",
-    "e<sup>−4(t−1)</sup>",
-    "e<sup>−0.25t</sup>",
-    "e<sup>−4t</sup>",
-    "4e<sup>−0.25(t−1)</sup>",
-    "4e<sup>−4(t−1)</sup>",
-    "4e<sup>−0.25t</sup>",
-    "4e<sup>−4t</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) e<sup>−0.25(t−1)</sup>",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10092,22 +10030,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "VC (∞) = 10V, τ = 5s",
-    "VC (∞) = 10V, τ = 6s",
-    "VC (∞) = 8.33V, τ = 5s",
-    "VC (∞) = 8.33V, τ = 6s",
-    "VC (∞) = 2V, τ = 5s",
-    "VC (∞) = 2V, τ = 6s",
-    "VC (∞) = 10V, τ = 0.833s",
-    "VC (∞) = 8V, τ = 0.833s",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) VC (∞) = 10V, τ = 5s",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10145,21 +10073,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "-5 V",
-    "-4 V",
-    "-2 V",
-    "0 V",
-    "2 V",
-    "4 V",
-    "5 V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     2
    ],
-   "key": "3) -2 V",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10198,22 +10117,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 s",
-    "2 s",
-    "3 s",
-    "4 s",
-    "1/3 s",
-    "12 s",
-    "17 s",
-    "48 s",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     2
    ],
-   "key": "3) 3 s",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10253,22 +10162,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     5
    ],
-   "key": "6) 6",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10351,22 +10250,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "e<sup>−0.25</sup>",
-    "e<sup>−0.5</sup>",
-    "e<sup>−1</sup>",
-    "2e<sup>−0.25</sup>",
-    "2e<sup>−0.5</sup>",
-    "2e<sup>−2</sup>",
-    "2e<sup>−4</sup>",
-    "2",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     6
    ],
-   "key": "7) 2e<sup>−4</sup>",
+   "key": "Option 7",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10405,22 +10294,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "4 + e<sup>−2t</sup>",
-    "4 − e<sup>−2t</sup>",
-    "5 + e<sup>−2t</sup>",
-    "5 − e<sup>−2t</sup>",
-    "6 + 4e<sup>−2t</sup>",
-    "6 − 4e<sup>−2t</sup>",
-    "9 + 4e<sup>−2t</sup>",
-    "9 − 4e<sup>−2t</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     4
    ],
-   "key": "5) 6 + 4e<sup>−2t</sup>",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10459,21 +10338,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "i 2 (t) = −2e 2 A",
-    "2 A i 2 (t) = 2e",
-    "i 2 (t) = −e<sup>−2t</sup> A",
-    "5 A i 2 (t) = e",
-    "2 A i 2 (t) = 2e",
-    "2 A i 2 (t) = −e",
-    "2 A i 2 (t) = −e",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     7
    ],
-   "key": "8) None of the above",
+   "key": "Option 8",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10548,24 +10418,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "e<sup>−3</sup>",
-    "−e<sup>−3</sup>",
-    "0.4",
-    "e<sup>−3</sup>",
-    "20e<sup>−3</sup>",
-    "−20e<sup>−3</sup>",
-    "5e<sup>−3</sup>",
-    "−5e<sup>−3</sup>",
-    "4e<sup>−2</sup>",
-    "4e<sup>−3</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 11,
    "ans": [
     4
    ],
-   "key": "5) 20e<sup>−3</sup>",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10604,21 +10462,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "−0.5e<sup>−t/2</sup>",
-    "0.5e<sup>−t/2</sup>",
-    "−0.25e<sup>−t/2</sup>",
-    "10e<sup>−t/2</sup>",
-    "−0.5e<sup>−2t</sup>",
-    "0.5e<sup>−2t</sup>",
-    "10e<sup>−2t</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     0
    ],
-   "key": "1) −0.5e<sup>−t/2</sup>",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10852,21 +10701,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "40 − e<sup>−2t</sup>",
-    "20 = 20e<sup>−0.5t</sup>",
-    "30 + 20e<sup>−0.5t</sup>",
-    "40 + 10e<sup>−2t</sup>",
-    "30 + 20e<sup>−2t</sup>",
-    "30 + 5e<sup>−t</sup>",
-    "20 − 10e<sup>−t</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     7
    ],
-   "key": "8) None of the above",
+   "key": "Option 8",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10906,22 +10746,12 @@
    "notes": "Key text was extracted from a PDF with superscripts split onto other lines (shown in ⟨⟩); rebuild the expression from the key PDF.",
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch6.pdf",
    "prov": "Official key",
-   "opts": [
-    "12 − 12e<sup>−10t</sup>",
-    "12 − 6e<sup>−10t</sup>",
-    "12 − 12e<sup>−t/10</sup>",
-    "18 − 18e<sup>−10t</sup>",
-    "18 − 18e<sup>−t/10</sup>",
-    "24 − 24e<sup>−10t</sup>",
-    "24 − 24e<sup>−t/10</sup>",
-    "24 − 6e<sup>−10t</sup>",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) 12 − 12e<sup>−10t</sup>",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -10991,21 +10821,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "C",
-    "L and C",
-    "R and L",
-    "R",
-    "R and C",
-    "L",
-    "2R and L",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     4
    ],
-   "key": "5) R and C",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11043,21 +10864,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "Resistor of 2Ω and Inductor of 0.5 H",
-    "Capacitor of 2 F",
-    "Resistor of 2Ω and Capacitor of 0.5 F",
-    "Inductor of 2 H",
-    "Resistor of 2Ω and Inductor of 2 H",
-    "Inductor of 0.5 H",
-    "Capacitor of 0.5 F",
-    "Resistor of 2Ω and Capacitor of 2 F"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     6
    ],
-   "key": "7) Capacitor of 0.5 F",
+   "key": "Option 7",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11095,21 +10907,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "The phasor for IL (t) when only V 1 is ON is Ĩ L = 2∠ − 90 ◦",
-    "The phasor for IL (t) when only V 2 is ON is Ĩ L = 0.5∠ − 90 ◦",
-    "The phasor for IL (t) when both V1 and V2 are ON is Ĩ L = 2∠ − 90 ◦ + 0.5∠ − 90 ◦",
-    "The phasor for IL (t) when both V1 and V2 are ON cannot be defined.",
-    "When only V1 is ON IL (t) = 2 cos t − 90 ◦ ",
-    "When only V 2 is ON IL (t) = 0.5 cos 2t − 90 ◦",
-    "When both V1 and V2 are ON IL (t) = 2 sin(t) + 0.5 sin(2t)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     3
    ],
-   "key": "4) The phasor for IL (t) when both V1 and V2 are ON cannot be defined.",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11145,19 +10948,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "’Circuit A ’ can be transformed into ’Circuit B ’ for all t > 0 and ω = 3 rad/s.",
-    "’Circuit A ’ can be transformed into ’Circuit B ’ for all t > 0 and ω = 1 rad/s.",
-    "’Circuit A ’ can be transformed into ’Circuit B’ only for t → ∞ and ω = 1 rad/s.",
-    "’Circuit A’ can be transformed into ’Circuit B’ only for t → ∞ and ω = 3 rad/s.",
-    "’Circuit A’ can be transformed into ’Circuit B’ for all t > 0 and all ω.",
-    "’Circuit A ’ can be transformed into ’Circuit B’ for all t &lt; 0 and all ω."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     0
    ],
-   "key": "1) ’Circuit A ’ can be transformed into ’Circuit B ’ for all t > 0 and ω = 3 rad/s.",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11197,22 +10993,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "-3+j",
-    "-5-7j",
-    "-8-6j",
-    "-2-8j",
-    "-3-j",
-    "5+7j",
-    "8+6j",
-    "2+8j",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     7
    ],
-   "key": "8) 2+8j",
+   "key": "Option 8",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11248,19 +11034,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "R",
-    "L",
-    "C",
-    "R in series with C",
-    "R in series with L",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     3
    ],
-   "key": "4) R in series with C",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11300,22 +11079,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "2 cos(100t + 135 o V",
-    "2 cos(100t − 135 o V",
-    "2 cos(100t + 45 o V",
-    "2 2 cos(100t + 135 o V",
-    "2 2 cos(100t + 135 o V",
-    "2 2 cos(100t − 135 o V",
-    "2 2 cos(100t + 45 o V",
-    "2 2 cos(100t − 45 o V",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     3
    ],
-   "key": "4) 2 2 cos(100t + 135 o V",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11352,20 +11121,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "R only",
-    "L only",
-    "C only",
-    "R and",
-    "R and C",
-    "L and C",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 7,
    "ans": [
     5
    ],
-   "key": "6) L and C",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11404,22 +11165,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "R=2Ω; L=0.035H",
-    "R=2Ω; L=0.346H",
-    "R=2Ω; L=3.464H",
-    "R=2.5Ω; L=0.035H",
-    "R=2.5Ω; L=0.346H",
-    "R=2.5Ω; L=3.464H",
-    "R=4Ω; L=0.035H",
-    "R=4Ω; L=0.0346H",
-    "R=4Ω; L=3.464H"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     1
    ],
-   "key": "2) R=2Ω; L=0.346H",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11459,22 +11210,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "Vs (t) = 3 cos(ωt + 35.26 o )",
-    "Vs (t) = 3 cos(ωt − 53.72 o )",
-    "Vs (t) = 6 cos(ωt)",
-    "Vs (t) = 6 cos(ωt − 35.26 o )",
-    "Vs (t) = 8 cos(ωt)",
-    "Vs (t) = 9 cos(ωt − 70.64 o )",
-    "Vs (t) = 10 cos(ωt + 36.87 o )",
-    "Vs (t) = 10 cos(ωt)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     6
    ],
-   "key": "7) Vs (t) = 10 cos(ωt + 36.87 o )",
+   "key": "Option 7",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11514,22 +11255,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "1+j",
-    "1-j",
-    "1.21+j0.88",
-    "1.21-j0.88",
-    "1.48+j0.56",
-    "1.48-j0.56",
-    "1.75-j1.25",
-    "1.75-j1.25",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     2
    ],
-   "key": "3) 1.21+j0.88",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11569,22 +11300,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "(40 + 20j)V",
-    "(−40 + 20j)V",
-    "(20 + 40j)V",
-    "(20 + 40j)V",
-    "(10 + 10j)V",
-    "(10 − 10j)V",
-    "40V",
-    "-40V",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     7
    ],
-   "key": "8) -40V",
+   "key": "Option 8",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11623,22 +11344,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "3.1∠153.4 o",
-    "0.2∠ − 26.6 o",
-    "2.2∠63.4 o",
-    "2.2∠153.4 o",
-    "0.2∠63.4 o",
-    "2.2∠ − 26.6 o",
-    "3.1∠ − 63.4 o",
-    "0.2∠ − 63.4 o",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     5
    ],
-   "key": "6) 2.2∠ − 26.6 o",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11677,22 +11388,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "20 cos(ωt)V",
-    "−20 cos(ωt)V",
-    "20 sin(ωt)V",
-    "−20 sin(ωt)V",
-    "20 cos(ωt) + 20 sin(ωt)V V",
-    "20 cos(ωt) − 20 sin(ωt)V V",
-    "−20 cos(ωt) + 20 sin(ωt)V V",
-    "−20 cos(ωt) − 20 sin(ωt)V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     3
    ],
-   "key": "4) −20 sin(ωt)V",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11731,22 +11432,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "5 V",
-    "1 V",
-    "-1 V",
-    "2+3j V",
-    "2-3j V",
-    "-2+3j V",
-    "-2-3j V",
-    "3j V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     4
    ],
-   "key": "5) 2-3j V",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -11854,9 +11545,9 @@
    "nopt": null,
    "ans": null,
    "key": "\\(V_3\\) leads; \\(V_1\\), \\(V_2\\) lag",
+   "ctx": "The source question stops after the three signals. The choices are orderings, so put the signals in order from most leading phase to most lagging.",
    "sol": null,
-   "flag": null,
-   "ctx": null
+   "flag": null
   },
   {
    "id": "COP-7.19",
@@ -12052,21 +11743,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "2A",
-    "0A",
-    "3A",
-    "5A",
-    "4A",
-    "8A",
-    "-2A",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     5
    ],
-   "key": "6) 8A",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12137,22 +11819,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "jΩ",
-    "−jΩ",
-    "j5Ω",
-    "−j5Ω",
-    "j6Ω",
-    "−j6Ω",
-    "j4Ω",
-    "−j4Ω",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) jΩ",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12192,22 +11864,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "1∠45 o",
-    "1∠ − 90 o",
-    "10∠90 o",
-    "10∠ − 90 o",
-    "0.2∠ − 45 o",
-    "0.2∠ − 60 o",
-    "0.1∠ − 45 o",
-    "0.1∠ − 90 o",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     3
    ],
-   "key": "4) 10∠ − 90 o",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12246,22 +11908,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "(4 − j)",
-    "",
-    "(2 + 3j)",
-    "(4 − 8j)",
-    "(4 + j)",
-    "(4 − 3j)",
-    "(2)",
-    "(2 − 8j)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     3
    ],
-   "key": "4) (4 − 8j)",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12300,22 +11952,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "(1 + j)",
-    "(2 + j2)",
-    "(2 − j)",
-    "(3 + j)",
-    "(3 − j2)",
-    "(4 + j4)",
-    "(4 − j2)",
-    "(4 − j4)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     1
    ],
-   "key": "2) (2 + j2)",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12354,22 +11996,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "(0.707 + j0.707)",
-    "(0.707 + j0.707)",
-    "(1 + j)",
-    "(1 − j)",
-    "(1.414 + j1.414)",
-    "(1.414 − j1.414)",
-    "(2 + j2)",
-    "(2 − j2)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     2
    ],
-   "key": "3) (1 + j)",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12408,22 +12040,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "(5)",
-    "(5 − j5)",
-    "(5 + j5)",
-    "(1 − j10)",
-    "(−13.7 + 10)",
-    "(3.5 − j10.5)",
-    "(2.5 + j20)",
-    "(−5 + j5)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     5
    ],
-   "key": "6) (3.5 − j10.5)",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12493,21 +12115,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "(C=1mF)",
-    "(C=10mF)",
-    "(C=100mF)",
-    "(C=1F)",
-    "(C=10F)",
-    "(C=100F)",
-    "(C=1000F)",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     1
    ],
-   "key": "2) (C=10mF)",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12714,21 +12327,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch7.pdf",
    "prov": "Official key",
-   "opts": [
-    "1∠0 ◦ V",
-    "1∠180 ◦ V",
-    "2 2∠225 ◦ V",
-    "−2 2∠225 ◦ V",
-    "1 − 2 2∠45 ◦ V",
-    "1 − 2 2∠225 ◦ V",
-    "2(1 − 2)∠225 ◦ V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     5
    ],
-   "key": "6) 1 − 2 2∠225 ◦ V",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12767,21 +12371,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1V",
-    "0.25V",
-    "5V",
-    "0.2V",
-    "0.5V",
-    "1.5V",
-    "2V",
-    "None of the above."
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     4
    ],
-   "key": "5) 0.5V",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12820,21 +12415,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "70 W",
-    "25 W",
-    "100 W",
-    "20 W",
-    "50 W",
-    "40 W",
-    "30 W",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     1
    ],
-   "key": "2) 25 W",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12872,21 +12458,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "Vrms 3 > Vrms 1 + Vrms 2",
-    "Vrms 3 = Vrms 1 + Vrms 2",
-    "Vrms 1 = −Vrms 2",
-    "Vrms 2 + Vrms 2 = Vrms 2",
-    "Vrms = Vrms",
-    "Both (3) and (5)",
-    "Both (4) and (5)",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     6
    ],
-   "key": "7) Both (4) and (5)",
+   "key": "Option 7",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12922,19 +12499,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "Reactance  should be inductive to maximize the transferred power. XL",
-    "Reactance  should be capacitive to maximize the transferred power. XL",
-    "∗ maximizes the transferred power. ZL = Z th",
-    "Both (1) and (3)",
-    "Both (2) and (3)",
-    "All (1), (2) and (3)"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     2
    ],
-   "key": "3) ∗ maximizes the transferred power. ZL = Z th",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -12973,21 +12543,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "0",
-    "2.5",
-    "5",
-    "7.5",
-    "10",
-    "12.5",
-    "25",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     5
    ],
-   "key": "6) 12.5",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13091,22 +12652,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "4",
-    "2",
-    "6",
-    "2 2",
-    "(2/3) 3",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     4
    ],
-   "key": "5) 2",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13146,22 +12697,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "25",
-    "-25",
-    "50",
-    "-50",
-    "100",
-    "-100",
-    "50 2",
-    "-50 2",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     1
    ],
-   "key": "2) -25",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13201,22 +12742,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1+j",
-    "1-j",
-    "1+2j",
-    "1-2j",
-    "2+4j",
-    "2-4j",
-    "2+2j",
-    "2-2j",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     4
    ],
-   "key": "5) 2+4j",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13257,23 +12788,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "10 VA",
-    "-10 VA",
-    "10j VA",
-    "-10j VA",
-    "2.5 VA",
-    "-2.5 VA",
-    "2.5j VA",
-    "-2.5j VA",
-    "0 VA",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     0
    ],
-   "key": "1) 10 VA",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13313,23 +12833,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "10",
-    "-10",
-    "10j",
-    "-10j",
-    "2.5",
-    "-2.5",
-    "2.5j",
-    "-2.5j",
-    "0",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     1
    ],
-   "key": "2) -10",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13365,19 +12874,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "2.5 A",
-    "2 A",
-    "1.5 A",
-    "1 A",
-    "0.5 A",
-    "Any value is possible"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     0
    ],
-   "key": "1) 2.5 A",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13415,21 +12917,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "2Ω",
-    "0Ω",
-    "−1Ω",
-    "0.5Ω",
-    "4Ω",
-    "1Ω",
-    "−2Ω",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     5
    ],
-   "key": "6) 1Ω",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13467,21 +12960,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "ω = p 1",
-    "ω = p 1",
-    "ω = L 1 + R",
-    "L 1 L 2 ω =",
-    "ω = p 1",
-    "L 2 ω =",
-    "L 2 ω = + L 1",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     4
    ],
-   "key": "5) ω = p 1",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13519,21 +13003,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "5 rad/s",
-    "1 rad/s",
-    "10 rad/s",
-    "0.02 rad/s",
-    "20 rad/s",
-    "0.1 rad/s",
-    "0.2 rad/s",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     1
    ],
-   "key": "2) 1 rad/s",
+   "key": "Option 2",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13604,19 +13079,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 ω =",
-    "ω = p 1",
-    "ω = p 1",
-    "1 ω = p",
-    "1 ω =",
-    "1 ω ="
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     2
    ],
-   "key": "3) ω = p 1",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13655,21 +13123,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 W",
-    "2 W",
-    "4 W",
-    "5 W",
-    "8 W",
-    "4 2 W",
-    "12 2 W",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     4
    ],
-   "key": "5) 8 W",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13709,22 +13168,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "R = 1Ω, L = 0.04H",
-    "R = 1Ω, L = 1H",
-    "R = 1Ω, L = 4H",
-    "R = 1Ω, L = 0.02H",
-    "R = 2Ω, L = 0.04H",
-    "R = 2Ω, L = 1H",
-    "R = 2Ω, L = 0.02H",
-    "R = 2Ω, L = 4H",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) R = 1Ω, L = 0.04H",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13796,22 +13245,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1 ≈ 0.293 V 1 − √",
-    "0.5 V",
-    "2 ≈ 0.707 V 1 = √",
-    "q 2 ≈ 0.816 V",
-    "1 V",
-    "q 3 ≈ 1.22 V",
-    "1 ≈ 1.707 V 1+ √",
-    "2 V",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     5
    ],
-   "key": "6) q 3 ≈ 1.22 V",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -13850,21 +13289,12 @@
    "notes": "Key text was extracted from a PDF with superscripts split onto other lines (shown in ⟨⟩); rebuild the expression from the key PDF.",
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "0 A rms",
-    "0.3 A rms",
-    "0.5 A rms",
-    "1 A rms",
-    "1.3 A rms",
-    "1.5 A rms",
-    "2 A rms",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 8,
    "ans": [
     6
    ],
-   "key": "7) 2 A rms",
+   "key": "Option 7",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14004,23 +13434,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "100 + 50 cos 10t − 60 ◦ ",
-    "100 + 25 cos 10t − 120 ◦ ",
-    "25 + 25 cos 10t − 60 ◦ ",
-    "◦  25 + 50 cos 10t − 120",
-    "◦  50 + 25 cos 10t − 60",
-    "50 + 50 cos 10t − 60 ◦ ",
-    "75 + 50 cos 10t − 120 ◦ ",
-    "75 + 25 cos 10t − 60 ◦ ",
-    "100",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 10,
    "ans": [
     3
    ],
-   "key": "4) ◦  25 + 50 cos 10t − 120",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14060,22 +13479,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1",
-    "2",
-    "3",
-    "0.5",
-    "0.33",
-    "6",
-    "12",
-    "1.5",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) 1",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14111,19 +13520,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "0.500",
-    "0.707",
-    "1.000",
-    "1.414",
-    "1.732",
-    "2.000"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     3
    ],
-   "key": "4) 1.414",
+   "key": "Option 4",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14159,19 +13561,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "756.3 VA",
-    "1512.5 VA",
-    "1467.3 VA",
-    "733.7 VA",
-    "6050 VA",
-    "2201.1 VA"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     2
    ],
-   "key": "3) 1467.3 VA",
+   "key": "Option 3",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14208,19 +13603,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "1.18",
-    "2.24",
-    "3.66",
-    "4.0",
-    "5.5",
-    "7.26"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     0
    ],
-   "key": "1) 1.18",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14260,22 +13648,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "R = 14Ω and C = 16 F",
-    "R = 14Ω and L = 16 H",
-    "R = 14Ω and C = 1.667 mF",
-    "R = 14Ω",
-    "R = 14Ω",
-    "R = 14Ω and L = 60 mH",
-    "I = 60 mH",
-    "I = 16 H",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     5
    ],
-   "key": "6) R = 14Ω and L = 60 mH",
+   "key": "Option 6",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14477,22 +13855,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "3 A rms √",
-    "3 2 A rms",
-    "2 A rms √",
-    "2 2 A rms",
-    "2 A rms",
-    "1 A rms √",
-    "1 A rms",
-    "0 A rms",
-    "None of the above"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 9,
    "ans": [
     0
    ],
-   "key": "1) 3 A rms √",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14528,19 +13896,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "3/π Hz",
-    "3π Hz",
-    "4/π Hz",
-    "4π Hz",
-    "1.5/π Hz",
-    "1/π Hz"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     4
    ],
-   "key": "5) 1.5/π Hz",
+   "key": "Option 5",
    "sol": null,
    "flag": null,
    "ctx": null
@@ -14578,19 +13939,12 @@
    "notes": null,
    "ta_solution": "_source/pdf/ece2k1_COP_TA_ch8.pdf",
    "prov": "Official key",
-   "opts": [
-    "Pau = G I eff 2",
-    "Pau = G V eff 2",
-    "Pau = B I eff 2",
-    "Pau = B V eff 2",
-    "Pau = G I eff 2 + B V eff 2",
-    "Pau = G V eff 2 + B I eff 2"
-   ],
-   "nopt": null,
+   "opts": null,
+   "nopt": 6,
    "ans": [
     0
    ],
-   "key": "1) Pau = G I eff 2",
+   "key": "Option 1",
    "sol": null,
    "flag": null,
    "ctx": null

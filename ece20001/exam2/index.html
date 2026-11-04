@@ -15,7 +15,9 @@ header.top{grid-template-columns:1fr}
 .sol{white-space:normal}.sol p{margin:6px 0}
 .qc.grp .qc{border:0;border-top:1px solid var(--rule);border-radius:0;padding:12px 0 0;margin-top:12px;background:none}
 .qc.grp .qc.ok,.qc.grp .qc.no{border-left:4px solid;padding-left:12px} .qc.grp .qc.ok{border-left-color:var(--good)} .qc.grp .qc.no{border-left-color:var(--bad)}
-.xfig{display:block;max-width:100%;height:auto;margin:6px 0 10px;border:1px solid var(--rule);border-radius:4px;background:#fff}
+.zoombox{position:fixed;inset:0;z-index:50;background:rgba(10,14,20,.85);overflow:auto;padding:20px;cursor:zoom-out;text-align:center}
+.zoombox img{background:#fff;border-radius:4px;max-width:none;display:inline-block}
+.xfig{cursor:zoom-in;display:block;max-width:100%;height:auto;margin:6px 0 10px;border:1px solid var(--rule);border-radius:4px;background:#fff}
 .ctx{background:var(--paper);border:1px solid var(--rule);padding:8px 12px;border-radius:4px;margin-bottom:8px;font-size:14px}
 .prov{display:inline-block;font:500 11px var(--f-mono);padding:2px 8px;border-radius:99px;border:1px solid var(--rule);color:var(--muted);margin:2px 0 6px}
 .prov.off{color:var(--good);border-color:var(--good)}.prov.warn{color:var(--bad);border-color:var(--bad)}
@@ -26,7 +28,7 @@ header.top{grid-template-columns:1fr}
 .oimg{display:block;max-width:100%;max-height:170px;background:#fff;border-radius:3px}
 .sol .k .oimg{display:inline-block;vertical-align:middle;max-height:120px}
 .fs li{margin:5px 0}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xfig{filter:invert(.9) hue-rotate(180deg)}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .zoombox img,:root:not([data-theme="light"]) .xfig{filter:invert(.9) hue-rotate(180deg)}}
 .prio{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;vertical-align:middle;white-space:nowrap;color:var(--ink);border:1px solid var(--rule)}
 .prio-box{border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:18px 0;background:var(--surface)}
 .prio-box h3{margin:0 0 4px}
@@ -68,7 +70,7 @@ header.top{grid-template-columns:1fr}
       <li><b>Do the warm-ups.</b> Each adds one new step. The last one is shaped like an exam question with new numbers.</li>
       <li><b>Try the real ones.</b> Each topic ends with a button that opens its past exam questions.</li>
     </ol>
-    <div class="prio-box"><h3>What to study first</h3><p class="sub">Ranked by importance out of 10: how many of the 76 past exam questions (Exam 2 from Fall 2023 to Fall 2025, plus Fall 2025 Exam 3) test the topic, nudged up where points are easy to lose. Click a topic to open it.</p><ol id="prio"></ol></div>
+    <div class="prio-box"><h3>What to study first</h3><p class="sub">Ranked by importance out of 10: how many of the 81 past exam questions (Exam 2 from Fall 2023 to Fall 2025, plus Fall 2025 Exam 3) test the topic, nudged up where points are easy to lose. Click a topic to open it.</p><ol id="prio"></ol></div>
     <div class="meter" id="meter"></div>
     <div id="lessons"></div>
   </section>
@@ -78,6 +80,7 @@ header.top{grid-template-columns:1fr}
       <label for="fSet">Set<select id="fSet"></select></label>
       <label for="fSrc">Source<select id="fSrc"></select></label>
       <label for="fTopic">Topic<select id="fTopic"></select></label>
+      <label for="fDiff">Difficulty<select id="fDiff"><option value="all">All</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option></select></label>
       <label class="chk" for="fOpen"><input type="checkbox" id="fOpen"> Unanswered only</label>
       <label class="chk" for="fCh4"><input type="checkbox" id="fCh4"> Hide Ch. 4 review</label>
       <button class="btn" id="shuffle">Shuffle</button>
@@ -334,7 +337,7 @@ resonance: {
 // schematics drawn for the warm-ups that describe a circuit: figs/w_<topic><index>.svg
 const WFIG = ["maxpower0","maxpower1","maxpower2","maxpower3","lc1","lc3","dcss0","dcss1","dcss2","dcss3","first0","first3","imp0","imp3","power3","resonance1","resonance2","resonance3"];
 
-// exam difficulty per topic, judged from the 76 past exam questions: [1 easy | 2 medium | 3 hard, why]
+// exam difficulty per topic, judged from the past exam questions: [1 easy | 2 medium | 3 hard, why]
 const DIFF={
   maxpower:[2,"The matching rule is one line, but you usually have to find the Thévenin equivalent first, and peak vs RMS changes the answer by a factor of 2."],
   lc:[1,"One derivative or one series/parallel combination. The trap is an inductor that carries no current and has to be dropped first."],
@@ -346,7 +349,7 @@ const DIFF={
   resonance:[2,"ω₀ = 1/√(LC) is quick; the hard part is knowing whether series or parallel has the impedance minimum, and rad/s vs Hz."]
 };
 const DLAB=["","Easy","Medium","Hard"];
-// study priority /10: share of the 76 past exam questions, nudged up where points are easy to lose
+// study priority /10: share of the past exam questions, nudged up where points are easy to lose
 const PRIO={
   first:[10,"On every Exam 2, usually twice or more: switch problems, τ with a dependent source, pulses. Hard, so it is worth the most practice."],
   imp:[10,"The most questions of any topic. Every later AC question (power, max power, resonance) is built on it, so get the complex arithmetic automatic."],
@@ -436,6 +439,9 @@ const label=q=>q.set==="cop"?`COP ${q.number}`:q.set==="homework"?`${q.source.sl
   q.set==="boilerexams"?`Boilerexams S23 · Q${q.id.split("-Q")[1]}`:`${q.source.replace(" (Version A)","")} · Q${q.id.split("-Q")[1]}`;
 const provCls=p=>p.startsWith("Official")||p.startsWith("Confirmed")?"off":p.startsWith("Worked")||p.startsWith("Boiler")?"warn":"";
 const nOpts=q=>q.opts?q.opts.length:q.nopt||0;
+// question difficulty from its hardest topic's rating (Ch. 4 review counts as easy): multiple choice tops out at
+// Medium (one step, options to check against), a work-out problem is one level up (several steps, no options)
+const qDiff=q=>{const t=Math.max(...q.topics.map(t=>DIFF[t]?DIFF[t][0]:1));return q.answer.kind==="mc"?Math.min(2,t):Math.min(3,t+1)};
 // parts printed on one shared figure (F24 Q5.1 and Q5.2, ...) show as one card with an answer row per part
 const figKey=q=>isPast(q)||q.set==="boilerexams"?(q.figs||[])[0]:null;
 const sharedN=q=>figKey(q)?Q.filter(x=>figKey(x)===figKey(q)).length:1;
@@ -452,7 +458,7 @@ function card(q,mode,sub){
   const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
   const mc=q.answer.kind==="mc", n=nOpts(q), multi=mc&&q.ans.length>1;
   const figs=f=>(f||[]).map(src=>`<img class="xfig" loading="lazy" src="figs/${src}" alt="Figure for ${esc(q.label||label(q))}">`).join("");
-  el.innerHTML=`<div class="meta"><span>${esc(sub?label(q).split(" · ").pop():q.label||label(q))}</span>${(q.topics||[]).map(t=>`<button class="chip" data-topic="${t}" title="Drill this topic">${SHORT[t]}</button>`).join("")}</div>
+  el.innerHTML=`<div class="meta"><span>${esc(sub?label(q).split(" · ").pop():q.label||label(q))}</span>${mode==="practice"||mode==="review"?`<span class="diff d${qDiff(q)}">${DLAB[qDiff(q)]}</span>`:""}${(q.topics||[]).map(t=>`<button class="chip" data-topic="${t}" title="Drill this topic">${SHORT[t]}</button>`).join("")}</div>
     <div class="stem">${q.ctx&&!sub?`<div class="ctx">${q.ctx}${figs(q.ctxfigs)}</div>`:""}${isPast(q)&&!sub?figs(q.figs):""}${q.stem&&q.set!=="cop"?`<p>${q.stem}</p>`:""}${isPast(q)||sub?"":figs(q.figs)}${!sub&&sharedN(q)>1?`<p class="vcap">The figure shows every part of this problem. Answer ${esc(label(q).split(" · ").pop())} only.</p>`:""}${multi?`<p class="vcap">Pick ${q.ans.length} answers.</p>`:""}</div>
     ${mc?`<div class="opts">${Array.from({length:n},(_,i)=>`<button class="opt" data-i="${i}"><span class="L">${optLab(q,i)}</span><span>${q.opts?q.opts[i]:""}</span></button>`).join("")}</div>`:""}
     <div class="foot"><span class="verdict"></span><button class="linkbtn sh">${mc?"Show solution":"Show answer"}</button></div>
@@ -510,10 +516,10 @@ function card(q,mode,sub){
 }
 
 /* ---------- practice ---------- */
-function setFilters(f){if(f.set)$("#fSet").value=f.set;if(f.src)$("#fSrc").value=f.src;if(f.topic)$("#fTopic").value=f.topic;$("#fOpen").checked=false;renderPractice()}
+function setFilters(f){if(f.set)$("#fSet").value=f.set;if(f.src)$("#fSrc").value=f.src;if(f.topic)$("#fTopic").value=f.topic;$("#fDiff").value="all";$("#fOpen").checked=false;renderPractice()}
 function filtered(){
-  const st=$("#fSet").value,src=$("#fSrc").value,tp=$("#fTopic").value,open=$("#fOpen").checked,h4=$("#fCh4").checked;
-  return order.filter(q=>(st==="all"||q.set===st)&&(src==="all"||q.source===src)&&(tp==="all"||q.topics.includes(tp))&&(!open||!prog[q.id])&&(!h4||q.scope!=="ch4-review"));
+  const st=$("#fSet").value,src=$("#fSrc").value,tp=$("#fTopic").value,df=$("#fDiff").value,open=$("#fOpen").checked,h4=$("#fCh4").checked;
+  return order.filter(q=>(st==="all"||q.set===st)&&(src==="all"||q.source===src)&&(tp==="all"||q.topics.includes(tp))&&(df==="all"||qDiff(q)===+df)&&(!open||!prog[q.id])&&(!h4||q.scope!=="ch4-review"));
 }
 function renderPractice(){
   const list=filtered(),box=$("#qlist");box.innerHTML="";shown=0;
@@ -542,7 +548,7 @@ function fillSelects(){
   $("#fSrc").innerHTML=`<option value="all">All sources</option>`+srcs.map(s=>`<option value="${esc(s)}">${esc(s.replace(" (Version A)",""))}</option>`).join("");
   $("#fTopic").innerHTML=`<option value="all">All topics</option>`+Object.keys(SHORT).map(k=>`<option value="${k}">${SHORT[k]}</option>`).join("");
 }
-["#fSet","#fSrc","#fTopic","#fOpen","#fCh4"].forEach(s=>$(s).addEventListener("change",renderPractice));
+["#fSet","#fSrc","#fTopic","#fDiff","#fOpen","#fCh4"].forEach(s=>$(s).addEventListener("change",renderPractice));
 $("#more").onclick=()=>more();
 $("#shuffle").onclick=()=>{order=Q.slice().sort(()=>Math.random()-.5);renderPractice()};
 (function(b){let t=null;b.onclick=()=>{
@@ -569,6 +575,15 @@ function renderSheet(){
   typeset(el);
 }
 
+/* ---------- figure zoom: click a figure to see it larger, click or Esc to close ---------- */
+document.addEventListener("click",e=>{
+  const im=e.target.closest(".xfig");if(!im)return;
+  const box=document.createElement("div");box.className="zoombox";box.setAttribute("role","dialog");box.setAttribute("aria-label","Enlarged figure");
+  const big=new Image();big.src=im.src;big.alt=im.alt;big.style.width=Math.min(innerWidth*.96,Math.max(im.naturalWidth,im.clientWidth*2))+"px";
+  box.appendChild(big);document.body.appendChild(box);
+  const close=()=>{box.remove();removeEventListener("keydown",key)},key=k=>{if(k.key==="Escape")close()};
+  box.onclick=close;addEventListener("keydown",key);
+});
 /* ---------- start here ---------- */
 function renderPrio(){
   const past=Q.filter(isPast),EX=new Set(past.map(q=>q.source)).size;
