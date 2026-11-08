@@ -1,0 +1,1783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ECE 20875 Exam 2 prep: both official Fall 2026 Exam 2 mocks with worked solutions, lecture examples, runnable Python practice, refreshers, a printable notes sheet, and a timed mock exam.">
+<title>ECE 20875 Exam 2 Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../site.css">
+<style>
+html,body{margin:0}[hidden]{display:none!important}
+.part{border-top:1px dashed var(--rule);padding-top:12px;margin-top:12px}
+.ph{display:flex;gap:8px;align-items:baseline;font:600 13px var(--f-mono);margin-bottom:4px}
+.ph span{color:var(--muted);font-weight:400}
+.ph .tick{margin-left:auto;font-weight:600} .ph .tick.ok{color:var(--good)} .ph .tick.no{color:var(--bad)}
+.pq{overflow-x:auto;overflow-y:hidden}
+.pq p,.ctx p{margin:6px 0}
+pre.code{font:13px/1.5 var(--f-mono);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:10px 12px;overflow-x:auto;margin:8px 0;white-space:pre;tab-size:4}
+code{font:13px var(--f-mono);background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:0 4px}
+pre.code code{border:0;padding:0;background:none}
+textarea{display:block;width:100%;font:13px/1.5 var(--f-mono);tab-size:4;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:10px 12px;resize:vertical;margin:8px 0 0}
+textarea.code{min-height:8em;white-space:pre;overflow:auto}
+textarea.work{min-height:4.5em;font:14px/1.5 var(--f-body)}
+textarea:focus,.nums input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.nums{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:end;margin-top:8px}
+.nums label{display:flex;flex-direction:column;font:500 11px var(--f-mono);color:var(--muted);gap:3px}
+.nums input{font:15px var(--f-mono);width:8.5em;padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink)}
+.nums input.right{border-color:var(--good);background:var(--good-soft)} .nums input.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.out{font:12.5px/1.5 var(--f-mono);white-space:pre-wrap;background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;margin:8px 0 0;max-height:18em;overflow:auto}
+.out .p{color:var(--good)} .out .f{color:var(--bad)}
+.sol pre.code{white-space:pre}
+.self{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;font:12px var(--f-mono);color:var(--muted)}
+.self .btn{padding:4px 10px}
+.self .btn.on.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)} .self .btn.on.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.ctx{overflow-x:auto}
+table.dt{border-collapse:collapse;font:13px var(--f-mono);margin:8px 0}
+table.dt td,table.dt th{border:1px solid var(--rule);padding:3px 10px;text-align:center}
+table.dt th{background:var(--paper);font-weight:500}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px;margin:0 0 22px}
+.facts div{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;font-size:14px}
+.facts b{display:block;font:700 17px var(--f-display);margin-bottom:2px}
+.keybug{background:var(--gold-soft);border-left:4px solid var(--gold);padding:8px 12px;border-radius:4px;margin:8px 0;font-size:14px}
+.pts{font:600 12px var(--f-mono);color:var(--gold)}
+.mscore{font:500 14px var(--f-mono);color:var(--muted)}
+.cifig{max-width:440px;width:100%;display:block;margin:6px 0}
+.cifig text{font:12px var(--f-mono);fill:var(--muted)}
+.play textarea{min-height:12em}
+#bell{width:170px;height:170px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);display:block}
+.qfig{display:block;width:100%;max-width:420px;margin:8px 0;border:1px solid var(--rule);border-radius:4px;background:#fff;cursor:zoom-in}
+.vplay{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px}
+@media print{
+  nav.tabs,header.top,.notes,#start,#practice,#mock,.bars,.legend,.noprint,.meme,.achtoast{display:none!important}
+  #topics{display:block!important}
+  body{background:#fff}
+  .sheet{grid-template-columns:1fr 1fr;gap:8px} .card{break-inside:avoid;padding:8px 10px} .card h3{font-size:14px} .card li{font-size:11px;margin:1px 0} .trap{font-size:10.5px}
+}
+.prio{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;vertical-align:middle;white-space:nowrap;color:var(--ink);border:1px solid var(--rule)}
+.prio-box{border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:18px 0;background:var(--surface)}
+.prio-box h3{margin:0 0 4px}
+#prio{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+#prio button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:52px 90px 1fr;grid-template-areas:"sc bar tn" "sc bar pts" ". . why";column-gap:12px;align-items:center;padding:8px 10px;border-radius:6px;border:1px solid transparent}
+#prio button:hover,#prio button:focus-visible{border-color:var(--rule);background:var(--paper)}
+#prio .sc{grid-area:sc;font:12px var(--f-mono);color:var(--muted)}#prio .sc b{font-size:20px;color:var(--ink)}
+#prio .bar{grid-area:bar;height:8px;border-radius:4px;background:var(--rule);overflow:hidden}#prio .bar i{display:block;height:100%;background:var(--gold)}
+#prio .tn{grid-area:tn;font-weight:600}
+#prio .pts{grid-area:pts;font:11px var(--f-mono);color:var(--muted)}
+#prio .why{grid-area:why;font-size:14px;color:var(--muted);margin-top:2px}
+@media (max-width:640px){#prio button{grid-template-columns:44px 1fr;grid-template-areas:"sc tn" "sc pts" "bar bar" "why why";row-gap:4px}}
+</style>
+<link rel="icon" type="image/png" href="../../favicon.png"><link rel="apple-touch-icon" href="../../favicon.png">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow"><a href="../../" style="color:inherit">← DecoExams</a> · ECE 20875 · Python for Data Science</div>
+      <h1>Exam 2 Lab</h1>
+      <p class="lede">Refreshers for every Exam 2 topic, both official Fall 2026 Exam 2 mocks with their keys, the worked examples from the slides, extra problems in the same style, code you can actually run, a notes sheet to print, and a timed mock.</p>
+      <div class="stats" id="stats"></div>
+      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button><button class="sndbtn" id="mem" type="button"></button><button class="sndbtn" id="achb" type="button"></button></div>
+      <dialog id="achd"><div class="ahead"><h2>Achievements</h2><form method="dialog"><button class="btn">Close</button></form></div><div class="agrid" id="agrid"></div></dialog>
+    </div>
+    <div class="cv"><canvas id="bell" width="340" height="340" aria-label="Two weighted bell curves and the mixture they add up to"></canvas><div class="cap">two Gaussians → one mixture</div></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-start" aria-selected="true" data-tab="start">Start here</button>
+    <button role="tab" id="tab-practice" aria-selected="false" data-tab="practice">Practice</button>
+    <button role="tab" id="tab-mock" aria-selected="false" data-tab="mock">Mock exam</button>
+    <button role="tab" id="tab-topics" aria-selected="false" data-tab="topics">Topics &amp; notes</button>
+  </nav>
+
+  <section id="start">
+    <h2>What the exam looks like</h2>
+    <p class="sub">From the two Fall 2026 Exam 2 mocks and the Exam 2 FAQ on Piazza (linked from the Brightspace announcement).</p>
+    <div class="facts">
+      <div><b>Thu Nov 12, 8:00–9:00 PM</b>Sec 1 (Prof. Pare) in UC 114, Sec 2 (Prof. Qiu) in FRNY G140. Arrive 10–15 minutes early; the first 5 minutes are for writing your name and PUID on every page.</div>
+      <div><b>60 minutes, about 6 questions</b>About 10 minutes each, 16 to 18 points each, 100 total. On both mocks: Q1 kNN + k-means, Q2 GMM, Q3 Naive Bayes, Q4 regex, Q5 n-grams + TF-IDF, Q6 logistic regression + gradient ascent/descent.</div>
+      <div><b>Written, show your work</b>Paper packet scanned to Gradescope. Points go line by line (1 per distance, 1 per likelihood). Trivial syntax slips cost little; a C-style for loop costs more.</div>
+      <div><b>Open notes, no calculator</b>Anything printed from Brightspace, handwritten notes and your own printed notes are allowed; no electronics. Numbers are hand-friendly: N(x | μ, σ²) values come in a table and e<sup>−1</sup> ≈ 1/3 is given.</div>
+      <div><b>Scope: Weeks 5–9</b>Everything up to and including the Logistic Regression slides. Modern language representations (Week 10) is not tested.</div>
+      <div><b>Python from the Self-Reading</b>The FAQ says Python questions may ask you to write short code or read its output, using the Self-Reading too (classes, inheritance, file I/O, the regex notebook). Neither mock had one, so there is a topic for it here.</div>
+    </div>
+    <h2>Start here</h2>
+    <p class="sub">A plain-language refresher for each topic, something to play with, then warm-ups that build up to exam shape.</p>
+    <ol class="steps">
+      <li><b>Read the refresher.</b> The few ideas each topic really tests, plus the traps.</li>
+      <li><b>Do the warm-ups.</b> In code warm-ups, replace every <code>____</code> with your code and press <b>Run tests</b>; number answers take decimals (0.25) or fractions (1/4). Each set opens with what the exam asks on that topic, then builds it one piece at a time. The last warm-up is an exam-style question with new numbers. Numbers are checked instantly; code runs real Python in your browser.</li>
+      <li><b>Try the exam questions.</b> Each topic ends with a link to every mock, lecture and extra problem on it.</li>
+    </ol>
+    <div class="prio-box"><h3>What to study first</h3><p class="sub">Ranked by importance out of 10: how many points the topic was worth on the two mocks, nudged up where points are easy to lose. Click a topic to open it.</p><ol id="prio"></ol></div>
+    <div class="meter" id="meter"></div>
+    <div id="lessons"></div>
+  </section>
+
+  <section id="practice" hidden>
+    <div class="filters">
+      <label for="fSet">Source<select id="fSet"></select></label>
+      <label for="fTopic">Topic<select id="fTopic"></select></label>
+      <label class="chk" for="fOpen"><input type="checkbox" id="fOpen"> Unfinished only</label>
+      <button class="btn" id="shuffle">Shuffle</button>
+      <button class="btn ghost" id="reset">Reset my progress</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="qlist" id="qlist"></div>
+  </section>
+
+  <section id="mock" hidden></section>
+
+  <section id="topics" hidden>
+    <div class="noprint">
+      <h2>What shows up</h2>
+      <p class="sub">Points per topic across both official Exam 2 mocks. The gold bar is your accuracy on that topic in Practice (saved in this browser only). Click a topic to drill it.</p>
+      <div class="bars" id="bars"></div>
+      <div class="legend"><span><i style="background:var(--ink)"></i>points on the official mocks</span><span><i style="background:var(--gold)"></i>your % correct</span></div>
+    </div>
+    <h2>Notes sheet</h2>
+    <p class="sub noprint">Printed notes are allowed on this exam. Print this as a starting point (it fits on two pages) and add your own mistakes to each card.</p>
+    <p class="noprint"><button class="btn primary" id="print" type="button">Print the notes sheet</button></p>
+    <div class="sheet" id="sheet"></div>
+  </section>
+
+  <div class="notes">
+    <p>Sources: ECE 20875 Fall 2026 Brightspace materials: Mock Exam 2a and 2b (with keys), lecture slides and notebooks for Weeks 5–9, the Self-Reading, and the Exam 2 FAQ linked from the Brightspace announcements. "Lecture" problems are the slides' worked examples (two slide arithmetic slips are flagged where they occur). "Lab extras" are written for this site and are not official; their answers were worked out by hand and checked in Python. Boilerexams has no ECE 20875 material.</p>
+    <p>Progress is stored in your own browser. Code runs locally in your browser with Pyodide (downloaded the first time you press Run).</p>
+  </div>
+</div>
+
+<script>
+window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:"global"},startup:{typeset:false},options:{enableMenu:false}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async id="mjx"></script>
+<script>
+const R=String.raw;
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+// code block for question text and solutions
+const C=s=>`<pre class="code"><code>${esc(s.replace(/^\n+|\s+$/g,""))}</code></pre>`;
+const T=(head,rows)=>`<table class="dt"><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;
+
+const SETS={
+  A:{name:"Mock 2a", long:"Mock Exam 2a (Fall 2026)", note:"Official mock with key, posted on Brightspace under Exams → Exam2."},
+  B:{name:"Mock 2b", long:"Mock Exam 2b (Fall 2026)", note:"Official mock with key, posted on Brightspace under Exams → Exam2."},
+  L:{name:"Lecture", long:"Lecture examples", note:"Worked examples from the Week 5–9 slides, with the slides' own answers (checked by hand)."},
+  X:{name:"Lab extras", long:"Lab extras", note:"Written for this site in the style of the mocks. Not official; answers checked in Python."}
+};
+const TOPICS={
+  knn:"kNN & distances",
+  km:"k-means & the elbow",
+  gmm:"Gaussian mixtures (EM)",
+  nb:"Naive Bayes",
+  re:"Regular expressions",
+  ngram:"n-grams & TF-IDF",
+  logreg:"Logistic regression",
+  gd:"Gradient descent & ascent",
+  oop:"Classes, inheritance & files"
+};
+// mock exam draws one problem from each slot, like the real 6-question exam
+const SLOTS=[["kNN & k-means",["knn","km"]],["Gaussian mixtures",["gmm"]],["Naive Bayes",["nb"]],["Regex & Python",["re","oop"]],["n-grams & TF-IDF",["ngram"]],["Logistic regression",["logreg","gd"]]];
+
+/* Problems. Each part has a kind:
+   code: start (with ____ blanks), tests [[call, expected]], optional pre (setup code), need (words the code must use), sol (code)
+   num:  ans [numbers], lab [labels]; checked within ~1%
+   mc:   o [options], a (letter)
+   free: self-graded against the solution */
+const P=[
+/* ---------------- MOCK 2a ---------------- */
+{s:"A",n:1,t:"knn",
+ ctx:R`<p>Six points in 2-D, each labelled Star or Heart. Use this table for Parts A and B.</p>${T(["Point","(x, y)","Class"],[["A","(1, 3)","Star"],["B","(4, 2)","Star"],["C","(1, 1)","Star"],["D","(7, 8)","Heart"],["E","(9, 5)","Heart"],["F","(8, 8)","Heart"]])}`,
+ parts:[
+ {p:"A1",pts:6,kind:"num",q:R`<p>A new point Z = (3, 4) is classified with k = 3 nearest neighbours and the <b>Manhattan</b> distance \(|x_1-x_2|+|y_1-y_2|\). Find the distance from Z to each point.</p>`,
+  ans:[3,3,5,8,7,9],lab:["d(Z,A)","d(Z,B)","d(Z,C)","d(Z,D)","d(Z,E)","d(Z,F)"],
+  sol:R`<p>Subtract the x's, subtract the y's, drop the minus signs, add.</p>${T(["Point","|x diff| + |y diff|","distance"],[["A (1,3)","|3−1| + |4−3| = 2 + 1","3"],["B (4,2)","|3−4| + |4−2| = 1 + 2","3"],["C (1,1)","|3−1| + |4−1| = 2 + 3","5"],["D (7,8)","|3−7| + |4−8| = 4 + 4","8"],["E (9,5)","|3−9| + |4−5| = 6 + 1","7"],["F (8,8)","|3−8| + |4−8| = 5 + 4","9"]])}<p>The key gives 1 point per distance, so write each line of arithmetic.</p>`},
+ {p:"A2",pts:2,kind:"mc",q:R`<p>With k = 3, which class is Z assigned to?</p>`,o:["Star","Heart"],a:"A",
+  sol:R`<p>Sort the distances: A = 3, B = 3, C = 5, E = 7, D = 8, F = 9. The 3 nearest are A, B and C, all Star. Three votes to zero: <b>Star</b>.</p>`},
+ {p:"B",pts:4,t:"km",kind:"num",q:R`<p>Now ignore the labels. Run K-Means with K = 2 on A–F using the <b>Manhattan</b> distance. The starting centers are \(c_1=(1,1)\) and \(c_2=(8,8)\). After one full iteration (assign every point, then move each center), what are the new centers?</p>`,
+  ans:[2,2,8,7],lab:["c₁ x","c₁ y","c₂ x","c₂ y"],
+  sol:R`<p><b>Assign</b> each point to the nearer center:</p>${T(["Point","to c₁ (1,1)","to c₂ (8,8)","goes to"],[["A (1,3)","0+2 = 2","7+5 = 12","c₁"],["B (4,2)","3+1 = 4","4+6 = 10","c₁"],["C (1,1)","0","7+7 = 14","c₁"],["D (7,8)","6+7 = 13","1+0 = 1","c₂"],["E (9,5)","8+4 = 12","1+3 = 4","c₂"],["F (8,8)","14","0","c₂"]])}<p><b>Update</b> each center to the average of its points (average the x's, then the y's):</p><p>\(c_1=\left(\frac{1+4+1}{3},\frac{3+2+1}{3}\right)=(2,2)\), \(c_2=\left(\frac{7+9+8}{3},\frac{8+5+8}{3}\right)=(8,7)\).</p>`},
+ {p:"C",pts:4,t:"km",kind:"mc",q:R`<p>In the <b>elbow method</b> for choosing the number of clusters in K-Means, what is usually on the y-axis?</p>`,
+  o:["The sum of squared distances from each point to its assigned cluster center","The number of points in the densest cluster","The Euclidean distance between the two most distant centroids","The number of iterations K-Means needed to converge"],a:"A",
+  sol:R`<p>You run K-Means for K = 1, 2, 3, … and plot the <b>sum of squared distances</b> from each point to its center (also called SSE, inertia or within-cluster sum of squares) against K. It always goes down as K grows; you pick the K at the "elbow", where adding another cluster stops helping much.</p>`}
+]},
+{s:"A",n:2,t:"gmm",
+ ctx:R`<p>A Gaussian Mixture Model (GMM) has 2 components:</p><ul><li>Component 1: \(\pi_1=0.3,\ \mu_1=2,\ \sigma_1^2=1\)</li><li>Component 2: \(\pi_2=0.7,\ \mu_2=5,\ \sigma_2^2=1\)</li></ul><p>Data: \(x_1=2,\ x_2=3,\ x_3=5\). The normal density values at these points are given:</p>${T(["x<sub>j</sub>","N(x<sub>j</sub> | μ₁, σ₁²)","N(x<sub>j</sub> | μ₂, σ₂²)"],[["x₁ = 2","0.14","0.04"],["x₂ = 3","0.10","0.10"],["x₃ = 5","0.02","0.12"]])}`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>E-step: find the responsibilities \(\gamma_{11}\) and \(\gamma_{21}\), the probability that \(x_1=2\) came from component 1 and from component 2.</p>`,
+  ans:[0.6,0.4],lab:["γ₁₁","γ₂₁"],
+  sol:R`<p>Responsibility = (this component's weight × its density at the point) ÷ (the same thing added up over all components).</p><p>\(\gamma_{11}=\dfrac{\pi_1N(x_1|\mu_1,\sigma_1^2)}{\pi_1N(x_1|\mu_1,\sigma_1^2)+\pi_2N(x_1|\mu_2,\sigma_2^2)}=\dfrac{0.3\times0.14}{0.3\times0.14+0.7\times0.04}=\dfrac{0.042}{0.042+0.028}=\dfrac{0.042}{0.070}=0.6\)</p><p>The two responsibilities of one point add to 1, so \(\gamma_{21}=1-0.6=0.4\).</p>`},
+ {p:"B",pts:6,kind:"num",q:R`<p>Assume the E-step gave these responsibilities for all three points:</p>${T(["x<sub>j</sub>","γ₁ⱼ","γ₂ⱼ"],[["2","0.5","0.5"],["3","0.4","0.6"],["5","0.1","0.9"]])}<p>Run one M-step: find \(N_k\) (total responsibility), \(\pi_k\) (mixing weight) and \(\mu_k\) (weighted mean).</p>`,
+  ans:[1,2,1/3,2/3,2.7,3.65],lab:["N₁","N₂","π₁","π₂","μ₁","μ₂"],
+  sol:R`<p>\(N_1=0.5+0.4+0.1=1.0\), \(N_2=0.5+0.6+0.9=2.0\).</p><p>\(\pi_k=N_k/n\) with \(n=3\) points: \(\pi_1=1/3\), \(\pi_2=2/3\).</p><p>\(\mu_k=\dfrac{\sum_j\gamma_{kj}x_j}{N_k}\): \(\mu_1=\dfrac{0.5(2)+0.4(3)+0.1(5)}{1.0}=\dfrac{1+1.2+0.5}{1}=2.7\), \(\mu_2=\dfrac{0.5(2)+0.6(3)+0.9(5)}{2.0}=\dfrac{1+1.8+4.5}{2}=\dfrac{7.3}{2}=3.65\).</p>`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>Which statement best describes a key difference between K-Means and GMMs?</p>`,
+  o:["K-Means does soft clustering with probabilities, while GMMs do hard clustering with fixed labels.","GMMs can account for cluster variance and overlapping distributions, while K-Means assumes round clusters of similar size.","K-Means uses the Expectation-Maximization (EM) algorithm, whereas GMMs do not.","GMMs need the Manhattan distance while K-Means needs the Euclidean distance."],a:"B",
+  sol:R`<p>A GMM gives every component its own variance and lets points belong partly to several components (soft), so it handles clusters of different spread that overlap. K-Means gives each point one label (hard) and, because it only uses distance to a center, works best on round clusters of similar size. Option A has soft and hard backwards; C has EM backwards (GMMs are fit with EM); D is made up.</p>`}
+]},
+{s:"A",n:3,t:"nb",
+ ctx:R`<p>A Multinomial Naive Bayes classifier sorts campus forum posts into Academic (A) or Social (S). Bag-of-words: word counts are the features, and words are independent given the class.</p>${T(["Post","Text","Label"],[["1","study hard exam","A"],["2","hard project","A"],["3","fun party","S"],["4","hard game","S"]])}<p>Vocabulary {study, hard, exam, project, fun, party, game}, so \(|V|=7\). Words in class A: \(N_A=5\). Words in class S: \(N_S=4\).</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"num",q:R`<p>With Laplace smoothing, find \(P(\text{hard}|A)\), \(P(\text{hard}|S)\), \(P(\text{fun}|A)\), \(P(\text{fun}|S)\). Fractions are fine.</p>`,
+  ans:[1/4,2/11,1/12,2/11],lab:["P(hard|A)","P(hard|S)","P(fun|A)","P(fun|S)"],
+  sol:R`<p>Laplace smoothing: \(P(w|c)=\dfrac{\text{count of }w\text{ in class }c+1}{N_c+|V|}\).</p><ul><li>"hard" appears 2 times in A: \(\frac{2+1}{5+7}=\frac{3}{12}=\frac14\)</li><li>"hard" appears 1 time in S: \(\frac{1+1}{4+7}=\frac{2}{11}\)</li><li>"fun" appears 0 times in A: \(\frac{0+1}{5+7}=\frac{1}{12}\)</li><li>"fun" appears 1 time in S: \(\frac{1+1}{4+7}=\frac{2}{11}\)</li></ul>`},
+ {p:"B1",pts:4,kind:"num",q:R`<p>A new post says "hard fun". Priors are proportional to the number of posts in each class. Give the priors and the <b>unnormalized</b> posteriors \(P(A|\text{post})\propto P(\text{hard}|A)P(\text{fun}|A)P(A)\) and the same for S.</p>`,
+  ans:[1/2,1/2,1/96,2/121],lab:["P(A)","P(S)","A score","S score"],
+  sol:R`<p>2 of the 4 posts are A and 2 are S, so \(P(A)=P(S)=\frac12\).</p><p>A: \(\frac14\times\frac1{12}\times\frac12=\frac1{96}\approx0.0104\)</p><p>S: \(\frac2{11}\times\frac2{11}\times\frac12=\frac{4}{242}=\frac2{121}\approx0.0165\)</p><p>"Unnormalized" means we skip dividing by \(P(\text{post})\). It is the same for both classes, so it doesn't change which is bigger.</p>`},
+ {p:"B2",pts:2,kind:"mc",q:R`<p>Which class does the classifier assign to "hard fun"?</p>`,o:["Academic (A)","Social (S)"],a:"B",sol:R`<p>\(\frac2{121}\approx0.0165>\frac1{96}\approx0.0104\), so <b>Social</b>.</p>`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>A new post is made entirely of words never seen in training. With the Laplace smoothing above, which class does the classifier favor?</p>`,o:["Academic (A)","Social (S)","Neither: the scores tie"],a:"B",
+  sol:R`<p>An unseen word has count 0 in both classes, so each one contributes \(\frac{0+1}{N_A+7}=\frac1{12}\) for A and \(\frac{0+1}{N_S+7}=\frac1{11}\) for S. Since \(\frac1{11}>\frac1{12}\) and the priors are equal, every unseen word pushes toward <b>S</b>, the class with fewer total words (a smaller denominator).</p>`}
+]},
+{s:"A",n:4,t:"re",
+ ctx:R`<p>Regular expressions. Each part is separate.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"free",q:R`<p>What do the four print statements show?</p>${C(String.raw`import re
+text = "User Profile: jsmith_ID882 has logged in."
+pattern = re.compile(r"User Profile: ((\w+)_ID(\d+))")
+m = re.search(pattern, text)
+if m:
+    print(f"Group 0: {m.group(0)}")
+    print(f"Group 1: {m.group(1)}")
+    print(f"Group 2: {m.group(2)}")
+    print(f"Group 3: {m.group(3)}")`)}`,
+  sol:R`${C(`Group 0: User Profile: jsmith_ID882
+Group 1: jsmith_ID882
+Group 2: jsmith
+Group 3: 882`)}<p>Group 0 is always the whole match. Number the other groups by their <b>opening</b> parenthesis, left to right: the outer <code>((\w+)_ID(\d+))</code> opens first (group 1), then <code>(\w+)</code> (group 2), then <code>(\d+)</code> (group 3).</p><p>Why does <code>\w+</code> stop at "jsmith" when <code>\w</code> also matches "_"? It first grabs "jsmith_ID882" greedily, but then "_ID" can't match, so it gives characters back until "_ID" fits right after it.</p>`},
+ {p:"B",pts:4,kind:"free",q:R`<p>Find the match of <code>\b[A-Z]{2}\d{3}\b</code> in "Professor Uslu teaches ECE20875 while Professor Crum teaches CS159".</p>`,
+  sol:R`<p><b>CS159</b>. The pattern needs a word boundary, exactly 2 capital letters, exactly 3 digits, then another boundary. "ECE20875" fails: from "E" at the start you'd get "EC" then "E", not a digit; starting at "CE" fails because there is no word boundary between "E" and "C"; and it has 5 digits, so no boundary after 3. "CS159" fits exactly.</p>`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>Match an email-like string such as "user123@gmail.com": before "@" only letters and digits (at least one); between "@" and ".com" only lowercase letters (at least one); it ends with ".com". Which regex is correct?</p>`,
+  o:[R`<code>\w+@[a-z]+\.com</code>`,R`<code>[a-zA-Z0-9]+@[a-z]+\.com</code>`,R`<code>\w+@\w+</code>`,R`<code>\w+@\w+\.com</code>`,R`<code>.*@.*\.com</code>`],a:"B",
+  sol:R`<p><code>\w</code> means <code>[a-zA-Z0-9_]</code>, so it also allows the underscore, which the rules forbid. That rules out A, C and D. E's <code>.*</code> allows anything (even nothing). Only <b>B</b> spells out letters and digits before "@", lowercase letters after it, and a literal dot (<code>\.</code>) before "com".</p>`},
+ {p:"D",pts:4,kind:"mc",q:R`<p>Which string matches <code>\b[A-Z]+[a-z]*[0-9]{2}\b</code>?</p>`,o:["Cat12","dog12","Tree9","Apple345","ECE20875"],a:"A",
+  sol:R`<p>The whole word must be: one or more capitals, any lowercase letters, then exactly two digits, then the word ends. <b>Cat12</b> fits. "dog12" has no capital. "Tree9" has one digit. "Apple345" and "ECE20875" have more than two digits, so there is no word boundary right after the second digit.</p>`}
+]},
+{s:"A",n:5,t:"ngram",
+ ctx:R`<p>Three documents:</p><ul><li>Document 1: "Farmers market and fruit bread."</li><li>Document 2: "Local farmers and fruit flowers."</li><li>Document 3: "Bread flowers and weekend visitors."</li></ul><p>Formulas: \(tf(t,d)=\dfrac{\text{times }t\text{ appears in }d}{\text{total terms in }d}\), \(idf(t,D)=\log_{10}\dfrac{\text{number of documents}}{\text{documents containing }t}\), \(tfidf=tf\cdot idf\).</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"free",q:R`<p>Write the first 6 character-based 4-grams of Document 1 (use _ for a space).</p>`,
+  sol:R`<p><b>Farm, arme, rmer, mers, ers_, rs_m</b>. Slide a 4-character window one character at a time: start at "F", then "a", then "r", … Once the window reaches the space after "Farmers" it becomes "ers_" and then "rs_m".</p>`},
+ {p:"B",pts:5,kind:"num",q:R`<p>For Parts B–F: lowercase, remove punctuation, remove the stopword "and". Fill in the five blank cells of the document-word matrix (1 if the word is in the document, else 0).</p>${T(["","farmers","market","fruit","bread","local","flowers","weekend","visitors"],[["Doc 1","1","<b>?</b>","1","1","<b>?</b>","0","0","0"],["Doc 2","1","0","<b>?</b>","0","1","1","0","0"],["Doc 3","0","0","0","1","0","<b>?</b>","1","<b>?</b>"]])}`,
+  ans:[1,0,1,1,1],lab:["D1 market","D1 local","D2 fruit","D3 flowers","D3 visitors"],
+  sol:R`<p>Doc 1 is "farmers market fruit bread": market = 1, local = 0. Doc 2 is "local farmers fruit flowers": fruit = 1. Doc 3 is "bread flowers weekend visitors": flowers = 1, visitors = 1.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>What is \(tf(\text{fruit},\ \text{Doc }2)\)?</p>`,o:["1","1/2","1/3","1/4"],a:"D",sol:R`<p>Doc 2 has 4 words after preprocessing (local, farmers, fruit, flowers) and "fruit" is one of them: \(1/4\).</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`<p>Which word has the highest \(idf\)?</p>`,o:["farmers","market","fruit","bread"],a:"B",sol:R`<p>idf is highest for the word in the fewest documents. "market" is only in Doc 1: \(\log_{10}(3/1)=0.477\). The others are in 2 documents: \(\log_{10}(3/2)=0.176\).</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>Based on TF-IDF, which word is most important in Document 3?</p>`,o:["bread","flowers","fruit","weekend"],a:"D",sol:R`<p>Every word in Doc 3 has the same tf (1/4). "weekend" appears only in Doc 3, so it has the biggest idf and the biggest tf-idf. "fruit" isn't in Doc 3 at all (tf = 0).</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>Input "Fresh, FRUIT and flowers!". After tokenizing, lowercasing, removing punctuation and removing "and", which list is right?</p>`,o:[`["Fresh,", "FRUIT", "and", "flowers!"]`,`["fresh", "fruit", "and", "flowers"]`,`["fresh", "fruit", "flowers"]`,`["Fresh", "Fruit", "Flowers"]`],a:"C",sol:R`<p>All three steps applied: lowercase, no punctuation, no "and".</p>`}
+]},
+{s:"A",n:6,t:"logreg",
+ ctx:R`<p>Logistic regression. Each part is separate.</p>`,
+ parts:[
+ {p:"A",pts:2,kind:"num",q:R`<p>\(P(y=1|x)=\dfrac{1}{1+\exp(-(1.5x-3))}\), predict \(\hat y=1\) if \(P\ge0.5\). Find the decision boundary \(x^*\) where \(P=0.5\), and the predicted class for \(x=1\).</p>`,
+  ans:[2,0],lab:["x*","ŷ at x = 1"],
+  sol:R`<p>\(P=0.5\) exactly when the exponent is 0 (because \(e^0=1\) and \(1/(1+1)=0.5\)). So \(1.5x^*-3=0\Rightarrow x^*=2\).</p><p>At \(x=1\): \(1.5-3=-1.5<0\), so \(P<0.5\) and \(\hat y=0\).</p>`},
+ {p:"B",pts:3,kind:"num",q:R`<p>\(P(y=1|x)=\dfrac{1}{1+\exp(-(0.8x-1.4))}\) and one training example \(x=3,\ y=0\). Use \(e^{-1}\approx1/3\). Find \(p=P(y=1|x=3)\), the log-likelihood \(\ell=y\log p+(1-y)\log(1-p)\) and the loss \(L=-\ell\). Use natural logs for the boxes.</p>`,
+  ans:[0.75,-1.3863,1.3863],lab:["p","ℓ","L"],
+  sol:R`<p>Inside: \(0.8(3)-1.4=2.4-1.4=1\). So \(p=\dfrac1{1+e^{-1}}\approx\dfrac1{1+1/3}=\dfrac1{4/3}=\dfrac34\).</p><p>\(y=0\), so only the second term is left: \(\ell=\log(1-p)=\log(1/4)\approx-1.386\).</p><p>\(L=-\ell=\log 4\approx1.386\). On the exam you can leave it as \(\log(1/4)\) and \(\log 4\).</p>`},
+ {p:"C1",pts:1,kind:"mc",q:R`<p>\(P(y=1|x)=\dfrac{1}{1+\exp(-(\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_3))}\) with \(\beta_1=\ln2,\ \beta_2=\ln(1/3),\ \beta_3=\ln(3/2)\). Raising a feature by 1 multiplies the odds by \(e^{\beta_j}\). Which feature <b>decreases</b> the odds?</p>`,o:["x₁","x₂","x₃"],a:"B",
+  sol:R`<p>\(e^{\beta_j}\) is just the number inside the ln: 2, 1/3 and 3/2. Only \(x_2\)'s factor (1/3) is below 1, so only \(x_2\) shrinks the odds.</p>`},
+ {p:"C2",pts:1,kind:"mc",q:R`<p>Same model, features normalized. Which feature has the largest factor impact on the odds?</p>`,o:["x₁","x₂","x₃"],a:"B",
+  sol:R`<p>Compare the size of each \(\beta\) ignoring its sign: \(|\ln2|=0.69\), \(|\ln(1/3)|=\ln3=1.10\), \(|\ln1.5|=0.41\). \(x_2\) is biggest: it divides the odds by 3, a bigger change than multiplying by 2.</p>`},
+ {p:"D",pts:5,t:"gd",kind:"free",q:R`<p>Let \(f_i=\dfrac1{1+\exp(-(\beta_0+\beta^Tx_i))}\) and \(\ell(\beta)=\sum_{i=1}^n\big(y_i\log f_i+(1-y_i)\log(1-f_i)\big)\). Fill in the blanks for \(j\ge1\):</p><p>(1) \(\dfrac{\partial\ell}{\partial\beta_j}=\sum_i\left(\dfrac{\_\_}{\_\_}-\dfrac{\_\_}{\_\_}\right)\dfrac{\partial f_i}{\partial\beta_j}\)  (2) \(\dfrac{\partial f_i}{\partial\beta_j}=\_\_\)  (3) \(\dfrac{\partial\ell}{\partial\beta_j}=\sum_i\_\_\)  (4) gradient-ascent update \(\beta_j^{t+1}=\_\_\)</p>`,
+  sol:R`<p>(1) \(\dfrac{y_i}{f_i}-\dfrac{1-y_i}{1-f_i}\). The derivative of \(\log f\) is \(1/f\) times the derivative of \(f\); the minus comes from \(\log(1-f)\).</p><p>(2) \(f_i(1-f_i)\,x_{ij}\). The sigmoid's derivative is \(\sigma(1-\sigma)\), times the derivative of the inside \(\beta_0+\beta^Tx_i\) with respect to \(\beta_j\), which is \(x_{ij}\).</p><p>(3) Multiply (1) by (2): \(\big(y_i(1-f_i)-(1-y_i)f_i\big)x_{ij}=(y_i-f_i)\,x_{ij}\).</p><p>(4) \(\beta_j^{t+1}=\beta_j^t+\alpha\sum_{i=1}^n(y_i-f_i)\,x_{ij}\). Ascent adds the gradient because we are <i>maximizing</i> the log-likelihood.</p>`},
+ {p:"E1",pts:1,t:"gd",kind:"free",q:R`<p>\(\ell(b)=-(b-4)^2\), gradient ascent \(b_{t+1}=b_t+\alpha\frac{d}{db}\ell(b_t)\), \(b_0=0\). Write the update rule with the derivative plugged in.</p>`,
+  sol:R`<p>\(\frac{d}{db}\big(-(b-4)^2\big)=-2(b-4)\), so \(b_{t+1}=b_t-2\alpha(b_t-4)\).</p>`},
+ {p:"E2",pts:5,t:"gd",kind:"num",q:R`<p>Same setup. Compute \(b_1,b_2\) for \(\alpha=0.1\) and for \(\alpha=0.6\). Which step size makes \(b\) oscillate around the optimum 4?</p>`,
+  ans:[0.8,1.44,4.8,3.84,0.6],lab:["b₁ (α=0.1)","b₂ (α=0.1)","b₁ (α=0.6)","b₂ (α=0.6)","oscillating α"],
+  sol:R`<p>α = 0.1, so \(2\alpha=0.2\): \(b_1=0-0.2(0-4)=0.8\); \(b_2=0.8-0.2(0.8-4)=0.8+0.64=1.44\). Creeping up toward 4.</p><p>α = 0.6, so \(2\alpha=1.2\): \(b_1=0-1.2(0-4)=4.8\) (jumped past 4); \(b_2=4.8-1.2(4.8-4)=4.8-0.96=3.84\) (back below 4). It hops from side to side: <b>α = 0.6</b> oscillates.</p>`}
+]},
+
+/* ---------------- MOCK 2b ---------------- */
+{s:"B",n:1,t:"knn",
+ ctx:R`<p>Six 2-D points labelled Gamma or Delta. A new point Z = (1, 1) is classified with kNN and the <b>Euclidean</b> distance \(\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}\).</p>${T(["Point","(x, y)","Label"],[["A","(1, 4)","Gamma"],["B","(−2, 3)","Delta"],["C","(0, −1)","Gamma"],["D","(3, 0)","Delta"],["E","(5, 2)","Gamma"],["F","(−1, −2)","Delta"]])}`,
+ parts:[
+ {p:"A1",pts:4,kind:"num",q:R`<p>Find the Euclidean distance from Z to each point. Type decimals (√5 ≈ 2.236).</p>`,
+  ans:[3,Math.sqrt(13),Math.sqrt(5),Math.sqrt(5),Math.sqrt(17),Math.sqrt(13)],lab:["d(Z,A)","d(Z,B)","d(Z,C)","d(Z,D)","d(Z,E)","d(Z,F)"],
+  sol:R`${T(["Point","(x diff)² + (y diff)²","distance"],[["A","0² + 3² = 9","3"],["B","3² + 2² = 13","√13 ≈ 3.61"],["C","1² + 2² = 5","√5 ≈ 2.24"],["D","2² + 1² = 5","√5 ≈ 2.24"],["E","4² + 1² = 17","√17 ≈ 4.12"],["F","2² + 3² = 13","√13 ≈ 3.61"]])}<p>Watch the signs: Z to B is \(1-(-2)=3\). On paper leave the roots as √13; to rank them, compare what's under the root.</p>`},
+ {p:"A2",pts:4,kind:"mc",q:R`<p>With k = 3, what is Z's predicted label?</p>`,o:["Gamma","Delta"],a:"A",
+  sol:R`<p>Smallest first: C and D (√5 ≈ 2.24), then A (3). Labels: C Gamma, D Delta, A Gamma. Gamma wins 2 to 1.</p>`},
+ {p:"B",pts:4,t:"km",kind:"mc",q:R`<p>Three clusters: squares (cluster 1), circles (2), triangles (3). The stars are the starting centroids, numbered by cluster. In which direction will centroid 1 move in the K-Means update?</p><img class="qfig" src="figs/m2b-q1b.png" alt="Centroid 1 with four arrows labelled A from the left, B from above, C from the right and D from below, each pointing into the star. The orange squares sit just below and to the right of centroid 1." loading="lazy">`,
+  o:["A","B","C","D"],a:"B",
+  sol:R`<p>The update moves a centroid to the average of the points assigned to it. The squares sit <b>below</b> centroid 1, so it moves <b>down</b>.</p><p>Read the arrows, not where the letters sit: every arrow points <i>into</i> the star. The arrow starting at B points downward, so the official answer is <b>B</b>. (D's arrow points up.)</p>`},
+ {p:"C",pts:4,t:"km",kind:"num",q:R`<p>1-D data {0, 2, 3, 9, 11, 15, 18}. K-Means starts with \(c_1=2\), \(c_2=12\). Where are the centers after one iteration?</p>`,
+  ans:[5/3,53/4],lab:["c₁","c₂"],
+  sol:R`<p>Assign: 0, 2, 3 are closer to 2. Then 9 is 7 from 2 and 3 from 12, so it goes to \(c_2\), as do 11, 15, 18.</p><p>Update: \(c_1=\frac{0+2+3}{3}=\frac53\approx1.67\), \(c_2=\frac{9+11+15+18}{4}=\frac{53}{4}=13.25\).</p>`}
+]},
+{s:"B",n:2,t:"gmm",
+ ctx:R`<p>A 2-component GMM: Component 1 \(\pi_1=0.3,\ \mu_1=-1,\ \sigma_1^2=2\); Component 2 \(\pi_2=0.7,\ \mu_2=2,\ \sigma_2^2=1\). Data: \(x_1=-2,\ x_2=0,\ x_3=3\).</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"free",q:R`<p>For \(x_2=0\), write the responsibilities \(\gamma_{21}\) (component 1) and \(\gamma_{22}\) (component 2) as expressions using \(N(x\,|\,\mu,\sigma^2)\). Don't evaluate them.</p>`,
+  sol:R`<p>\(\gamma_{21}=\dfrac{0.3\,N(0|-1,2)}{0.3\,N(0|-1,2)+0.7\,N(0|2,1)}\)</p><p>\(\gamma_{22}=\dfrac{0.7\,N(0|2,1)}{0.3\,N(0|-1,2)+0.7\,N(0|2,1)}\)</p><p>Same denominator for both (the sum over components), so they add to 1. Plug in the right \(x\), \(\mu\) and \(\sigma^2\) for each component; mixing up which variance goes with which mean is the usual slip.</p>`},
+ {p:"B",pts:8,kind:"num",q:R`<p>After the E-step the responsibilities are</p>${T(["","x₁ = −2","x₂ = 0","x₃ = 3"],[["component 1","0.9","0.5","0.1"],["component 2","0.1","0.5","0.9"]])}<p>Run one M-step (variances stay fixed): find \(N_1,N_2\), the new weights \(\pi_1,\pi_2\) and the new means \(\mu_1,\mu_2\).</p>`,
+  ans:[1.5,1.5,0.5,0.5,-1,5/3],lab:["N₁","N₂","π₁","π₂","μ₁","μ₂"],
+  sol:R`<p>\(N_1=0.9+0.5+0.1=1.5\), \(N_2=0.1+0.5+0.9=1.5\).</p><p>\(\pi_1=\frac{1.5}{3}=\frac12\), \(\pi_2=\frac12\).</p><p>\(\mu_1=\frac{0.9(-2)+0.5(0)+0.1(3)}{1.5}=\frac{-1.8+0.3}{1.5}=-1\), \(\mu_2=\frac{0.1(-2)+0.5(0)+0.9(3)}{1.5}=\frac{-0.2+2.7}{1.5}=\frac53\approx1.67\).</p>`}
+]},
+{s:"B",n:3,t:"nb",
+ ctx:R`<p>A store classifies customers as Budget, Regular or Premium from two features. Assume Naive Bayes independence.</p>${T(["#","Cart size","Newsletter","Type"],[["1","Small","No","Budget"],["2","Large","No","Budget"],["3","Small","Yes","Budget"],["4","Small","Yes","Regular"],["5","Large","Yes","Regular"],["6","Large","No","Regular"],["7","Large","Yes","Premium"],["8","Large","Yes","Premium"],["9","Large","Yes","Premium"]])}<p>From older sales data the priors are known: \(P(\text{Budget})=\frac12\), \(P(\text{Regular})=\frac13\), \(P(\text{Premium})=\frac16\).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Without Laplace smoothing, find \(P(\text{Small}|\text{type})\) and \(P(\text{Yes}|\text{type})\) for each type.</p>`,
+  ans:[2/3,1/3,1/3,2/3,0,1],lab:["Small | Budget","Yes | Budget","Small | Regular","Yes | Regular","Small | Premium","Yes | Premium"],
+  sol:R`<p>Look only at the rows of one type and count. Budget (rows 1–3): Small in 2 of 3, Yes in 1 of 3. Regular (rows 4–6): Small 1 of 3, Yes 2 of 3. Premium (rows 7–9): Small 0 of 3, Yes 3 of 3.</p>`},
+ {p:"B1",pts:4,kind:"num",q:R`<p>A new customer has a <b>Large</b> cart and <b>is subscribed</b>. Compute the unnormalized posterior \(P(\text{Large}|\text{type})\,P(\text{Yes}|\text{type})\,P(\text{type})\) for each type.</p>`,
+  ans:[1/18,4/27,1/6],lab:["Budget","Regular","Premium"],
+  sol:R`<p>\(P(\text{Large}|\cdot)=1-P(\text{Small}|\cdot)\).</p><p>Budget: \(\frac13\cdot\frac13\cdot\frac12=\frac1{18}=\frac3{54}\)</p><p>Regular: \(\frac23\cdot\frac23\cdot\frac13=\frac4{27}=\frac8{54}\)</p><p>Premium: \(1\cdot1\cdot\frac16=\frac16=\frac9{54}\)</p><p>Writing all three over 54 makes them easy to order: Budget &lt; Regular &lt; Premium.</p>`},
+ {p:"B2",pts:2,kind:"mc",q:R`<p>Which type does the classifier predict?</p>`,o:["Budget","Regular","Premium"],a:"C",sol:R`<p>Premium has the biggest score (9/54).</p>`},
+ {p:"C1",pts:3,kind:"mc",q:R`<p>The store adds a third feature, Payment Method (Card/Cash). What in the model must be updated?</p>`,
+  o:["All priors and all likelihoods must be recalculated.","All priors must be recalculated.","All likelihoods must be recalculated.","Only the likelihoods for the new feature need to be calculated.","Nothing; the model handles new features automatically."],a:"D",
+  sol:R`<p>Under the naive independence assumption each feature has its own table \(P(\text{feature}|\text{type})\). The old tables and the priors don't change; you only add \(P(\text{Card}|\text{type})\) and \(P(\text{Cash}|\text{type})\).</p>`},
+ {p:"C2",pts:3,kind:"mc",q:R`<p>A customer arrives with an <b>Empty</b> cart, a value never seen in training. What happens with the model from Part A (no smoothing)?</p>`,
+  o:["It randomly picks one of the three types.","It uses Laplace smoothing to give small non-zero probabilities.","It cannot make a prediction.","It ignores cart size and uses only the newsletter."],a:"C",
+  sol:R`<p>\(P(\text{Empty}|\text{type})=0/3=0\) for every type, so every score is 0 and there is nothing to compare. Smoothing would fix that, but the Part A model doesn't use it.</p>`}
+]},
+{s:"B",n:4,t:"re",
+ ctx:R`<p>Regular expressions. Each part is separate.</p>`,
+ parts:[
+ {p:"A1",pts:4,kind:"free",q:R`<p>What does this print?</p>${C(String.raw`import re
+text = "The NBA team Bulls is located in the city of Chicago"
+pattern = re.compile(r"[A-Z][a-z]+")
+print(pattern.findall(text))`)}`,
+  sol:R`${C(`['The', 'Bulls', 'Chicago']`)}<p>Each match is one capital followed by one or more lowercase letters. "NBA" fails: after "N" comes "B", which isn't lowercase (and the same for "BA").</p>`},
+ {p:"A2",pts:4,kind:"free",q:R`<p>Same text, but the pattern is now <code>r"\b[A-Z]+[a-z]*"</code>. What prints?</p>`,
+  sol:R`${C(`['The', 'NBA', 'Bulls', 'Chicago']`)}<p><code>[A-Z]+</code> takes one or more capitals and <code>[a-z]*</code> allows zero lowercase letters, so "NBA" now matches as a whole.</p>`},
+ {p:"B",pts:4,kind:"free",q:R`<p>What does this print?</p>${C(String.raw`import re
+text = "On Nov 12, 2025, during a stress test, the CPU hit 92°C"
+pattern = r"((\d)(\d))°C"
+m = re.search(pattern, text)
+print(m.group(2))`)}`,
+  sol:R`${C(`9`)}<p>The pattern only matches two digits right before "°C", so the match is "92°C". Group 1 is "92", group 2 is the first digit "9", group 3 is "2". (The "12" and "2025" aren't followed by °C.)</p>`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>A campus phone number looks like (xxx)xxx-xxxx: an area code in parentheses whose first digit is not 0 or 1, three digits, a hyphen, four digits, nothing else. Which regex is right?</p>`,
+  o:[R`<code>^\([2-9]\d{2}\)\d{3}-\d{4}$</code>`,R`<code>^([2-9]\d{2})\d{3}-\d{4}$</code>`,R`<code>^\([^01]\d{2}\)\d{3}-\d{4}$</code>`,R`<code>^([^01]\d{2})\d{3}-\d{4}$</code>`],a:"A",
+  sol:R`<p>Parentheses are special in regex (they make groups), so to match a real "(" you escape it: <code>\(</code>. B and D don't escape them, so they match "765123-4567" with no parentheses at all. C's <code>[^01]</code> means "any character except 0 or 1", which also lets in letters and symbols. <b>A</b> is the only one that requires a digit 2–9 inside real parentheses.</p>`}
+]},
+{s:"B",n:5,t:"ngram",
+ ctx:R`<p>Two excerpts about a community garden:</p><ul><li>Excerpt 1: "Neighbors enjoy the community garden for fresh vegetables and flowers."</li><li>Excerpt 2: "The community garden hosts many visitors and local events every weekend."</li></ul>`,
+ parts:[
+ {p:"A",pts:3,kind:"free",q:R`<p>Write the first 5 character-based 3-grams of Excerpt 1, left to right, ignoring punctuation.</p>`,sol:R`<p><b>"Nei", "eig", "igh", "ghb", "hbo"</b>: a 3-letter window sliding one letter at a time through "Neighbors".</p>`},
+ {p:"B",pts:3,kind:"free",q:R`<p>Remove the stopwords "the", "and", "many", "every" and build a word-frequency table for both excerpts. Note that "for" is <i>not</i> on the list, but the official key drops it anyway.</p>`,
+  sol:R`${T(["word","Excerpt 1","Excerpt 2"],[["neighbors","1","0"],["enjoy","1","0"],["community","1","1"],["garden","1","1"],["fresh","1","0"],["vegetables","1","0"],["flowers","1","0"],["hosts","0","1"],["visitors","0","1"],["local","0","1"],["events","0","1"],["weekend","0","1"]])}<p>Lowercase everything. The official table leaves out "for" even though it isn't in the stopword list; including it (1, 0) is also a fair reading.</p>`},
+ {p:"C1",pts:3,kind:"mc",q:R`<p>What is \(tf(\text{"garden"},\ \text{Excerpt 2})\)?</p>`,o:["1/5","1/7","2","1"],a:"B",sol:R`<p>Excerpt 2 after stopword removal has 7 words (community, garden, hosts, visitors, local, events, weekend). "garden" appears once: 1/7.</p>`},
+ {p:"C2",pts:3,kind:"mc",q:R`<p>Without calculating, what is \(idf(\text{"community"})\)?</p>`,o:["High","Low","Medium","Cannot be determined"],a:"B",sol:R`<p>"community" is in both excerpts, so it tells you nothing about which one you're reading. idf = \(\log(2/2)=0\): <b>low</b>.</p>`},
+ {p:"C3",pts:3,kind:"mc",q:R`<p>Which word has the highest idf?</p>`,o:["community","garden","fresh"],a:"C",sol:R`<p>"fresh" is in only one excerpt; the other two are in both.</p>`},
+ {p:"C4",pts:3,kind:"mc",q:R`<p>Which word is most important in Excerpt 2?</p>`,o:["community","garden","visitors","neighbors"],a:"C",sol:R`<p>"visitors" is only in Excerpt 2 (high idf, tf = 1/7). "community" and "garden" are in both (idf 0). "neighbors" isn't in Excerpt 2.</p>`}
+]},
+{s:"B",n:6,t:"logreg",
+ ctx:R`<p>A food delivery app predicts whether a user orders (y = 1) or not (y = 0) from a session engagement score \(x\): \(p(y=1|x)=\dfrac{1}{1+\exp(-(wx+b))}\) with \(w=1,\ b=-2\).</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>It predicts "order" when \(P(y=1|x)\ge0.5\). Derive the decision boundary \(x^*\) in terms of \(w\) and \(b\), then evaluate it.</p>`,ans:[2],lab:["x*"],
+  sol:R`<p>\(P=0.5\) exactly when \(wx^*+b=0\), so \(x^*=-\dfrac bw=-\dfrac{-2}{1}=2\). Show the general formula: it's worth points on its own.</p>`},
+ {p:"B1",pts:2,kind:"num",q:R`<p>One event: \(x=2\), observed \(y=1\). Compute \(f(x)=P(y=1|x=2)\).</p>`,ans:[0.5],lab:["f(2)"],sol:R`<p>\(z=wx+b=1\cdot2-2=0\), and \(\sigma(0)=\frac1{1+e^0}=\frac12\).</p>`},
+ {p:"B2",pts:4,kind:"num",q:R`<p>The logistic loss is \(L=-[y\log f+(1-y)\log(1-f)]\). Compute it for this example (natural log).</p>`,ans:[Math.LN2],lab:["L"],sol:R`<p>\(y=1\), so the second term drops out: \(L=-\log(0.5)=\log2\approx0.693\).</p>`},
+ {p:"B3",pts:2,t:"gd",kind:"num",q:R`<p>The gradients for one example are \(\frac{\partial L}{\partial w}=(f-y)x\) and \(\frac{\partial L}{\partial b}=(f-y)\). Take one gradient-<b>descent</b> step with \(\alpha=0.04\) from \(w=1,\ b=-2\).</p>`,
+  ans:[1.04,-1.98],lab:["w new","b new"],
+  sol:R`<p>\(\frac{\partial L}{\partial w}=(0.5-1)(2)=-1\), \(\frac{\partial L}{\partial b}=0.5-1=-0.5\).</p><p>Descent subtracts: \(w=1-0.04(-1)=1.04\), \(b=-2-0.04(-0.5)=-1.98\).</p>`},
+ {p:"C1",pts:2,kind:"mc",q:R`<p>True or false: if training reaches perfect classification accuracy, the logistic loss on the training set must be zero.</p>`,o:["True","False"],a:"B",
+  sol:R`<p>False. Accuracy only checks which side of 0.5 each \(p\) is on. The loss is \(-\log p\) for a \(y=1\) point, which is only 0 if \(p\) is exactly 1. A correct prediction with \(p=0.8\) still has loss \(-\log0.8\approx0.22\).</p>`},
+ {p:"C2",pts:2,t:"gd",kind:"mc",q:R`<p>True or false: if the logistic loss is convex with a unique global minimum, gradient descent is guaranteed to converge to it.</p>`,o:["True","False"],a:"B",
+  sol:R`<p>False. Convexity means there is one bottom to reach, but a step size \(\alpha\) that is too big can overshoot and oscillate or blow up. The slides: it converges "so long as certain conditions on α are met".</p>`}
+]},
+
+/* ---------------- LECTURE EXAMPLES ---------------- */
+{s:"L",n:1,t:"nb",
+ ctx:R`<p>From the Naive Bayes slides. Is the tweet "A very close game" about Sports (S) or Not Sports (N)? Multinomial model, word counts, no stopword removal, Laplace smoothing.</p>${T(["Text","Label"],[["A great game","S"],["The election was over","N"],["Very clean match","S"],["A clean but forgettable game","S"],["It was a close election","N"]])}`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Count the words in each class and the number of unique words across all five tweets.</p>`,ans:[11,9,14],lab:["N_S (words in S)","N_N (words in N)","|V|"],
+  sol:R`<p>S: 3 + 3 + 5 = 11 words. N: 4 + 5 = 9 words. Unique words (lowercase): a, great, game, the, election, was, over, very, clean, match, but, forgettable, it, close = 14.</p>`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Find \(P(\text{game}|S)\) and \(P(\text{close}|N)\) with Laplace smoothing.</p>`,ans:[3/25,2/23],lab:["P(game|S)","P(close|N)"],
+  sol:R`<p>\(P(\text{game}|S)=\frac{2+1}{11+14}=\frac3{25}\) ("game" is in two Sports tweets). \(P(\text{close}|N)=\frac{1+1}{9+14}=\frac2{23}\).</p>`},
+ {p:"C",pts:6,kind:"num",q:R`<p>The slide's table: a 3/25 and 2/23, very 2/25 and 1/23, close 1/25 and 2/23, game 3/25 and 1/23. With \(P(S)=P(N)=0.5\), compute \(P(\text{tweet}|S)P(S)\) and \(P(\text{tweet}|N)P(N)\). Enter them in units of \(10^{-5}\) (so \(2.5\times10^{-5}\) → 2.5).</p>`,ans:[2.304,0.7146],lab:["S score ×10⁵","N score ×10⁵"],
+  sol:R`<p>\(P(\text{tweet}|S)=\frac{3\cdot2\cdot1\cdot3}{25^4}=\frac{18}{390625}=4.61\times10^{-5}\); times 0.5 → \(2.30\times10^{-5}\).</p><p>\(P(\text{tweet}|N)=\frac{2\cdot1\cdot2\cdot1}{23^4}=\frac4{279841}=1.43\times10^{-5}\); times 0.5 → \(0.715\times10^{-5}\). Predict <b>Sports</b>.</p><div class="keybug">The slide prints 2.76×10⁻⁵ and 0.572×10⁻⁵ (then 1.38 and 0.286 after × 0.5). Those multiplications are off; the fractions above are the ones on the slide, and the prediction is the same.</div>`}
+]},
+{s:"L",n:2,t:"ngram",
+ ctx:R`<p>From the n-grams slides. Four tiny documents after stopword removal: (1) "sky blue", (2) "sun bright today", (3) "sun sky bright", (4) "can see shining sun bright sun". \(idf=\log_{10}(4/n_t)\) where \(n_t\) is the number of documents containing the word.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Find \(tf(\text{sun},4)\), \(idf(\text{sun})\) and \(idf(\text{blue})\).</p>`,ans:[1/3,Math.log10(4/3),Math.log10(4)],lab:["tf(sun, 4)","idf(sun)","idf(blue)"],
+  sol:R`<p>Doc 4 has 6 words and "sun" twice: \(2/6=1/3\). "sun" is in docs 2, 3, 4: \(\log_{10}(4/3)=0.125\). "blue" is only in doc 1: \(\log_{10}4=0.602\).</p>`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Find \(tfidf(\text{blue},1)\) and \(tfidf(\text{today},2)\).</p>`,ans:[0.301,0.2007],lab:["blue in doc 1","today in doc 2"],
+  sol:R`<p>blue: \(tf=1/2\), \(idf=0.602\), product \(0.301\). today: \(tf=1/3\), \(idf=\log_{10}4=0.602\), product \(0.201\).</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>Which word is most important in document 3 ("sun sky bright")?</p>`,o:["sun","sky","bright","they tie"],a:"B",
+  sol:R`<p>All three have tf = 1/3. "sky" is in 2 documents (idf 0.301), "sun" and "bright" in 3 (idf 0.125). So <b>sky</b> (0.100).</p>`}
+]},
+{s:"L",n:3,t:"gmm",
+ ctx:R`<p>From the clustering slides. Five points \(x=12.14,\ 4.55,\ 2.57,\ 12.19,\ 12.78\), K = 2. Start: \(\mu_1=2.57,\ \mu_2=7.68,\ \sigma_1^2=\sigma_2^2=1,\ \pi_1=\pi_2=0.5\).</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>For \(x_2=4.55\) the unnormalized values are \(\pi_1N(4.55|2.57,1)=2.77\times10^{-2}\) and \(\pi_2N(4.55|7.68,1)=1.53\times10^{-3}\). Find \(\gamma_{1,2}\) and \(\gamma_{2,2}\).</p>`,ans:[0.95,0.05],lab:["γ₁,₂","γ₂,₂"],
+  sol:R`<p>\(\gamma_{1,2}=\frac{0.0277}{0.0277+0.00153}=\frac{0.0277}{0.02923}=0.95\), and \(\gamma_{2,2}=0.05\).</p>`},
+ {p:"B",pts:8,kind:"num",q:R`<p>After the E-step, \(\gamma_1=[0,\ 0.95,\ 1,\ 0,\ 0]\) and \(\gamma_2=[1,\ 0.05,\ 0,\ 1,\ 1]\). Find \(N_1,N_2,\pi_1,\pi_2,\mu_1,\mu_2\).</p>`,ans:[1.95,3.05,0.39,0.61,3.535,12.24],lab:["N₁","N₂","π₁","π₂","μ₁","μ₂"],
+  sol:R`<p>\(N_1=0.95+1=1.95\), \(N_2=1+0.05+1+1=3.05\); \(\pi_1=1.95/5=0.39\), \(\pi_2=0.61\).</p><p>\(\mu_1=\frac{0.95(4.55)+1(2.57)}{1.95}=\frac{4.3225+2.57}{1.95}=3.53\). \(\mu_2=\frac{12.14+0.05(4.55)+12.19+12.78}{3.05}=\frac{37.3375}{3.05}=12.24\).</p>`},
+ {p:"C",pts:4,kind:"num",q:R`<p>Find the new variance \(\sigma_1^2=\dfrac{\sum_j\gamma_{1j}(x_j-\mu_1)^2}{N_1}\) using the new \(\mu_1\).</p>`,ans:[0.979],lab:["σ₁²"],
+  sol:R`<p>\(\frac{0.95(4.55-3.535)^2+1(2.57-3.535)^2}{1.95}=\frac{0.979+0.931}{1.95}=0.98\).</p><div class="keybug">The slide prints 0.987 (and 1.12 for σ₂², where the arithmetic gives 1.07). Within rounding for σ₁²; the method is what matters.</div>`}
+]},
+{s:"L",n:4,t:"gd",
+ ctx:R`<p>From the logistic regression slides. One parameter \(b\) with log-likelihood \(\ell(b)=-\left(\dfrac{b-a}{c}\right)^2\), \(a=5,\ c=0.7\), step size \(\alpha=0.1\), start \(b_0=1.1\).</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"free",q:R`<p>Write the gradient-ascent update for \(b\).</p>`,sol:R`<p>\(\frac{d\ell}{db}=-\frac{2(b-a)}{c^2}\), so \(b_{t+1}=b_t+\alpha\frac{d\ell}{db}=b_t-2\alpha\frac{b_t-a}{c^2}\).</p>`},
+ {p:"B",pts:6,kind:"num",q:R`<p>Compute \(b_1\) and \(b_2\).</p>`,ans:[2.692,3.634],lab:["b₁","b₂"],
+  sol:R`<p>\(c^2=0.49\). \(b_1=1.1-0.2\cdot\frac{1.1-5}{0.49}=1.1+0.2\cdot7.959=2.692\). \(b_2=2.692-0.2\cdot\frac{2.692-5}{0.49}=2.692+0.942=3.634\). By step 10 it reaches 4.979, close to the maximum at \(b=a=5\).</p>`}
+]},
+{s:"L",n:5,t:"logreg",
+ ctx:R`<p>From the logistic regression slides: \(\hat y=\dfrac1{1+\exp(-(3+2x_1+0.5x_2-3x_3))}\), features normalized.</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"num",q:R`<p>By what factor do the odds change when \(x_2\) goes up by 1? And when \(x_3\) goes up by 1? (Use \(e^{0.5}\approx1.649\), \(e^{-3}\approx0.0498\).)</p>`,ans:[1.649,0.0498],lab:["factor for x₂","factor for x₃"],
+  sol:R`<p>The factor is \(e^{\beta_j}\): \(e^{0.5}\approx1.65\) (odds go up 65%) and \(e^{-3}\approx0.05\) (odds drop to about 1/20).</p>`},
+ {p:"B",pts:3,kind:"mc",q:R`<p>Which feature has the largest factor impact on the odds?</p>`,o:["x₁","x₂","x₃","the intercept 3"],a:"C",
+  sol:R`<p>Largest \(|\beta_j|\): \(|-3|=3\) beats 2 and 0.5. The intercept isn't a feature.</p>`}
+]},
+{s:"L",n:6,t:"re",
+ ctx:R`<p>From the regex self-reading notebook. What does each line give?</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"mc",q:R`${C(String.raw`p = re.compile('(a(b)c)d')
+m = p.match('abcd')
+print(m.groups())`)}`,o:[`('abcd', 'abc', 'b')`,`('abc', 'b')`,`('a', 'b', 'c', 'd')`,`'abcd'`],a:"B",
+  sol:R`<p><code>groups()</code> lists groups 1, 2, … (not group 0). Count opening parentheses: group 1 is "abc", group 2 is "b".</p>`},
+ {p:"B",pts:3,kind:"mc",q:R`${C(String.raw`p = re.compile(r'hello (\w*)')
+print(p.sub(r'goodbye \1', 'hello ece hello'))`)}`,o:[`goodbye ece goodbye`,`goodbye ece hello`,`hello goodbye ece`,R`goodbye \1 hello`],a:"B",
+  sol:R`<p>The first match is "hello ece" (group 1 = "ece"), replaced by "goodbye ece". The last "hello" is at the very end of the string. The pattern needs a space after "hello", and there isn't one, so that "hello" stays.</p>`},
+ {p:"C",pts:3,kind:"mc",q:R`${C(String.raw`re.findall(r'\d{3,10}', '098765 4321')`)}`,o:[`['098765', '4321']`,`['098', '765', '432']`,`['098765']`,`['0987654321']`],a:"A",
+  sol:R`<p><code>{3,10}</code> means 3 to 10 digits, as many as possible. The space splits the string into two runs of digits, both long enough.</p>`},
+ {p:"D",pts:3,kind:"mc",q:R`${C(String.raw`p = re.compile(r'\b(\w+)(\s\1)+\b')
+p.search('Paris in the the the the spring').group()`)}`,o:[`'the'`,`'the the'`,`'the the the the'`,`'Paris in the'`],a:"C",
+  sol:R`<p><code>\1</code> means "the same text group 1 matched". So it finds a word followed by one or more copies of itself: all four "the".</p>`}
+]},
+
+/* ---------------- LAB EXTRAS ---------------- */
+{s:"X",n:1,t:"knn",
+ ctx:R`<p>kNN in Python, then judging a classifier. Lab extra in the style of the mocks.</p>`,
+ parts:[
+ {p:"A",pts:8,kind:"code",q:R`<p>Fill in <code>manhattan</code> and <code>knn_predict</code>. <code>points</code> is a list of (x, y) tuples, <code>labels</code> the matching labels, <code>z</code> the new point. Return the majority label among the k nearest.</p>`,
+  start:`def manhattan(p, q):
+    return ____
+
+def knn_predict(points, labels, z, k):
+    dists = sorted((manhattan(p, z), lab) for p, lab in zip(points, labels))
+    votes = {}
+    for d, lab in ____:
+        votes[lab] = ____
+    return max(votes, key=votes.get)`,
+  tests:[["manhattan((3, 4), (1, 1))","5"],["knn_predict([(1,3),(4,2),(1,1),(7,8),(9,5),(8,8)], ['Star','Star','Star','Heart','Heart','Heart'], (3,4), 3)","'Star'"],["knn_predict([(1,3),(4,2),(1,1),(7,8),(9,5),(8,8)], ['Star','Star','Star','Heart','Heart','Heart'], (8,6), 3)","'Heart'"],["knn_predict([(0,0),(5,5),(6,5)], ['a','b','b'], (1,1), 1)","'a'"]],
+  sol:`def manhattan(p, q):
+    return abs(p[0] - q[0]) + abs(p[1] - q[1])
+
+def knn_predict(points, labels, z, k):
+    dists = sorted((manhattan(p, z), lab) for p, lab in zip(points, labels))
+    votes = {}
+    for d, lab in dists[:k]:
+        votes[lab] = votes.get(lab, 0) + 1
+    return max(votes, key=votes.get)`,
+  why:R`<code>sorted</code> on (distance, label) pairs sorts by distance first. <code>dists[:k]</code> keeps the k nearest. <code>votes.get(lab, 0) + 1</code> is the create-or-add pattern from Exam 1.`},
+ {p:"B",pts:8,kind:"num",q:R`<p>A spam filter is tested on 100 emails. Spam is the positive class. It got TP = 40, FP = 10, FN = 20, TN = 30. Find accuracy, precision, recall and F1 (the harmonic mean of precision and recall).</p>`,
+  ans:[0.7,0.8,2/3,8/11],lab:["accuracy","precision","recall","F1"],
+  sol:R`<p>accuracy \(=\frac{TP+TN}{\text{all}}=\frac{40+30}{100}=0.7\)</p><p>precision \(=\frac{TP}{TP+FP}=\frac{40}{50}=0.8\) (of the emails it flagged, how many really were spam)</p><p>recall (sensitivity) \(=\frac{TP}{TP+FN}=\frac{40}{60}=0.667\) (of the real spam, how much it caught)</p><p>\(F1=\frac{2\cdot P\cdot R}{P+R}=\frac{2(0.8)(0.667)}{1.467}=0.727\)</p>`}
+]},
+{s:"X",n:2,t:"km",
+ ctx:R`<p>K-Means by hand and in code. Lab extra.</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Points P(0, 0), Q(2, 1), R(1, 4), S(6, 5), T(7, 7), U(8, 3). Starting centers \(c_1=(0,0)\), \(c_2=(7,7)\), Manhattan distance. Give the centers after one iteration.</p>`,ans:[1,5/3,7,5],lab:["c₁ x","c₁ y","c₂ x","c₂ y"],
+  sol:R`${T(["Point","to c₁","to c₂","goes to"],[["P (0,0)","0","14","c₁"],["Q (2,1)","3","11","c₁"],["R (1,4)","5","9","c₁"],["S (6,5)","11","3","c₂"],["T (7,7)","14","0","c₂"],["U (8,3)","11","5","c₂"]])}<p>\(c_1=\left(\frac{0+2+1}{3},\frac{0+1+4}{3}\right)=(1,\ 1.67)\), \(c_2=\left(\frac{6+7+8}{3},\frac{5+7+3}{3}\right)=(7,\ 5)\).</p>`},
+ {p:"B",pts:4,kind:"num",q:R`<p>Back to Mock 2a's points A(1,3), B(4,2), C(1,1), D(7,8), E(9,5), F(8,8) with the new centers (2, 2) and (8, 7). What is the sum of <b>squared Euclidean</b> distances from each point to its center (the y-axis value on an elbow plot)?</p>`,ans:[16],lab:["SSE"],
+  sol:R`<p>Cluster 1 to (2,2): A \(1+1=2\), B \(4+0=4\), C \(1+1=2\). Cluster 2 to (8,7): D \(1+1=2\), E \(1+4=5\), F \(0+1=1\). Total \(2+4+2+2+5+1=16\).</p>`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Fill in <code>kmeans_step(xs, centers)</code> for 1-D data: assign each x to its nearest center, then return the list of new centers (the mean of each group).</p>`,
+  start:`def kmeans_step(xs, centers):
+    groups = [[] for c in centers]
+    for x in xs:
+        nearest = min(range(len(centers)), key=lambda j: ____)
+        groups[nearest].append(x)
+    return [____ for g in groups]`,
+  tests:[["kmeans_step([0, 2, 3, 9, 11, 15, 18], [2, 12])","[5/3, 13.25]"],["kmeans_step([1, 2, 6, 8, 9], [1, 7])","[1.5, 23/3]"],["kmeans_step([4, 6], [0, 10])","[4.0, 6.0]"]],
+  sol:`def kmeans_step(xs, centers):
+    groups = [[] for c in centers]
+    for x in xs:
+        nearest = min(range(len(centers)), key=lambda j: abs(x - centers[j]))
+        groups[nearest].append(x)
+    return [sum(g) / len(g) for g in groups]`,
+  why:R`<code>min(range(len(centers)), key=…)</code> returns the <i>index</i> of the closest center, which is what you need to pick the group.`}
+]},
+{s:"X",n:3,t:"gmm",
+ ctx:R`<p>GMM E-step and M-step. Lab extra. Data \(x=[1,\ 2,\ 6]\).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>For one point, \(\pi_1=0.4,\ \pi_2=0.6\), and the densities are \(N(x|\mu_1,\sigma_1^2)=0.20\), \(N(x|\mu_2,\sigma_2^2)=0.05\). Find both responsibilities.</p>`,ans:[8/11,3/11],lab:["γ₁","γ₂"],
+  sol:R`<p>Weighted: \(0.4\times0.20=0.08\) and \(0.6\times0.05=0.03\). Total 0.11. \(\gamma_1=0.08/0.11=0.727\), \(\gamma_2=0.03/0.11=0.273\).</p>`},
+ {p:"B",pts:6,kind:"num",q:R`<p>Responsibilities for component 1 are \([0.9,\ 0.6,\ 0.2]\) (so component 2 has \([0.1,\ 0.4,\ 0.8]\)). Find \(N_1,\pi_1,\mu_1,\mu_2\).</p>`,ans:[1.7,1.7/3,3.3/1.7,5.7/1.3],lab:["N₁","π₁","μ₁","μ₂"],
+  sol:R`<p>\(N_1=1.7\), \(N_2=1.3\), \(\pi_1=1.7/3=0.567\).</p><p>\(\mu_1=\frac{0.9(1)+0.6(2)+0.2(6)}{1.7}=\frac{3.3}{1.7}=1.94\); \(\mu_2=\frac{0.1(1)+0.4(2)+0.8(6)}{1.3}=\frac{5.7}{1.3}=4.38\).</p>`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Fill in <code>responsibilities(pis, likes)</code>: given the weights and the density of one point under each component, return the list of responsibilities.</p>`,
+  start:`def responsibilities(pis, likes):
+    weighted = [____ for p, l in zip(pis, likes)]
+    total = ____
+    return [w / total for w in weighted]`,
+  tests:[["[round(g, 4) for g in responsibilities([0.3, 0.7], [0.14, 0.04])]","[0.6, 0.4]"],["[round(g, 4) for g in responsibilities([0.4, 0.6], [0.2, 0.05])]","[0.7273, 0.2727]"],["responsibilities([0.5, 0.5], [0.1, 0.1])","[0.5, 0.5]"]],
+  sol:`def responsibilities(pis, likes):
+    weighted = [p * l for p, l in zip(pis, likes)]
+    total = sum(weighted)
+    return [w / total for w in weighted]`},
+ {p:"D",pts:4,kind:"mc",q:R`<p>How does EM know when to stop?</p>`,o:["After exactly K iterations","When the log-likelihood stops changing by more than a small tolerance","When every responsibility is exactly 0 or 1","When the means equal the data points"],a:"B",
+  sol:R`<p>The slides: compute \(\log L=\sum_j\log\sum_k\pi_kN(x_j|\mu_k,\sigma_k^2)\) after each iteration and stop when it changes by less than <code>tol</code>.</p>`}
+]},
+{s:"X",n:4,t:"nb",
+ ctx:R`<p>Naive Bayes on short posts: Tech (T) or Food (F). Lab extra in the shape of Mock 2a Q3.</p>${T(["Post","Text","Label"],[["1","fast laptop","T"],["2","new laptop deal","T"],["3","fast food","F"],["4","food deal","F"]])}`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Find \(N_T\), \(N_F\) and \(|V|\).</p>`,ans:[5,4,5],lab:["N_T","N_F","|V|"],sol:R`<p>T: 2 + 3 = 5 words. F: 2 + 2 = 4. Unique: fast, laptop, new, deal, food = 5.</p>`},
+ {p:"B",pts:6,kind:"num",q:R`<p>With Laplace smoothing, find \(P(\text{fast}|T)\), \(P(\text{deal}|T)\), \(P(\text{fast}|F)\), \(P(\text{deal}|F)\).</p>`,ans:[1/5,1/5,2/9,2/9],lab:["fast|T","deal|T","fast|F","deal|F"],
+  sol:R`<p>T: \(\frac{1+1}{5+5}=\frac15\) for both. F: \(\frac{1+1}{4+5}=\frac29\) for both.</p>`},
+ {p:"C",pts:4,kind:"num",q:R`<p>New post "fast deal", priors from post counts. Unnormalized scores?</p>`,ans:[1/50,2/81],lab:["T score","F score"],sol:R`<p>T: \(\frac15\cdot\frac15\cdot\frac12=\frac1{50}=0.02\). F: \(\frac29\cdot\frac29\cdot\frac12=\frac2{81}=0.0247\). Food wins: same counts, but F has fewer words, so its smoothed probabilities are bigger.</p>`},
+ {p:"D",pts:6,kind:"code",q:R`<p>Fill in <code>p_word(word, class_words, vocab_size)</code>: the Laplace-smoothed \(P(\text{word}|\text{class})\), where <code>class_words</code> is the list of every word in that class's posts.</p>`,
+  start:`def p_word(word, class_words, vocab_size):
+    return (____) / (____)`,
+  tests:[["p_word('hard', ['study','hard','exam','hard','project'], 7)","1/4"],["p_word('fun', ['study','hard','exam','hard','project'], 7)","1/12"],["p_word('fun', ['fun','party','hard','game'], 7)","2/11"]],
+  sol:`def p_word(word, class_words, vocab_size):
+    return (class_words.count(word) + 1) / (len(class_words) + vocab_size)`}
+]},
+{s:"X",n:5,t:"re",
+ ctx:R`<p>Writing regexes in Python. Lab extra. <code>re.fullmatch(p, s)</code> returns a match only if the <i>whole</i> string fits.</p>`,
+ parts:[
+ {p:"A",pts:5,kind:"code",q:R`<p>Fill in the pattern so <code>is_course</code> accepts a course code: 2 to 4 capital letters, one space, exactly 5 digits ("ECE 20875", "MA 26100").</p>`,
+  start:String.raw`import re
+def is_course(s):
+    return re.fullmatch(r"____", s) is not None`,
+  tests:[["is_course('ECE 20875')","True"],["is_course('MA 26100')","True"],["is_course('ece 20875')","False"],["is_course('ECE20875')","False"],["is_course('ECE 2087')","False"],["is_course('ABCDE 12345')","False"]],
+  sol:String.raw`import re
+def is_course(s):
+    return re.fullmatch(r"[A-Z]{2,4} \d{5}", s) is not None`},
+ {p:"B",pts:5,kind:"code",q:R`<p>Return every temperature in Celsius as an int: "92°C" → 92. Use <code>findall</code> with one group.</p>`,
+  start:String.raw`import re
+def temps(text):
+    return [int(t) for t in re.findall(r"____", text)]`,
+  tests:[["temps('CPU hit 92°C, GPU 71°C, fan 1200 rpm')","[92, 71]"],["temps('no readings')","[]"],["temps('5°C at night, 105°C peak')","[5, 105]"]],
+  sol:String.raw`import re
+def temps(text):
+    return [int(t) for t in re.findall(r"(\d+)°C", text)]`,
+  why:R`With one group, <code>findall</code> returns just the group, not the whole match, so the "°C" is left out for you.`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Turn "Last, First" into "First Last" with <code>re.sub</code> and two groups.</p>`,
+  start:String.raw`import re
+def flip(name):
+    return re.sub(r"(\w+), (\w+)", r"____", name)`,
+  tests:[["flip('Uslu, Suleyman')","'Suleyman Uslu'"],["flip('Ding, Yi')","'Yi Ding'"]],
+  sol:String.raw`import re
+def flip(name):
+    return re.sub(r"(\w+), (\w+)", r"\2 \1", name)`}
+]},
+{s:"X",n:6,t:"ngram",
+ ctx:R`<p>n-grams and TF-IDF in Python. Lab extra.</p>`,
+ parts:[
+ {p:"A",pts:5,kind:"code",q:R`<p>Fill in <code>char_ngrams(s, n)</code>: every run of n characters, left to right.</p>`,
+  start:`def char_ngrams(s, n):
+    return [s[____] for i in range(____)]`,
+  tests:[["char_ngrams('banana', 3)","['ban', 'ana', 'nan', 'ana']"],["char_ngrams('big cat', 4)","['big ', 'ig c', 'g ca', ' cat']"],["char_ngrams('ab', 3)","[]"]],
+  sol:`def char_ngrams(s, n):
+    return [s[i:i + n] for i in range(len(s) - n + 1)]`,
+  why:R`A string of length L has \(L-n+1\) n-grams; "banana" (6 letters) has 4 trigrams.`},
+ {p:"B",pts:6,kind:"code",q:R`<p>Fill in <code>tfidf(word, doc, docs)</code>. Each document is a list of words; use <code>math.log10</code>.</p>`,
+  start:`import math
+def tfidf(word, doc, docs):
+    tf = ____
+    n_t = sum(1 for d in docs if ____)
+    idf = math.log10(____)
+    return tf * idf`,
+  tests:[["round(tfidf('blue', ['sky','blue'], [['sky','blue'],['sun','bright','today'],['sun','sky','bright'],['can','see','shining','sun','bright','sun']]), 4)","0.301"],["round(tfidf('sun', ['can','see','shining','sun','bright','sun'], [['sky','blue'],['sun','bright','today'],['sun','sky','bright'],['can','see','shining','sun','bright','sun']]), 4)","0.0416"],["tfidf('a', ['a'], [['a'],['a','b']])","0.0"]],
+  sol:`import math
+def tfidf(word, doc, docs):
+    tf = doc.count(word) / len(doc)
+    n_t = sum(1 for d in docs if word in d)
+    idf = math.log10(len(docs) / n_t)
+    return tf * idf`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>Which preprocessing step turns "studies" and "studying" into the dictionary word "study"?</p>`,o:["Stemming","Lemmatization","Stopword removal","Tokenization"],a:"B",
+  sol:R`<p>Lemmatization maps to the dictionary form (study). Stemming chops endings and can leave a non-word ("studi"). Both are on the n-grams slides.</p>`}
+]},
+{s:"X",n:7,t:"logreg",
+ ctx:R`<p>A model predicts if a student passes (y = 1) from hours studied \(x\): \(P(y=1|x)=\dfrac1{1+\exp(-(2x-4))}\). Use \(e^{-1}\approx1/3\). Lab extra in the shape of Mock 2a Q6.</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"num",q:R`<p>Decision boundary \(x^*\), and the class predicted for \(x=1.5\)?</p>`,ans:[2,0],lab:["x*","ŷ at 1.5"],sol:R`<p>\(2x^*-4=0\Rightarrow x^*=2\). At 1.5 the inside is \(-1<0\), so \(\hat y=0\).</p>`},
+ {p:"B",pts:5,kind:"num",q:R`<p>Example \(x=2.5,\ y=0\). Find \(p\), then the loss \(L=-[y\log p+(1-y)\log(1-p)]\) (natural log).</p>`,ans:[0.75,Math.log(4)],lab:["p","L"],
+  sol:R`<p>Inside: \(5-4=1\), \(p=\frac1{1+1/3}=\frac34\). \(y=0\): \(L=-\log(1-\frac34)=-\log\frac14=\log4\approx1.386\). The model was confident in the wrong class, so the loss is big.</p>`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>What are the odds \(P(y=1|x)/P(y=0|x)\) at \(x=2.5\)?</p>`,o:["e","e⁻¹","3/4","1"],a:"A",
+  sol:R`<p>Odds = \(e^{\beta_0+\beta_1x}=e^{1}\). Check: \(p/(1-p)=0.75/0.25=3\approx e\) with the exam's rounding.</p>`},
+ {p:"D",pts:4,kind:"code",q:R`<p>Fill in <code>predict(w, b, x)</code>: return 1 if \(\sigma(wx+b)\ge0.5\), else 0.</p>`,
+  start:`import math
+def sigmoid(z):
+    return ____
+
+def predict(w, b, x):
+    return 1 if ____ else 0`,
+  tests:[["sigmoid(0)","0.5"],["predict(2, -4, 2.5)","1"],["predict(2, -4, 1.5)","0"],["predict(1, -2, 2)","1"]],
+  sol:`import math
+def sigmoid(z):
+    return 1 / (1 + math.exp(-z))
+
+def predict(w, b, x):
+    return 1 if sigmoid(w * x + b) >= 0.5 else 0`}
+]},
+{s:"X",n:8,t:"gd",
+ ctx:R`<p>Gradient ascent on \(\ell(b)=-(b-2)^2\), starting at \(b_0=0\). Lab extra in the shape of Mock 2a Q6E.</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Compute \(b_1,b_2\) for \(\alpha=0.25\) and for \(\alpha=0.8\).</p>`,ans:[1,1.5,3.2,1.28],lab:["b₁ (0.25)","b₂ (0.25)","b₁ (0.8)","b₂ (0.8)"],
+  sol:R`<p>Update: \(b_{t+1}=b_t-2\alpha(b_t-2)\).</p><p>α = 0.25 (\(2\alpha=0.5\)): \(b_1=0-0.5(-2)=1\), \(b_2=1-0.5(-1)=1.5\). Halfway each time.</p><p>α = 0.8 (\(2\alpha=1.6\)): \(b_1=0-1.6(-2)=3.2\) (past 2), \(b_2=3.2-1.6(1.2)=1.28\) (back below). Oscillates.</p>`},
+ {p:"B",pts:4,kind:"mc",q:R`<p>For this \(\ell\), what happens with \(\alpha=1.5\)?</p>`,o:["Converges faster than α = 0.25","Oscillates but slowly converges","Oscillates and moves further away each step","Stays at b₀"],a:"C",
+  sol:R`<p>Each step multiplies the distance to 2 by \(1-2\alpha=-2\): the sign flips and the gap doubles (0 → 6 → −6 → 18…). It diverges. Converging needs \(|1-2\alpha|<1\), i.e. \(0<\alpha<1\).</p>`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Fill in <code>ascent(b, alpha, steps)</code> for \(\ell(b)=-(b-4)^2\): return the list of b values after each step.</p>`,
+  start:`def ascent(b, alpha, steps):
+    out = []
+    for _ in range(steps):
+        grad = ____
+        b = ____
+        out.append(b)
+    return out`,
+  tests:[["[round(v, 4) for v in ascent(0, 0.1, 2)]","[0.8, 1.44]"],["[round(v, 4) for v in ascent(0, 0.6, 2)]","[4.8, 3.84]"],["ascent(4, 0.3, 3)","[4, 4, 4]"]],
+  sol:`def ascent(b, alpha, steps):
+    out = []
+    for _ in range(steps):
+        grad = -2 * (b - 4)
+        b = b + alpha * grad
+        out.append(b)
+    return out`},
+ {p:"D",pts:4,kind:"num",q:R`<p>One gradient-descent step on the logistic loss: \(w=0.5,\ b=0\), example \(x=2,\ y=0\), \(\alpha=0.1\). Use \(\sigma(1)\approx0.75\).</p>`,ans:[0.35,-0.075],lab:["w new","b new"],
+  sol:R`<p>\(z=0.5(2)+0=1\), \(f\approx0.75\). Gradients: \((f-y)x=0.75\cdot2=1.5\) and \(f-y=0.75\). New: \(w=0.5-0.1(1.5)=0.35\), \(b=0-0.1(0.75)=-0.075\).</p>`}
+]},
+{s:"X",n:9,t:"oop",
+ ctx:R`<p>Classes, inheritance and files, from the self-reading. The exam FAQ says Python questions can use the self-reading material.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"mc",q:R`${C(`class Counter:
+    total = 0
+    def __init__(self):
+        self.count = 0
+    def incr(self):
+        Counter.total += 1
+        self.count += 1
+
+a = Counter(); b = Counter()
+a.incr(); a.incr(); b.incr()
+print(a.count, b.count, Counter.total)`)}`,o:["2 1 3","2 1 2","3 3 3","2 1 1"],a:"A",
+  sol:R`<p><code>count</code> is an instance variable (each object has its own). <code>total</code> is a class variable (shared by every Counter). a counts 2, b counts 1, the shared total is 3.</p>`},
+ {p:"B",pts:6,kind:"code",q:R`<p>Fill in <code>Rectangle</code> and <code>Square</code>. A Square is a Rectangle with equal sides; use <code>super()</code>.</p>`,
+  start:`class Rectangle:
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+    def area(self):
+        return ____
+    def __str__(self):
+        return f"{self.w}x{self.h}"
+
+class Square(____):
+    def __init__(self, a):
+        ____`,
+  tests:[["Rectangle(3, 4).area()","12"],["Square(5).area()","25"],["str(Square(2))","'2x2'"],["isinstance(Square(1), Rectangle)","True"]],
+  sol:`class Rectangle:
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+    def area(self):
+        return self.w * self.h
+    def __str__(self):
+        return f"{self.w}x{self.h}"
+
+class Square(Rectangle):
+    def __init__(self, a):
+        super().__init__(a, a)`,
+  why:R`Square only rewrites <code>__init__</code>. <code>area</code> and <code>__str__</code> are inherited from Rectangle unchanged.`},
+ {p:"C",pts:4,kind:"mc",q:R`<p>test.txt holds "my first file\nThis file\n". What does this print?</p>${C(`f = open("test.txt", "r")
+print(f.read(4))
+print(f.read(4))
+f.close()`)}`,o:["my f / irst","my f / my f","my first / file","m / y"],a:"A",
+  sol:R`<p><code>read(4)</code> reads the next 4 characters and moves forward. First "my f", then "irst" (the self-reading notebook does exactly this).</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`<p>Which mode adds to the end of an existing file instead of erasing it?</p>`,o:[`'r'`,`'w'`,`'a'`,`'x'`],a:"C",sol:R`<p><code>'a'</code> appends. <code>'w'</code> overwrites the file from the start.</p>`}
+]},
+{s:"X",n:10,t:"oop",
+ ctx:R`<p>More classes. Lab extra.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"mc",q:R`${C(`class Vehicle:
+    def __init__(self, price):
+        self.price = price
+    def __str__(self):
+        return f"Price = {self.price}"
+
+class Named(Vehicle):
+    def __init__(self, price, name):
+        super().__init__(price)
+        self.name = name
+    def __str__(self):
+        return self.name + ", " + super().__str__()
+
+print(Named(1200, "BMW"))`)}`,o:["BMW, Price = 1200","Price = 1200","BMW","Price = 1200, BMW"],a:"A",
+  sol:R`<p><code>print</code> calls <code>__str__</code>. Named's version runs, adds the name, then calls the parent's version through <code>super()</code>.</p>`},
+ {p:"B",pts:6,kind:"code",q:R`<p>Fill in <code>Account</code>: <code>deposit(x)</code> adds to the balance and returns the new balance; a class variable <code>count</code> tracks how many accounts exist.</p>`,
+  start:`class Account:
+    count = 0
+    def __init__(self, owner):
+        self.owner = owner
+        self.balance = 0
+        ____
+    def deposit(self, x):
+        ____
+        return self.balance`,
+  tests:[["Account('a').deposit(50)","50"],["(lambda acc: (acc.deposit(5), acc.deposit(7))[1])(Account('b'))","12"],["(lambda n: (Account('c'), Account('d'), Account.count - n)[2])(Account.count)","2"]],
+  sol:`class Account:
+    count = 0
+    def __init__(self, owner):
+        self.owner = owner
+        self.balance = 0
+        Account.count += 1
+    def deposit(self, x):
+        self.balance += x
+        return self.balance`,
+  why:R`Write <code>Account.count += 1</code>, not <code>self.count += 1</code>: the second makes a new instance variable on this one object and leaves the shared count at 0.`},
+ {p:"C",pts:6,kind:"code",q:R`<p>Fill in <code>count_lines(path)</code>: return how many lines in the file contain the word "error" (any case). Use <code>with open(...)</code>.</p>`,
+  pre:`with open("log.txt", "w") as f:
+    f.write("ok\\nERROR disk\\nok\\nerror net\\nwarning\\n")`,
+  start:`def count_lines(path):
+    n = 0
+    with open(path, ____) as f:
+        for line in f:
+            if ____:
+                n += 1
+    return n`,
+  tests:[["count_lines('log.txt')","2"]],
+  sol:`def count_lines(path):
+    n = 0
+    with open(path, "r") as f:
+        for line in f:
+            if "error" in line.lower():
+                n += 1
+    return n`,
+  why:R`<code>with</code> closes the file for you, even on an error (the self-reading's try/finally, shorter). Looping over <code>f</code> gives one line at a time.`}
+]}
+];
+
+const LEARN={
+knn:{learn:R`<p class="idea"><b>The big idea:</b> to label a new point, find the \(k\) labelled points closest to it and let them vote. That's all kNN ("k nearest neighbours") does. There is no training step: it just remembers the data.</p>
+<p><b>Words you'll see.</b> A <i>point</i> is one row of data, like (x, y). Its <i>label</i> or <i>class</i> is the category it belongs to (Star or Heart). \(k\) is how many neighbours get a vote.</p>
+<p><b>Two ways to measure distance</b> between \((x_1,y_1)\) and \((x_2,y_2)\):</p>
+<ul><li><b>Manhattan</b> (city blocks): \(|x_1-x_2|+|y_1-y_2|\). The bars \(|\ |\) mean "drop the minus sign": \(|-3|=3\).</li>
+<li><b>Euclidean</b> (straight line, Pythagoras): \(\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}\).</li></ul>
+<div class="ex"><b>Example:</b> from (3, 4) to (1, 1). Manhattan: \(|3-1|+|4-1|=2+3=5\). Euclidean: \(\sqrt{2^2+3^2}=\sqrt{13}\approx3.61\).</div>
+<p><b>The recipe</b> (this is what the exam asks, line by line):</p>
+<ol><li>Compute the distance from the new point to <i>every</i> labelled point. Write each line of arithmetic: the key gives a point per distance.</li>
+<li>Sort them, smallest first.</li>
+<li>Take the \(k\) smallest. Count their labels. The most common label wins.</li></ol>
+<p><b>No calculator?</b> To rank Euclidean distances you don't need the square roots: \(\sqrt5<3\) because \(5<9\). Compare the numbers under the root (and square the plain ones).</p>
+<p><b>Picking k.</b> With two classes use an odd \(k\) so the vote can't tie. Small \(k\) follows noise; big \(k\) blurs the boundary.</p>
+<p><b>Pros and cons (slides):</b> simple and needs no model, but slow to use (distance to every point, every time), only as good as its labelled data, and "near" stops meaning much in very many dimensions.</p>
+<p><b>Judging a classifier (slides).</b> Pick one class as "positive". TP = positives called positive, FP = negatives wrongly called positive, FN = positives missed, TN = negatives called negative.</p>
+<ul><li>accuracy \(=\frac{TP+TN}{\text{all}}\), precision \(=\frac{TP}{TP+FP}\), recall (sensitivity) \(=\frac{TP}{TP+FN}\), specificity \(=\frac{TN}{TN+FP}\)</li>
+<li>F1 \(=\frac{2PR}{P+R}\), high only if both precision and recall are high. Accuracy misleads when one class is rare: always guessing "minivan" is 90% accurate if 90% of cars are minivans.</li></ul>
+<p>In Python: <code>from sklearn.neighbors import KNeighborsClassifier</code>.</p>`,
+exam:R`Question 1 Part A on both mocks: a table of 6 labelled 2-D points and a new point Z. Compute the distance to each point (Manhattan on 2a, Euclidean on 2b), show every line, then vote with k = 3.`,
+warm:[
+ {step:"Manhattan distance",kind:"num",q:R`<p>Manhattan distance between (2, 5) and (6, 3)?</p>`,ans:[6],sol:R`\(|2-6|+|5-3|=4+2=6\).`},
+ {step:"Euclidean distance",kind:"num",q:R`<p>Euclidean distance between (1, 1) and (4, 5)?</p>`,ans:[5],sol:R`\(\sqrt{(1-4)^2+(1-5)^2}=\sqrt{9+16}=\sqrt{25}=5\).`},
+ {step:"Negative coordinates",kind:"num",q:R`<p>Euclidean distance <i>squared</i> between Z = (1, 1) and B = (−2, 3)? (The number under the root.)</p>`,ans:[13],sol:R`\(1-(-2)=3\) and \(1-3=-2\). Square both: \(9+4=13\), so the distance is \(\sqrt{13}\). Subtracting a negative is the usual slip.`},
+ {step:"Rank without roots",kind:"mc",q:R`<p>Which is closest to Z: P at \(\sqrt{13}\), Q at 3.5, or R at \(\sqrt{10}\)?</p>`,o:["P","Q","R","Q and R tie"],a:"C",sol:R`Square everything: 13, \(3.5^2=12.25\), 10. Smallest is 10, so <b>R</b>.`},
+ {step:"Vote",kind:"mc",q:R`<p>Distances and labels: A 2 (Red), B 4 (Blue), C 3 (Blue), D 1 (Red), E 6 (Red). Prediction with k = 3?</p>`,o:["Red","Blue"],a:"A",sol:R`Sort: D 1, A 2, C 3. Labels Red, Red, Blue. <b>Red</b> 2–1. Notice B and E never count.`},
+ {step:"Why odd k",kind:"mc",q:R`<p>With two classes, why choose an odd k?</p>`,o:["Odd k runs faster","An odd number of votes can't split evenly, so there's no tie","Even k always overfits","sklearn requires it"],a:"B",sol:R`With k = 4 you could get 2 vs 2. With 3 or 5 one class always wins.`},
+ {step:"Code it",kind:"code",q:R`<p>Fill in <code>manhattan(p, q)</code> for 2-D tuples.</p>`,start:`def manhattan(p, q):
+    return ____`,tests:[["manhattan((3, 4), (1, 1))","5"],["manhattan((0, 0), (-2, 3))","5"],["manhattan((1, 1), (1, 1))","0"]],sol:`def manhattan(p, q):
+    return abs(p[0] - q[0]) + abs(p[1] - q[1])`},
+ {step:"Exam shape: distances",key:"es1",kind:"num",q:R`<p>Points: A(1,2) Red, B(4,1) Red, C(2,5) Blue, D(6,6) Blue, E(5,3) Blue, F(0,0) Red. New point Z = (3, 2). Manhattan distance to each?</p>`,ans:[2,2,4,7,3,5],lab:["A","B","C","D","E","F"],
+  sol:R`A \(2+0=2\), B \(1+1=2\), C \(1+3=4\), D \(3+4=7\), E \(2+1=3\), F \(3+2=5\).`},
+ {step:"Exam shape: vote",key:"es2",kind:"mc",q:R`<p>Same points and Z. Class with k = 3?</p>`,o:["Blue","Red"],a:"B",sol:R`Nearest: A 2 (Red), B 2 (Red), E 3 (Blue). <b>Red</b> 2–1.`}
+]},
+km:{learn:R`<p class="idea"><b>The big idea:</b> K-Means splits unlabelled points into K groups. It repeats two steps: <b>assign</b> every point to its nearest center, then <b>update</b> every center to the average of its points. It stops when nothing changes.</p>
+<p><b>Words.</b> A <i>cluster</i> is a group of points. Its <i>center</i> or <i>centroid</i> is one point that stands for the group. "Unsupervised" means there are no labels; the algorithm finds the groups itself.</p>
+<div class="ex"><b>One iteration, 1-D:</b> data {0, 2, 3, 9, 11, 15, 18}, centers 2 and 12.<br>Assign: 0, 2, 3 are closer to 2. For 9: \(|9-2|=7\) and \(|9-12|=3\), so 12. 11, 15, 18 also go to 12.<br>Update: \(\frac{0+2+3}{3}=\frac53\) and \(\frac{9+11+15+18}{4}=\frac{53}4=13.25\).</div>
+<p><b>In 2-D</b> the update averages the x's and the y's separately: the center of (1,3), (4,2), (1,1) is \(\left(\frac{1+4+1}3,\frac{3+2+1}3\right)=(2,2)\).</p>
+<p><b>Which distance?</b> The exam may say Manhattan for the assign step. The update is still a plain average.</p>
+<p><b>What it minimizes:</b> the sum of squared distances from each point to its center (SSE, inertia). Each step can only lower it, which is why it stops.</p>
+<p><b>Choosing K: the elbow method.</b> Run K = 1, 2, 3, … and plot SSE (y-axis) against K (x-axis). SSE always falls as K grows (with K = n it's 0). Pick the K at the bend, where an extra cluster stops buying much.</p>
+<p><b>A centroid moves toward its own points.</b> In a picture, find the points assigned to a centroid; it moves to their middle.</p>
+<p><b>Limits:</b> the result depends on the starting centers (sklearn's <code>n_init</code> runs it several times); it assumes round clusters of similar size; each point gets exactly one cluster ("hard" assignment). GMMs fix the last two.</p>
+<p>In Python: <code>KMeans(n_clusters=3, n_init=10).fit(X)</code>, then <code>.labels_</code> and <code>.cluster_centers_</code>.</p>`,
+exam:R`Q1 Parts B and C on both mocks: one K-Means iteration by hand (2-D with Manhattan on 2a, a 1-D list on 2b): assign each point, then average each group. Plus a concept question: the elbow plot's y-axis (2a) or which way a centroid moves in a picture (2b).`,
+warm:[
+ {step:"Average a group",kind:"num",q:R`<p>Center of the points (1, 3), (4, 2), (1, 1)?</p>`,ans:[2,2],lab:["x","y"],sol:R`x: \((1+4+1)/3=2\). y: \((3+2+1)/3=2\).`},
+ {step:"Assign one point",kind:"mc",q:R`<p>1-D centers at 2 and 9. Which center does 6 go to?</p>`,o:["2","9","both"],a:"B",sol:R`\(|6-2|=4\), \(|6-9|=3\). Closer to 9.`},
+ {step:"One iteration (1-D)",kind:"num",q:R`<p>Data {1, 2, 6, 8, 9}, centers 1 and 7. New centers after one iteration?</p>`,ans:[1.5,23/3],lab:["c₁","c₂"],sol:R`1 and 2 go to 1; 6, 8, 9 go to 7. New: \(1.5\) and \(\frac{23}3\approx7.67\).`},
+ {step:"Elbow y-axis",kind:"mc",q:R`<p>On an elbow plot, what goes on the y-axis?</p>`,o:["The number of clusters K","Sum of squared distances from points to their centers","How many iterations K-Means ran","The largest cluster's size"],a:"B",sol:R`K is on the x-axis; SSE (inertia) on the y-axis.`},
+ {step:"Which way it moves",kind:"mc",q:R`<p>A centroid sits at (5, 5). The points assigned to it are (5, 1), (6, 2), (4, 1). Which way does it move?</p>`,o:["Up","Down","Left","Stays put"],a:"B",sol:R`Their average is (5, 1.33), below (5, 5). It moves <b>down</b>, toward its points.`},
+ {step:"Code: the update",kind:"code",q:R`<p>Fill in <code>center(pts)</code>: the average (x, y) of a list of 2-D points.</p>`,start:`def center(pts):
+    n = len(pts)
+    return (____, ____)`,tests:[["center([(1, 3), (4, 2), (1, 1)])","(2.0, 2.0)"],["center([(7, 8), (9, 5), (8, 8)])","(8.0, 7.0)"]],sol:`def center(pts):
+    n = len(pts)
+    return (sum(p[0] for p in pts) / n, sum(p[1] for p in pts) / n)`},
+ {step:"Exam shape",key:"es",kind:"num",q:R`<p>Points P(0,0), Q(2,1), R(1,4), S(6,5), T(7,7), U(8,3). Starting centers \(c_1=(0,0)\), \(c_2=(7,7)\), Manhattan distance. Centers after one iteration?</p>`,ans:[1,5/3,7,5],lab:["c₁ x","c₁ y","c₂ x","c₂ y"],
+  sol:R`P, Q, R are nearer \(c_1\) (0, 3, 5 vs 14, 11, 9); S, T, U nearer \(c_2\). \(c_1=(1,\frac53)\), \(c_2=(7,5)\).`}
+]},
+gmm:{learn:R`<p class="idea"><b>The big idea:</b> a Gaussian Mixture Model says the data came from several bell curves mixed together. EM (Expectation-Maximization) fits it by repeating: <b>E-step</b>, work out how much each point belongs to each curve; <b>M-step</b>, refit each curve to the points it "owns", weighted by those amounts.</p>
+<p><b>Symbols.</b> Component (curve) \(k\) has three numbers: weight \(\pi_k\) (what share of the data it makes; the \(\pi\)'s add to 1), mean \(\mu_k\) (its center) and variance \(\sigma_k^2\) (its spread). \(N(x|\mu,\sigma^2)\) is the height of that bell curve at \(x\); the exam gives you these values in a table. \(x_j\) is data point \(j\).</p>
+<p><b>E-step: responsibilities.</b> \(\gamma_{kj}\) is the probability point \(j\) came from component \(k\):</p>
+<p>\[\gamma_{kj}=\frac{\pi_k\,N(x_j|\mu_k,\sigma_k^2)}{\sum_{l}\pi_l\,N(x_j|\mu_l,\sigma_l^2)}\]</p>
+<p>In words: weight × height for this curve, divided by weight × height summed over all curves. A point's responsibilities add to 1.</p>
+<div class="ex"><b>Example:</b> \(\pi_1=0.3,\ \pi_2=0.7\), heights at \(x=2\): 0.14 and 0.04. Top for curve 1: \(0.3\times0.14=0.042\). Curve 2: \(0.7\times0.04=0.028\). \(\gamma_1=\frac{0.042}{0.042+0.028}=0.6\), \(\gamma_2=0.4\).</div>
+<p><b>M-step: refit.</b> With \(n\) points:</p>
+<ul><li>\(N_k=\sum_j\gamma_{kj}\): the "number of points" component \(k\) owns (it can be a decimal).</li>
+<li>\(\pi_k=N_k/n\): its new weight.</li>
+<li>\(\mu_k=\frac{\sum_j\gamma_{kj}x_j}{N_k}\): a weighted average of the data.</li>
+<li>\(\sigma_k^2=\frac{\sum_j\gamma_{kj}(x_j-\mu_k)^2}{N_k}\), using the <i>new</i> \(\mu_k\).</li></ul>
+<div class="ex"><b>Example:</b> \(x=[2,3,5]\), \(\gamma_1=[0.5,0.4,0.1]\). \(N_1=1.0\), \(\pi_1=1/3\), \(\mu_1=\frac{0.5(2)+0.4(3)+0.1(5)}{1.0}=2.7\).</div>
+<p><b>When to stop:</b> when the log-likelihood \(\sum_j\log\sum_k\pi_kN(x_j|\mu_k,\sigma_k^2)\) changes by less than a tolerance.</p>
+<p><b>GMM vs K-Means:</b> GMM is <i>soft</i> (a point can be 70% one cluster) and each component has its own variance, so it handles overlapping clusters of different spreads. K-Means is <i>hard</i> and assumes round clusters of similar size. Both need K chosen ahead and both can land in a different answer from a different start.</p>
+<p>In Python: <code>from sklearn.mixture import GaussianMixture</code>.</p>`,
+exam:R`Q2 on both mocks. E-step: responsibilities of one point from given π's and a table of N(x | μ, σ²) values (2a: numbers; 2b: write the expressions without evaluating). M-step: from a table of γ's compute N_k, π_k and μ_k. 2a adds a K-Means vs GMM concept MC.`,
+warm:[
+ {step:"Weights add to 1",kind:"num",q:R`<p>A 2-component GMM has \(\pi_1=0.35\). What is \(\pi_2\)?</p>`,ans:[0.65],sol:R`The weights are shares of the data and must add to 1.`},
+ {step:"E-step",kind:"num",q:R`<p>\(\pi_1=0.4,\ \pi_2=0.6\). At some point, \(N(x|\mu_1,\sigma_1^2)=0.2\) and \(N(x|\mu_2,\sigma_2^2)=0.05\). Find \(\gamma_1,\gamma_2\).</p>`,ans:[8/11,3/11],lab:["γ₁","γ₂"],sol:R`\(0.4(0.2)=0.08\), \(0.6(0.05)=0.03\). \(\gamma_1=0.08/0.11=0.727\), \(\gamma_2=0.273\).`},
+ {step:"Write it, don't solve it",kind:"mc",q:R`<p>\(\pi_1=0.3,\mu_1=-1,\sigma_1^2=2\); \(\pi_2=0.7,\mu_2=2,\sigma_2^2=1\). Which is \(\gamma\) for component 1 at \(x=0\)?</p>`,
+  o:[R`\(\frac{0.3N(0|-1,2)}{0.7N(0|2,1)}\)`,R`\(\frac{0.3N(0|-1,2)}{0.3N(0|-1,2)+0.7N(0|2,1)}\)`,R`\(\frac{N(0|-1,2)}{N(0|-1,2)+N(0|2,1)}\)`,R`\(\frac{0.3N(0|2,1)}{0.3N(0|2,1)+0.7N(0|-1,2)}\)`],a:"B",
+  sol:R`Top: component 1's weight times its own curve. Bottom: the same for every component, added. A forgets the sum, C forgets the weights, D pairs each weight with the wrong curve.`},
+ {step:"N_k and π_k",kind:"num",q:R`<p>Three points; component 1's responsibilities are 0.8, 0.3, 0.1. Find \(N_1\) and \(\pi_1\).</p>`,ans:[1.2,0.4],lab:["N₁","π₁"],sol:R`\(N_1=0.8+0.3+0.1=1.2\); \(\pi_1=1.2/3=0.4\).`},
+ {step:"Weighted mean",kind:"num",q:R`<p>Same γ's, data \(x=[1,4,7]\). Find \(\mu_1\).</p>`,ans:[2.25],sol:R`\(\frac{0.8(1)+0.3(4)+0.1(7)}{1.2}=\frac{0.8+1.2+0.7}{1.2}=\frac{2.7}{1.2}=2.25\). Divide by \(N_1\), not by 3.`},
+ {step:"Soft vs hard",kind:"mc",q:R`<p>Which is true?</p>`,o:["K-Means gives each point a probability for each cluster","A GMM gives each point a probability for each component","GMMs don't need K chosen in advance","K-Means is fit with the EM algorithm's E-step"],a:"B",sol:R`GMMs are soft (responsibilities); K-Means is hard. Both need K chosen.`},
+ {step:"Code: E-step",kind:"code",q:R`<p>Fill in <code>responsibilities(pis, likes)</code>.</p>`,start:`def responsibilities(pis, likes):
+    weighted = [____ for p, l in zip(pis, likes)]
+    return [w / ____ for w in weighted]`,tests:[["[round(g, 4) for g in responsibilities([0.3, 0.7], [0.14, 0.04])]","[0.6, 0.4]"],["[round(g, 4) for g in responsibilities([0.5, 0.5], [0.3, 0.1])]","[0.75, 0.25]"]],sol:`def responsibilities(pis, likes):
+    weighted = [p * l for p, l in zip(pis, likes)]
+    return [w / sum(weighted) for w in weighted]`},
+ {step:"Exam shape: M-step",key:"es",kind:"num",q:R`<p>Data \(x=[1,2,6]\). Responsibilities: component 1 \([0.9,0.6,0.2]\), component 2 \([0.1,0.4,0.8]\). Find \(N_1,N_2,\pi_1,\pi_2,\mu_1,\mu_2\).</p>`,ans:[1.7,1.3,1.7/3,1.3/3,3.3/1.7,5.7/1.3],lab:["N₁","N₂","π₁","π₂","μ₁","μ₂"],
+  sol:R`\(N_1=1.7\), \(N_2=1.3\); \(\pi_1=0.567\), \(\pi_2=0.433\); \(\mu_1=\frac{0.9+1.2+1.2}{1.7}=1.94\); \(\mu_2=\frac{0.1+0.8+4.8}{1.3}=4.38\).`}
+]},
+nb:{learn:R`<p class="idea"><b>The big idea:</b> Naive Bayes asks, for each class, "how likely is this data if it came from that class?" and multiplies by how common the class is. The biggest product wins.</p>
+<p><b>Bayes' rule</b>: \(P(c|x)=\dfrac{P(x|c)\,P(c)}{P(x)}\). \(P(c)\) is the <i>prior</i> (how common the class is before seeing the data), \(P(x|c)\) the <i>likelihood</i>, \(P(c|x)\) the <i>posterior</i>. \(P(x)\) is the same for every class, so to compare classes we drop it: \(P(c|x)\propto P(x|c)P(c)\). "\(\propto\)" means "proportional to", and the result is the <b>unnormalized posterior</b>.</p>
+<p><b>Naive</b> = assume the features are independent once you know the class, so their probabilities multiply: \(P(x_1,x_2|c)=P(x_1|c)P(x_2|c)\).</p>
+<p><b>Priors:</b> the fraction of training examples in each class, unless the question gives them (Mock 2b does).</p>
+<p><b>Categorical features</b> (Mock 2b): \(P(\text{Large}|\text{Budget})\) = (Budget rows with Large) ÷ (Budget rows).</p>
+<p><b>Words (multinomial, Mock 2a):</b> \(P(w|c)\) = how often word \(w\) appears among all the words in class \(c\)'s documents. Count every occurrence ("hard" twice counts twice).</p>
+<p><b>Laplace smoothing</b> stops a single unseen word from making the whole product 0:</p>
+<p>\[P(w|c)=\frac{\text{count}(w,c)+1}{N_c+|V|}\]</p>
+<p>\(N_c\) = total words in class \(c\) (with repeats), \(|V|\) = number of different words in all the training data.</p>
+<div class="ex"><b>Example:</b> A posts "study hard exam", "hard project" (\(N_A=5\)); S posts "fun party", "hard game" (\(N_S=4\)); \(|V|=7\). \(P(\text{hard}|A)=\frac{2+1}{5+7}=\frac14\). \(P(\text{fun}|A)=\frac{0+1}{12}=\frac1{12}\). New post "hard fun", priors \(\frac12\): A \(\frac14\cdot\frac1{12}\cdot\frac12=\frac1{96}\), S \(\frac2{11}\cdot\frac2{11}\cdot\frac12=\frac2{121}\). S wins.</div>
+<p><b>Classic follow-ups:</b></p>
+<ul><li>A post of only unseen words: each word gives \(\frac1{N_c+|V|}\), bigger for the class with <i>fewer</i> words. With equal priors that class wins.</li>
+<li>No smoothing and a value never seen in training: its probability is 0 for every class, every score is 0, no prediction.</li>
+<li>Adding a new feature: keep the priors and old tables; only compute the new feature's likelihoods.</li></ul>
+<p>Other flavors (slides): Gaussian NB for continuous data (fit a mean and variance per class and read \(P(x|c)\) off the bell curve), Bernoulli for yes/no features. <code>from sklearn.naive_bayes import GaussianNB, MultinomialNB</code>.</p>`,
+exam:R`Q3 (18 pts) on both mocks. 2a: short labelled posts; count words per class and the vocabulary, Laplace-smoothed P(word | class), unnormalized posteriors for a new post, and why unseen words favor one class. 2b: a feature table, likelihoods without smoothing, posteriors with given priors, then MCs on adding a feature and an unseen value.`,
+warm:[
+ {step:"Prior",kind:"num",q:R`<p>Of 10 training emails, 6 are spam. \(P(\text{spam})\)?</p>`,ans:[0.6],sol:R`\(6/10\).`},
+ {step:"Count words",kind:"num",q:R`<p>Pos reviews: "good movie", "good good fun". Neg: "bad movie". Find \(N_{Pos}\), \(N_{Neg}\), \(|V|\).</p>`,ans:[5,2,4],lab:["N_Pos","N_Neg","|V|"],sol:R`Pos: 2 + 3 = 5 words (count "good" twice). Neg: 2. Different words: good, movie, fun, bad = 4.`},
+ {step:"Laplace",kind:"num",q:R`<p>Same data. \(P(\text{good}|Pos)\) and \(P(\text{good}|Neg)\) with Laplace smoothing?</p>`,ans:[4/9,1/6],lab:["good | Pos","good | Neg"],sol:R`Pos: \(\frac{3+1}{5+4}=\frac49\). Neg: \(\frac{0+1}{2+4}=\frac16\).`},
+ {step:"Why smooth",kind:"mc",q:R`<p>Why add 1 to every count?</p>`,o:["To make probabilities add to more than 1","So a word never seen in a class doesn't make that class's whole product 0","To speed up training","Because priors must be equal"],a:"B",sol:R`One zero in a product makes the whole thing zero, no matter how well the other words fit.`},
+ {step:"Posterior",kind:"num",q:R`<p>Same data, priors \(P(Pos)=\frac23\), \(P(Neg)=\frac13\). Unnormalized scores for the new review "good fun"?</p>`,ans:[16/243,1/108],lab:["Pos","Neg"],sol:R`\(P(\text{fun}|Pos)=\frac{1+1}9=\frac29\), \(P(\text{fun}|Neg)=\frac16\). Pos: \(\frac49\cdot\frac29\cdot\frac23=\frac{16}{243}\approx0.066\). Neg: \(\frac16\cdot\frac16\cdot\frac13=\frac1{108}\approx0.0093\). Pos.`},
+ {step:"Feature table",kind:"num",q:R`<p>Regular customers: (Small, Yes), (Large, Yes), (Large, No). \(P(\text{Large}|\text{Regular})\) and \(P(\text{Yes}|\text{Regular})\) without smoothing?</p>`,ans:[2/3,2/3],lab:["Large | Regular","Yes | Regular"],sol:R`Only Regular rows: Large in 2 of 3, Yes in 2 of 3.`},
+ {step:"Unseen value",kind:"mc",q:R`<p>No smoothing. A test example has a feature value never seen in any class. What happens?</p>`,o:["The prior decides","Every class scores 0, so no prediction","That feature is skipped automatically","The model picks randomly"],a:"B",sol:R`Its likelihood is 0 in every class, so every product is 0.`},
+ {step:"Code: smoothing",kind:"code",q:R`<p>Fill in the Laplace formula.</p>`,start:`def p_word(word, class_words, vocab_size):
+    return (____) / (____)`,tests:[["p_word('good', ['good','movie','good','good','fun'], 4)","4/9"],["p_word('good', ['bad','movie'], 4)","1/6"]],sol:`def p_word(word, class_words, vocab_size):
+    return (class_words.count(word) + 1) / (len(class_words) + vocab_size)`},
+ {step:"Exam shape",key:"es",kind:"num",q:R`<p>Tech: "fast laptop", "new laptop deal". Food: "fast food", "food deal". New post "fast deal", priors from post counts, Laplace smoothing. Unnormalized score for each class?</p>`,ans:[1/50,2/81],lab:["Tech","Food"],
+  sol:R`\(N_T=5\), \(N_F=4\), \(|V|=5\). Tech: \(\frac{2}{10}\cdot\frac2{10}\cdot\frac12=0.02\). Food: \(\frac29\cdot\frac29\cdot\frac12=0.0247\). Food.`}
+]},
+re:{learn:R`<p class="idea"><b>The big idea:</b> a regular expression (regex) is a pattern that describes a set of strings. Python's <code>re</code> module finds, checks, pulls out and replaces text that fits the pattern.</p>
+<p><b>Building blocks</b> (each matches <i>one</i> character unless a count follows):</p>
+<ul><li><code>a</code> the letter a; <code>.</code> any character except newline</li>
+<li><code>[abc]</code> one of a, b, c; <code>[a-z]</code> one lowercase letter; <code>[^01]</code> any character <i>except</i> 0 or 1 (letters and symbols too!)</li>
+<li><code>\d</code> a digit; <code>\w</code> a "word" character = <code>[a-zA-Z0-9_]</code> (note the underscore); <code>\s</code> whitespace. Capitals mean "not": <code>\D \W \S</code>.</li></ul>
+<p><b>Counts</b> apply to the thing just before them: <code>?</code> 0 or 1, <code>*</code> 0 or more, <code>+</code> 1 or more, <code>{3}</code> exactly 3, <code>{2,4}</code> 2 to 4. They are greedy: they take as much as they can, then give back if the rest won't fit.</p>
+<p><b>Positions</b> (match no characters): <code>^</code> start of string, <code>$</code> end, <code>\b</code> a word boundary (between a \w and a non-\w, or the string edge). <code>(?=abc)</code> "abc comes next" without using it up.</p>
+<p><b>Special characters</b> <code>. ( ) [ ] ? * + ^ $ \</code> need a backslash to match themselves: <code>\.</code> is a real dot, <code>\(</code> a real parenthesis. Write patterns as raw strings <code>r"..."</code> so Python leaves the backslashes alone.</p>
+<p><b>Groups.</b> Parentheses capture. <code>m.group(0)</code> is the whole match; <code>group(1)</code>, <code>group(2)</code>, … are numbered by their <b>opening</b> parenthesis, left to right, nested ones included. <code>m.groups()</code> gives all of them except group 0.</p>
+<div class="ex"><b>Example:</b> <code>((\w+)_ID(\d+))</code> on "jsmith_ID882": group 1 = "jsmith_ID882" (outer), 2 = "jsmith", 3 = "882".</div>
+<p><b>The functions:</b></p>
+<ul><li><code>re.match(p, s)</code> only at the start of s; <code>re.search(p, s)</code> the first match anywhere; <code>re.fullmatch</code> the whole string. They return a match object or <code>None</code>.</li>
+<li><code>re.findall(p, s)</code> a list of every match. <b>Trap:</b> if the pattern has one group, you get the group's text; with several groups, tuples.</li>
+<li><code>re.sub(p, repl, s)</code> replaces every match; in <code>repl</code>, <code>\1</code> is group 1's text. <code>re.compile(p)</code> builds a pattern object you can reuse: <code>p.search(s)</code>.</li></ul>
+<p><b>Checklist for "which regex matches this format":</b> does <code>\w</code> let in an underscore it shouldn't? Is every literal <code>.</code> or <code>(</code> escaped? Does <code>[^…]</code> let in letters? Are there <code>^ $</code> or <code>\b</code> so extra characters can't sneak in? Exactly the right count (<code>{2}</code> vs <code>+</code>)?</p>
+<p><b>Plain string methods</b> (slides) for simple jobs: <code>s.count("l")</code>, <code>s.find("ell")</code>, <code>s.replace("o", "0")</code>, <code>s.split(" ")</code>, <code>"x".join(list)</code>, <code>"ell" in s</code>.</p>`,
+exam:R`Q4 on both mocks: four 4-point parts. What does this code print (nested group numbers, findall, a group inside a match), which string fits a pattern or what it finds in a sentence (\b, {n}), and pick the regex for a format (email, phone number) where the traps are \w allowing "_", unescaped ( ) and [^01] letting in letters.`,
+warm:[
+ {step:"findall",kind:"mc",q:R`<p><code>re.findall(r"\d+", "a1b22c333")</code>?</p>`,o:[`['1', '2', '2', '3', '3', '3']`,`['1', '22', '333']`,`['122333']`,`['a1', 'b22', 'c333']`],a:"B",sol:R`<code>\d+</code> grabs each run of digits as long as it can.`},
+ {step:"match vs search",kind:"mc",q:R`<p><code>p = re.compile("cat")</code>. What do <code>p.match("concat")</code> and <code>p.search("concat")</code> return?</p>`,o:["Both a match","match: None; search: a match for 'cat'","match: a match; search: None","Both None"],a:"B",sol:R`<code>match</code> only looks at the very start ("con…"). <code>search</code> scans the whole string.`},
+ {step:"Character classes",kind:"mc",q:R`<p>Which string does <code>\w+</code> match <i>completely</i>?</p>`,o:["user-1","user.1","user_1","user 1"],a:"C",sol:R`<code>\w</code> is letters, digits and underscore. "-", "." and a space are not word characters.`},
+ {step:"Group numbers",kind:"mc",q:R`<p><code>m = re.search(r"((\w+)@(\w+))\.com", "mail bob@site.com now")</code>. What is <code>m.group(3)</code>?</p>`,o:["bob@site","bob","site","bob@site.com"],a:"C",sol:R`Opening parentheses left to right: group 1 is the outer "bob@site", group 2 "bob", group 3 "site". Group 0 would be "bob@site.com".`},
+ {step:"Word boundaries",kind:"mc",q:R`<p>What does <code>re.findall(r"\b[A-Z]{3}\d{2}\b", "ECE20 and CS159 and ABC123")</code> return?</p>`,o:[`['ECE20']`,`['ECE20', 'ABC12']`,`['ECE20', 'CS159']`,`[]`],a:"A",sol:R`"CS159" has only 2 capitals. "ABC123" has 3 digits, so after "12" comes "3", not a word boundary. Only "ECE20".`},
+ {step:"Escaping",kind:"mc",q:R`<p>Which pattern matches the text "(765)" exactly?</p>`,o:[R`<code>(\d{3})</code>`,R`<code>\(\d{3}\)</code>`,R`<code>[(]\d+</code>`,R`<code>\(\d\)</code>`],a:"B",sol:R`Unescaped parentheses only make a group, so A matches "765" without the brackets. B escapes them. C has no closing bracket; D allows only one digit.`},
+ {step:"Negated class",kind:"mc",q:R`<p>Which strings does <code>^[^01]\d$</code> match?</p>`,o:["Only 22","22 and A2","02 and 12","None of these"],a:"B",sol:R`<code>[^01]</code> is any one character except 0 or 1, so "A" passes. That's why Mock 2b's option C is wrong.`},
+ {step:"Code: write a pattern",kind:"code",q:R`<p>Fill in the pattern: a US zip code is exactly 5 digits, optionally followed by a hyphen and 4 digits ("47907" or "47907-1234").</p>`,start:String.raw`import re
+def is_zip(s):
+    return re.fullmatch(r"____", s) is not None`,tests:[["is_zip('47907')","True"],["is_zip('47907-1234')","True"],["is_zip('4790')","False"],["is_zip('47907-12')","False"],["is_zip('47907 1234')","False"]],sol:String.raw`import re
+def is_zip(s):
+    return re.fullmatch(r"\d{5}(-\d{4})?", s) is not None`,why:R`<code>(…)?</code> makes the whole hyphen-plus-4-digits part optional.`},
+ {step:"Exam shape",key:"es",kind:"mc",q:R`<p>A date must look like MM/DD/YYYY: two digits, slash, two digits, slash, four digits, nothing else. Which regex is right?</p>`,o:[R`<code>\d+/\d+/\d+</code>`,R`<code>^\d{2}/\d{2}/\d{4}$</code>`,R`<code>^\w{2}/\w{2}/\w{4}$</code>`,R`<code>\d{2}.\d{2}.\d{4}</code>`],a:"B",
+  sol:R`A allows any number of digits. C's <code>\w</code> allows letters. D's unescaped dot allows any separator and, with no anchors, extra text around it.`}
+]},
+ngram:{learn:R`<p class="idea"><b>The big idea:</b> to analyze text, chop it into pieces (n-grams), count them, and score each word by how much it says about <i>this</i> document compared with the others (TF-IDF).</p>
+<p><b>n-grams</b> are overlapping runs of n items. Word 2-grams of "I saw a cat": "I saw", "saw a", "a cat". <b>Character</b> 3-grams of "saw a": "saw", "aw_", "w_a" (spaces count; the exam writes them as _). Slide the window one character at a time; a string of length L has \(L-n+1\) of them.</p>
+<p><b>Bag of words:</b> keep the counts, forget the order between n-grams.</p>
+<p><b>Preprocessing</b>, in the usual order: tokenize (split into words, drop punctuation), lowercase, remove stopwords (common words like "the", "and"), and maybe stem ("studies" → "studi") or lemmatize ("studies" → "study", a real dictionary word).</p>
+<p><b>Document-word matrix:</b> one row per document, one column per word, each cell the count.</p>
+<p><b>Term frequency</b> — how much of this document is this word: \(tf(t,d)=\dfrac{\text{times }t\text{ is in }d}{\text{total words in }d}\) (after preprocessing).</p>
+<p><b>Inverse document frequency</b> — how rare the word is across the documents: \(idf(t)=\log_{10}\dfrac{N}{n_t}\), \(N\) documents in all, \(n_t\) of them contain \(t\). A word in every document gets \(\log_{10}1=0\). A word in only one gets the biggest idf.</p>
+<p><b>TF-IDF</b> \(=tf\times idf\). The most important word in a document has the biggest tf-idf: common in this document, rare elsewhere.</p>
+<div class="ex"><b>Example (slides):</b> docs "sky blue", "sun bright today", "sun sky bright", "can see shining sun bright sun". "blue": tf in doc 1 = 1/2, in 1 of 4 docs, idf = \(\log_{10}4=0.602\), tf-idf = 0.301. "sun" in doc 4: tf = 2/6, idf = \(\log_{10}(4/3)=0.125\), tf-idf = 0.042.</div>
+<p><b>No-calculation shortcuts</b> the mocks reward: if all words in a document appear once, they have equal tf, so the one in the fewest documents wins. A word in every document has idf 0, so it's never "most important".</p>
+<p><b>Language ID (HW 7, slides):</b> compare a mystery text's character n-gram frequencies with each language's; the closest (e.g. smallest MSE) wins.</p>`,
+exam:R`Q5 on both mocks: the first few character n-grams of a sentence (with spaces as _), a document-word matrix after lowercasing, punctuation and stopword removal, then quick MCs: tf of a word, which word has the highest idf, which word matters most in a document, and the right token list.`,
+warm:[
+ {step:"Word bigrams",kind:"mc",q:R`<p>Word 2-grams of "data science is fun"?</p>`,o:[`"da", "at", "ta", …`,`"data science", "science is", "is fun"`,`"data science", "is fun"`,`"data", "science", "is", "fun"`],a:"B",sol:R`Overlapping pairs of words, sliding one word at a time. C skips a pair; D is unigrams.`},
+ {step:"Character trigrams",kind:"num",q:R`<p>How many character 3-grams does "banana" have (counting repeats)?</p>`,ans:[4],sol:R`ban, ana, nan, ana: \(6-3+1=4\).`},
+ {step:"Spaces count",kind:"mc",q:R`<p>Character 4-grams of "big cat" (space as _)?</p>`,o:["big_, cat_","big_, ig_c, g_ca, _cat","bigc, igca, gcat","big, cat"],a:"B",sol:R`Slide 4 characters at a time over "big_cat": 7 characters give 4 grams.`},
+ {step:"Preprocess",kind:"mc",q:R`<p>"The DOG, and the cat!" with lowercasing, no punctuation, and stopwords {the, and} removed?</p>`,o:[`["dog", "cat"]`,`["the", "dog", "the", "cat"]`,`["DOG", "cat"]`,`["dog,", "cat!"]`],a:"A",sol:R`All three steps: lower, strip punctuation, drop stopwords.`},
+ {step:"tf",kind:"num",q:R`<p>After preprocessing a document is "green tea green leaf". \(tf(\text{green})\)?</p>`,ans:[0.5],sol:R`2 of 4 words.`},
+ {step:"idf",kind:"num",q:R`<p>4 documents. "tea" is in 1 of them, "the" in all 4. Their idf's (log base 10)?</p>`,ans:[Math.log10(4),0],lab:["idf(tea)","idf(the)"],sol:R`\(\log_{10}(4/1)=0.602\) and \(\log_{10}(4/4)=0\).`},
+ {step:"Most important",kind:"mc",q:R`<p>Docs: (1) "red apple", (2) "green apple", (3) "red car". Most important word in doc 2?</p>`,o:["green","apple","both equal"],a:"A",sol:R`Both have tf 1/2. "green" is in 1 doc, "apple" in 2: green's idf is bigger.`},
+ {step:"Code: n-grams",kind:"code",q:R`<p>Fill in <code>char_ngrams(s, n)</code>.</p>`,start:`def char_ngrams(s, n):
+    return [s[i:i + n] for i in range(____)]`,tests:[["char_ngrams('banana', 3)","['ban', 'ana', 'nan', 'ana']"],["char_ngrams('abc', 3)","['abc']"]],sol:`def char_ngrams(s, n):
+    return [s[i:i + n] for i in range(len(s) - n + 1)]`},
+ {step:"Exam shape",key:"es",kind:"mc",q:R`<p>Stopword "and" removed, lowercased. Docs: (1) "Cats and dogs play", (2) "Dogs chase cats", (3) "Birds sing and play". Which is right?</p>`,o:[R`\(tf(\text{play},1)=1/4\) and "birds" has the highest idf of {cats, dogs, birds}`,R`\(tf(\text{play},1)=1/3\) and "birds" has the highest idf of {cats, dogs, birds}`,R`\(tf(\text{play},1)=1/3\) and "cats" has the highest idf`,R`\(tf(\text{play},1)=1/4\) and all three tie`],a:"B",
+  sol:R`Doc 1 becomes "cats dogs play": 3 words, so tf = 1/3. "birds" is in 1 doc; "cats" and "dogs" in 2.`}
+]},
+logreg:{learn:R`<p class="idea"><b>The big idea:</b> logistic regression turns a straight-line score into a probability between 0 and 1, then predicts class 1 when that probability is at least 0.5.</p>
+<p><b>The score</b> is \(z=\beta_0+\beta_1x_1+\dots\) (or \(wx+b\): \(w\) is the weight, \(b\) the intercept or bias). <b>The sigmoid</b> squashes it: \(\sigma(z)=\dfrac1{1+e^{-z}}\). So \(P(y=1|x)=\dfrac1{1+\exp(-(\beta_0+\beta_1x))}\).</p>
+<ul><li>\(z=0\) gives \(\frac1{1+1}=0.5\). Big positive \(z\) → close to 1. Big negative → close to 0.</li>
+<li>\(1-\sigma(z)=\frac{e^{-z}}{1+e^{-z}}\) is \(P(y=0|x)\).</li></ul>
+<p><b>Decision boundary:</b> \(P\ge0.5\) exactly when \(z\ge0\). Set the inside to 0 and solve: for \(wx+b\), \(x^*=-b/w\). For \(1.5x-3\), \(x^*=2\); points with \(x>2\) are class 1 (when the weight is positive).</p>
+<div class="ex"><b>Exam arithmetic:</b> they give \(e^{-1}\approx\frac13\). If \(z=1\): \(p=\frac1{1+1/3}=\frac34\). If \(z=-1\): \(p=\frac1{1+e}\approx\frac1{1+3}=\frac14\).</div>
+<p><b>Odds</b> \(=\frac{P(y=1)}{P(y=0)}=e^{z}\). Raise \(x_j\) by 1 and the odds get multiplied by \(e^{\beta_j}\):</p>
+<ul><li>\(\beta_j>0\) (\(e^{\beta_j}>1\)) raises the odds; \(\beta_j<0\) (\(e^{\beta_j}<1\)) lowers them.</li>
+<li>If features are normalized (same scale), the biggest \(|\beta_j|\) has the biggest effect. \(\ln(1/3)=-1.10\) beats \(\ln2=0.69\): dividing the odds by 3 is a bigger change than doubling.</li>
+<li>Tip: \(e^{\ln a}=a\), so if \(\beta=\ln a\) the factor is just \(a\).</li></ul>
+<p><b>Log-likelihood of one example</b> (how well the model explains it, higher is better): \(\ell=y\log p+(1-y)\log(1-p)\). Only one term survives: \(y=1\) gives \(\log p\), \(y=0\) gives \(\log(1-p)\). <b>Logistic loss</b> (lower is better) \(L=-\ell\).</p>
+<div class="ex"><b>Example:</b> \(p=\frac34\), \(y=0\): \(\ell=\log\frac14\), \(L=\log4\approx1.39\). The model was 75% sure of the wrong class, so the loss is large.</div>
+<p><b>Traps:</b> perfect accuracy does <i>not</i> mean zero loss (a correct \(p=0.8\) still costs \(-\log0.8\)). There's no formula for the best β (unlike linear regression), so it's trained with gradient ascent/descent (next topic).</p>
+<p>In Python: <code>LogisticRegression().fit(X, y)</code>. Its parameter <code>C</code>: higher means <i>less</i> regularization.</p>`,
+exam:R`Q6 on both mocks: find the decision boundary x* (set the inside to 0), classify a point, compute p for one example using e^(−1) ≈ 1/3, its log-likelihood and loss, read which feature raises or lowers the odds from the β's, and true/false on loss vs accuracy.`,
+warm:[
+ {step:"Sigmoid at 0",kind:"num",q:R`<p>\(\sigma(0)=\frac1{1+e^{0}}\)?</p>`,ans:[0.5],sol:R`\(e^0=1\), so \(\frac12\).`},
+ {step:"Compute p",kind:"num",q:R`<p>\(w=2,\ b=-3,\ x=2\). Find \(z=wx+b\) and \(p=\sigma(z)\) using \(e^{-1}\approx1/3\).</p>`,ans:[1,0.75],lab:["z","p"],sol:R`\(z=4-3=1\). \(p=\frac1{1+1/3}=\frac34\).`},
+ {step:"Decision boundary",kind:"num",q:R`<p>\(P(y=1|x)=\frac1{1+\exp(-(0.5x-2))}\). Find \(x^*\).</p>`,ans:[4],sol:R`\(0.5x-2=0\Rightarrow x=4\).`},
+ {step:"Classify",kind:"mc",q:R`<p>Same model. Predicted class at \(x=3\)?</p>`,o:["1","0"],a:"B",sol:R`\(0.5(3)-2=-0.5<0\), so \(p<0.5\): class 0.`},
+ {step:"Loss",kind:"num",q:R`<p>\(p=0.75\), true \(y=0\). Loss \(L=-[y\log p+(1-y)\log(1-p)]\) (natural log)?</p>`,ans:[Math.log(4)],sol:R`\(-\log(0.25)=\log4\approx1.386\).`},
+ {step:"Odds factor",kind:"mc",q:R`<p>\(\beta_1=\ln3\). Raising \(x_1\) by 1 does what to the odds?</p>`,o:["Adds 3","Multiplies by 3","Multiplies by ln 3","Divides by 3"],a:"B",sol:R`Factor \(e^{\beta_1}=e^{\ln3}=3\).`},
+ {step:"Which lowers the odds",kind:"mc",q:R`<p>\(\beta_1=\ln2,\ \beta_2=\ln(1/4),\ \beta_3=\ln 3\). Which feature lowers the odds, and which has the biggest impact (normalized features)?</p>`,o:["x₂ lowers; x₃ biggest","x₂ lowers; x₂ biggest","x₁ lowers; x₃ biggest","none lowers; x₃ biggest"],a:"B",sol:R`Factors 2, 1/4, 3. Only 1/4 is below 1. Sizes: \(|\ln\frac14|=1.39>\ln3=1.10>\ln2\).`},
+ {step:"Accuracy vs loss",kind:"mc",q:R`<p>All training points classified correctly. The training loss is…</p>`,o:["exactly 0","positive unless every p is exactly 0 or 1","negative","undefined"],a:"B",sol:R`Each example costs \(-\log p\) (or \(-\log(1-p)\)), which is above 0 unless the model is 100% sure.`},
+ {step:"Code: predict",kind:"code",q:R`<p>Fill in <code>sigmoid</code> and the rule.</p>`,start:`import math
+def sigmoid(z):
+    return ____
+
+def predict(w, b, x):
+    return 1 if ____ else 0`,tests:[["sigmoid(0)","0.5"],["predict(1.5, -3, 1)","0"],["predict(1.5, -3, 2)","1"]],sol:`import math
+def sigmoid(z):
+    return 1 / (1 + math.exp(-z))
+
+def predict(w, b, x):
+    return 1 if sigmoid(w * x + b) >= 0.5 else 0`},
+ {step:"Exam shape",key:"es",kind:"num",q:R`<p>\(P(y=1|x)=\frac1{1+\exp(-(2x-4))}\), example \(x=2.5,\ y=0\), \(e^{-1}\approx\frac13\). Find \(x^*\), \(p\) and the loss (natural log).</p>`,ans:[2,0.75,Math.log(4)],lab:["x*","p","L"],sol:R`\(x^*=2\). \(z=1\), \(p=\frac34\). \(L=-\log\frac14=\log4\approx1.386\).`}
+]},
+gd:{learn:R`<p class="idea"><b>The big idea:</b> when there's no formula for the best parameter, start somewhere and take small steps uphill (to maximize) or downhill (to minimize), using the derivative to tell you which way is up.</p>
+<p><b>Words.</b> The <i>derivative</i> \(\frac{d\ell}{db}\) is the slope: positive means \(\ell\) goes up as \(b\) grows. The <i>gradient</i> is the list of slopes, one per parameter. \(\alpha\) is the <i>step size</i> (learning rate).</p>
+<ul><li><b>Gradient ascent</b> (maximize a log-likelihood \(\ell\)): \(b_{t+1}=b_t+\alpha\,\frac{d\ell}{db}(b_t)\).</li>
+<li><b>Gradient descent</b> (minimize a loss \(L\)): \(b_{t+1}=b_t-\alpha\,\frac{dL}{db}(b_t)\).</li></ul>
+<p>Same thing, since \(L=-\ell\). Plus for ascent, minus for descent.</p>
+<div class="ex"><b>Worked example:</b> \(\ell(b)=-(b-4)^2\) peaks at \(b=4\). Derivative (power rule and chain rule): \(-2(b-4)\). Update: \(b_{t+1}=b_t-2\alpha(b_t-4)\).<br>\(\alpha=0.1\), \(b_0=0\): \(b_1=0-0.2(-4)=0.8\), \(b_2=0.8-0.2(-3.2)=1.44\). Creeping toward 4.<br>\(\alpha=0.6\): \(b_1=0-1.2(-4)=4.8\) (overshoot), \(b_2=4.8-1.2(0.8)=3.84\) (overshoot back). <b>Oscillating.</b></div>
+<p><b>Step size.</b> Too small: slow. Too big: oscillates or blows up. For \(-(b-c)^2\) each step multiplies the gap to \(c\) by \(1-2\alpha\): between 0 and 1 is smooth, between −1 and 0 oscillates but closes in, below −1 diverges. Even for a nice convex function, convergence needs a suitable \(\alpha\).</p>
+<p><b>Logistic regression's gradient</b> (Mock 2a fill-in-the-blanks). With \(f_i=\sigma(\beta_0+\beta^Tx_i)\) and \(\ell=\sum_i y_i\log f_i+(1-y_i)\log(1-f_i)\):</p>
+<ol><li>\(\frac{\partial\ell}{\partial\beta_j}=\sum_i\left(\frac{y_i}{f_i}-\frac{1-y_i}{1-f_i}\right)\frac{\partial f_i}{\partial\beta_j}\) (derivative of \(\log u\) is \(u'/u\))</li>
+<li>\(\frac{\partial f_i}{\partial\beta_j}=f_i(1-f_i)\,x_{ij}\) (sigmoid's derivative is \(\sigma(1-\sigma)\), times the inside's derivative \(x_{ij}\))</li>
+<li>Multiply and simplify: \(\frac{\partial\ell}{\partial\beta_j}=\sum_i(y_i-f_i)\,x_{ij}\); for \(\beta_0\) drop the \(x_{ij}\).</li>
+<li>Ascent: \(\beta_j^{t+1}=\beta_j^t+\alpha\sum_i(y_i-f_i)x_{ij}\).</li></ol>
+<p><b>One example, descent on the loss</b> (Mock 2b): \(\frac{\partial L}{\partial w}=(f-y)x\), \(\frac{\partial L}{\partial b}=f-y\); then \(w\leftarrow w-\alpha(f-y)x\), \(b\leftarrow b-\alpha(f-y)\). The signs flip compared with ascent because \(L=-\ell\).</p>`,
+exam:R`Mock 2a Q6 D–E: fill in the blanks of the logistic-regression gradient derivation, derive the update for ℓ(b) = −(b − 4)², run two steps for two step sizes and say which oscillates. Mock 2b Q6: one gradient-descent step on w and b for one example, and true/false on whether convex means guaranteed convergence.`,
+warm:[
+ {step:"Derivative",kind:"mc",q:R`<p>\(\frac{d}{db}\left[-(b-3)^2\right]\)?</p>`,o:[R`\(-2(b-3)\)`,R`\(2(b-3)\)`,R`\(-(b-3)\)`,R`\(-2b\)`],a:"A",sol:R`Bring the 2 down, keep the minus: \(-2(b-3)\cdot1\).`},
+ {step:"Which sign",kind:"mc",q:R`<p>You are <b>minimizing</b> a loss \(L(w)\). Which update?</p>`,o:[R`\(w+\alpha L'(w)\)`,R`\(w-\alpha L'(w)\)`,R`\(w-L(w)\)`,R`\(\alpha w\)`],a:"B",sol:R`Descent steps against the slope. Ascent (maximizing \(\ell\)) uses \(+\).`},
+ {step:"Two small steps",kind:"num",q:R`<p>\(\ell(b)=-(b-3)^2\), \(b_0=0\), \(\alpha=0.1\). Find \(b_1,b_2\).</p>`,ans:[0.6,1.08],lab:["b₁","b₂"],sol:R`\(b_{t+1}=b_t-0.2(b_t-3)\). \(b_1=0.6\); \(b_2=0.6-0.2(-2.4)=1.08\).`},
+ {step:"Big steps",kind:"num",q:R`<p>Same, \(\alpha=0.9\). Find \(b_1,b_2\).</p>`,ans:[5.4,1.08],lab:["b₁","b₂"],sol:R`\(b_1=0-1.8(-3)=5.4\) (past 3); \(b_2=5.4-1.8(2.4)=1.08\) (back below). Oscillating.`},
+ {step:"Sigmoid derivative",kind:"mc",q:R`<p>\(\frac{d}{dz}\sigma(z)\)?</p>`,o:[R`\(\sigma(z)\)`,R`\(\sigma(z)(1-\sigma(z))\)`,R`\(1-\sigma(z)\)`,R`\(e^{-z}\)`],a:"B",sol:R`The slides: \(\sigma'=\sigma(1-\sigma)\). That's why \(f_i(1-f_i)\) shows up in the derivation.`},
+ {step:"The final gradient",kind:"mc",q:R`<p>For logistic regression, \(\frac{\partial\ell}{\partial\beta_j}=\)</p>`,o:[R`\(\sum_i(y_i-f_i)x_{ij}\)`,R`\(\sum_i(f_i-y_i)\)`,R`\(\sum_i y_if_ix_{ij}\)`,R`\(\sum_i(y_i-f_i)^2\)`],a:"A",sol:R`Prediction error times the feature, added over the examples.`},
+ {step:"One descent step",kind:"num",q:R`<p>\(w=0.5,\ b=0\), example \(x=2,\ y=0\), \(\alpha=0.1\), and \(f=\sigma(1)\approx0.75\). New \(w\) and \(b\)?</p>`,ans:[0.35,-0.075],lab:["w","b"],sol:R`\((f-y)x=1.5\), \(f-y=0.75\). \(w=0.5-0.15=0.35\), \(b=-0.075\).`},
+ {step:"Code: ascent loop",kind:"code",q:R`<p>Fill in the loop for \(\ell(b)=-(b-4)^2\).</p>`,start:`def ascent(b, alpha, steps):
+    out = []
+    for _ in range(steps):
+        b = ____
+        out.append(b)
+    return out`,tests:[["[round(v, 4) for v in ascent(0, 0.1, 2)]","[0.8, 1.44]"],["[round(v, 4) for v in ascent(0, 0.6, 2)]","[4.8, 3.84]"]],sol:`def ascent(b, alpha, steps):
+    out = []
+    for _ in range(steps):
+        b = b + alpha * (-2 * (b - 4))
+        out.append(b)
+    return out`},
+ {step:"Exam shape",key:"es",kind:"num",q:R`<p>\(\ell(b)=-(b-2)^2\), \(b_0=0\). Compute \(b_1,b_2\) for \(\alpha=0.25\) and \(\alpha=0.8\). (One of them oscillates.)</p>`,ans:[1,1.5,3.2,1.28],lab:["b₁ (0.25)","b₂ (0.25)","b₁ (0.8)","b₂ (0.8)"],
+  sol:R`Update \(b-2\alpha(b-2)\). α = 0.25: 1, then 1.5. α = 0.8: 3.2 (overshoots 2), then 1.28. α = 0.8 oscillates.`}
+]},
+oop:{learn:R`<p class="idea"><b>The big idea:</b> a <b>class</b> is a blueprint; an <b>object</b> (instance) is one thing built from it, with its own data. Inheritance lets a new class reuse an old one and change only what's different. These are in the Self-Reading, which the exam FAQ says Python questions may use.</p>
+<p><b>Anatomy:</b></p>
+${C(`class Counter:
+    total = 0                  # class variable: ONE copy shared by all Counters
+    def __init__(self):        # runs when you write Counter()
+        self.count = 0         # instance variable: each object has its own
+    def incr(self):            # a method; self is the object it was called on
+        Counter.total += 1
+        self.count += 1
+    def __str__(self):         # what print(obj) shows
+        return f"{self.count} of {Counter.total}"`)}
+<p><code>a = Counter()</code> calls <code>__init__</code>. <code>a.incr()</code> runs <code>incr</code> with <code>self</code> = a. Writing <code>self.total += 1</code> would quietly make a <i>new</i> instance variable on a, leaving the shared one alone: use the class name.</p>
+<p><b>Inheritance:</b> <code>class Square(Rectangle):</code> gets every method of Rectangle. Defining a method with the same name <b>overrides</b> it. <code>super().__init__(a, a)</code> calls the parent's version so you don't repeat it. Python looks for a method on the object's own class first, then its parent, and so on.</p>
+<p><code>__str__</code> is the friendly text for <code>print</code>; <code>__repr__</code> the "official" one (used by <code>repr()</code> and in the shell). Every class inherits basic versions from <code>object</code>.</p>
+<p><b>Duck typing:</b> Python doesn't check types. Any object with a <code>talk()</code> method can be used where you call <code>.talk()</code>, related by inheritance or not.</p>
+<p><b>Files:</b> open, read or write, close.</p>
+<ul><li>Modes: <code>'r'</code> read, <code>'w'</code> write (erases the file first), <code>'a'</code> append to the end.</li>
+<li><code>with open("f.txt", "w") as f: f.write("hi\n")</code> closes the file for you, even after an error.</li>
+<li><code>f.read(4)</code> next 4 characters; <code>f.read()</code> the rest; <code>f.readline()</code> one line (with its <code>\n</code>); <code>f.readlines()</code> list of remaining lines; <code>for line in f:</code> one line at a time. Each read continues where the last stopped.</li></ul>`,
+exam:R`Not on either mock, but the Exam 2 FAQ says Python questions may draw on the Self-Reading, which since Exam 1 added classes, inheritance and file I/O. Expect "what does this print" or fill-in-the-blank class code.`,
+warm:[
+ {step:"Class vs instance",kind:"mc",q:R`${C(`class Foo:
+    x = 7
+    def __init__(self, i=10):
+        self.y = i
+    def bar(self):
+        return Foo.x + self.y
+a = Foo(); b = Foo(2)
+print(a.bar(), b.bar())`)}`,o:["17 9","8 9","7 2","10 2"],a:"A",sol:R`a.y = 10 (the default), b.y = 2; both share x = 7. 7 + 10 and 7 + 2. (This is the self-reading's example.)`},
+ {step:"Which __init__",kind:"mc",q:R`${C(`class Person:
+    def __init__(self, name):
+        self.name = name
+    def hi(self):
+        return "Hi " + self.name
+class Student(Person):
+    def __init__(self, name, school):
+        super().__init__(name)
+        self.school = school
+s = Student("Ana", "Purdue")
+print(s.hi(), s.school)`)}`,o:["Hi Ana Purdue","Error: Student has no hi","Hi Purdue Ana","Hi None Purdue"],a:"A",sol:R`Student's <code>__init__</code> runs, calls Person's through <code>super()</code> to set the name, then sets school. <code>hi</code> is inherited.`},
+ {step:"Override",kind:"mc",q:R`${C(`class A:
+    def who(self): return "A"
+    def show(self): return "I am " + self.who()
+class B(A):
+    def who(self): return "B"
+print(B().show())`)}`,o:["I am A","I am B","Error","I am AB"],a:"B",sol:R`<code>show</code> is A's, but <code>self</code> is a B, so <code>self.who()</code> finds B's override first.`},
+ {step:"Reading a file",kind:"mc",q:R`<p>A file holds "hello\nworld\n". After <code>f = open(p)</code>, what does <code>f.readline()</code> then <code>f.read(3)</code> give?</p>`,o:[R`"hello\n" then "wor"`,R`"hello" then "hel"`,R`"hello\nworld\n" then ""`,R`"h" then "ell"`],a:"A",sol:R`readline takes the first line including its newline; read(3) continues from there.`},
+ {step:"w vs a",kind:"mc",q:R`<p>notes.txt has 3 lines. You run <code>with open("notes.txt", "w") as f: f.write("new\n")</code>. How many lines now?</p>`,o:["4","1","3","0"],a:"B",sol:R`<code>'w'</code> empties the file first. <code>'a'</code> would have given 4.`},
+ {step:"Code: a class",kind:"code",q:R`<p>Fill in <code>Account</code>. <code>deposit</code> returns the new balance.</p>`,start:`class Account:
+    def __init__(self, owner):
+        self.owner = owner
+        ____
+    def deposit(self, x):
+        ____
+        return self.balance`,tests:[["Account('a').deposit(50)","50"],["(lambda a: (a.deposit(5), a.deposit(7))[1])(Account('b'))","12"]],sol:`class Account:
+    def __init__(self, owner):
+        self.owner = owner
+        self.balance = 0
+    def deposit(self, x):
+        self.balance += x
+        return self.balance`},
+ {step:"Exam shape: inheritance",key:"es",kind:"code",q:R`<p>Fill in <code>Square</code> so it reuses Rectangle through <code>super()</code>.</p>`,pre:`class Rectangle:
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+    def area(self):
+        return self.w * self.h`,start:`class Square(____):
+    def __init__(self, a):
+        ____`,tests:[["Square(5).area()","25"],["Square(2).w","2"]],need:["super()"],sol:`class Square(Rectangle):
+    def __init__(self, a):
+        super().__init__(a, a)`}
+]}
+};
+
+const DIFF={
+  knn:[1,"Pure arithmetic: six distances and a vote. Points go to sign slips with negative coordinates."],
+  km:[1,"Assign, then average. Read the centroid picture carefully: the arrows point into the star."],
+  gmm:[2,"Two formulas, but keep straight which π goes with which N, and divide the weighted mean by N_k, not n."],
+  nb:[2,"Counting is easy to get wrong: total words with repeats, |V| over all classes, +1 on top and +|V| below."],
+  re:[3,"Four separate traps per question: group numbering, findall, \\w allowing _, unescaped ( ) and dots."],
+  ngram:[1,"Mostly counting and spotting the rarest word. Watch the spaces in character n-grams."],
+  logreg:[2,"Plug-in with e⁻¹ ≈ 1/3; know which log term survives and how to read e^β."],
+  gd:[3,"The derivation blanks and the step-size arithmetic both reward care with signs."],
+  oop:[2,"Not on the mocks. Class vs instance variables and super() are the usual catches."]
+};
+const DLAB=["","Easy","Medium","Hard"];
+// study priority /10: points on Mocks 2a + 2b combined (200 total), nudged up where points are easy to lose
+const PRIO={
+  nb:[10,36,"The biggest single question on both mocks (18 pts each). Counting words and |V| right is most of it."],
+  ngram:[9,34,"Lots of quick 2–3 point MCs plus n-grams and a matrix. Cheap points if you know idf = log(N / n_t)."],
+  gmm:[9,32,"A full question on both mocks: E-step responsibilities, then N_k, π_k, μ_k. Same recipe every time."],
+  re:[9,32,"Four 4-point parts each mock, each with a trap. Practice reading groups and spotting unescaped characters."],
+  logreg:[9,19,"Shares Q6 with gradient descent: boundary, p with e⁻¹ ≈ 1/3, log-likelihood, loss, odds factors."],
+  gd:[8,15,"The other half of Q6: the derivation blanks and two steps for two step sizes."],
+  knn:[7,16,"Half of Q1: six distances and a vote. Easy if you write every line."],
+  km:[7,16,"The other half of Q1: one iteration by hand plus a concept MC."],
+  oop:[4,0,"Not on the mocks, but fair game for the Python parts. Skim the self-reading examples."]
+};
+const HOOKS={
+  knn:"Measure to everyone, keep the k closest, vote.",
+  km:"Assign to the nearest center, move to the average.",
+  gmm:"Who owns each point (E), refit with those weights (M).",
+  nb:"Prior × likelihoods; add 1 on top, |V| below.",
+  re:"Count opening parentheses; escape what's special.",
+  ngram:"Common here, rare elsewhere = important.",
+  logreg:"Inside = 0 is the boundary; odds × e^β.",
+  gd:"Step along the slope: + to climb, − to descend.",
+  oop:"Blueprint, objects, self; super() for the parent."
+};
+const SHEET={
+  knn:{f:[R`Manhattan \(|x_1-x_2|+|y_1-y_2|\); Euclidean \(\sqrt{\Delta x^2+\Delta y^2}\)`,R`all distances → sort → k smallest → majority vote`,R`rank roots by comparing what's under them`,R`precision \(\frac{TP}{TP+FP}\), recall \(\frac{TP}{TP+FN}\), \(F1=\frac{2PR}{P+R}\)`],trap:"Subtracting a negative coordinate. Use odd k for two classes."},
+  km:{f:[R`assign: nearest center (any distance); update: plain mean of x's and y's`,R`minimizes SSE \(=\sum\|x-c\|^2\)`,R`elbow: SSE (y) vs K (x), pick the bend`,R`hard, round clusters, depends on start (n_init)`],trap:"Arrows in pictures point into the centroid: read the arrow's direction."},
+  gmm:{f:[R`\(\gamma_{kj}=\frac{\pi_kN(x_j|\mu_k,\sigma_k^2)}{\sum_l\pi_lN(x_j|\mu_l,\sigma_l^2)}\)`,R`\(N_k=\sum_j\gamma_{kj}\), \(\pi_k=N_k/n\)`,R`\(\mu_k=\frac{\sum_j\gamma_{kj}x_j}{N_k}\), \(\sigma_k^2=\frac{\sum_j\gamma_{kj}(x_j-\mu_k)^2}{N_k}\)`,R`stop when log-likelihood changes < tol`],trap:"Divide μ_k by N_k, not n. Each point's γ's add to 1."},
+  nb:{f:[R`\(P(c|x)\propto P(c)\prod_iP(x_i|c)\)`,R`Laplace: \(\frac{\text{count}(w,c)+1}{N_c+|V|}\)`,R`\(N_c\) = words in class c with repeats; \(|V|\) = distinct words overall`,R`new feature: only its likelihoods; unseen value w/o smoothing → all 0`],trap:"Unseen words favor the class with fewer total words."},
+  re:{f:[R`<code>\d</code> digit, <code>\w</code> = [a-zA-Z0-9_], <code>\s</code> space, <code>.</code> any`,R`<code>? * + {n} {m,n}</code>; <code>^ $ \b</code>; <code>[^01]</code> = not 0/1`,R`groups: number by "(" left to right; group(0) = all`,R`match: start only; search: first; findall: list (groups if any); sub: <code>\1</code>`],trap:"\\w allows _. Escape ( ) . to match them. [^01] lets in letters."},
+  ngram:{f:[R`char n-grams: \(L-n+1\) of them; spaces count`,R`\(tf=\frac{\text{count in }d}{\text{words in }d}\)`,R`\(idf=\log_{10}\frac{N}{n_t}\); in every doc → 0`,R`tf-idf = tf × idf; biggest = most important`],trap:"Preprocess first (lowercase, punctuation, stopwords), then count."},
+  logreg:{f:[R`\(p=\frac1{1+e^{-(wx+b)}}\); \(z=0\Rightarrow p=0.5\)`,R`boundary \(x^*=-b/w\)`,R`odds \(=e^z\); +1 in \(x_j\) → odds × \(e^{\beta_j}\)`,R`\(\ell=y\log p+(1-y)\log(1-p)\), \(L=-\ell\)`],trap:"e⁻¹ ≈ 1/3 → σ(1) = 3/4. Perfect accuracy ≠ zero loss."},
+  gd:{f:[R`ascent \(b+\alpha\,\ell'(b)\); descent \(w-\alpha L'(w)\)`,R`\(\ell=-(b-c)^2\Rightarrow b_{t+1}=b_t-2\alpha(b_t-c)\)`,R`\(\sigma'=\sigma(1-\sigma)\); \(\frac{\partial\ell}{\partial\beta_j}=\sum(y_i-f_i)x_{ij}\)`,R`one example: \(\frac{\partial L}{\partial w}=(f-y)x\), \(\frac{\partial L}{\partial b}=f-y\)`],trap:"Too big α oscillates or diverges, even on a convex function."},
+  oop:{f:[R`<code>__init__(self, …)</code>; <code>self.x</code> per object; <code>Cls.x</code> shared`,R`<code>class B(A):</code> inherits; same name overrides; <code>super().__init__(…)</code>`,R`<code>__str__</code> for print, <code>__repr__</code> official`,R`<code>'r' 'w' 'a'</code>; <code>with open(p) as f</code>; read(n), readline, readlines`],trap:"self.total += 1 makes a new instance variable. 'w' erases the file."}
+};
+</script>
+<script>
+(function(){
+const LET="ABCDEFG";
+const $=s=>document.querySelector(s);
+const SKEY="ece20875e2";
+P.forEach(q=>{q.id=q.s+"-"+q.n;q.parts.forEach((p,i)=>{p.id=q.id+"-"+i;p.t=p.t||q.t})});
+const PARTS=P.flatMap(q=>q.parts);
+const setOrder=Object.keys(SETS);
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||"null")||d}catch(e){return d}};
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let prog=load(SKEY,{}),warm=load(SKEY+"w3",{}),drafts=load(SKEY+"d",{});
+const save=()=>store(SKEY,prog),saveWarm=()=>store(SKEY+"w3",warm);
+let draftT;const saveDrafts=()=>{clearTimeout(draftT);draftT=setTimeout(()=>store(SKEY+"d",drafts),400)};
+
+/* math typesetting: only once elements are visible (same trick as the MA 261 page) */
+const pending=new Set();
+function flushMath(){
+  if(!(window.MathJax&&MathJax.typesetPromise))return;
+  const vis=[...pending].filter(e=>e.isConnected&&e.getClientRects().length);
+  if(!vis.length)return;vis.forEach(e=>pending.delete(e));MathJax.typesetPromise(vis).catch(()=>{});
+}
+function typeset(el){pending.add(el);queueMicrotask(flushMath)}
+$("#mjx").addEventListener("load",()=>{const go=()=>{if(MathJax.typesetPromise)flushMath();else setTimeout(go,60)};go()});
+
+/* ---------- Python in a worker (Pyodide), so an infinite loop can be killed ---------- */
+const PYO="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
+const HARNESS=`
+import sys, io, json, math, traceback
+def _harness(job):
+    job = json.loads(job)
+    ns = {"__name__": "__main__"}
+    buf = io.StringIO(); old = sys.stdout; sys.stdout = buf
+    try:
+        try:
+            if job["pre"]: exec(job["pre"], ns)
+            exec(job["src"], ns)
+        except BaseException as e:
+            tb = traceback.format_exception(type(e), e, e.__traceback__)
+            return json.dumps({"out": buf.getvalue(), "err": "".join(tb[-2:]), "res": []})
+        res = []
+        for call, exp in job["tests"]:
+            try:
+                g = eval(call, ns); x = eval(exp, ns)
+                same = g == x or (isinstance(g, (int, float)) and isinstance(x, (int, float)) and math.isclose(g, x, rel_tol=1e-9, abs_tol=1e-9))
+                res.append([call, bool(same), repr(g), repr(x)])
+            except BaseException as e:
+                res.append([call, False, type(e).__name__ + ": " + str(e), exp])
+        return json.dumps({"out": buf.getvalue(), "err": "", "res": res})
+    finally:
+        sys.stdout = old
+`;
+const WORKER=`importScripts("${PYO}pyodide.js");
+const ready=loadPyodide({indexURL:"${PYO}"}).then(py=>{py.runPython(${JSON.stringify(HARNESS)});postMessage({ready:1});return py});
+ready.catch(e=>postMessage({fail:String(e)}));
+onmessage=async e=>{const py=await ready;postMessage({id:e.data.id,r:py.globals.get("_harness")(e.data.job)})};`;
+let wk=null,wkReady=false,jobs=new Map(),jobN=0;
+function worker(){
+  if(wk)return wk;
+  wk=new Worker(URL.createObjectURL(new Blob([WORKER],{type:"text/javascript"})));wkReady=false;
+  wk.onmessage=e=>{const d=e.data;
+    if(d.ready){wkReady=true;jobs.forEach(j=>j.arm());return}
+    if(d.fail){wk.terminate();wk=null;jobs.forEach(j=>j.done({err:"Could not load Python: "+d.fail+"\nCheck your connection and try again.",res:[],out:""}));return}
+    const j=jobs.get(d.id);if(j)j.done(JSON.parse(d.r))};
+  return wk;
+}
+// ponytail: 6 s limit once Python is loaded; a stuck run kills the worker and the next run reloads Pyodide (from cache)
+function runPy(pre,src,tests,onLoading){
+  return new Promise(res=>{
+    const id=++jobN;let t=null;
+    const j={done(r){clearTimeout(t);jobs.delete(id);res(r)},
+      arm(){clearTimeout(t);t=setTimeout(()=>{wk.terminate();wk=null;jobs.forEach(x=>x.done({err:"Stopped after 6 seconds. Is there a loop that never ends?",res:[],out:""}))},6000)}};
+    jobs.set(id,j);worker();
+    if(wkReady)j.arm();else onLoading&&onLoading();
+    wk.postMessage({id,job:JSON.stringify({pre:pre||"",src,tests:tests||[]})});
+  });
+}
+function showRun(out,r,need,src){
+  const L=[];
+  if(r.out)L.push(esc(r.out.replace(/\s+$/,"")));
+  if(r.err)L.push(`<span class="f">${esc(r.err.replace(/\s+$/,""))}</span>`);
+  let ok=!r.err&&r.res.length>0;
+  r.res.forEach(([c,pass,got,exp])=>{ok=ok&&pass;L.push(pass?`<span class="p">✓ ${esc(c)} → ${esc(got)}</span>`:`<span class="f">✗ ${esc(c)}\n   got      ${esc(got)}\n   expected ${esc(exp)}</span>`)});
+  (need||[]).forEach(w=>{if(!src.includes(w)){ok=false;L.push(`<span class="f">✗ the question asks you to use ${esc(w)}</span>`)}});
+  if(r.res.length)L.push(ok?`<span class="p">All tests passed.</span>`:"Some tests failed.");
+  out.innerHTML=L.join("\n")||"(no output)";out.hidden=false;
+  return ok;
+}
+
+/* ---------- answer checking ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/[−–]/g,"-").replace(/,/g,"").replace(/\s+/g,"");
+  if(!s)return NaN;
+  let pct=false;if(s.endsWith("%")){pct=true;s=s.slice(0,-1)}
+  const v=s.includes("/")?s.split("/").map(Number).reduce((a,b)=>a/b):Number(s);
+  return pct?v/100:v;
+}
+// within 1% (so 0.387 passes for 0.39), with a floor for small numbers
+const close=(x,a)=>Math.abs(x-a)<=Math.max(.01*Math.abs(a),Math.abs(a)<.1?.0005:.005);
+
+/* ---------- one part of a problem ---------- */
+// mode: practice | warm (saved) | mock (no feedback until review)
+function partEl(p,mode,label){
+  const st=mode==="warm"?warm:prog,el=document.createElement("div");el.className="part";
+  const ans=p.kind==="num"?p.ans.map((a,i)=>(p.lab?p.lab[i]+" = ":"")+a).join(", "):p.kind==="mc"?p.a:"";
+  el.innerHTML=`${label===false?"":`<div class="ph"><b>${label||"Part "+p.p}</b>${p.pts?`<span>[${p.pts} pts]</span>`:""}<span class="tick"></span></div>`}
+    <div class="pq">${p.q}</div><div class="inp"></div>
+    <div class="foot"><span class="verdict"></span><button class="linkbtn sh" type="button">Show solution</button>
+      <span class="self" hidden>Grade yourself:<button class="btn ghost ok" data-g="1" type="button">Got it</button><button class="btn ghost no" data-g="0" type="button">Missed it</button></span></div>
+    <div class="sol" hidden>${ans?`<span class="k">Answer: ${ans}</span>`:""}${p.kind==="code"?C(p.sol):p.sol}${p.why?`<div>${p.why}</div>`:""}</div>`;
+  const inp=el.querySelector(".inp"),sol=el.querySelector(".sol"),sh=el.querySelector(".sh"),v=el.querySelector(".verdict"),self=el.querySelector(".self"),tick=el.querySelector(".tick");
+  const live=mode==="practice"||mode==="warm";
+  function mark(ok,quiet){
+    el.res=ok;v.className="verdict "+(ok?"ok":"no");v.textContent=ok?"Correct":"Not yet";
+    if(tick){tick.className="tick "+(ok?"ok":"no");tick.textContent=ok?"✓":"✗"}
+    self.querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.g===+ok));
+    if(live){st[p.id]={ok};mode==="warm"?saveWarm():save();if(!quiet){cheer(el,ok);changed()}}
+    else if(el.onscore){if(!quiet)cheer(el,ok);el.onscore()}
+  }
+  function reveal(){sol.hidden=false;sh.textContent="Hide solution";if(p.kind==="code"||p.kind==="free")self.hidden=false;typeset(sol);flushMath()}
+  sh.onclick=()=>{if(sol.hidden)reveal();else{sol.hidden=true;sh.textContent="Show solution"}};
+  self.querySelectorAll("button").forEach(b=>b.onclick=()=>mark(b.dataset.g==="1"));
+  if(mode==="mock")sh.hidden=true;
+  const dk=mode==="mock"?null:(mode==="warm"?"w3:":"")+p.id;
+
+  if(p.kind==="mc"){
+    inp.innerHTML=`<div class="opts">${p.o.map((o,i)=>`<button class="opt" type="button"><span class="L">${LET[i]}</span><span>${o}</span></button>`).join("")}</div>`;
+    const opts=[...inp.querySelectorAll(".opt")],ai=LET.indexOf(p.a);
+    const lock=pick=>opts.forEach((b,i)=>{b.disabled=true;if(i===ai)b.classList.add("right");else if(i===pick)b.classList.add("wrong")});
+    opts.forEach((b,i)=>b.onclick=()=>{
+      if(mode==="mock"){opts.forEach(o=>o.classList.remove("sel"));b.classList.add("sel");el.pick=i;el.oninput&&el.oninput();return}
+      lock(i);mark(i===ai);if(i!==ai)reveal()});
+    el.answered=()=>el.pick!=null;
+    el.review=()=>{lock(el.pick);if(el.pick!=null)mark(el.pick===ai,true);else{mark(false,true);v.textContent="Not answered · correct: "+p.a}reveal()};
+    if(live&&st[p.id]){lock(st[p.id].ok?ai:-1);mark(st[p.id].ok,true)}
+  } else if(p.kind==="num"){
+    inp.innerHTML=`<div class="nums">${p.ans.map((a,i)=>`<label>${p.lab?p.lab[i]:"answer"}<input inputmode="decimal" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" autocomplete="off" spellcheck="false"></label>`).join("")}${mode==="mock"?"":`<button class="btn" type="button">Check</button>`}</div>`;
+    const ins=[...inp.querySelectorAll("input")],btn=inp.querySelector(".btn");
+    if(dk&&drafts[dk])ins.forEach((x,i)=>x.value=drafts[dk][i]||"");
+    ins.forEach(x=>x.addEventListener("input",()=>{x.classList.remove("right","wrong");if(dk){drafts[dk]=ins.map(y=>y.value);saveDrafts()}el.oninput&&el.oninput()}));
+    const check=quiet=>{
+      const vals=ins.map(x=>parseNum(x.value));
+      if(!quiet&&vals.some(isNaN)){v.className="verdict no";v.textContent="Enter a number in every box (1/3 and 2.5% work too)";return}
+      const ok=vals.map((x,i)=>!isNaN(x)&&close(x,p.ans[i]));
+      ins.forEach((x,i)=>{x.classList.toggle("right",ok[i]);x.classList.toggle("wrong",!ok[i])});
+      const all=ok.every(Boolean);mark(all,quiet);if(!all)v.textContent=`${ok.filter(Boolean).length} of ${ok.length} right`;
+    };
+    if(btn)btn.onclick=()=>check(false);
+    ins.forEach(x=>x.addEventListener("keydown",e=>{if(e.key==="Enter"&&btn)check(false)}));
+    el.answered=()=>ins.some(x=>x.value.trim());
+    el.review=()=>{ins.forEach(x=>x.readOnly=true);check(true);if(!el.answered())v.textContent="Not answered";reveal()};
+    if(live&&st[p.id])mark(st[p.id].ok,true);
+  } else if(p.kind==="code"){
+    inp.innerHTML=`<textarea class="code" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code" rows="${p.start.split("\n").length+1}"></textarea>
+      <div class="foot">${mode==="mock"?"":`<button class="btn primary run" type="button">Run tests</button>`}<button class="btn ghost rst" type="button">Reset code</button></div><pre class="out" hidden></pre>`;
+    const ta=inp.querySelector("textarea"),out=inp.querySelector(".out"),run=inp.querySelector(".run");
+    ta.value=(dk&&drafts[dk])||p.start;
+    ta.addEventListener("input",()=>{if(dk){drafts[dk]=ta.value;saveDrafts()}el.oninput&&el.oninput()});
+    // Tab types 4 spaces; Esc then Tab leaves the box (keyboard users aren't trapped)
+    let escd=false;ta.addEventListener("keydown",e=>{if(e.key==="Escape"){escd=true;return}
+      if(e.key==="Tab"&&!escd&&!e.shiftKey){e.preventDefault();ta.setRangeText("    ",ta.selectionStart,ta.selectionEnd,"end");ta.dispatchEvent(new Event("input"))}escd=false});
+    inp.querySelector(".rst").onclick=()=>{ta.value=p.start;if(dk){delete drafts[dk];saveDrafts()}out.hidden=true};
+    el.answered=()=>ta.value.trim()!==p.start.trim();
+    const go=async quiet=>{
+      const src=ta.value;
+      if(src.includes("____")){out.hidden=false;out.innerHTML=`<span class="f">Fill in every ____ first.</span>`;return}
+      if(run)run.disabled=true;out.hidden=false;out.textContent="Running…";
+      const r=await runPy(p.pre,src,p.tests,()=>out.textContent="Loading Python (about 10 s the first time)…");
+      if(run)run.disabled=false;
+      const ok=showRun(out,r,p.need,src);achFlag("ran");
+      if(ok){if(!st[p.id]?.ok)ach.passed=(ach.passed||0)+1;mark(true,quiet)}
+      else if(quiet)mark(false,true);
+      else{v.className="verdict no";v.textContent="Not yet. Fix it and run again, or show the solution."}
+    };
+    if(run)run.onclick=()=>go(false);
+    el.review=()=>{ta.readOnly=true;reveal();
+      const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="Run tests on my answer";b.onclick=()=>go(true);inp.querySelector(".foot").prepend(b)};
+    if(live&&st[p.id])mark(st[p.id].ok,true);
+  } else {
+    inp.innerHTML=`<textarea class="work" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" aria-label="Your answer" placeholder="Write your answer the way you would on paper, then show the solution and grade yourself."></textarea>`;
+    const ta=inp.querySelector("textarea");if(dk&&drafts[dk])ta.value=drafts[dk];
+    ta.addEventListener("input",()=>{if(dk){drafts[dk]=ta.value;saveDrafts()}el.oninput&&el.oninput()});
+    el.answered=()=>ta.value.trim()!=="";
+    el.review=()=>{ta.readOnly=true;reveal()};
+    if(live&&st[p.id])mark(st[p.id].ok,true);
+  }
+  typeset(el.querySelector(".pq"));if(p.kind==="mc")typeset(inp);
+  return el;
+}
+
+/* ---------- problem card ---------- */
+const topicsOf=q=>[...new Set(q.parts.map(p=>p.t))];
+function card(q){
+  const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
+  const pts=q.parts.reduce((s,p)=>s+(p.pts||0),0);
+  el.innerHTML=`<div class="meta"><span>${SETS[q.s].name} · Q${q.n}</span>${topicsOf(q).map(t=>`<button class="chip" type="button" data-topic="${t}" title="Drill this topic">${TOPICS[t]}</button>`).join("")}<span class="pts">${pts} pts</span></div><div class="ctx">${q.ctx}</div>`;
+  q.parts.forEach(p=>el.appendChild(partEl(p,"practice")));
+  el.querySelectorAll(".qfig").forEach(i=>i.onclick=()=>window.open(i.src,"_blank"));
+  el.querySelectorAll(".chip").forEach(b=>b.onclick=()=>drill(b.dataset.topic));
+  paint(el,q);typeset(el.querySelector(".ctx"));
+  return el;
+}
+function paint(el,q){const d=q.parts.filter(p=>prog[p.id]),full=d.length===q.parts.length;
+  el.classList.toggle("ok",full&&d.every(p=>prog[p.id].ok));el.classList.toggle("no",full&&d.some(p=>!prog[p.id].ok))}
+function changed(){renderStats();renderBars();resetLabel();renderLessonProg();
+  document.querySelectorAll("#qlist .qc").forEach(el=>{const q=P.find(x=>x.id===el.dataset.id);if(q)paint(el,q)})}
+
+/* ---------- stats ---------- */
+function renderStats(){
+  const d=PARTS.filter(p=>prog[p.id]),r=d.filter(p=>prog[p.id].ok).length;
+  $("#stats").innerHTML=`<span><b>${P.length}</b> problems</span><span><b>${PARTS.length}</b> parts</span><span><b>2</b> official mocks</span><span>you: <b>${d.length}</b> parts done · <b>${d.length?Math.round(100*r/d.length):0}%</b> right</span>`;
+}
+
+/* ---------- practice ---------- */
+let order=P.slice();
+function fillSelects(){
+  $("#fSet").innerHTML=`<option value="all">Everything</option>`+setOrder.map(k=>`<option value="${k}">${SETS[k].long}</option>`).join("");
+  $("#fTopic").innerHTML=`<option value="all">All topics</option>`+Object.entries(TOPICS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+}
+const inFilter=()=>{const s=$("#fSet").value,t=$("#fTopic").value;return P.filter(q=>(s==="all"||q.s===s)&&(t==="all"||topicsOf(q).includes(t)))};
+function renderPractice(){
+  const open=$("#fOpen").checked,keep=inFilter(),list=order.filter(q=>keep.includes(q)&&(!open||q.parts.some(p=>!prog[p.id])));
+  const box=$("#qlist");box.innerHTML="";
+  const parts=list.flatMap(q=>q.parts),done=parts.filter(p=>prog[p.id]).length,s=$("#fSet").value;
+  $("#count").textContent=`${list.length} problem${list.length===1?"":"s"} · ${parts.length} parts · ${done} done`+(s!=="all"?" · "+SETS[s].note:"");
+  resetLabel();
+  if(!list.length){box.innerHTML=`<p class="sub">Nothing left here. Clear the filters or reset your progress.</p>`;return}
+  list.forEach(q=>box.appendChild(card(q)));
+}
+["#fSet","#fTopic","#fOpen"].forEach(s=>$(s).addEventListener("change",()=>{store(SKEY+"f",{s:$("#fSet").value,t:$("#fTopic").value});renderPractice()}));
+$("#shuffle").onclick=()=>{order=P.slice().sort(()=>Math.random()-.5);renderPractice()};
+function drill(t){$("#fTopic").value=t;$("#fSet").value="all";$("#fOpen").checked=false;showTab("practice");renderPractice();window.scrollTo({top:0})}
+function twoClick(b,act){let t=null;
+  b.onclick=()=>{if(!t){b.dataset.idle=b.textContent;b.textContent="Click again to erase";b.classList.remove("ghost");
+      t=setTimeout(()=>{t=null;b.textContent=b.dataset.idle;b.classList.add("ghost")},3000);return}
+    clearTimeout(t);t=null;b.classList.add("ghost");act()}}
+function resetLabel(){const s=$("#fSet").value,t=$("#fTopic").value,b=$("#reset");
+  b.textContent=s==="all"&&t==="all"?"Reset all progress":"Reset "+[s!=="all"&&SETS[s].name,t!=="all"&&TOPICS[t]].filter(Boolean).join(" · ");
+  b.disabled=!inFilter().some(q=>q.parts.some(p=>prog[p.id]))}
+twoClick($("#reset"),()=>{inFilter().forEach(q=>q.parts.forEach(p=>{delete prog[p.id];delete drafts[p.id]}));save();saveDrafts();renderPractice();changed()});
+
+/* ---------- topics & notes ---------- */
+const OFFICIAL=P.filter(q=>q.s==="A"||q.s==="B").flatMap(q=>q.parts);
+function renderBars(){
+  const rows=Object.entries(TOPICS).map(([k,v])=>{const d=PARTS.filter(p=>p.t===k&&prog[p.id]);
+    return{k,v,n:OFFICIAL.filter(p=>p.t===k).reduce((s,p)=>s+p.pts,0),done:d.length,right:d.filter(p=>prog[p.id].ok).length}}).sort((a,b)=>b.n-a.n);
+  const max=Math.max(...rows.map(r=>r.n));
+  $("#bars").innerHTML=rows.map(r=>{const pct=r.done?Math.round(100*r.right/r.done):null;
+    return `<button class="lab" type="button" data-k="${r.k}">${r.v}</button><div class="track"><div class="fill" style="width:${100*r.n/max}%"></div>${pct!=null?`<div class="acc" style="width:${(100*r.n/max)*pct/100}%"></div>`:""}</div><span class="num">${r.n} pts${pct!=null?` · ${pct}%`:""}</span>`}).join("");
+  $("#bars").querySelectorAll(".lab").forEach(b=>b.onclick=()=>drill(b.dataset.k));
+}
+function renderSheet(){
+  $("#sheet").innerHTML=Object.entries(SHEET).map(([k,s])=>`<div class="card"><h3>${TOPICS[k]}</h3><ul>${s.f.map(f=>`<li>${f}</li>`).join("")}</ul><div class="trap"><b>Trap</b>${s.trap}</div></div>`).join("");
+  typeset($("#sheet"));
+}
+$("#print").onclick=()=>{achFlag("print");window.print()};
+
+/* ---------- start here ---------- */
+function renderPrio(){
+  $("#prio").innerHTML=Object.entries(PRIO).sort((a,b)=>b[1][0]-a[1][0]||b[1][1]-a[1][1]).map(([k,[s,pts,why]])=>
+    `<li><button type="button" data-k="${k}"><span class="sc"><b>${s}</b>/10</span><span class="bar"><i style="width:${s*10}%"></i></span><span class="tn">${TOPICS[k]}</span><span class="pts">${pts} pts on the mocks · ${DLAB[DIFF[k][0]]}</span><span class="why">${why}</span></button></li>`).join("");
+  $("#prio").querySelectorAll("button").forEach(b=>b.onclick=()=>{const d=document.querySelector(`.lesson[data-k="${b.dataset.k}"]`);d.open=true;d.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
+}
+function renderLessons(){
+  renderPrio();
+  const box=$("#lessons");
+  Object.keys(TOPICS).forEach((k,ti)=>{
+    const L=LEARN[k],n=PARTS.filter(p=>p.t===k).length;
+    // key: stable id for reordered sets, so old progress doesn't land on new questions
+    L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+(w.key||i);w.t=k});
+    const d=document.createElement("details");d.className="lesson";d.dataset.k=k;d.dataset.n=String(ti+1).padStart(2,"0");
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]} <span class="diff d${DIFF[k][0]}">${DLAB[DIFF[k][0]]}</span> <span class="prio">Importance ${PRIO[k][0]}/10</span></h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div><h4>Play with it</h4><div class="vizhost"></div><h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}<br><b>Difficulty: ${DLAB[DIFF[k][0]]}.</b> ${DIFF[k][1]}</div></div><div class="qlist"></div>
+      <div class="lfoot"><button class="btn primary next" type="button">Now try the ${n} exam part${n===1?"":"s"} on this →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
+    const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach((w,i)=>{
+      const c=document.createElement("article");c.className="qc";c.innerHTML=`<div class="meta"><span>Warm-up ${i+1} of ${L.warm.length} · ${w.step}</span></div>`;
+      c.appendChild(partEl(w,"warm",false));ql.appendChild(c)})};fill();
+    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>{delete warm[w.id];delete drafts["w3:"+w.id]});saveWarm();saveDrafts();fill();renderLessonProg()});
+    d.querySelectorAll(".refresh").forEach(el=>typeset(el));
+    d.addEventListener("toggle",()=>{if(d.open&&!d.built){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
+    d.querySelector(".next").onclick=()=>drill(k);
+    box.appendChild(d);
+  });
+  renderLessonProg();
+}
+function renderLessonProg(){
+  let tot=0,done=0,topics=0;
+  document.querySelectorAll(".lesson").forEach(d=>{
+    const w=LEARN[d.dataset.k].warm,n=w.filter(x=>warm[x.id]).length,full=n===w.length;
+    tot+=w.length;done+=n;topics+=full;
+    d.querySelectorAll(".dots i").forEach((el,i)=>{const p=warm[w[i].id];el.className=!p?"":p.ok?"ok":"no"});
+    if(full&&d.dataset.full==="0")confetti(d.querySelector("summary"));
+    d.dataset.full=full?"1":"0";d.classList.toggle("done",full);
+    d.querySelector(".n").textContent=full?"✓":d.dataset.n;
+    d.querySelector(".wreset").disabled=!n;
+  });
+  $("#meter").innerHTML=`<div class="mbar"><i style="width:${100*done/tot}%"></i></div><span><b>${done}</b>/${tot} warm-ups · <b>${topics}</b>/${Object.keys(TOPICS).length} topics done</span>`;
+}
+
+/* ---------- mock exam ---------- */
+const MOCK_MIN=60,mockState={qs:[],els:[],end:0,timer:null,done:false};
+function mockIntro(){
+  $("#mock").innerHTML=`<div class="intro"><h2>Mock Exam 2</h2><p class="sub">Six problems, one from each area the real exam covers, drawn from both official mocks, the lecture examples and the lab extras.</p>
+  <ul><li>${MOCK_MIN} minutes on the clock, about 10 per problem</li><li>No checking or solutions until you submit</li><li>Work on paper like the real thing, then type your final answers</li><li>After you submit, numbers and multiple choice grade themselves; grade your code and written answers against the solutions</li></ul>
+  <button class="btn primary" id="mStart" type="button">Start mock exam</button></div>`;
+  $("#mStart").onclick=startMock;
+}
+function startMock(){
+  const pick=a=>a[Math.random()*a.length|0];
+  mockState.qs=SLOTS.map(([,ts])=>pick(P.filter(q=>ts.includes(q.t))));
+  mockState.done=false;mockState.counted=false;mockState.end=Date.now()+MOCK_MIN*60000;mockState.els=[];
+  $("#mock").innerHTML=`<div class="mockbar"><span class="timer" id="mTime">${MOCK_MIN}:00</span><span id="mCount"></span><button class="btn primary" id="mSubmit" type="button">Submit</button></div><div class="qlist" id="mList"></div>`;
+  mockState.qs.forEach((q,i)=>{
+    const c=document.createElement("article");c.className="qc";
+    c.innerHTML=`<div class="meta"><span>Question ${i+1} of 6 · ${SLOTS[i][0]}</span><span class="pts">${q.parts.reduce((s,p)=>s+p.pts,0)} pts</span></div><div class="ctx">${q.ctx}</div>`;
+    q.parts.forEach(p=>{const e=partEl(p,"mock");e.oninput=updateMockCount;e.p=p;mockState.els.push(e);c.appendChild(e)});
+    typeset(c.querySelector(".ctx"));$("#mList").appendChild(c);
+  });
+  updateMockCount();$("#mSubmit").onclick=submitMock;
+  clearInterval(mockState.timer);mockState.timer=setInterval(tick,1000);tick();window.scrollTo({top:0});flushMath();
+}
+function tick(){const left=Math.max(0,mockState.end-Date.now()),el=$("#mTime");if(!el){clearInterval(mockState.timer);return}
+  el.textContent=Math.floor(left/60000)+":"+String(Math.floor(left/1000)%60).padStart(2,"0");if(left<=0)submitMock()}
+function updateMockCount(){const c=$("#mCount");if(c)c.textContent=mockState.els.filter(e=>e.answered()).length+" / "+mockState.els.length+" parts answered"}
+function mockScore(){
+  const tot=mockState.els.reduce((s,e)=>s+e.p.pts,0),got=mockState.els.filter(e=>e.res).reduce((s,e)=>s+e.p.pts,0);
+  const left=mockState.els.filter(e=>e.res===undefined).length,sc=Math.round(100*got/tot);
+  $("#mScore").textContent=sc;$("#mLeft").textContent=left?`${left} part${left===1?"":"s"} still to grade yourself below`:"All parts graded";
+  if(!left){if(!mockState.counted)ach.mocks=(ach.mocks||0)+1;mockState.counted=true;ach.mockBest=Math.max(ach.mockBest||0,sc);saveAch();checkAch()}
+}
+function submitMock(){
+  if(mockState.done)return;mockState.done=true;clearInterval(mockState.timer);
+  const used=Math.round((MOCK_MIN*60000-Math.max(0,mockState.end-Date.now()))/60000);
+  const list=$("#mList");list.remove();
+  $("#mock").innerHTML=`<div class="intro"><div class="eyebrow">Mock result · about ${used} min used</div><div class="score" id="mScore">0</div><p class="sub"><span id="mLeft"></span>. Score is out of 100.</p><button class="btn primary" id="mAgain" type="button">New mock exam</button></div>`;
+  list.style.marginTop="14px";$("#mock").appendChild(list);
+  mockState.els.forEach(e=>{e.onscore=mockScore;e.review()});
+  mockScore();$("#mAgain").onclick=startMock;window.scrollTo({top:0});flushMath();
+}
+
+/* ---------- small canvas plotting kit ---------- */
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cv=n=>getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const fx=(v,d=3)=>{let s=(+v).toFixed(d);if(s.includes("."))s=s.replace(/\.?0+$/,"");return s.replace("-","−")};
+const VIZS=[];
+function plot(host,o){
+  const box=document.createElement("div");box.className="viz";
+  box.innerHTML=`<div class="vfig"><canvas role="img" aria-label="${o.label}"></canvas>${o.hint?`<p class="vhint">${o.hint}</p>`:""}</div><div class="vside"><div class="vctl"></div><div class="vread" aria-live="polite"></div>${o.cap?`<p class="vcap">${o.cap}</p>`:""}</div>`;
+  host.appendChild(box);
+  const c=box.querySelector("canvas"),ctx=c.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1);
+  const W=Math.round(c.getBoundingClientRect().width)||320,H=Math.round(W*(o.aspect||.75));
+  c.width=W*dpr;c.height=H*dpr;c.style.height=H+"px";
+  const pad={l:40,r:10,t:12,b:26};
+  const g={c,ctx,W,H,ctl:box.querySelector(".vctl"),read:box.querySelector(".vread"),
+    range(xr,yr){g.xr=xr;g.yr=yr},
+    X:x=>pad.l+(x-g.xr[0])/(g.xr[1]-g.xr[0])*(W-pad.l-pad.r),Y:y=>H-pad.b-(y-g.yr[0])/(g.yr[1]-g.yr[0])*(H-pad.t-pad.b),
+    redraw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);g.draw()}};
+  VIZS.push(g);return g;
+}
+function frame(g,xt,yt,xl){const c=g.ctx;c.font="11px "+cv("f-mono");c.fillStyle=cv("muted");c.strokeStyle=cv("grid");c.lineWidth=1;
+  c.beginPath();(yt||[]).forEach(y=>{c.moveTo(g.X(g.xr[0]),g.Y(y));c.lineTo(g.X(g.xr[1]),g.Y(y))});c.stroke();
+  c.textAlign="right";(yt||[]).forEach(y=>c.fillText(fx(y),g.X(g.xr[0])-4,g.Y(y)+4));
+  c.textAlign="center";(xt||[]).forEach(x=>c.fillText(fx(x),g.X(x),g.H-10));
+  c.strokeStyle=cv("rule");c.lineWidth=1.5;c.beginPath();c.moveTo(g.X(g.xr[0]),g.Y(g.yr[0]));c.lineTo(g.X(g.xr[1]),g.Y(g.yr[0]));c.stroke();
+  if(xl){c.textAlign="right";c.fillText(xl,g.W-10,g.H-10)}c.textAlign="left"}
+function rect(g,x0,x1,y,col,a=1){const c=g.ctx;c.globalAlpha=a;c.fillStyle=col;c.fillRect(g.X(x0),g.Y(y),g.X(x1)-g.X(x0),g.Y(g.yr[0])-g.Y(y));c.globalAlpha=1}
+function path(g,pts,col,w=2,dash){const c=g.ctx;c.save();c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(g.X(x),g.Y(y)):c.moveTo(g.X(x),g.Y(y)));c.stroke();c.restore()}
+function area(g,f,a,b,col,al=.35){if(b<=a)return;const c=g.ctx,n=120;c.beginPath();c.moveTo(g.X(a),g.Y(0));for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;c.lineTo(g.X(x),g.Y(f(x)))}c.lineTo(g.X(b),g.Y(0));c.closePath();c.globalAlpha=al;c.fillStyle=col;c.fill();c.globalAlpha=1}
+function fn(g,f,col,w=2){const n=200,[a,b]=g.xr;path(g,Array.from({length:n+1},(_,i)=>{const x=a+(b-a)*i/n;return[x,f(x)]}),col,w)}
+function dot(g,x,y,col,r=4){const c=g.ctx;c.beginPath();c.arc(g.X(x),g.Y(y),r,0,7);c.fillStyle=col;c.fill()}
+function slider(ctl,lab,min,max,step,val,on,show=fx){const l=document.createElement("label");
+  l.innerHTML=`<span>${lab}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}"><output>${show(val)}</output>`;
+  const i=l.querySelector("input"),o=l.querySelector("output");i.oninput=()=>{o.textContent=show(+i.value);on(+i.value)};ctl.appendChild(l);
+  return{set(v){i.value=v;o.textContent=show(v)}}}
+function choose(ctl,lab,opts,on){const l=document.createElement("label");l.className="vsel";
+  l.innerHTML=`<span>${lab}</span><select>${opts.map((o,i)=>`<option value="${i}">${o}</option>`).join("")}</select>`;
+  l.querySelector("select").onchange=e=>on(+e.target.value);ctl.appendChild(l);return l.querySelector("select")}
+function button(ctl,lab,on){let row=ctl.lastElementChild;if(!row||!row.classList.contains("vbtns")){row=document.createElement("div");row.className="vbtns";ctl.appendChild(row)}
+  const b=document.createElement("button");b.type="button";b.className="btn";b.textContent=lab;b.onclick=on;row.appendChild(b);return b}
+const ticks=(a,b,n=5)=>{const s=(b-a)/n,m=10**Math.floor(Math.log10(s)),st=[1,2,2.5,5,10].map(k=>k*m).find(k=>k>=s),t=[];for(let x=Math.ceil(a/st)*st;x<=b+1e-9;x+=st)t.push(+x.toFixed(10));return t};
+// stats helpers
+const npdf=(x,m=0,s=1)=>Math.exp(-(((x-m)/s)**2)/2)/(s*Math.sqrt(2*Math.PI));
+function ring(g,x,y,col,r=5){const c=g.ctx;c.beginPath();c.arc(g.X(x),g.Y(y),r,0,7);c.strokeStyle=col;c.lineWidth=2;c.stroke()}
+function sq(g,x,y,col,r=4.5){const c=g.ctx;c.fillStyle=col;c.fillRect(g.X(x)-r,g.Y(y)-r,2*r,2*r)}
+function label(g,x,y,t,col){const c=g.ctx;c.font="12px "+cv("f-mono");c.fillStyle=col||cv("ink");c.textAlign="left";c.fillText(t,g.X(x)+7,g.Y(y)-6)}
+
+function playground(h,presets){
+  const box=document.createElement("div");box.className="vplay play";
+  box.innerHTML=`<div class="filters" style="margin:0"><label>Example<select>${presets.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join("")}</select></label><button class="btn primary" type="button">Run</button></div>
+  <textarea class="code" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" spellcheck="false" autocapitalize="off" aria-label="Python code"></textarea><pre class="out" hidden></pre>
+  <p class="vhint">Real Python 3, running in your browser. Change anything and press Run.</p>`;
+  h.appendChild(box);
+  const sel=box.querySelector("select"),ta=box.querySelector("textarea"),out=box.querySelector(".out"),run=box.querySelector(".btn");
+  const set=()=>{ta.value=presets[+sel.value][1];ta.rows=ta.value.split("\n").length+1;out.hidden=true};set();sel.onchange=set;
+  run.onclick=async()=>{run.disabled=true;out.hidden=false;out.textContent="Running…";
+    const r=await runPy("",ta.value,[],()=>out.textContent="Loading Python (about 10 s the first time)…");run.disabled=false;showRun(out,r,[],ta.value);achFlag("ran")};
+}
+
+// Mock 2a's six points
+const KD=[[1,3,0,"A"],[4,2,0,"B"],[1,1,0,"C"],[7,8,1,"D"],[9,5,1,"E"],[8,8,1,"F"]];
+// three blobs for k-means
+const KM=[[1,1],[1.6,2.2],[2.3,1.2],[0.8,2.6],[2,2.9],[1.4,0.4],[6,7],[6.8,8.1],[7.4,6.6],[5.6,8.4],[6.5,6],[7.8,7.6],[7.6,2],[8.6,1.2],[8.2,3],[9.2,2.4],[7,1.1],[8.8,0.5]];
+
+const VIZ={
+knn(h){
+  const g=plot(h,{label:"Six labelled points and a movable new point Z; lines go to its k nearest neighbours",hint:"Move Z and change k and the distance. Gold squares are Star, ink circles are Heart.",cap:"Mock 2a's points. Dashed lines join Z to the neighbours that vote."});
+  const s={x:3,y:4,k:3,m:0};
+  slider(g.ctl,"Z x",0,10,.5,s.x,v=>{s.x=v;g.redraw()});slider(g.ctl,"Z y",0,10,.5,s.y,v=>{s.y=v;g.redraw()});
+  slider(g.ctl,"k",1,5,1,s.k,v=>{s.k=v;g.redraw()},v=>String(v));choose(g.ctl,"distance",["Manhattan","Euclidean"],v=>{s.m=v;g.redraw()});
+  g.draw=()=>{g.range([0,10],[0,10]);frame(g,ticks(0,10),ticks(0,10),"x");
+    const d=KD.map(([x,y,c,n])=>({x,y,c,n,d:s.m?Math.hypot(x-s.x,y-s.y):Math.abs(x-s.x)+Math.abs(y-s.y)})).sort((a,b)=>a.d-b.d),near=d.slice(0,s.k);
+    near.forEach(p=>path(g,[[s.x,s.y],[p.x,p.y]],cv("muted"),1.5,[4,3]));
+    KD.forEach(([x,y,c,n])=>{c?dot(g,x,y,cv("ink"),5):sq(g,x,y,cv("gold"));label(g,x,y,n)});
+    ring(g,s.x,s.y,cv("bad"),7);label(g,s.x,s.y,"Z",cv("bad"));
+    const v=[0,0];near.forEach(p=>v[p.c]++);const win=v[0]>v[1]?"Star":v[1]>v[0]?"Heart":"tie";
+    g.read.innerHTML=`<span class="big">${win}</span><div>votes: Star ${v[0]}, Heart ${v[1]}</div>${d.map(p=>`<div>${p.n}: ${fx(p.d,2)}${near.includes(p)?" ✓":""}</div>`).join("")}`};
+  g.redraw()},
+km(h){
+  const g=plot(h,{label:"K-Means on three groups of points; step through assign and update",hint:"Press Assign, then Update, and repeat. Watch the SSE fall.",cap:"Rings are centers. Each point takes the color of its center after Assign."});
+  const cols=()=>[cv("gold"),cv("ink"),cv("bad")];let s;
+  const reset=()=>{s={c:[[1,8.5],[5,5],[9.5,9]],a:null,step:"start",it:0}};reset();
+  const sse=()=>s.a?KM.reduce((t,p,i)=>t+(p[0]-s.c[s.a[i]][0])**2+(p[1]-s.c[s.a[i]][1])**2,0):null;
+  button(g.ctl,"Assign",()=>{s.a=KM.map(p=>{let b=0;s.c.forEach((c,j)=>{if(Math.hypot(p[0]-c[0],p[1]-c[1])<Math.hypot(p[0]-s.c[b][0],p[1]-s.c[b][1]))b=j});return b});s.step="assigned";g.redraw()});
+  button(g.ctl,"Update",()=>{if(!s.a)return;s.c=s.c.map((c,j)=>{const m=KM.filter((p,i)=>s.a[i]===j);return m.length?[m.reduce((t,p)=>t+p[0],0)/m.length,m.reduce((t,p)=>t+p[1],0)/m.length]:c});s.it++;s.step="updated";g.redraw()});
+  button(g.ctl,"Reset",()=>{reset();g.redraw()});
+  g.draw=()=>{g.range([0,10],[0,10]);frame(g,ticks(0,10),ticks(0,10),"x");const C=cols();
+    KM.forEach((p,i)=>dot(g,p[0],p[1],s.a?C[s.a[i]]:cv("muted"),4.5));s.c.forEach((c,j)=>{ring(g,c[0],c[1],C[j],8);ring(g,c[0],c[1],C[j],3)});
+    const e=sse();g.read.innerHTML=`<span class="big">${s.step==="start"?"Start":s.step==="assigned"?"Assigned":"Updated"}</span><div>iterations: ${s.it}</div>${e!=null?`<div>SSE = <b>${fx(e,2)}</b></div>`:""}${s.c.map((c,j)=>`<div>c${j+1} = (${fx(c[0],2)}, ${fx(c[1],2)})</div>`).join("")}`};
+  g.redraw()},
+gmm(h){
+  const g=plot(h,{label:"Two weighted normal curves and their sum, with the responsibilities at a chosen x",hint:"Slide x to see how much each component owns that point.",cap:"Gold and ink: π₁N₁ and π₂N₂. Dashed: their sum, the mixture."});
+  const s={p:.3,m1:2,m2:5,s1:1,s2:1,x:2};
+  slider(g.ctl,"π₁",.05,.95,.05,s.p,v=>{s.p=v;g.redraw()});slider(g.ctl,"μ₁",0,8,.5,s.m1,v=>{s.m1=v;g.redraw()});slider(g.ctl,"μ₂",0,8,.5,s.m2,v=>{s.m2=v;g.redraw()});
+  slider(g.ctl,"σ₁",.4,2.5,.1,s.s1,v=>{s.s1=v;g.redraw()});slider(g.ctl,"σ₂",.4,2.5,.1,s.s2,v=>{s.s2=v;g.redraw()});slider(g.ctl,"x",0,8,.25,s.x,v=>{s.x=v;g.redraw()});
+  g.draw=()=>{const f1=x=>s.p*npdf(x,s.m1,s.s1),f2=x=>(1-s.p)*npdf(x,s.m2,s.s2),top=Math.max(.35,1.1*Math.max(f1(s.m1)+f2(s.m1),f1(s.m2)+f2(s.m2)));
+    g.range([0,8],[0,top]);frame(g,ticks(0,8),ticks(0,top,3),"x");area(g,f1,0,8,cv("gold"),.25);area(g,f2,0,8,cv("ink"),.12);
+    fn(g,f1,cv("gold"),2.5);fn(g,f2,cv("ink"),2);path(g,Array.from({length:161},(_,i)=>{const x=i/20;return[x,f1(x)+f2(x)]}),cv("muted"),1.5,[5,4]);
+    path(g,[[s.x,0],[s.x,top]],cv("bad"),1.5,[2,3]);const a=f1(s.x),b=f2(s.x);
+    g.read.innerHTML=`<div>π₁N₁(x) = ${fx(a,4)}</div><div>π₂N₂(x) = ${fx(b,4)}</div><span class="big">γ₁ = ${fx(a/(a+b),3)}</span><div>γ₂ = ${fx(b/(a+b),3)}</div><div>γ = this curve's height ÷ the sum of both heights at x</div>`};
+  g.redraw()},
+nb(h){playground(h,[
+ ["Mock 2a: Laplace smoothing",`posts = [("study hard exam", "A"), ("hard project", "A"),
+         ("fun party", "S"), ("hard game", "S")]
+words = {"A": [], "S": []}
+for text, c in posts:
+    words[c] += text.split()
+V = {w for t, c in posts for w in t.split()}
+print("N_A =", len(words["A"]), " N_S =", len(words["S"]), " |V| =", len(V))
+
+def p(w, c):
+    return (words[c].count(w) + 1) / (len(words[c]) + len(V))
+
+new = "hard fun".split()
+for c in "AS":
+    score = 0.5
+    for w in new:
+        score *= p(w, c)
+    print(c, round(score, 5))`],
+ ["Mock 2b: feature table, no smoothing",`rows = [("Small","No","Budget"), ("Large","No","Budget"), ("Small","Yes","Budget"),
+        ("Small","Yes","Regular"), ("Large","Yes","Regular"), ("Large","No","Regular"),
+        ("Large","Yes","Premium"), ("Large","Yes","Premium"), ("Large","Yes","Premium")]
+prior = {"Budget": 1/2, "Regular": 1/3, "Premium": 1/6}
+for t in prior:
+    mine = [r for r in rows if r[2] == t]
+    p_large = sum(r[0] == "Large" for r in mine) / len(mine)
+    p_yes = sum(r[1] == "Yes" for r in mine) / len(mine)
+    print(t, round(p_large * p_yes * prior[t], 4))`]
+])},
+re(h){playground(h,[
+ ["Groups",String.raw`import re
+m = re.search(r"User Profile: ((\w+)_ID(\d+))", "User Profile: jsmith_ID882 has logged in.")
+for i in range(4):
+    print(i, m.group(i))
+print(m.groups())`],
+ ["findall with and without groups",String.raw`import re
+s = "CPU 92°C, GPU 71°C"
+print(re.findall(r"\d+°C", s))      # whole matches
+print(re.findall(r"(\d+)°C", s))    # one group: just the group
+print(re.findall(r"(\d)(\d)°C", s)) # two groups: tuples`],
+ ["Test the phone regexes",String.raw`import re
+pats = [r"^\([2-9]\d{2}\)\d{3}-\d{4}$", r"^([2-9]\d{2})\d{3}-\d{4}$",
+        r"^\([^01]\d{2}\)\d{3}-\d{4}$", r"^([^01]\d{2})\d{3}-\d{4}$"]
+tests = ["(765)494-1234", "765494-1234", "(A65)494-1234", "(165)494-1234"]
+for p in pats:
+    print(p, [bool(re.match(p, t)) for t in tests])`],
+ ["sub and backreferences",String.raw`import re
+print(re.sub(r"(\w+), (\w+)", r"\2 \1", "Uslu, Suleyman"))
+print(re.search(r"\b(\w+)(\s\1)+\b", "Paris in the the the spring").group())`]
+])},
+ngram(h){playground(h,[
+ ["Mock 2a: matrix and TF-IDF",`import math, string
+docs = ["Farmers market and fruit bread.", "Local farmers and fruit flowers.",
+        "Bread flowers and weekend visitors."]
+clean = [[w for w in d.lower().translate(str.maketrans("", "", string.punctuation)).split()
+          if w != "and"] for d in docs]
+vocab = sorted({w for d in clean for w in d})
+for i, d in enumerate(clean, 1):
+    print("Doc", i, {w: round(d.count(w) / len(d) * math.log10(3 / sum(w in e for e in clean)), 3)
+                     for w in d})`],
+ ["Character n-grams",`s = "Farmers market"
+n = 4
+print([s[i:i + n].replace(" ", "_") for i in range(len(s) - n + 1)])`]
+])},
+logreg(h){
+  const g=plot(h,{label:"Sigmoid curve P(y=1|x) for a weight w and intercept b, with the decision boundary",hint:"Change w and b. The boundary is where the curve crosses 0.5.",cap:"Dashed vertical line: x* = −b/w. Red dot: the probability at the chosen x."});
+  const s={w:1.5,b:-3,x:1};
+  slider(g.ctl,"w",-3,3,.1,s.w,v=>{s.w=v;g.redraw()});slider(g.ctl,"b",-6,6,.25,s.b,v=>{s.b=v;g.redraw()});slider(g.ctl,"x",-4,8,.25,s.x,v=>{s.x=v;g.redraw()});
+  g.draw=()=>{const sg=x=>1/(1+Math.exp(-(s.w*x+s.b)));g.range([-4,8],[0,1]);frame(g,ticks(-4,8),[0,.5,1],"x");
+    path(g,[[-4,.5],[8,.5]],cv("muted"),1,[3,3]);fn(g,sg,cv("gold"),2.5);const xs=s.w?-s.b/s.w:NaN;
+    if(isFinite(xs)&&xs>-4&&xs<8)path(g,[[xs,0],[xs,1]],cv("ink"),1.5,[5,4]);const p=sg(s.x);dot(g,s.x,p,cv("bad"),5);
+    g.read.innerHTML=`<div>z = wx + b = ${fx(s.w*s.x+s.b,2)}</div><span class="big">p = ${fx(p,3)}</span><div>ŷ = ${p>=.5?1:0}</div><div>x* = ${isFinite(xs)?fx(xs,2):"none (w = 0)"}</div><div>odds = e^z = ${fx(Math.exp(s.w*s.x+s.b),3)}</div><div>loss if y=1: ${fx(-Math.log(p),3)} · if y=0: ${fx(-Math.log(1-p),3)}</div>`};
+  g.redraw()},
+gd(h){
+  const g=plot(h,{label:"Gradient ascent on l(b) = −(b−4)² showing the first steps for a chosen step size",hint:"Try α = 0.1, 0.6, 0.9 and 1.1.",cap:"The curve is ℓ(b) = −(b − 4)². Dots are b₀, b₁, b₂, … joined in order."});
+  const s={a:.1,b0:0};
+  slider(g.ctl,"α",.02,1.2,.02,s.a,v=>{s.a=v;g.redraw()});slider(g.ctl,"b₀",-2,10,.5,s.b0,v=>{s.b0=v;g.redraw()});
+  g.draw=()=>{const L=b=>-((b-4)**2);g.range([-4,12],[-40,2]);frame(g,ticks(-4,12),ticks(-40,0,4),"b");fn(g,L,cv("ink"),2);
+    const bs=[s.b0];for(let i=0;i<8;i++){const b=bs[bs.length-1];bs.push(b-2*s.a*(b-4))}
+    const vis=bs.map(b=>[Math.max(-4,Math.min(12,b)),Math.max(-40,L(b))]);path(g,vis,cv("bad"),1.5,[3,3]);vis.forEach(([b,y],i)=>dot(g,b,y,i?cv("gold"):cv("bad"),i?4:5.5));
+    const r=1-2*s.a,beh=Math.abs(r)>=1?(Math.abs(r)===1?"Bounces forever":"Diverges"):r<0?"Oscillates, closing in":"Converges smoothly";
+    g.read.innerHTML=`<span class="big">${beh}</span><div>gap × (1 − 2α) = ${fx(r,2)} each step</div>${bs.slice(1,6).map((b,i)=>`<div>b${i+1} = ${fx(b,3)}</div>`).join("")}`};
+  g.redraw()},
+oop(h){playground(h,[
+ ["Class vs instance variables",`class Counter:
+    total = 0
+    def __init__(self):
+        self.count = 0
+    def incr(self):
+        Counter.total += 1
+        self.count += 1
+
+a, b = Counter(), Counter()
+a.incr(); a.incr(); b.incr()
+print(a.count, b.count, Counter.total)`],
+ ["Inheritance and super()",`class Vehicle:
+    def __init__(self, price):
+        self.price = price
+    def __str__(self):
+        return f"Price = {self.price}"
+
+class Named(Vehicle):
+    def __init__(self, price, name):
+        super().__init__(price)
+        self.name = name
+    def __str__(self):
+        return self.name + ", " + super().__str__()
+
+print(Named(1200, "BMW"))`],
+ ["File I/O",`with open("test.txt", "w") as f:
+    f.write("my first file\\nThis file\\n\\ncontains three lines\\n")
+f = open("test.txt", "r")
+print(repr(f.read(4)), repr(f.read(4)))
+print(f.readlines())
+f.close()`]
+])}
+};
+function redrawViz(){VIZS.forEach(g=>g.redraw());mix()}
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redrawViz)}catch(e){}
+new MutationObserver(redrawViz).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+/* header flourish: two weighted bell curves and their mixture */
+function mix(){const c=$("#bell"),x=c.getContext("2d"),W=c.width,H=c.height;x.clearRect(0,0,W,H);
+  const f1=t=>.4*npdf(t,-1.2,.7),f2=t=>.6*npdf(t,1.1,.9),Y=v=>H-14-v*H*1.75,X=t=>W*(t+3.4)/6.8;
+  const curve=(f,col,w,fill)=>{x.beginPath();for(let i=0;i<=140;i++){const t=-3.4+6.8*i/140;i?x.lineTo(X(t),Y(f(t))):x.moveTo(X(t),Y(f(t)))}
+    if(fill){x.lineTo(W,H-14);x.lineTo(0,H-14);x.closePath();x.globalAlpha=.8;x.fillStyle=col;x.fill();x.globalAlpha=1}else{x.strokeStyle=col;x.lineWidth=w;x.stroke()}};
+  curve(f1,cv("ink"),0,true);curve(f2,cv("muted"),0,true);curve(t=>f1(t)+f2(t),cv("gold"),4)}
+mix();
+
+/* ---------- feedback: confetti, sounds, memes (same switches as the MA 261 page) ---------- */
+function confetti(el){if(RM||!confettiOn())return;const r=el.getBoundingClientRect(),cols=["gold","good","ink","bad"].map(cv);
+  for(let i=0;i<30;i++){const s=document.createElement("i");s.className="confetti";
+    s.style.cssText=`left:${r.left+r.width*(.15+.7*Math.random())}px;top:${r.top+Math.min(r.height/2,60)}px;background:${cols[i%4]}`;document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2,v=60+Math.random()*130;
+    s.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v-70}px) rotate(${Math.random()*720}deg)`,opacity:0}],
+      {duration:900+Math.random()*500,easing:"cubic-bezier(.15,.7,.3,1)"}).onfinish=()=>s.remove()}}
+function toggle(id,key,on,off){let v=true;try{v=localStorage.getItem(key)!=="off"}catch(e){}
+  const b=$(id),show=()=>{b.textContent=v?on:off;b.setAttribute("aria-pressed",v)};
+  b.onclick=()=>{v=!v;try{localStorage.setItem(key,v?"on":"off")}catch(e){};show()};show();return()=>v}
+const soundOn=toggle("#snd","ma261snd","🔊 Sound on","🔇 Sound off"),confettiOn=toggle("#cfx","ma261cfx","🎉 Confetti on","Confetti off"),memesOn=toggle("#mem","ma261mem","😂 Memes on","Memes off");
+const YAY=[["🐍","The snake approves"],["📈","Stonks"],["🎯","p < 0.05. Significant"],["🧠","Big brain, small standard error"],["🔔","Bell curve energy"],["✅","All tests passed (emotionally)"],["🐐","GOAT of data science"],["🚀","Full send, zero bugs"],["📊","Histogram of your wins: one tall bar"],["🤖","Beep boop. Correctness verified"],["💯","R² = 1.0"],["🧪","Hypothesis confirmed"],["🧮","The math is mathing"],["🎲","Not luck. The CLT says so"],["🦆","Rubber duck is impressed"],["😎","Lambda? I barely know her"],["🍕","Pizza with a perfect fit"],["🔥","Hot take: you're right"],["👑","Least squares royalty"],["🥇","First place, no overfitting"],["⚡","O(1) brain"],["🎉","Reject H₀: you're good"],["🌟","Gold star, unpenalized"],["🍀","Within 2 SE of perfect"],["🐢","Slow and steady, low variance"],["🦉","Wise owl, tight interval"],["🏆","Cross-validated champion"],["🤌","Chef's kiss comprehension"],["🛸","Out of this distribution"],["💎","Ridge regression? More like ridge progression"],["🧃","map(squeeze, juice)"],["🎸","Rock-solid reduce"],["🐝","Busy bee, correct bee"],["🙌","Praise be to the CLT"],["🫡","Salute, Python wizard"],["👨‍🍳","Cooked (in a good way)"],["🌈","Normal distribution of happiness"],["🥳","Test set: untouched. Score: great"]],
+  NAY=[["💀","IndentationError: vibes"],["🤡","Accepted H₀. Never accept H₀"],["🫠","Overfit to the wrong answer"],["🙈","Pretend that was a sample outlier"],["📉","Not stonks"],["🐍","The snake hissed"],["🧯","Runtime error IRL"],["🥲","It's okay. Variance happens"],["🐌","Slow down, check your √n"],["😬","Off by one. Classic"],["🪦","RIP that answer"],["🍝","Spaghetti code"],["🌀","Infinite loop of sadness"],["🙃","Wrong tail"],["🦆","Explain it to the duck"],["🧂","Salty residuals"],["🚑","Calling a TA"],["🤔","Did you divide by the bin width?"],["🐛","Found a bug (it's you)"],["😵","KeyError: correct_answer"],["🫣","p > α. Fail to impress"],["📦","Forgot list() around map"],["🧊","Cold. Like a z of −3"],["🎻","Sad violin in the key of e⁻¹"],["🐓","The rooster from MA 261 says hi. And no"],["🥴","That's a one-sided answer to a two-sided question"]];
+let memeEl,memeT;
+function meme(ok){if(!memesOn())return;const L=ok?YAY:NAY,[e,t]=L[Math.random()*L.length|0];
+  memeEl?.remove();clearTimeout(memeT);memeEl=document.createElement("div");memeEl.className="meme";memeEl.setAttribute("role","status");
+  memeEl.innerHTML=`<b>${e}</b><span>${t}</span>`;document.body.appendChild(memeEl);
+  if(!RM)memeEl.animate([{transform:"translateY(40px) rotate(-6deg) scale(.6)",opacity:0},{transform:"rotate(2deg) scale(1.05)",opacity:1,offset:.6},{transform:"none",opacity:1}],{duration:350,easing:"ease-out"});
+  memeT=setTimeout(()=>memeEl.remove(),2200);ach.memes=(ach.memes||0)+1}
+let actx;
+function buzzer(){if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    const t=actx.currentTime,g=actx.createGain();g.connect(actx.destination);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);g.gain.setValueAtTime(.12,t+.42);g.gain.exponentialRampToValueAtTime(.0001,t+.5);
+    for(const f of[110,117]){const o=actx.createOscillator();o.type="square";o.frequency.setValueAtTime(f,t);o.frequency.linearRampToValueAtTime(f*.85,t+.5);o.connect(g);o.start(t);o.stop(t+.52)}}catch(e){}}
+function ding(){if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    [[880,0],[1318.5,.12]].forEach(([f,d])=>{const t=actx.currentTime+d,g=actx.createGain();g.connect(actx.destination);
+      g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.4,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.8);
+      [["triangle",f,1],["sine",f*2,.35]].forEach(([type,hz,lvl])=>{const o=actx.createOscillator(),og=actx.createGain();
+        o.type=type;o.frequency.setValueAtTime(hz,t);og.gain.value=lvl;o.connect(og);og.connect(g);o.start(t);o.stop(t+.85)})})}catch(e){}}
+function cheer(el,ok){meme(ok);if(ok){confetti(el);ding()}else buzzer();achAnswer(ok)}
+
+/* ---------- achievements: earned once, kept through resets ---------- */
+let ach=Object.assign({got:{},streak:0,best:0,wrongs:0,wrongRun:0,answered:0},load("ece20875e2ach",{}));
+const saveAch=()=>store("ece20875e2ach",ach);
+const wFull=ok=>Object.values(LEARN).filter(L=>L.warm.every(w=>ok?warm[w.id]?.ok:warm[w.id])).length;
+const setDone=s=>P.filter(q=>q.s===s).every(q=>q.parts.every(p=>prog[p.id]));
+const ACH=[
+  ["first","👶","Hello, world","Answer your first part",c=>ach.answered>=1],
+  ["right","🐍","Sssssuccess","Get your first answer right",c=>ach.best>=1],
+  ["wrong","🫠","Character development","Get your first answer wrong",c=>ach.wrongs>=1],
+  ["s3","🔥","Heating up","3 right in a row",c=>ach.best>=3],
+  ["s5","🌶️","On fire","5 right in a row",c=>ach.best>=5],
+  ["s10","🚀","Unstoppable","10 right in a row",c=>ach.best>=10],
+  ["comeback","🦅","Comeback kid","Get one right after 3+ wrong in a row",c=>ach.comeback],
+  ["ran","▶️","It runs!","Run Python in the browser",c=>ach.ran],
+  ["pass5","🧪","Green tests","Pass the tests on 5 code parts",c=>(ach.passed||0)>=5],
+  ["pass15","🧑‍💻","Code machine","Pass the tests on 15 code parts",c=>(ach.passed||0)>=15],
+  ["w10","🤸","Stretched out","Do 10 warm-ups",c=>c.nw>=10],
+  ["topic","✅","Topic down","Finish every warm-up in one topic",c=>wFull()>=1],
+  ["flawless","🎯","Flawless","Get every warm-up in a topic right",c=>wFull(true)>=1],
+  ["wall","🎓","Fully warmed up","Finish the warm-ups for all 9 topics",c=>wFull()===Object.keys(TOPICS).length],
+  ["mA","📄","Mock 2a, done","Answer every part of Mock 2a",c=>setDone("A")],
+  ["mB","📄","Mock 2b, done","Answer every part of Mock 2b",c=>setDone("B")],
+  ["mL","📚","Did the reading","Answer every lecture example",c=>setDone("L")],
+  ["mX","🧩","Extra credit","Answer every lab extra",c=>setDone("X")],
+  ["brain","🧠","Big brain","80%+ right over 30+ parts",c=>c.np>=30&&c.nr/c.np>=.8],
+  ["mock","⏱️","Under pressure","Finish and grade a mock exam",c=>ach.mocks>=1],
+  ["mock80","📈","Passing vibes","Score 80+ on a mock exam",c=>ach.mockBest>=80],
+  ["mock100","💎","Perfect mock","Score 100 on a mock exam",c=>ach.mockBest>=100],
+  ["print","🖨️","Prepared","Print the notes sheet",c=>ach.print],
+  ["night","🦉","Night owl","Answer between midnight and 4 a.m.",c=>ach.night],
+  ["memes","🤡","Meme lord","See 50 memes",c=>ach.memes>=50],
+  ["all","🏆","Completionist","Unlock every other achievement",c=>ACH.every(a=>a[0]==="all"||ach.got[a[0]])]
+];
+function checkAch(quiet){
+  const d=PARTS.filter(p=>prog[p.id]),c={np:d.length,nr:d.filter(p=>prog[p.id].ok).length,nw:Object.keys(warm).length},fresh=[];
+  ACH.forEach(a=>{if(!ach.got[a[0]]&&a[4](c)){ach.got[a[0]]=Date.now();fresh.push(a)}});
+  if(fresh.length)saveAch();
+  $("#achb").textContent=`🏆 ${Object.keys(ach.got).length}/${ACH.length} achievements`;
+  if(!quiet)fresh.forEach(([,e,n],i)=>setTimeout(()=>{const t=document.createElement("div");t.className="achtoast";t.setAttribute("role","status");
+    t.innerHTML=`<b>${e}</b><span><small>Achievement unlocked</small>${n}</span>`;document.body.appendChild(t);confetti(t);ding();
+    if(!RM)t.animate([{transform:"translate(-50%,-80px)",opacity:0},{transform:"translate(-50%,0)",opacity:1}],{duration:350,easing:"ease-out"});
+    setTimeout(()=>t.remove(),2600)},500+i*2800));
+}
+function achAnswer(ok){ach.answered++;
+  if(ok){if(ach.wrongRun>=3)ach.comeback=1;ach.streak++;ach.best=Math.max(ach.best,ach.streak);ach.wrongRun=0}
+  else{ach.streak=0;ach.wrongs++;ach.wrongRun++}
+  if(new Date().getHours()<4)ach.night=1;saveAch();checkAch()}
+const achFlag=k=>{if(!ach[k])ach[k]=1;saveAch();checkAch()};
+$("#achb").onclick=()=>{$("#agrid").innerHTML=ACH.map(([id,e,n,d])=>`<div class="ach${ach.got[id]?"":" locked"}"><b>${e}</b><div>${n}<small>${d}</small></div></div>`).join("");$("#achd").showModal()};
+
+/* ---------- tabs & boot ---------- */
+const TABS=["start","practice","mock","topics"];
+function showTab(t){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  TABS.forEach(s=>$("#"+s).hidden=s!==t);
+  try{localStorage.setItem(SKEY+"t",t)}catch(e){}
+  flushMath();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+fillSelects();
+const f0=load(SKEY+"f",null);if(f0){$("#fSet").value=f0.s||"all";$("#fTopic").value=f0.t||"all"}
+renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();checkAch(true);
+const h=(location.hash||"").slice(1);let t0="start";try{t0=localStorage.getItem(SKEY+"t")||"start"}catch(e){}
+showTab(TABS.includes(h)?h:t0);
+})();
+</script>
+</body>
+</html>
+
