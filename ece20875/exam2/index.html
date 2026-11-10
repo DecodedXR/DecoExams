@@ -68,6 +68,30 @@ table.dt th{background:var(--paper);font-weight:500}
 #prio .pts{grid-area:pts;font:11px var(--f-mono);color:var(--muted)}
 #prio .why{grid-area:why;font-size:14px;color:var(--muted);margin-top:2px}
 @media (max-width:640px){#prio button{grid-template-columns:44px 1fr;grid-template-areas:"sc tn" "sc pts" "bar bar" "why why";row-gap:4px}}
+.nbchip{display:inline-block;font:13px var(--f-mono);background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:1px 9px;margin:2px 3px 2px 0}
+.nbchip.hot{background:var(--gold-soft);border-color:var(--gold);color:var(--gold);font-weight:600}
+.nbchip.new{background:transparent;border-style:dashed;color:var(--muted)} .nbchip.new.hot{border-color:var(--gold);color:var(--gold)}
+.nbbags{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:10px 0}
+.nbbag{border:2px solid var(--rule);border-radius:12px;background:var(--paper);padding:8px 12px}
+.nbbag>b{display:block;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.nbbag small{display:block;font:12px/1.4 var(--f-mono);color:var(--muted);margin-top:4px}
+.nbsteps{list-style:none;counter-reset:nb;padding:0;margin:10px 0;display:grid;gap:8px}
+.nbsteps li{counter-increment:nb;position:relative;padding:8px 12px 8px 48px;border:1px solid var(--rule);border-radius:8px;background:var(--surface);font-size:14px}
+.nbsteps li::before{content:counter(nb);position:absolute;left:12px;top:7px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--surface);font:700 14px/26px var(--f-mono);text-align:center}
+.nbchain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0;font:14px var(--f-mono)}
+.nbbox{border:1px solid var(--rule);border-radius:6px;padding:3px 10px;background:var(--surface)}
+.nbbox.hot{background:var(--gold-soft);border-color:var(--gold);font-weight:600}
+.nbbox.zero{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);font-weight:700}
+.nbop{color:var(--muted)}
+.nbrow{display:grid;grid-template-columns:4.5em 1fr 5.5em;gap:8px;align-items:center;font:13px var(--f-mono);margin:4px 0}
+.nbtrack{background:var(--rule);border-radius:4px;height:16px;overflow:hidden}
+.nbtrack i{display:block;height:100%;background:var(--gold)} .nbtrack i.win{background:var(--good)} .nbtrack i.lose{background:var(--muted)}
+.nbpri{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.nbpri i{width:20px;height:20px;border-radius:50%;border:2px solid var(--gold);background:transparent;display:inline-block} .nbpri i.a{background:var(--gold)}
+.nbpri small{font:12px var(--f-mono);color:var(--muted);margin-left:6px}
+.nbhit{background:var(--gold-soft);border:1px solid var(--gold);border-radius:3px;padding:0 4px;font-weight:600}
+.refresh h5{font:700 16px var(--f-display);margin:22px 0 6px;color:var(--ink)}
+.nbhint{font-size:13.5px;color:var(--muted)}
 </style>
 <link rel="icon" type="image/png" href="../../favicon.png"><link rel="apple-touch-icon" href="../../favicon.png">
 </head>
@@ -158,6 +182,17 @@ const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 // code block for question text and solutions
 const C=s=>`<pre class="code"><code>${esc(s.replace(/^\n+|\s+$/g,""))}</code></pre>`;
 const T=(head,rows)=>`<table class="dt"><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;
+
+// Naive Bayes picture helpers: word bags, step lists, product chains, score bars
+const nbV=["study","hard","exam","project","fun","party","game"];
+const nbc=w=>Array.isArray(w)?`<span class="nbchip ${w[1]}">${w[0]}</span>`:`<span class="nbchip">${w}</span>`;
+const nbbag=(t,ws,note)=>`<div class="nbbag"><b>${t}</b><div>${ws.map(nbc).join("")}</div>${note?`<small>${note}</small>`:""}</div>`;
+const nbbags=(...b)=>`<div class="nbbags">${b.join("")}</div>`;
+const nbpretend=(real,v=nbV,hot)=>[...real.map(w=>w===hot?[w,"hot"]:w),...v.map(w=>[w,w===hot?"new hot":"new"])];
+const nbsteps=(...s)=>`<ol class="nbsteps">${s.map(x=>`<li>${x}</li>`).join("")}</ol>`;
+const nbchain=(...p)=>`<div class="nbchain">${p.map(x=>Array.isArray(x)?`<span class="nbbox ${x[1]||""}">${x[0]}</span>`:`<span class="nbop">${x}</span>`).join("")}</div>`;
+const nbbar=(l,v,max,txt,cls)=>`<div class="nbrow"><span>${l}</span><div class="nbtrack"><i class="${cls||""}" style="width:${(100*v/max).toFixed(1)}%"></i></div><b>${txt}</b></div>`;
+const nbpri=(n,k,a,b)=>`<div class="nbpri">${'<i class="a"></i>'.repeat(k)}${'<i></i>'.repeat(n-k)}<small>${k} of ${n} are ${a}; ${n-k} are ${b}</small></div>`;
 
 const SETS={
   A:{name:"Mock 2a", long:"Mock Exam 2a (Fall 2026)", note:"Official mock with key, posted on Brightspace under Exams → Exam2."},
@@ -830,35 +865,74 @@ warm:[
  {step:"Exam shape: M-step",key:"es",kind:"num",q:R`<p>Data \(x=[1,2,6]\). Responsibilities: component 1 \([0.9,0.6,0.2]\), component 2 \([0.1,0.4,0.8]\). Find \(N_1,N_2,\pi_1,\pi_2,\mu_1,\mu_2\).</p>`,ans:[1.7,1.3,1.7/3,1.3/3,3.3/1.7,5.7/1.3],lab:["N₁","N₂","π₁","π₂","μ₁","μ₂"],
   sol:R`\(N_1=1.7\), \(N_2=1.3\); \(\pi_1=0.567\), \(\pi_2=0.433\); \(\mu_1=\frac{0.9+1.2+1.2}{1.7}=1.94\); \(\mu_2=\frac{0.1+0.8+4.8}{1.3}=4.38\).`}
 ]},
-nb:{learn:R`<p class="idea"><b>The big idea:</b> Naive Bayes asks, for each class, "how likely is this data if it came from that class?" and multiplies by how common the class is. The biggest product wins.</p>
-<p><b>Bayes' rule</b>: \(P(c|x)=\dfrac{P(x|c)\,P(c)}{P(x)}\). \(P(c)\) is the <i>prior</i> (how common the class is before seeing the data), \(P(x|c)\) the <i>likelihood</i>, \(P(c|x)\) the <i>posterior</i>. \(P(x)\) is the same for every class, so to compare classes we drop it: \(P(c|x)\propto P(x|c)P(c)\). "\(\propto\)" means "proportional to", and the result is the <b>unnormalized posterior</b>.</p>
-<p><b>Naive</b> = assume the features are independent once you know the class, so their probabilities multiply: \(P(x_1,x_2|c)=P(x_1|c)P(x_2|c)\).</p>
-<p><b>Priors:</b> the fraction of training examples in each class, unless the question gives them (Mock 2b does).</p>
-<p><b>Categorical features</b> (Mock 2b): \(P(\text{Large}|\text{Budget})\) = (Budget rows with Large) ÷ (Budget rows).</p>
-<p><b>Words (multinomial, Mock 2a):</b> \(P(w|c)\) = how often word \(w\) appears among all the words in class \(c\)'s documents. Count every occurrence ("hard" twice counts twice).</p>
-<p><b>Laplace smoothing</b> stops a single unseen word from making the whole product 0:</p>
+nb:{learn:R`<p class="idea"><b>The big idea:</b> Naive Bayes is a "which bag did this come from?" game. Each class owns a <b>bag of the words</b> its training posts used. For a new post you ask every bag two things: <i>"how likely were you to produce these words?"</i> and <i>"how common are you to begin with?"</i> Multiply the two answers; the bag with the bigger number is the prediction.</p>
+${nbbags(nbbag("Bag A · Academic posts",["study","hard","exam","hard","project"],"5 words"),nbbag("Bag S · Social posts",["fun","party","hard","game"],"4 words"))}
+<p>These two bags come from four training posts: "study hard exam" and "hard project" (class A), "fun party" and "hard game" (class S). Now a new post arrives: <b>"hard fun"</b>. "hard" is in both bags, but "fun" is only in the S bag, so your gut says S. The rest of this refresher turns that gut feeling into numbers you can compute on the exam. Every example below uses these same four posts.</p>
+
+<h5>Read this first: the words used</h5>
+<ul><li><b>Class</b>: the label we want to predict (A or S here; spam or not spam elsewhere). <b>Training data</b>: the labelled posts we learn from.</li>
+<li><b>Vocabulary</b> \(V\): the list of <i>different</i> words across <i>all</i> the training posts. \(|V|\) is how many there are. Here V = {study, hard, exam, project, fun, party, game}, so \(|V|=7\). "hard" appears four times in the data but is one vocabulary word.</li>
+<li>\(N_c\): the total number of words in class c's bag, <i>counting repeats</i>. \(N_A=5\) (hard counts twice), \(N_S=4\).</li>
+<li>\(P(\text{hard}|A)\) is read "the probability of the word hard, <i>given</i> the post is class A". The bar "|" just means "given" or "if we already know". So it means: <i>reach into bag A; how likely is it to be "hard"?</i></li></ul>
+
+<h5>The recipe: four steps</h5>
+${nbsteps("<b>Prior.</b> How common is each class? (Fraction of training posts with that label.)","<b>Word chance.</b> For each class, how likely is each word of the new post? (Look inside that class's bag.)","<b>Multiply.</b> prior × chance of word 1 × chance of word 2 × … = the class's <b>score</b>.","<b>Compare.</b> The class with the biggest score is the prediction.")}
+${nbchain(["prior"],"×",["chance of word 1"],"×",["chance of word 2"],"×","…","=",["score","hot"])}
+
+<h5>Step 1 · Prior: how common is each class?</h5>
+<p>Forget the new post for a moment. If you grab one training post at random, how likely is it to be class A? <b>Count posts, not words.</b> Each circle below is one post: 2 of our 4 are A.</p>
+${nbpri(4,2,"A","S")}
+<p>\(P(A)=\dfrac24=\dfrac12\) and \(P(S)=\dfrac12\). If a question hands you the priors (Mock 2b does), use those instead of counting.</p>
+
+<h5>Step 2 · Word chance: look inside one bag</h5>
+<p>Chance of a word = (how many times it is in the bag) ÷ (how many words are in the bag). Every repeat counts. Below, "hard" is 2 of the 5 words in bag A:</p>
+${nbbags(nbbag("P(hard | A)",["study",["hard","hot"],"exam",["hard","hot"],"project"],"2 out of 5 words = 2/5"))}
+<p><b>The trap:</b> what about "fun" in bag A? It isn't in there, so its chance is 0 out of 5 = 0, and any product with a 0 in it is 0, however well the other words fit:</p>
+${nbchain(["P(hard|A) = 2/5"],"×",["P(fun|A) = 0","zero"],"×",["1/2"],"=",["0","zero"])}
+<p>One word we never happened to see would veto the whole class. That is too harsh: "fun" probably can appear in Academic posts ("fun lecture"), we just didn't have an example.</p>
+
+<h5>Step 2b · Laplace smoothing: the pretend-words fix</h5>
+<p><b>Imagine every vocabulary word was seen one extra time in every bag.</b> The dashed chips are the pretend ones. Now no word has 0:</p>
+${nbbags(nbbag("Bag A + pretend",nbpretend(["study","hard","exam","hard","project"]),"5 real + 7 pretend = 12"),nbbag("Bag S + pretend",nbpretend(["fun","party","hard","game"]),"4 real + 7 pretend = 11"))}
+<p>So the count gets <b>+1</b> on top, and the bag size gets <b>+|V|</b> on the bottom (the |V| pretend chips that were added):</p>
 <p>\[P(w|c)=\frac{\text{count}(w,c)+1}{N_c+|V|}\]</p>
-<p>\(N_c\) = total words in class \(c\) (with repeats), \(|V|\) = number of different words in all the training data.</p>
-<div class="ex"><b>Example:</b> A posts "study hard exam", "hard project" (\(N_A=5\)); S posts "fun party", "hard game" (\(N_S=4\)); \(|V|=7\). \(P(\text{hard}|A)=\frac{2+1}{5+7}=\frac14\). \(P(\text{fun}|A)=\frac{0+1}{12}=\frac1{12}\). New post "hard fun", priors \(\frac12\): A \(\frac14\cdot\frac1{12}\cdot\frac12=\frac1{96}\), S \(\frac2{11}\cdot\frac2{11}\cdot\frac12=\frac2{121}\). S wins.</div>
-<p><b>Classic follow-ups:</b></p>
-<ul><li>A post of only unseen words: each word gives \(\frac1{N_c+|V|}\), bigger for the class with <i>fewer</i> words. With equal priors that class wins.</li>
-<li>No smoothing and a value never seen in training: its probability is 0 for every class, every score is 0, no prediction.</li>
-<li>Adding a new feature: keep the priors and old tables; only compute the new feature's likelihoods.</li></ul>
+<p>Check with bag A (12 chips in all): "hard" is 2 real + 1 pretend = 3 of 12, so \(\frac{2+1}{5+7}=\frac14\). "fun" is 0 real + 1 pretend = 1 of 12, so \(\frac{0+1}{12}=\frac1{12}\). Small, but no longer 0. In bag S (11 chips), "hard" is \(\frac{1+1}{4+7}=\frac2{11}\) and "fun" is \(\frac{1+1}{11}=\frac2{11}\).</p>
+
+<h5>Step 3 · Multiply</h5>
+<p><b>Why multiply?</b> "And" means multiply in probability: the chance of a coin landing heads <i>and</i> a die showing 6 is \(\frac12\times\frac16\), because the two don't affect each other. Naive Bayes treats each word of the post as its own separate coin flip, once the class is known. That assumption is the <b>"naive"</b> part: real words are <i>not</i> independent ("hard" and "exam" travel together), but pretending they are makes the maths easy and works well anyway. In symbols: \(P(x_1,x_2|c)=P(x_1|c)\,P(x_2|c)\).</p>
+${T(["word","P(word | A)","P(word | S)"],[["hard","(2+1)/12 = 1/4","(1+1)/11 = 2/11"],["fun","(0+1)/12 = 1/12","(1+1)/11 = 2/11"]])}
+${nbchain(["A:"],["prior 1/2"],"×",["1/4"],"×",["1/12"],"=",["1/96 ≈ 0.0104"])}
+${nbchain(["S:"],["prior 1/2"],"×",["2/11"],"×",["2/11"],"=",["2/121 ≈ 0.0165","hot"])}
+
+<h5>Step 4 · Compare</h5>
+${nbbar("A",0.0104,0.0165,"0.0104","lose")}${nbbar("S",0.0165,0.0165,"0.0165","win")}
+<p>Bigger bar wins: <b>"hard fun" is Social (S)</b>, matching the gut feeling.</p>
+<p><b>Why these are called "unnormalized".</b> The full Bayes' rule is \(P(c|x)=\dfrac{P(x|c)\,P(c)}{P(x)}\): the <i>posterior</i> \(P(c|x)\) (chance of the class after seeing the post) equals the <i>likelihood</i> \(P(x|c)\) (how well the class explains the post) times the <i>prior</i> \(P(c)\), divided by \(P(x)\) (how likely this exact post is at all). That bottom number is the <b>same for A and for S</b>, so it can't change which one is bigger, and we skip it: \(P(c|x)\propto P(x|c)P(c)\) ("\(\propto\)" = "is proportional to"). What's left isn't scaled to add up to 1, so it is not a true probability, just a score to compare. That is the <b>unnormalized posterior</b> the exam asks for.</p>
+
+<h5>Features that aren't words (Mock 2b)</h5>
+<p>Same idea, but the "bag" is the rows of that class in a table, and \(P(\text{value}|c)\) = (rows of class c with that value) ÷ (rows of class c). Say Budget customers are the three rows (Small, No), (Large, No), (Small, Yes). Cart size Large shows up in 1 of those 3 rows:</p>
+${T(["Budget row","Cart size","Newsletter"],[["1","Small","No"],["2",R`<span class="nbhit">Large</span>`,"No"],["3","Small","Yes"]])}
+<p>\(P(\text{Large}|\text{Budget})=\frac13\). Do the same for each feature, then multiply them with the class prior. Mock 2b uses no smoothing, so a value never seen in a class has chance exactly 0.</p>
+
+<h5>Classic follow-up questions, with pictures</h5>
+<ul><li><b>A post made only of unseen words.</b> Every word gets exactly one pretend chip, so it's worth \(\frac1{N_c+|V|}\): \(\frac1{12}\) in bag A, \(\frac1{11}\) in bag S. <i>One slice of a smaller pie is a bigger slice</i>, so the class with <b>fewer words</b> scores higher. With equal priors, S wins.</li>
+<li><b>No smoothing and a value never seen in training.</b> Its chance is 0 in <i>every</i> class, so every score is 0 and there is no prediction.</li>
+<li><b>Adding a new feature</b> (say, payment type). Keep the priors and the old tables. Only work out the new feature's chances for each class and multiply them in.</li></ul>
 <p>Other flavors (slides): Gaussian NB for continuous data (fit a mean and variance per class and read \(P(x|c)\) off the bell curve), Bernoulli for yes/no features. <code>from sklearn.naive_bayes import GaussianNB, MultinomialNB</code>.</p>`,
 exam:R`Q3 (18 pts) on both mocks. 2a: short labelled posts; count words per class and the vocabulary, Laplace-smoothed P(word | class), unnormalized posteriors for a new post, and why unseen words favor one class. 2b: a feature table, likelihoods without smoothing, posteriors with given priors, then MCs on adding a feature and an unseen value.`,
 warm:[
- {step:"Prior",kind:"num",q:R`<p>Of 10 training emails, 6 are spam. \(P(\text{spam})\)?</p>`,ans:[0.6],sol:R`\(6/10\).`},
- {step:"Count words",kind:"num",q:R`<p>Pos reviews: "good movie", "good good fun". Neg: "bad movie". Find \(N_{Pos}\), \(N_{Neg}\), \(|V|\).</p>`,ans:[5,2,4],lab:["N_Pos","N_Neg","|V|"],sol:R`Pos: 2 + 3 = 5 words (count "good" twice). Neg: 2. Different words: good, movie, fun, bad = 4.`},
- {step:"Laplace",kind:"num",q:R`<p>Same data. \(P(\text{good}|Pos)\) and \(P(\text{good}|Neg)\) with Laplace smoothing?</p>`,ans:[4/9,1/6],lab:["good | Pos","good | Neg"],sol:R`Pos: \(\frac{3+1}{5+4}=\frac49\). Neg: \(\frac{0+1}{2+4}=\frac16\).`},
- {step:"Why smooth",kind:"mc",q:R`<p>Why add 1 to every count?</p>`,o:["To make probabilities add to more than 1","So a word never seen in a class doesn't make that class's whole product 0","To speed up training","Because priors must be equal"],a:"B",sol:R`One zero in a product makes the whole thing zero, no matter how well the other words fit.`},
- {step:"Posterior",kind:"num",q:R`<p>Same data, priors \(P(Pos)=\frac23\), \(P(Neg)=\frac13\). Unnormalized scores for the new review "good fun"?</p>`,ans:[16/243,1/108],lab:["Pos","Neg"],sol:R`\(P(\text{fun}|Pos)=\frac{1+1}9=\frac29\), \(P(\text{fun}|Neg)=\frac16\). Pos: \(\frac49\cdot\frac29\cdot\frac23=\frac{16}{243}\approx0.066\). Neg: \(\frac16\cdot\frac16\cdot\frac13=\frac1{108}\approx0.0093\). Pos.`},
- {step:"Feature table",kind:"num",q:R`<p>Regular customers: (Small, Yes), (Large, Yes), (Large, No). \(P(\text{Large}|\text{Regular})\) and \(P(\text{Yes}|\text{Regular})\) without smoothing?</p>`,ans:[2/3,2/3],lab:["Large | Regular","Yes | Regular"],sol:R`Only Regular rows: Large in 2 of 3, Yes in 2 of 3.`},
- {step:"Unseen value",kind:"mc",q:R`<p>No smoothing. A test example has a feature value never seen in any class. What happens?</p>`,o:["The prior decides","Every class scores 0, so no prediction","That feature is skipped automatically","The model picks randomly"],a:"B",sol:R`Its likelihood is 0 in every class, so every product is 0.`},
- {step:"Code: smoothing",kind:"code",q:R`<p>Fill in the Laplace formula.</p>`,start:`def p_word(word, class_words, vocab_size):
+ {step:"Prior",kind:"num",q:R`<p>Of 10 training emails, 6 are spam. \(P(\text{spam})\)? Each circle is one email (filled = spam).</p>${nbpri(10,6,"spam","not spam")}<p class="nbhint">Hint: the prior counts <b>whole emails</b>, not words.</p>`,ans:[0.6],sol:R`<p>The prior answers "before reading anything, how common is this class?" Count emails with that label ÷ all emails: \(\frac{6}{10}=0.6\).</p><p>The other 4 emails give \(P(\text{not spam})=0.4\). The priors of all classes always add to 1.</p>`},
+ {step:"Count words",kind:"num",q:R`<p>Pos reviews: "good movie", "good good fun". Neg: "bad movie". Find \(N_{Pos}\), \(N_{Neg}\), \(|V|\).</p><p class="nbhint">Hint: pour all of a class's reviews into one bag and count the chips (repeats count). For \(|V|\), list the <i>different</i> words across both bags.</p>`,ans:[5,2,4],lab:["N_Pos","N_Neg","|V|"],sol:R`<p>Pour each class's reviews into its own bag:</p>${nbbags(nbbag("Pos bag",["good","movie",["good","hot"],["good","hot"],"fun"],"5 chips, so N_Pos = 5 (\"good\" counts all 3 times)"),nbbag("Neg bag",["bad","movie"],"2 chips, so N_Neg = 2"))}<p>Vocabulary = the different words in <i>both</i> bags together, each listed once:</p>${nbbags(nbbag("V",["good","movie","fun","bad"],"|V| = 4. \"movie\" is in both bags but counts once."))}`},
+ {step:"Laplace",kind:"num",q:R`<p>Same data (Pos: "good movie", "good good fun"; Neg: "bad movie"). \(P(\text{good}|Pos)\) and \(P(\text{good}|Neg)\) with Laplace smoothing?</p><p class="nbhint">Hint: add one pretend copy of every vocabulary word to each bag, then it's (chips that are "good") ÷ (chips in the bag).</p>`,ans:[4/9,1/6],lab:["good | Pos","good | Neg"],sol:R`<p>Add one pretend copy of each of the 4 vocabulary words (good, movie, fun, bad) to each bag (dashed chips):</p>${nbbags(nbbag("Pos bag + pretend",nbpretend(["good","movie","good","good","fun"],["good","movie","fun","bad"],"good"),"5 + 4 = 9 chips; \"good\" is 3 real + 1 pretend = 4"),nbbag("Neg bag + pretend",nbpretend(["bad","movie"],["good","movie","fun","bad"],"good"),"2 + 4 = 6 chips; \"good\" is 0 real + 1 pretend = 1"))}<p>Pos: \(\frac{3+1}{5+4}=\frac49\). Neg: \(\frac{0+1}{2+4}=\frac16\). "good" never appears in Neg, yet it gets \(\frac16\) rather than 0.</p>`},
+ {step:"Why smooth",kind:"mc",q:R`<p>Why add 1 to every count?</p>`,o:["To make probabilities add to more than 1","So a word never seen in a class doesn't make that class's whole product 0","To speed up training","Because priors must be equal"],a:"B",sol:R`<p>One zero in a product makes the whole thing zero, no matter how well the other words fit:</p>${nbchain(["0.4"],"×",["0.3"],"×",["0","zero"],"×",["0.5"],"=",["0","zero"])}<p>Adding 1 gives every word a small non-zero chance. The others are wrong: smoothing slightly <i>shrinks</i> the seen words' chances to make room (the chances in a bag still add to exactly 1, never more), it doesn't speed anything up, and it has nothing to do with the priors.</p>`},
+ {step:"Posterior",kind:"num",q:R`<p>Same data, priors \(P(Pos)=\frac23\), \(P(Neg)=\frac13\). Unnormalized scores for the new review "good fun"?</p><p class="nbhint">Four steps: (1) the chance of each word in each bag, (2) multiply the two words, (3) multiply by the prior, (4) compare.</p>`,ans:[16/243,1/108],lab:["Pos","Neg"],sol:R`<p>Bags with pretend chips: Pos has 9 chips, Neg has 6 (from the last warm-ups).</p>${T(["word","P(word | Pos)","P(word | Neg)"],[["good","(3+1)/9 = 4/9","(0+1)/6 = 1/6"],["fun","(1+1)/9 = 2/9","(0+1)/6 = 1/6"]])}${nbchain(["Pos:"],["prior 2/3"],"×",["4/9"],"×",["2/9"],"=",["16/243 ≈ 0.066","hot"])}${nbchain(["Neg:"],["prior 1/3"],"×",["1/6"],"×",["1/6"],"=",["1/108 ≈ 0.0093"])}${nbbar("Pos",0.066,0.066,"0.066","win")}${nbbar("Neg",0.0093,0.066,"0.0093","lose")}<p>Pos is about 7 times bigger, so "good fun" is <b>Positive</b>. Notice the prior (\(\frac23\) vs \(\frac13\)) and the words both pushed toward Pos.</p>`},
+ {step:"Feature table",kind:"num",q:R`<p>Regular customers: (Small, Yes), (Large, Yes), (Large, No). \(P(\text{Large}|\text{Regular})\) and \(P(\text{Yes}|\text{Regular})\) without smoothing?</p>${T(["Regular row","Cart size","Newsletter"],[["1","Small","Yes"],["2","Large","Yes"],["3","Large","No"]])}<p class="nbhint">Hint: only look at these Regular rows. For each feature, count the rows that have the value, ÷ 3.</p>`,ans:[2/3,2/3],lab:["Large | Regular","Yes | Regular"],sol:R`<p>The "bag" is just the Regular rows (3 of them). Highlighted = the value we're counting:</p>${T(["Regular row","Cart size","Newsletter"],[["1","Small",R`<span class="nbhit">Yes</span>`],["2",R`<span class="nbhit">Large</span>`,R`<span class="nbhit">Yes</span>`],["3",R`<span class="nbhit">Large</span>`,"No"]])}<p>Large: rows 2 and 3, so \(\frac23\). Yes: rows 1 and 2, so \(\frac23\). No smoothing here, so it's plain count ÷ rows.</p>`},
+ {step:"Unseen value",kind:"mc",q:R`<p>No smoothing. A test example has a feature value never seen in any class. What happens?</p>`,o:["The prior decides","Every class scores 0, so no prediction","That feature is skipped automatically","The model picks randomly"],a:"B",sol:R`<p>The value's chance is 0 in <i>every</i> class (0 rows out of n), so every class's product gets a zero factor:</p>${nbchain(["Budget: 0.5 × 0 × 0.4 = 0","zero"])}${nbchain(["Regular: 0.3 × 0 × 0.6 = 0","zero"])}<p>All scores tie at 0, so nothing can be picked. The model doesn't skip the feature or fall back on the prior by itself. This is exactly what Laplace smoothing is there to prevent.</p>`},
+ {step:"Code: smoothing",kind:"code",q:R`<p>Fill in the Laplace formula. It's the same fraction as before: top = (count of the word) + 1, bottom = (words in the class bag) + (vocabulary size).</p>${nbchain(["P(w|c)"],"=",["(count of w in bag) + 1","hot"],"÷",["(words in bag) + |V|","hot"])}`,start:`def p_word(word, class_words, vocab_size):
     return (____) / (____)`,tests:[["p_word('good', ['good','movie','good','good','fun'], 4)","4/9"],["p_word('good', ['bad','movie'], 4)","1/6"]],sol:`def p_word(word, class_words, vocab_size):
-    return (class_words.count(word) + 1) / (len(class_words) + vocab_size)`},
- {step:"Exam shape",key:"es",kind:"num",q:R`<p>Tech: "fast laptop", "new laptop deal". Food: "fast food", "food deal". New post "fast deal", priors from post counts, Laplace smoothing. Unnormalized score for each class?</p>`,ans:[1/50,2/81],lab:["Tech","Food"],
-  sol:R`\(N_T=5\), \(N_F=4\), \(|V|=5\). Tech: \(\frac{2}{10}\cdot\frac2{10}\cdot\frac12=0.02\). Food: \(\frac29\cdot\frac29\cdot\frac12=0.0247\). Food.`}
+    return (class_words.count(word) + 1) / (len(class_words) + vocab_size)`,why:R`<code>class_words.count(word)</code> counts how many chips are that word; <code>len(class_words)</code> counts all chips <i>including repeats</i>, which is exactly \(N_c\).`},
+ {step:"Exam shape",key:"es",kind:"num",q:R`<p>Tech: "fast laptop", "new laptop deal". Food: "fast food", "food deal". New post "fast deal", priors from post counts, Laplace smoothing. Unnormalized score for each class?</p><p class="nbhint">Do the four steps in order: priors (count posts), pour each class into a bag and count \(N_T\), \(N_F\), \(|V|\), the chance of each word, multiply, compare.</p>`,ans:[1/50,2/81],lab:["Tech","Food"],
+  sol:R`<p><b>Step 1, priors:</b> 2 of 4 posts are Tech and 2 are Food, so both priors are \(\frac12\).</p><p><b>Bags:</b></p>${nbbags(nbbag("Tech bag",["fast","laptop","new","laptop","deal"],"N_T = 5"),nbbag("Food bag",["fast","food","food","deal"],"N_F = 4"),nbbag("Vocabulary",["fast","laptop","new","deal","food"],"|V| = 5"))}<p><b>Step 2, word chances</b> (count + 1 on top, bag size + 5 on the bottom):</p>${T(["word","P(word | Tech)","P(word | Food)"],[["fast","(1+1)/(5+5) = 2/10","(1+1)/(4+5) = 2/9"],["deal","(1+1)/(5+5) = 2/10","(1+1)/(4+5) = 2/9"]])}<p><b>Step 3, multiply:</b></p>${nbchain(["Tech:"],["prior 1/2"],"×",["2/10"],"×",["2/10"],"=",["1/50 = 0.02"])}${nbchain(["Food:"],["prior 1/2"],"×",["2/9"],"×",["2/9"],"=",["2/81 ≈ 0.0247","hot"])}<p><b>Step 4, compare:</b></p>${nbbar("Tech",0.02,0.0247,"0.02","lose")}${nbbar("Food",0.0247,0.0247,"0.0247","win")}<p>Food wins. Both words are equally "seen once" in each class, so the Food bag's smaller size (4 words vs 5) makes each word a bigger share, which tips it.</p>`}
 ]},
 re:{learn:R`<p class="idea"><b>The big idea:</b> a regular expression (regex) is a pattern that describes a set of strings. Python's <code>re</code> module finds, checks, pulls out and replaces text that fits the pattern.</p>
 <p><b>Building blocks</b> (each matches <i>one</i> character unless a count follows):</p>
