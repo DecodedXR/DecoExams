@@ -167,7 +167,7 @@ table.dt th{background:var(--paper);font-weight:500}
   </section>
 
   <div class="notes">
-    <p>Sources: ECE 20875 Fall 2026 Brightspace materials: Mock Exam 2a and 2b (with keys), lecture slides and notebooks for Weeks 5–9, the Self-Reading, and the Exam 2 FAQ linked from the Brightspace announcements. "Lecture" problems are the slides' worked examples (two slide arithmetic slips are flagged where they occur). "Lab extras" are written for this site and are not official; their answers were worked out by hand and checked in Python. Boilerexams has no ECE 20875 material.</p>
+    <p>Sources: ECE 20875 Fall 2026 Brightspace materials: Mock Exam 2a and 2b (with keys), lecture slides and notebooks for Weeks 5–9, the Self-Reading, and the Exam 2 FAQ linked from the Brightspace announcements. "Lecture" problems 1–6 are the slides' worked examples (two slide arithmetic slips are flagged where they occur). Lecture 7–19 are questions written from the same slides, notebooks and self-reading: the concepts, the code cells, and the rest of each worked example. Their answers come from the slides, or from the slides' formulas where a question says it uses new numbers. "Lab extras" are written for this site and are not official; their answers were worked out by hand and checked in Python. Boilerexams has no ECE 20875 material.</p>
     <p>Progress is stored in your own browser. Code runs locally in your browser with Pyodide (downloaded the first time you press Run).</p>
   </div>
 </div>
@@ -197,7 +197,7 @@ const nbpri=(n,k,a,b)=>`<div class="nbpri">${'<i class="a"></i>'.repeat(k)}${'<i
 const SETS={
   A:{name:"Mock 2a", long:"Mock Exam 2a (Fall 2026)", note:"Official mock with key, posted on Brightspace under Exams → Exam2."},
   B:{name:"Mock 2b", long:"Mock Exam 2b (Fall 2026)", note:"Official mock with key, posted on Brightspace under Exams → Exam2."},
-  L:{name:"Lecture", long:"Lecture examples", note:"Worked examples from the Week 5–9 slides, with the slides' own answers (checked by hand)."},
+  L:{name:"Lecture", long:"Lecture questions", note:"Lecture 1–6 are the slides' worked examples with the slides' own answers. Lecture 7–19 are questions built from the Week 5–9 slides, notebooks and self-reading; a question says so where it uses new numbers. Checked in Python."},
   X:{name:"Lab extras", long:"Lab extras", note:"Written for this site in the style of the mocks. Not official; answers checked in Python."}
 };
 const TOPICS={
@@ -471,6 +471,385 @@ print(p.sub(r'goodbye \1', 'hello ece hello'))`)}`,o:[`goodbye ece goodbye`,`goo
  {p:"D",pts:3,kind:"mc",q:R`${C(String.raw`p = re.compile(r'\b(\w+)(\s\1)+\b')
 p.search('Paris in the the the the spring').group()`)}`,o:[`'the'`,`'the the'`,`'the the the the'`,`'Paris in the'`],a:"C",
   sol:R`<p><code>\1</code> means "the same text group 1 matched". So it finds a word followed by one or more copies of itself: all four "the".</p>`}
+]},
+
+/* ---- Lecture 7 on: questions built from the slides (concepts, code cells, the rest of each worked example) ---- */
+{s:"L",n:7,t:"knn",
+ ctx:R`<p>From the kNN slides. kNN (k-nearest neighbours) classifies a new point by finding the k labelled training points closest to it and picking the class most of them have.</p>`,
+ parts:[
+ {p:"A",pts:2,kind:"mc",q:R`<p>The slides say kNN "requires no assumptions about the data", unlike Naive Bayes. What is a model like that called?</p>`,o:["Parametric","Unsupervised","Non-parametric","Linear"],a:"C",
+  sol:R`<p>A <b>parametric</b> model assumes the data follow a certain shape (for example a bell curve) and only learns that shape's numbers, its parameters (mean, variance). Naive Bayes works that way. kNN assumes no shape at all; it just keeps the training points and measures distances to them. That is <b>non-parametric</b>. It is still supervised, because the training points have labels.</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>What happens when you make k larger?</p>`,o:["The vote is less sensitive to outliers, but also less sensitive to the very near neighbours, which may be the most informative ones","The vote is more sensitive to outliers","Predictions get faster because fewer distances are computed","Nothing changes unless you also switch to the Manhattan distance"],a:"A",
+  sol:R`<p>An outlier is a stray point that sits far from the rest of its class. With k = 1, one stray point next to Z decides everything. With a bigger k it is outvoted. The cost: the few points right next to Z, which probably say the most about Z, also count for less, because they are now a small share of the vote.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>How do the slides say to choose k?</p>`,o:["Always k = 1","Set k to the number of classes","Look for the elbow of the SSE curve","Cross validation"],a:"D",
+  sol:R`<p><b>Cross validation</b> (from Exam 1): hide part of the labelled data, predict it with several values of k, and keep the k that gets the most hidden labels right. The elbow curve is for choosing the number of clusters in K-Means, a different K.</p>`},
+ {p:"D",pts:4,kind:"num",q:R`<p>The slides' metrics example: 90% of cars are minivans and 10% are sports cars. A lazy classifier says "minivan" for every car. Take 100 cars (90 minivans, 10 sports cars) and call sports car the positive class. Find its accuracy (fraction of cars labelled correctly), its number of true positives (sports cars it labelled as sports cars), and its recall (true positives ÷ all real sports cars).</p>`,ans:[0.9,0,0],lab:["accuracy","true positives","recall"],
+  sol:R`<p>It is right on all 90 minivans and wrong on all 10 sports cars: accuracy \(=90/100=0.9\).</p><p>It never says "sports car", so true positives = 0 and recall \(=0/10=0\).</p><p>This is the slides' point about <b>class imbalance</b> (one class being much more common): 90% accuracy looks good, yet the classifier never finds a single sports car. That is why you also look at precision, recall and F1.</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>Which metric do the slides define as the harmonic mean of precision and recall, so that both must be high for it to be high?</p>`,o:["Accuracy","AUROC","MSE","F1 score"],a:"D",
+  sol:R`<p><b>F1</b> \(=\dfrac{2\cdot\text{precision}\cdot\text{recall}}{\text{precision}+\text{recall}}\). A harmonic mean is pulled toward the smaller of its two numbers, so one bad value drags F1 down. AUROC is the other composite metric on the slide: the area under the curve you get by sliding the decision threshold. MSE (mean squared error) is for regression.</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>Which of these is a con of kNN on the slides?</p>`,o:["You must choose a distribution for each class first","Using the model is expensive: each prediction computes the distance to every training point","It needs prior probabilities for the classes","It only works with two classes"],a:"B",
+  sol:R`<p>kNN has no training step to speak of, but every prediction measures the distance from the new point to <b>all</b> the stored points. The other cons on the slide: it is only as good as its labelled data, and "near" stops meaning much when there are very many features (dimensions). Choosing a distribution and needing priors are cons of Naive Bayes.</p>`}
+]},
+{s:"L",n:8,t:"km",
+ ctx:R`<p>From the clustering slides. Clustering means splitting data points into groups (clusters) of points that are similar to each other.</p>`,
+ parts:[
+ {p:"A",pts:2,kind:"mc",q:R`<p>Why do the slides call clustering <b>unsupervised</b> learning?</p>`,o:["Nobody checks the result","The data points have no labels","It needs no starting guess","It never uses distances"],a:"B",
+  sol:R`<p>A label is the known right answer for a training point ("this one is a Star"). <b>Supervised</b> learning (kNN, Naive Bayes, regression) learns from labelled points. Clustering only gets the points themselves and has to find the structure on its own.</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>The slides sort clustering algorithms into categories. Which pairing is right?</p>`,o:["K-Means is distribution-based; GMMs are centroid-based","K-Means is density-based; GMMs are hierarchical","K-Means is centroid-based; GMMs are distribution-based","Both are hierarchical"],a:"C",
+  sol:R`<p>A centroid is a cluster's center point. <b>K-Means is centroid-based</b>: it finds center points and gives each data point to one center. <b>A GMM is distribution-based</b>: it groups points by how likely they are to come from the same probability distribution (a Gaussian, the bell curve).</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>According to the slides, what do K-Means and GMMs have in common?</p>`,o:["Both give every point exactly one cluster","Both need a model of the data in mind","Both find the best answer in one pass","Both need the number of clusters chosen first, and both improve an initial guess step by step"],a:"D",
+  sol:R`<p>Both "require an initial assumption about the number of clusters" and "use iterative algorithms: form an initial guess, and refine it". Only K-Means gives each point exactly one cluster, and only GMMs need a model in mind.</p>`},
+ {p:"D",pts:4,kind:"num",q:R`<p>The slides' algorithm with new numbers. 1-D points: 2, 4, 10, 12, 20. Starting centroids: \(c_1=0\) and \(c_2=10\). Do one assignment step (each point goes to the nearer centroid) and one update step (each centroid moves to the mean of its points). What are the new centroids?</p>`,ans:[3,14],lab:["c₁","c₂"],
+  sol:R`${T(["Point","distance to c₁ = 0","distance to c₂ = 10","goes to"],[["2","2","8","c₁"],["4","4","6","c₁"],["10","10","0","c₂"],["12","12","2","c₂"],["20","20","10","c₂"]])}<p>Update: \(c_1=\frac{2+4}{2}=3\), \(c_2=\frac{10+12+20}{3}=\frac{42}{3}=14\).</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>Run a second iteration from the centroids you just found. What happens?</p>`,o:["Point 10 moves to cluster 1","Point 4 moves to cluster 2","No point changes cluster, so the centroids stay put: K-Means has converged","The centroids swap"],a:"C",
+  sol:R`<p>With centroids 3 and 14: point 2 is 1 from c₁ and 12 from c₂; point 4 is 1 and 10; point 10 is 7 and 4; point 12 is 9 and 2; point 20 is 17 and 6. Everyone stays where they were. Same groups means the same means, so nothing moves again. That is what "repeat until convergence" on the slide means.</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>After <code>kmeans = KMeans(n_clusters=3)</code> and <code>kmeans.fit(X)</code>, which attribute holds the cluster each point was assigned to?</p>`,o:[R`<code>kmeans.cluster_centers_</code>`,R`<code>kmeans.n_init</code>`,R`<code>kmeans.labels_</code>`,R`<code>kmeans.fit_</code>`],a:"C",
+  sol:R`<p>From the slides' code: <code>kmeans.labels_</code> is the cluster assignment of every row of X, and <code>kmeans.cluster_centers_</code> is the list of centroids. <code>n_init</code> is a setting you pass in (how many random starts to try).</p>`}
+]},
+{s:"L",n:9,t:"gmm",
+ ctx:R`<p>The rest of the clustering slides' numerical example (Lecture 3 covers iteration 1). Same five points \(x=12.14,\ 4.55,\ 2.57,\ 12.19,\ 12.78\), K = 2 Gaussians. A responsibility \(\gamma_{kj}\) is the probability that point \(j\) came from Gaussian \(k\). In iteration 2 the E-step gives responsibilities that round to \(\gamma_1=[0,\ 1,\ 1,\ 0,\ 0]\) and \(\gamma_2=[1,\ 0,\ 0,\ 1,\ 1]\).</p>`,
+ parts:[
+ {p:"A",pts:6,kind:"num",q:R`<p>Run the iteration-2 M-step: find \(N_k\) (total responsibility of Gaussian k), \(\pi_k\) (its weight) and \(\mu_k\) (its mean).</p>`,ans:[2,3,0.4,0.6,3.56,12.37],lab:["N₁","N₂","π₁","π₂","μ₁","μ₂"],
+  sol:R`<p>\(N_1=1+1=2\) and \(N_2=1+1+1=3\) (add each row of responsibilities).</p><p>\(\pi_k=N_k/n\) with \(n=5\) points: \(\pi_1=2/5=0.4\), \(\pi_2=3/5=0.6\).</p><p>\(\mu_k\) is the average of the points, each counted by its responsibility. Gaussian 1 owns points 2 and 3: \(\mu_1=\frac{4.55+2.57}{2}=3.56\). Gaussian 2 owns points 1, 4 and 5: \(\mu_2=\frac{12.14+12.19+12.78}{3}=\frac{37.11}{3}=12.37\).</p><p>These match the slide: π = [0.4, 0.6], μ = [3.56, 12.37].</p>`},
+ {p:"B",pts:3,kind:"num",q:R`<p>Find the new variance of Gaussian 2: \(\sigma_2^2=\dfrac{\sum_j\gamma_{2j}(x_j-\mu_2)^2}{N_2}\).</p>`,ans:[0.0845],lab:["σ₂²"],
+  sol:R`<p>Use the <b>new</b> mean 12.37 and only the three points Gaussian 2 owns:</p><p>\(\frac{(12.14-12.37)^2+(12.19-12.37)^2+(12.78-12.37)^2}{3}=\frac{0.0529+0.0324+0.1681}{3}=\frac{0.2534}{3}=0.0845\).</p><p>The slide prints 0.0848 (it kept more decimals of μ₂). A small variance means a narrow bell: these three points sit very close together.</p>`},
+ {p:"C",pts:3,kind:"mc",q:R`<p>The slides use tol = 1 and report the log-likelihood after each iteration: −9.251, −6.747, −6.747. When does EM stop?</p>`,o:["After iteration 1, because the log-likelihood is negative","After iteration 2, because −6.747 is larger than −9.251","After iteration 3, because the log-likelihood changed by less than tol","It can't stop until the log-likelihood reaches 0"],a:"C",
+  sol:R`<p>The log-likelihood measures how well the current Gaussians explain the data (higher is better). EM stops when it changes by less than the tolerance tol between two iterations.</p><p>From iteration 1 to 2 it changed by \(9.251-6.747=2.504\), more than 1: keep going. From iteration 2 to 3 it changed by 0, less than 1: <b>stop after iteration 3</b>.</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`<p>EM is for models that depend on unobserved "latent" variables. What are the latent variables in a GMM?</p>`,o:["The means of the Gaussians","The cluster labels: which Gaussian each point belongs to","The data points","The tolerance"],a:"B",
+  sol:R`<p>Latent means hidden: something that exists but that you never get to see. Here it is the <b>cluster label</b> of each point. If we knew which Gaussian each point came from, fitting the means and variances would be easy. We don't, so the E-step guesses the labels as probabilities (the responsibilities) and the M-step refits using those guesses.</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>The M-step updates μ and then σ². Which mean goes into the variance formula?</p>`,o:["The mean from the previous iteration","The updated mean just computed in this M-step","The plain average of all the data","The initial random mean"],a:"B",
+  sol:R`<p>The slide notes that the weighted variance "uses the updated mean". So compute \(\mu_k\) first, then plug that new value into \(\sigma_k^2\), as in Part B.</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>Which is the final model on the slides?</p>`,o:[R`\(p(x)=0.6\,N(x|3.56,\,0.99)+0.4\,N(x|12.37,\,0.08)\)`,R`\(p(x)=0.4\,N(x|3.56,\,0.99)+0.6\,N(x|12.37,\,0.08)\)`,R`\(p(x)=N(x|3.56,\,0.99)+N(x|12.37,\,0.08)\)`,R`\(p(x)=0.4\,N(x|12.37,\,0.08)+0.6\,N(x|3.56,\,0.99)\)`],a:"B",
+  sol:R`<p>A GMM is a weighted sum of Gaussians: \(p(x)=\sum_k\pi_kN(x|\mu_k,\sigma_k^2)\). Gaussian 1 (mean 3.56) owns 2 of the 5 points, so its weight is 0.4. Gaussian 2 (mean 12.37) owns 3 of 5, so 0.6. The weights must add to 1; option C's add to 2.</p>`}
+]},
+{s:"L",n:10,t:"nb",
+ ctx:R`<p>From the Naive Bayes slides' car example. Every car is a minivan (class \(C_0\)) or a sports car (class \(C_1\)), and the one feature is its average speed \(x\). The slides' rule: compare \(P(x|C_0)P(C_0)\) with \(P(x|C_1)P(C_1)\) and predict the class with the bigger product. \(P(x|C)\) is the <b>likelihood</b> (how common speed \(x\) is inside class C). \(P(C)\) is the <b>prior</b> (how common class C is before you look at the speed). The numbers in Parts A–C are new; the rule is the slides'.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>A car's speed has likelihoods \(P(x|C_0)=0.01\) and \(P(x|C_1)=0.04\). Use the slides' mix of cars: 90% minivans, 10% sports cars. Compute the two products.</p>`,ans:[0.009,0.004],lab:["P(x|C₀)P(C₀)","P(x|C₁)P(C₁)"],
+  sol:R`<p>Minivan: \(0.01\times0.9=0.009\). Sports car: \(0.04\times0.1=0.004\).</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>Which class does Naive Bayes predict for that car?</p>`,o:["Sports car","Minivan","It's a tie"],a:"B",
+  sol:R`<p>\(0.009>0.004\), so <b>minivan</b>. The speed alone is 4 times more typical of a sports car, but minivans are 9 times more common, and the prior wins.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>Same car, but now you have no prior knowledge, so you make the assumption the slides suggest for that case. What is predicted?</p>`,o:["Sports car","Minivan","It's a tie"],a:"A",
+  sol:R`<p>With no prior knowledge the slides assume both classes are equally likely, \(P(C_0)/P(C_1)=1\). Then only the likelihoods matter: \(0.04>0.01\), so <b>sports car</b>. Same car, different prior, different answer.</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`<p>In Gaussian Naive Bayes, how do the slides get \(P(x|C_1)\) for sports cars?</p>`,o:["Count how many training cars have exactly speed x","Take the sample mean and sample variance of the sports cars' speeds in the training data, and read the likelihood off that normal curve","Use the mean and variance of all cars together","Run kNN on the speeds"],a:"B",
+  sol:R`<p>Each class gets its own bell curve. For the sports cars in the training data, compute the sample mean and sample variance of their speeds; that gives \(N(x|\mu_1,\sigma_1^2)\), and the height of that curve at \(x\) is the likelihood. Do the same with the minivans for \(C_0\).</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>The features are word counts. Which scikit-learn class do the slides pair with count data?</p>`,o:[R`<code>GaussianNB</code>`,R`<code>BernoulliNB</code>`,R`<code>MultinomialNB</code>`,R`<code>KNeighborsClassifier</code>`],a:"C",
+  sol:R`<p>From the slides: Gaussian for continuous data (speeds, lengths), Bernoulli for binary data (yes/no features), <b>Multinomial for count data</b> (how many times each word appears).</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>Which is a con of Naive Bayes on the slides?</p>`,o:["Each prediction needs the distance to every training point","It can't handle missing data","You have to choose a model for the data; get it wrong and the classifier isn't reliable","It can't give probabilities"],a:"C",
+  sol:R`<p>The two cons listed: you need to choose a model for the data (for example "speeds are Gaussian"), and you need prior knowledge of how likely each class is. Being good with missing data is listed as a <i>pro</i>. The distance cost is kNN's con.</p>`}
+]},
+{s:"L",n:11,t:"nb",
+ ctx:R`<p>More from the slides' tweet example (Lecture 1 has the main question). Sports (S) or Not Sports (N), multinomial model, no stopword removal.</p>${T(["Text","Label"],[["A great game","S"],["The election was over","N"],["Very clean match","S"],["A clean but forgettable game","S"],["It was a close election","N"]])}<p>Counts: \(N_S=11\) words in the Sports tweets, \(N_N=9\) words in the Not Sports tweets, and \(|V|=14\) different words overall.</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"num",q:R`<p><b>Without</b> smoothing, \(P(\text{word}|S)\) is just the fraction of the Sports words that are this word. Find \(P(\text{game}|S)\) and \(P(\text{close}|S)\).</p>`,ans:[2/11,0],lab:["P(game|S)","P(close|S)"],
+  sol:R`<p>"game" is 2 of the 11 Sports words: \(2/11\). "close" never appears in a Sports tweet: \(0/11=0\).</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>Why is that zero a problem for the tweet "A very close game"?</p>`,o:["Dividing by zero crashes the classifier","The whole product P(tweet|S) becomes 0, so Sports can't win no matter what the other words say","It makes P(S) zero as well","It isn't a problem"],a:"B",
+  sol:R`<p>\(P(\text{tweet}|S)\) is the four word probabilities multiplied together, and anything times 0 is 0. One word that happened not to show up in the Sports tweets would veto the class, even though "game" points strongly to Sports. Laplace smoothing fixes this by pretending every word in the vocabulary was seen one extra time in each class.</p>`},
+ {p:"C",pts:4,kind:"num",q:R`<p>Now <b>with</b> Laplace smoothing, \(\dfrac{\text{count}+1}{N_c+|V|}\). Find \(P(\text{election}|S)\), \(P(\text{election}|N)\), \(P(\text{very}|S)\), \(P(\text{very}|N)\).</p>`,ans:[1/25,3/23,2/25,1/23],lab:["P(election|S)","P(election|N)","P(very|S)","P(very|N)"],
+  sol:R`<p>The bottoms are \(11+14=25\) for S and \(9+14=23\) for N.</p><ul><li>"election" is in 0 Sports tweets: \(\frac{0+1}{25}=\frac1{25}\)</li><li>"election" appears 2 times in N: \(\frac{2+1}{23}=\frac3{23}\)</li><li>"very" appears 1 time in S ("Very clean match"; lowercase first): \(\frac{1+1}{25}=\frac2{25}\)</li><li>"very" appears 0 times in N: \(\frac{0+1}{23}=\frac1{23}\)</li></ul>`},
+ {p:"D",pts:4,kind:"num",q:R`<p>A new tweet says "Very close". From the slide's table, \(P(\text{very}|S)=\frac2{25}\), \(P(\text{very}|N)=\frac1{23}\), \(P(\text{close}|S)=\frac1{25}\), \(P(\text{close}|N)=\frac2{23}\). With \(P(S)=P(N)=0.5\), compute \(P(\text{tweet}|S)P(S)\) and \(P(\text{tweet}|N)P(N)\).</p>`,ans:[0.0016,0.00189],lab:["S score","N score"],
+  sol:R`<p>S: \(\frac2{25}\times\frac1{25}\times0.5=\frac{2}{625}\times0.5=0.0016\).</p><p>N: \(\frac1{23}\times\frac2{23}\times0.5=\frac{2}{529}\times0.5=0.00189\).</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>Which class does "Very close" get?</p>`,o:["Sports","Not Sports"],a:"B",
+  sol:R`<p>\(0.00189>0.0016\), so <b>Not Sports</b>. The tops of the two products are the same (2 × 1), so the class with the smaller bottom wins: Not Sports has fewer words (23 vs 25). Without the word "game", nothing in this tweet points clearly to Sports.</p>`}
+]},
+{s:"L",n:12,t:"re",
+ ctx:R`<p>From the regex slides. A compiled pattern: <code>p = re.compile("ece (264|20875|368)")</code>. The <code>|</code> means "or", so this matches "ece ", then one of the three numbers. For Parts D and E, <code>s = "hello world"</code>.</p>`,
+ parts:[
+ {p:"A",pts:2,kind:"mc",q:R`<p>What does <code>p.match("hello ece 20875")</code> return?</p>`,o:["A match object for 'ece 20875'","None","'20875'","An error"],a:"B",
+  sol:R`<p><code>match</code> only checks at the <b>beginning</b> of the string. The string starts with "hello", not "ece", so there is no match and you get <code>None</code>. <code>search</code> would have found it.</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>What does <code>p.search("hello ece 368").span()</code> return?</p>`,o:["(0, 13)","(6, 13)","(6, 12)","(7, 13)"],a:"B",
+  sol:R`<p><code>search</code> looks through the whole string and returns the first match, here "ece 368". <code>span()</code> gives (start index, index just past the end). Count from 0: "hello " takes indexes 0–5, so "ece 368" starts at 6. It is 7 characters long, so it ends just before index 13.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>What does <code>p.search("hello ece 368").group(1)</code> return?</p>`,o:["'ece 368'","'ece'","'368'","'hello ece 368'"],a:"C",
+  sol:R`<p><code>group()</code> or <code>group(0)</code> is the whole match, "ece 368". <code>group(1)</code> is what the first pair of parentheses matched: <code>(264|20875|368)</code> matched "368".</p>`},
+ {p:"D",pts:2,kind:"num",q:R`<p>Plain string methods from the first slide. What are <code>s.count("l")</code> and <code>s.find("ell")</code>?</p>`,ans:[3,1],lab:['s.count("l")','s.find("ell")'],
+  sol:R`<p><code>count</code> counts occurrences: "he<b>ll</b>o wor<b>l</b>d" has 3 l's. <code>find</code> gives the index where the piece starts, counting from 0: h is 0, e is 1, so "ell" starts at 1.</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>What is <code>"XX".join(s.split(" "))</code>?</p>`,o:["'helloXXworld'","'XXhello worldXX'","['hello', 'XX', 'world']","'hello XX world'"],a:"A",
+  sol:R`<p><code>s.split(" ")</code> cuts the string at each space: <code>['hello', 'world']</code>. <code>"XX".join(list)</code> glues the pieces back together with "XX" between them: <b>'helloXXworld'</b>.</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>From the notebook: what is <code>re.compile('(a|b|c)*').search("abracadabra").group()</code>?</p>`,o:["'a'","'ab'","'abracadabra'","'abacaaba'"],a:"B",
+  sol:R`<p><code>(a|b|c)*</code> means "a, b or c, repeated zero or more times", and the repeats must be next to each other. Starting at index 0 it takes "a", then "b", then hits "r", which isn't allowed, so it stops: <b>'ab'</b>. A match can't skip over characters.</p>`},
+ {p:"G",pts:2,kind:"mc",q:R`<p>Same pattern: what does <code>re.compile('(a|b|c)*').search("dog")</code> give?</p>`,o:["None","A match of the empty string '' at index 0","A match of 'd'","An error"],a:"B",
+  sol:R`<p><code>*</code> allows <b>zero</b> repeats, so the pattern is happy to match nothing at all. At index 0 it matches the empty string: the notebook shows <code>span=(0, 0), match=''</code>. Compare <code>re.compile("a|b|c").search("dog")</code>, which needs one real letter and returns None.</p>`}
+]},
+{s:"L",n:13,t:"re",
+ ctx:R`<p>From the regex slides and notebook: lookaheads, named groups and substitution. <code>(?=abc)</code> is a lookahead: it checks that "abc" comes next but does not include it in the match. <code>\b</code> is a word boundary (the edge between a word character and a non-word character, or the start or end of the string). <code>\2</code> inside a pattern means "the same text group 2 matched".</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"mc",q:R`${C(String.raw`s = "hello cool world see"
+p = re.compile(r'((.)\2)(?=.\b)')
+print(p.sub(lambda match: match.group(1).upper(), s))`)}`,o:["heLLo cOOl world see","heLLo cOOl world sEE","HELLO COOL world see","hello cool world see"].map(x=>`<code>${x}</code>`),a:"A",
+  sol:R`<p>Read the pattern in pieces. <code>(.)</code> is any one character (group 2). <code>\2</code> is that same character again, so <code>((.)\2)</code> is a double letter (group 1). <code>(?=.\b)</code> then requires exactly one more character and then the end of the word.</p><p>"he<b>ll</b>o": "ll" is followed by "o", then the word ends. Match. "c<b>oo</b>l": "oo", then "l", then the word ends. Match. "see": "ee" is at the very end, with no character after it, so no match.</p><p>The <code>sub</code> replaces each match with its upper-case version: <b>heLLo cOOl world see</b>.</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`${C(String.raw`x = r"dog = (?P<pet>\w+), cat = (?P=pet)"
+y = "random_text dog = sammy, cat = sammy"
+z = re.compile(x).search(y)
+print(z.group("pet"))`)}`,o:["pet","sammy","dog = sammy, cat = sammy","sammy, sammy"],a:"B",
+  sol:R`<p><code>(?P&lt;pet&gt;\w+)</code> is a group with a name, "pet". It matches the word after "dog = ", which is "sammy". <code>z.group("pet")</code> asks for that group by name: <b>sammy</b>.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>Same pattern <code>x</code>. What does <code>re.compile(x).search("dog = sammy, cat = rex")</code> return?</p>`,o:["A match with pet = 'sammy'","A match with pet = 'rex'","None","A match with pet = 'sammy, rex'"],a:"C",
+  sol:R`<p><code>(?P=pet)</code> means "the exact text the group named pet matched". The cat's name would have to be "sammy" again. It is "rex", so nothing matches and <code>search</code> returns <b>None</b>.</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`${C(String.raw`p = re.compile(r'hello (\w*)')
+print(p.sub(r'\1 goodbye \1', 'well hello X'))`)}`,o:["well X goodbye X","well goodbye X","X goodbye X",R`well \1 goodbye \1`],a:"A",
+  sol:R`<p>The match is "hello X", with group 1 = "X". It is replaced by <code>\1 goodbye \1</code>, where each <code>\1</code> becomes "X": "X goodbye X". The "well " in front was not part of the match, so it stays: <b>well X goodbye X</b>.</p>`},
+ {p:"E",pts:3,kind:"mc",q:R`${C(String.raw`searchstring = "<i>hello and goodbye</i> to <b>everyone</b>"
+html = re.compile(r'<(i|b|strong|em)>(.*)?</\1>')
+print(html.sub(r'\2', searchstring))`)}`,o:[esc("<i>hello and goodbye</i> to <b>everyone</b>"),"hello and goodbye to everyone","i to b","hello and goodbye"],a:"B",
+  sol:R`<p>Group 1 is the tag name (i, b, strong or em). Group 2 is everything between the opening tag and the closing tag, and <code>&lt;/\1&gt;</code> makes sure the closing tag has the <b>same</b> name as the opening one.</p><p><code>sub(r'\2', …)</code> replaces each whole match with just its group 2, the text inside. The two tagged pieces become "hello and goodbye" and "everyone"; " to " in the middle is untouched. Result: <b>hello and goodbye to everyone</b>.</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>The notebook runs <code>re.findall('@[a-z]+.[a-z]+', s)</code> on <code>'aaa@xxx.com bbb@yyy.net ccc@zzz.org'</code> and gets <code>['@xxx.com', '@yyy.net', '@zzz.org']</code>. The dot in that pattern is not escaped. Which of these strings would the pattern also match in full?</p>`,o:["@xxx!com","@.com","xxx.com","@XXX.com"],a:"A",
+  sol:R`<p>An unescaped <code>.</code> means "any one character", not a literal dot. So "@", some lowercase letters, <i>any</i> character, more lowercase letters all fit, and <b>@xxx!com</b> matches. To allow only a real dot, write <code>\.</code>.</p><p>"@.com" has no letters right after "@". "xxx.com" has no "@". "@XXX.com" has capital letters, which <code>[a-z]</code> doesn't allow.</p>`},
+ {p:"G",pts:5,kind:"code",q:R`<p>The notebook finds repeated words with <code>\b(\w+)(\s\1)+\b</code>. Use the same pattern with <code>re.sub</code> to collapse each run of a repeated word down to one copy: "the the the" → "the".</p>`,
+  start:String.raw`import re
+def dedupe(text):
+    return re.sub(r"\b(\w+)(\s\1)+\b", r"____", text)`,
+  tests:[["dedupe('Paris in the the the the spring')","'Paris in the spring'"],["dedupe('it is is what it it it is')","'it is what it is'"],["dedupe('the then')","'the then'"],["dedupe('no repeats here')","'no repeats here'"]],
+  sol:String.raw`import re
+def dedupe(text):
+    return re.sub(r"\b(\w+)(\s\1)+\b", r"\1", text)`,
+  why:R`The pattern matches a word (group 1) followed by one or more copies of " word". Replacing the whole run with <code>\1</code> leaves the word once. The <code>\b</code> at the end stops "the then" from counting as a repeat.`}
+]},
+{s:"L",n:14,t:"ngram",
+ ctx:R`<p>From the n-grams slides. An n-gram is a run of n neighbouring items taken from a text: n words, or n characters. Slide the window along one item at a time, so the n-grams overlap. In character n-grams a space counts as a character (written _ below).</p>`,
+ parts:[
+ {p:"A",pts:3,kind:"free",q:R`<p>For the slides' string "I saw a cat", write (1) all the word-based 3-grams and (2) the first four character-based 3-grams.</p>`,
+  sol:R`<p>(1) <b>"I saw a"</b> and <b>"saw a cat"</b>. Four words give \(4-3+1=2\) windows of three words.</p><p>(2) <b>I_s, _sa, saw, aw_</b>. The window starts on "I", then moves one character right each time. The full list on the slide is I_s, _sa, saw, aw_, w_a, _a_, a_c, _ca, cat.</p>`},
+ {p:"B",pts:4,kind:"num",q:R`<p>How many character 3-grams does "I saw a cat" have? Then take the slides' bag-of-words string "wan can cup": how many character 3-grams does it have in total, how many <b>different</b> ones, and how many times does "an_" appear?</p>`,ans:[9,9,7,2],lab:['"I saw a cat" total','"wan can cup" total',"different","count of an_"],
+  sol:R`<p>A string of length L has \(L-n+1\) character n-grams. Both strings have 11 characters (count the spaces), so each has \(11-3+1=9\).</p><p>"wan can cup" gives wan, an_, n_c, _ca, can, an_, n_c, _cu, cup. "an_" and "n_c" each appear twice, so there are 7 different ones, and the bag is wan 1, an_ 2, n_c 2, _ca 1, can 1, _cu 1, cup 1.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>What does the bag-of-words model throw away?</p>`,o:["How many times each n-gram appears","The order between the n-grams in the document","The spaces","All the stopwords"],a:"B",
+  sol:R`<p>A bag only keeps <b>counts</b>: which n-grams appear and how often. Where they appear, and in which order, is lost (order inside one n-gram is kept, which is the point of using n-grams). The slides note it is really a "bag of n-grams".</p>`},
+ {p:"D",pts:5,kind:"code",q:R`<p>Fill in <code>word_ngrams(s, n)</code>: the word-based n-grams of a string, each joined back into one string with spaces.</p>`,
+  start:`def word_ngrams(s, n):
+    words = s.split(" ")
+    return [" ".join(words[____]) for i in range(____)]`,
+  tests:[["word_ngrams('I saw a cat', 3)","['I saw a', 'saw a cat']"],["word_ngrams('I saw a cat', 2)","['I saw', 'saw a', 'a cat']"],["word_ngrams('I saw a cat', 1)","['I', 'saw', 'a', 'cat']"],["word_ngrams('hi', 2)","[]"]],
+  sol:`def word_ngrams(s, n):
+    words = s.split(" ")
+    return [" ".join(words[i:i + n]) for i in range(len(words) - n + 1)]`,
+  why:R`Same sliding window as character n-grams, but over the list of words: <code>words[i:i + n]</code> is the window starting at word i, and there are (number of words − n + 1) windows.`},
+ {p:"E",pts:5,kind:"code",q:R`<p>Fill in <code>bag(s, n)</code>: a dictionary that maps each character n-gram of <code>s</code> to how many times it appears.</p>`,
+  start:`def bag(s, n):
+    counts = {}
+    for i in range(len(s) - n + 1):
+        g = s[____]
+        counts[g] = ____
+    return counts`,
+  tests:[["bag('wan can cup', 3)['an ']","2"],["len(bag('wan can cup', 3))","7"],["bag('aaa', 2)","{'aa': 2}"],["bag('ab', 3)","{}"]],
+  sol:`def bag(s, n):
+    counts = {}
+    for i in range(len(s) - n + 1):
+        g = s[i:i + n]
+        counts[g] = counts.get(g, 0) + 1
+    return counts`,
+  why:R`<code>counts.get(g, 0) + 1</code> is the create-or-add pattern: start from 0 the first time an n-gram is seen, then add 1.`},
+ {p:"F",pts:4,kind:"num",q:R`<p>Language classification: the slides compare a mystery document with each known language using the MSE (mean squared error: the average of the squared differences) between their n-gram frequency vectors. New numbers: over three n-grams the mystery document has frequencies [0.5, 0.3, 0.2], English has [0.4, 0.4, 0.2] and French has [0.2, 0.3, 0.5]. Find both MSEs.</p>`,ans:[0.2/30,0.06],lab:["MSE to English","MSE to French"],
+  sol:R`<p>English: differences 0.1, −0.1, 0; squared 0.01, 0.01, 0; average \(\frac{0.02}{3}=0.0067\).</p><p>French: differences 0.3, 0, −0.3; squared 0.09, 0, 0.09; average \(\frac{0.18}{3}=0.06\).</p>`},
+ {p:"G",pts:2,kind:"mc",q:R`<p>Which language is the mystery document assigned to?</p>`,o:["French, because its MSE is larger","English, because its MSE is smaller","Neither: MSE can't compare languages"],a:"B",
+  sol:R`<p>MSE measures how far apart two vectors are, so the <b>smallest</b> MSE is the closest language: English (0.0067 against 0.06).</p>`}
+]},
+{s:"L",n:15,t:"ngram",
+ ctx:R`<p>More from the n-grams slides' TF-IDF example (Lecture 2 has the first part). Four documents after stopword removal: (1) "sky blue", (2) "sun bright today", (3) "sun sky bright", (4) "can see shining sun bright sun". \(tf\) = (times the word appears in the document) ÷ (words in the document). \(idf=\log_{10}(4/n_t)\), where \(n_t\) is the number of documents containing the word. \(tfidf=tf\times idf\). Useful values: \(\log_{10}4=0.602\), \(\log_{10}2=0.301\), \(\log_{10}(4/3)=0.125\).</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>For document 4, find \(tf(\text{bright},4)\), \(tfidf(\text{sun},4)\) and \(tfidf(\text{shining},4)\).</p>`,ans:[1/6,Math.log10(4/3)/3,Math.log10(4)/6],lab:["tf(bright, 4)","tfidf(sun, 4)","tfidf(shining, 4)"],
+  sol:R`<p>Document 4 has 6 words. "bright" appears once: \(tf=1/6\).</p><p>"sun" appears twice, \(tf=2/6=1/3\), and is in 3 of the 4 documents, \(idf=0.125\): \(\frac13\times0.125=0.0417\).</p><p>"shining" appears once, \(tf=1/6\), and only in document 4, \(idf=\log_{10}(4/1)=0.602\): \(\frac16\times0.602=0.100\).</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>Which word is the most important in document 4 by TF-IDF?</p>`,o:["sun, because it appears twice","bright","can, see and shining tie for first","sun and shining tie"],a:"C",
+  sol:R`<p>"can", "see" and "shining" each appear once and only in document 4: \(\frac16\times0.602=0.100\) each. "sun" appears twice here but is in three documents, so its score is only 0.0417; "bright" is 0.0209. Being rare across the documents beats being repeated in this one.</p>`},
+ {p:"C",pts:2,kind:"num",q:R`<p>The original documents all contain "the" ("The sky is blue.", "The sun is bright today.", …). If "the" were not removed as a stopword, what would \(idf(\text{the})\) be?</p>`,ans:[0],lab:["idf(the)"],
+  sol:R`<p>"the" is in all 4 documents: \(\log_{10}(4/4)=\log_{10}1=0\). So its tf-idf is 0 in every document, however often it appears. A word that is everywhere tells you nothing about which document you are looking at.</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`<p>The preprocessing slide starts from "MacHine LeArning. it is Important!". What is left after tokenization and then stopword removal (which also lowercases)?</p>`,o:["[MacHine, LeArning, it, is, Important]","[machine, learning, it, is, important]","[machine, learning, important]","[machin, learn, import]"],a:"C",
+  sol:R`<p>Tokenization breaks the text into word tokens and drops punctuation: [MacHine, LeArning, it, is, Important]. Stopword removal lowercases and removes common words ("it", "is"): <b>[machine, learning, important]</b>. Option D is what stemming does next.</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>Stemming reduces a word to its stem. On the slide, what does stemming turn [machine, learning, important] into?</p>`,o:["[machine, learn, important]","[machin, learn, import]","[machines, learnings, importants]","[mach, lear, impo]"],a:"B",
+  sol:R`<p>The slide shows <b>[machin, learn, import]</b>. A stem is the word with its ending chopped off, so it doesn't have to be a real word ("machin").</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>Why do the slides call lemmatization "preferred when possible" over stemming?</p>`,o:["It is faster","It maps each word to its dictionary form, a real word, where a stem can be a non-word or a different word (important → import)","It removes more stopwords","It needs no extra information about the word"],a:"B",
+  sol:R`<p>Lemmatization gives the dictionary form (studies, studying → study); stemming just chops (studies, studying → studi), and on the slide "important" becomes "import", a different word. The price: lemmatization is more complex, because it needs each word's part of speech (noun, verb, …) to pick the right form.</p>`}
+]},
+{s:"L",n:16,t:"logreg",
+ ctx:R`<p>From the logistic regression slides. The logistic (sigmoid) function is \(\sigma(z)=\dfrac1{1+e^{-z}}\). The model is \(P(y=1|x)=\sigma(\beta_0+\beta_1x_1+\dots+\beta_mx_m)\): compute the "inside" as in linear regression, then squash it with \(\sigma\).</p>`,
+ parts:[
+ {p:"A",pts:2,kind:"mc",q:R`<p>Why don't the slides just use linear regression when \(y\) is 0 or 1?</p>`,o:["Linear regression can't be fit to 0/1 data","Its output is a line that isn't kept between 0 and 1, so it can't be read as a probability","It is too slow","It needs normalized features"],a:"B",
+  sol:R`<p>A straight line keeps going: it gives values below 0 and above 1, treats the classes as plain numbers and interpolates between them. None of that can be read as "the probability of class 1". The logistic function fixes it by squashing any number into the range 0 to 1.</p>`},
+ {p:"B",pts:3,kind:"num",q:R`<p>What does \(\sigma(z)\) approach as \(z\to-\infty\)? As \(z\to+\infty\)? And what is \(\sigma(0)\)?</p>`,ans:[0,1,0.5],lab:["z → −∞","z → +∞","σ(0)"],
+  sol:R`<p>Very negative \(z\): \(e^{-z}\) is huge, so \(\frac1{1+\text{huge}}\to0\). Very positive \(z\): \(e^{-z}\to0\), so \(\frac1{1+0}=1\). At \(z=0\): \(e^0=1\), so \(\frac1{1+1}=0.5\). That is why "inside = 0" is the decision boundary.</p>`},
+ {p:"C",pts:3,kind:"num",q:R`<p>The slides' model: \(\hat y=\dfrac1{1+\exp(-(3+2x_1+0.5x_2-3x_3))}\). For a point with \(x_1=0,\ x_2=0,\ x_3=1\), find the inside \(z\), the probability \(\hat y\), and the odds \(P(y=1|x)/P(y=0|x)\).</p>`,ans:[0,0.5,1],lab:["z","ŷ","odds"],
+  sol:R`<p>\(z=3+2(0)+0.5(0)-3(1)=0\). \(\hat y=\sigma(0)=0.5\).</p><p>Odds = (probability of class 1) ÷ (probability of class 0) \(=0.5/0.5=1\). The slides also show that the odds equal \(e^{z}\), and \(e^0=1\). Odds of 1 mean the two classes are equally likely.</p>`},
+ {p:"D",pts:4,kind:"num",q:R`<p>The slides' likelihood multiplies, over the training examples, \(f_i\) when \(y_i=1\) and \(1-f_i\) when \(y_i=0\), where \(f_i\) is the model's \(P(y=1|x_i)\). Three examples: \(f=0.8,\ y=1\); \(f=0.6,\ y=1\); \(f=0.3,\ y=0\). Find the likelihood \(L\) and the log-likelihood \(\ell=\ln L\).</p>`,ans:[0.336,Math.log(0.336)],lab:["L","ℓ"],
+  sol:R`<p>The likelihood asks: how probable were the labels we actually saw? For the two \(y=1\) examples that is \(f\); for the \(y=0\) example it is \(1-f=0.7\).</p><p>\(L=0.8\times0.6\times0.7=0.336\).</p><p>\(\ell=\ln0.336=\ln0.8+\ln0.6+\ln0.7=-0.223-0.511-0.357=-1.091\). The log turns the product into a sum, which is easier to optimize. Training looks for the \(\beta\)'s that make \(\ell\) as large (as close to 0) as possible.</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>The slides give the odds for the logistic model. Which is it?</p>`,o:[R`\(\beta_0+\beta_1x_1+\dots+\beta_mx_m\)`,R`\(\exp(\beta_0+\beta_1x_1+\dots+\beta_mx_m)\)`,R`\(\dfrac1{1+\exp(\beta_0+\beta_1x_1+\dots+\beta_mx_m)}\)`,R`\(\ln(\beta_0+\beta_1x_1+\dots+\beta_mx_m)\)`],a:"B",
+  sol:R`<p>\(\dfrac{P(y=1|x)}{P(y=0|x)}=\exp(\beta_0+\beta_1x_1+\dots+\beta_mx_m)\). Because the features sit in an exponent, adding 1 to \(x_j\) <i>multiplies</i> the odds by \(e^{\beta_j}\): that is where the "factor change in the odds" rule comes from.</p>`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>scikit-learn's <code>LogisticRegression</code> has a regularization parameter <code>C</code>. What do the slides say about it?</p>`,o:["Higher C means more regularization","Higher C means less regularization","C is the step size","C is the number of classes"],a:"B",
+  sol:R`<p>Regularization holds the coefficients back from getting too large (as ridge regression did in Exam 1). In scikit-learn, <code>C</code> works the opposite way round from what you might expect: <b>higher C, less regularization; lower C, more</b>.</p>`}
+]},
+{s:"L",n:17,t:"gd",
+ ctx:R`<p>From the logistic regression slides' gradient ascent example (Lecture 4 has \(\alpha=0.1\)). Log-likelihood \(\ell(b)=-\left(\dfrac{b-5}{0.7}\right)^2\), which is largest at \(b=5\). Start at \(b_0=1.1\). With \(0.7^2=0.49\), the update is \(b_{t+1}=b_t-2\alpha\dfrac{b_t-5}{0.49}\), where \(\alpha\) is the step size.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>Use \(\alpha=0.4\). Compute \(b_1\) and \(b_2\).</p>`,ans:[7.467,3.439],lab:["b₁","b₂"],
+  sol:R`<p>\(2\alpha=0.8\).</p><p>\(b_1=1.1-0.8\times\frac{1.1-5}{0.49}=1.1-0.8\times(-7.959)=1.1+6.367=7.467\).</p><p>\(b_2=7.467-0.8\times\frac{7.467-5}{0.49}=7.467-0.8\times5.035=7.467-4.028=3.439\).</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>What is \(b\) doing with \(\alpha=0.4\)?</p>`,o:["Creeping up toward 5 from below without ever passing it","Jumping past 5 each step but landing closer each time: it oscillates and still converges","Moving farther from 5 every step","Stuck at 1.1"],a:"B",
+  sol:R`<p>Distances from 5: start 3.9 (below), then 2.467 (above), then 1.561 (below). It lands on the other side each time, but closer. Each step multiplies the distance from 5 by \(1-\frac{2\alpha}{0.49}=1-\frac{0.8}{0.49}=-0.633\): the minus sign is the flip to the other side, and 0.633 &lt; 1 is the shrinking.</p>`},
+ {p:"C",pts:3,kind:"mc",q:R`<p>The slides plot \(\alpha=0.01,\ 0.05,\ 0.1,\ 0.2,\ 0.4,\ 0.5\). For which of these does \(b\) never settle at 5?</p>`,o:["0.01","0.2","0.4","0.5"],a:"D",
+  sol:R`<p>Each step multiplies the distance from 5 by \(1-\frac{2\alpha}{0.49}\). For \(\alpha=0.5\) that is \(1-\frac{1}{0.49}=-1.04\): the distance flips side and <b>grows</b> by 4% every step (\(b_1=9.06,\ b_2=0.78,\ b_3=9.40,\dots\)), so it diverges. For the others the multiplier is between −1 and 1, so the distance shrinks: 0.01 is very slow (multiplier 0.96), 0.2 is quick (0.18), 0.4 oscillates but converges (−0.63). This is why the slide says tuning \(\alpha\) is "a very important question".</p>`},
+ {p:"D",pts:4,kind:"num",q:R`<p>The slides' gradient ascent rule for logistic regression: \(\beta_0\leftarrow\beta_0+\alpha\sum_i(y_i-f_i)\) and \(\beta_1\leftarrow\beta_1+\alpha\sum_i(y_i-f_i)x_i\), where \(f_i=\sigma(\beta_0+\beta_1x_i)\). New numbers: start at \(\beta_0=\beta_1=0\), \(\alpha=0.1\), and three examples \((x,y)\): (1, 0), (2, 1), (3, 1). Do one step.</p>`,ans:[0.05,0.2],lab:["new β₀","new β₁"],
+  sol:R`<p>With both \(\beta\)'s at 0, the inside is 0 for every example, so every \(f_i=\sigma(0)=0.5\).</p>${T(["x","y","f","y − f","(y − f)·x"],[["1","0","0.5","−0.5","−0.5"],["2","1","0.5","0.5","1.0"],["3","1","0.5","0.5","1.5"]])}<p>Sum of \(y-f\): \(-0.5+0.5+0.5=0.5\), so \(\beta_0=0+0.1\times0.5=0.05\).</p><p>Sum of \((y-f)x\): \(-0.5+1.0+1.5=2\), so \(\beta_1=0+0.1\times2=0.2\).</p><p>\(\beta_1\) went up because the bigger x's have \(y=1\): the model learns that larger x means class 1.</p>`},
+ {p:"E",pts:6,kind:"code",q:R`<p>Fill in <code>ascent_step</code>: one step of that rule. It returns the new <code>(b0, b1)</code>.</p>`,
+  start:`import math
+def ascent_step(b0, b1, xs, ys, alpha):
+    f = [1 / (1 + math.exp(-(b0 + b1 * x))) for x in xs]
+    g0 = sum(____ for y, fi in zip(ys, f))
+    g1 = sum(____ for x, y, fi in zip(xs, ys, f))
+    return (b0 + alpha * g0, b1 + alpha * g1)`,
+  tests:[["ascent_step(0, 0, [1, 2, 3], [0, 1, 1], 0.1)[0]","0.05"],["ascent_step(0, 0, [1, 2, 3], [0, 1, 1], 0.1)[1]","0.2"],["ascent_step(0, 1, [0], [1], 1)[0]","0.5"],["ascent_step(0, 1, [0], [1], 1)[1]","1.0"],["ascent_step(0, 0, [2, 2], [1, 0], 0.5)","(0.0, 0.0)"]],
+  sol:`import math
+def ascent_step(b0, b1, xs, ys, alpha):
+    f = [1 / (1 + math.exp(-(b0 + b1 * x))) for x in xs]
+    g0 = sum(y - fi for y, fi in zip(ys, f))
+    g1 = sum((y - fi) * x for x, y, fi in zip(xs, ys, f))
+    return (b0 + alpha * g0, b1 + alpha * g1)`,
+  why:R`<code>g0</code> and <code>g1</code> are the two sums from the rule: (label − prediction), and the same thing times x. Ascent <i>adds</i> α times them.`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>The slides write both rules: \(x_{t+1}=x_t-\alpha\nabla f(x_t)\) and \(x_{t+1}=x_t+\alpha\nabla f(x_t)\). Which one do you use to <b>minimize</b> a loss?</p>`,o:["The plus version (gradient ascent)","The minus version (gradient descent)","Either: the sign doesn't matter","Neither: a loss has a closed-form solution"],a:"B",
+  sol:R`<p>The gradient points in the direction where the function goes <i>up</i> fastest. To go down (minimize a loss), step against it: <b>minus, gradient descent</b>. To go up (maximize a log-likelihood), step along it: plus, gradient ascent. Maximizing \(\ell\) is the same job as minimizing \(-\ell\).</p>`},
+ {p:"G",pts:2,kind:"mc",q:R`<p>Why can the slides promise that gradient ascent reaches the <b>global</b> maximum of the logistic log-likelihood (given a suitable step size)?</p>`,o:["Because the log-likelihood is a concave function","Because there is a closed-form solution","Because the step size doesn't matter for logistic regression","Because the data are normalized"],a:"A",
+  sol:R`<p>A concave function looks like one single hill: there is only one top, so climbing can't get stuck on a smaller bump. For functions without that shape there is no such guarantee. The step size still has to meet "certain conditions" (Part C shows what goes wrong when it is too big), and there is <i>no</i> closed-form solution, which is why we need gradient ascent at all.</p>`}
+]},
+{s:"L",n:18,t:"oop",
+ ctx:R`<p>From the self-reading on objects and inheritance. A class is a blueprint; an object (instance) is one thing built from it. A <b>class variable</b> is written in the class body and shared by all objects. An <b>instance variable</b> is set on <code>self</code> and belongs to one object.</p>`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p>From the objects notebook. What do the two prints show?</p>${C(`class Foo:
+    x = 7
+    y = 1
+    def __init__(self, i=10):
+        self.y = i
+    def bar(self):
+        return Foo.x + self.y
+
+a = Foo()
+b = Foo(2)
+print(a.bar())
+print(b.bar())`)}`,ans:[17,9],lab:["a.bar()","b.bar()"],
+  sol:R`<p><code>Foo()</code> passes nothing, so <code>i</code> takes its default, 10, and <code>a.y = 10</code>. <code>Foo(2)</code> sets <code>b.y = 2</code>.</p><p><code>bar</code> adds the class variable <code>Foo.x</code> (7, shared) to the object's own <code>y</code>: \(7+10=17\) and \(7+2=9\).</p><p>The class-level <code>y = 1</code> is never used here: <code>self.y</code> finds the instance variable first. (The notebook's comment says "prints 8", but its own output is 17.)</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>From the inheritance slides. What does this print?</p>${C(`class Person:
+    def __init__(self, name):
+        self.name = name
+    def getName(self):
+        return self.name
+
+class AgePerson(Person):
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    def getAge(self):
+        return self.age
+
+p = AgePerson("Bob", 33)
+print(p.getName())`)}`,o:["Bob","33","An error: AgePerson has no getName","None"],a:"A",
+  sol:R`<p><code>class AgePerson(Person)</code> makes AgePerson a <b>child</b> of Person: it inherits everything Person has. AgePerson defines its own <code>__init__</code>, which <b>overrides</b> (replaces) Person's. It doesn't define <code>getName</code>, so Python uses the parent's, which returns <code>self.name</code>: <b>Bob</b>.</p>`},
+ {p:"C",pts:2,kind:"mc",q:R`<p>The next slide rewrites the child's constructor as below. What does the <code>super().__init__(name)</code> line do?</p>${C(`class AgePerson(Person):
+    def __init__(self, name, age):
+        super().__init__(name)
+        self.age = age`)}`,o:["Creates a second, separate Person object","Runs Person's __init__ on this object, which sets self.name","Deletes Person's __init__","Calls AgePerson's own __init__ again"],a:"B",
+  sol:R`<p><code>super()</code> means "my parent class". So the line runs the parent's <code>__init__</code> on this same object, which does <code>self.name = name</code>. The child then only adds what is new (<code>self.age</code>). No copy-pasting the parent's code.</p>`},
+ {p:"D",pts:2,kind:"mc",q:R`<p>The slides then add this method to AgePerson. What is <code>repr(AgePerson("Bob", 33))</code>?</p>${C(`    def __repr__(self):
+        return self.name + ", " + str(self.age)`)}`,o:["'Bob, 33'","'Bob33'","'AgePerson(Bob, 33)'","An error: can't add a string and a number"],a:"A",
+  sol:R`<p><code>repr(obj)</code> calls the object's <code>__repr__</code>. It joins the name, a comma and space, and the age turned into text with <code>str(33)</code>: <b>'Bob, 33'</b>. Without <code>str()</code> it would be an error, since Python won't add a string to a number.</p>`},
+ {p:"E",pts:6,kind:"code",q:R`<p>Fill in <code>AgePerson</code> so it reuses Person's constructor with <code>super()</code> and has the slides' <code>__repr__</code>. <code>Person</code> is already defined as in Part B.</p>`,
+  pre:`class Person:
+    def __init__(self, name):
+        self.name = name
+    def getName(self):
+        return self.name`,
+  start:`class AgePerson(____):
+    def __init__(self, name, age):
+        ____
+        self.age = age
+    def getAge(self):
+        return self.age
+    def __repr__(self):
+        return ____`,
+  tests:[["repr(AgePerson('Bob', 33))","'Bob, 33'"],["AgePerson('Ana', 20).getName()","'Ana'"],["AgePerson('Ana', 20).getAge()","20"],["isinstance(AgePerson('Ana', 20), Person)","True"]],
+  need:["super()"],
+  sol:`class AgePerson(Person):
+    def __init__(self, name, age):
+        super().__init__(name)
+        self.age = age
+    def getAge(self):
+        return self.age
+    def __repr__(self):
+        return self.name + ", " + str(self.age)`,
+  why:R`The parent goes in the parentheses after the class name. <code>super().__init__(name)</code> lets Person set the name; <code>getName</code> is inherited for free.`},
+ {p:"F",pts:2,kind:"mc",q:R`<p>From the polymorphism slide. <code>Duck</code> does <b>not</b> inherit from <code>Animal</code>. What happens in the loop?</p>${C(`class Animal:
+    def __init__(self, name):
+        self.name = name
+    def talk(self):
+        raise NotImplementedError("Subclass must implement talk method")
+
+class Cat(Animal):
+    def talk(self):
+        return 'Meow!'
+
+class Duck:
+    def __init__(self, name):
+        self.name = name
+    def talk(self):
+        return 'Quack! Quack!'
+
+animals = [Cat('Missy'), Duck('Sammy')]
+for animal in animals:
+    print(animal.name + ': ' + animal.talk())`)}`,o:["It prints 'Missy: Meow!' and then fails, because Duck is not an Animal","It prints 'Missy: Meow!' and 'Sammy: Quack! Quack!'","It raises NotImplementedError on the first line","It prints 'Missy: Meow!' twice"],a:"B",
+  sol:R`<p>Python doesn't check what class an object is before calling a method. It only needs the object to <i>have</i> a <code>name</code> and a <code>talk()</code>. Duck has both, so the loop works for it too. The slides call this <b>duck typing</b>. <code>NotImplementedError</code> would only appear if you called <code>talk()</code> on a plain <code>Animal</code>; Cat overrides <code>talk</code>, so it never reaches that line.</p>`}
+]},
+{s:"L",n:19,t:"oop",
+ ctx:R`<p>From the self-reading: the inheritance examples notebook and the file I/O slides. Parts A–C use these classes:</p>${C(`class Quadrilateral:
+    def __init__(self, a, b, c, d):
+        self.side1 = a
+        self.side2 = b
+        self.side3 = c
+        self.side4 = d
+    def perimeter(self):
+        return self.side1 + self.side2 + self.side3 + self.side4
+
+class Rectangle(Quadrilateral):
+    def __init__(self, a, b):
+        super().__init__(a, b, a, b)
+    def area(self):
+        return self.side1 * self.side2
+
+class Square(Rectangle):
+    def __init__(self, a):
+        super().__init__(a, a)
+    def area(self):
+        return pow(self.side1, 2)`)}`,
+ parts:[
+ {p:"A",pts:4,kind:"num",q:R`<p><code>rect = Rectangle(5, 10)</code> and <code>sq = Square(5)</code>. Find <code>rect.perimeter()</code>, <code>rect.area()</code>, <code>sq.perimeter()</code> and <code>sq.area()</code>.</p>`,ans:[30,50,20,25],lab:["rect.perimeter()","rect.area()","sq.perimeter()","sq.area()"],
+  sol:R`<p><code>Rectangle(5, 10)</code> calls the parent's constructor with (5, 10, 5, 10), so the four sides are 5, 10, 5, 10. <code>perimeter</code> is inherited from Quadrilateral: \(5+10+5+10=30\). <code>area</code> is side1 × side2 \(=50\).</p><p><code>Square(5)</code> calls Rectangle's constructor with (5, 5), which calls Quadrilateral's with (5, 5, 5, 5). Perimeter 20, inherited from two levels up. Square overrides <code>area</code>: \(5^2=25\) (<code>pow(5, 2)</code> means 5 to the power 2).</p>`},
+ {p:"B",pts:2,kind:"mc",q:R`<p>What happens with <code>Quadrilateral(5, 10, 5, 10).area()</code>?</p>`,o:["50","30","An error: 'Quadrilateral' object has no attribute 'area'","None"],a:"C",
+  sol:R`<p>Inheritance goes one way: children get what the parent has, not the other way round. <code>area</code> is defined in Rectangle, so a plain Quadrilateral doesn't have it, even when its sides happen to make a rectangle. Python raises an AttributeError.</p>`},
+ {p:"C",pts:4,kind:"num",q:R`<p>The notebook then "modifies the square", with a typo on the last line. What do the two prints show?</p>${C(`sq = Square(5)
+sq.side1 = 2
+sq.side2 = 2
+sq.side3 = 2
+sq.side3 = 3   # typo: meant side4
+print(sq.perimeter())
+print(sq.area())`)}`,ans:[12,4],lab:["sq.perimeter()","sq.area()"],
+  sol:R`<p>The sides start as 5, 5, 5, 5. After the four lines: side1 = 2, side2 = 2, side3 = 3 (set to 2, then overwritten), and side4 is still 5.</p><p>Perimeter \(=2+2+3+5=12\). Area uses only side1: \(2^2=4\).</p><p>Python lets you change an object's variables from outside, so nothing complains that this "square" has sides 2, 2, 3, 5. The notebook's safer version adds <code>assert</code> checks that all four sides are equal.</p>`},
+ {p:"D",pts:3,kind:"mc",q:R`<p>From the file I/O slides. After the file is written, what does <code>f.readlines()</code> return?</p>${C(String.raw`with open("test.txt", 'w') as f:
+    f.write("my first file\n")
+    f.write("This file\n\n")
+    f.write("contains three lines\n")
+
+f = open("test.txt", 'r')
+f.readline()
+f.readlines()`)}`,o:[R`['my first file\n', 'This file\n', '\n', 'contains three lines\n']`,R`['This file\n', '\n', 'contains three lines\n']`,R`['This file', 'contains three lines']`,R`'This file\n\ncontains three lines\n'`],a:"B",
+  sol:R`<p><code>\n</code> is the newline character; it ends a line. The file holds four lines: "my first file", "This file", an empty line (from the double <code>\n\n</code>), and "contains three lines".</p><p><code>readline()</code> reads one line, the first. The file object remembers where it stopped, so <code>readlines()</code> returns the <b>remaining</b> lines as a list, each still ending in its <code>\n</code>. The empty line shows up as <code>'\n'</code>.</p>`},
+ {p:"E",pts:2,kind:"mc",q:R`<p>The slides close a file like this. Why the <code>try … finally</code>?</p>${C(`try:
+    f = open("test.txt", 'w')
+    # perform file operations
+finally:
+    f.close()`)}`,o:["finally runs only if there was an error","The finally block runs whether or not an error happened, so the file always gets closed","It makes writing faster","It stops the file from being overwritten"],a:"B",
+  sol:R`<p>Closing a file frees the resources tied up with it. If an error happens in the middle of the file operations, the lines after it would be skipped, but a <code>finally</code> block <b>always</b> runs, error or not. <code>with open(…) as f:</code> does the same job in one line and is what the slides use for writing.</p>`},
+ {p:"F",pts:3,kind:"num",q:R`<p>From the objects notebook. What does the last line print?</p>${C(`class Employee:
+    empCount = 0
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+        Employee.empCount += 1
+
+emp1 = Employee("Alice", 100000)
+emp2 = Employee("Bob", 50000)
+print(emp1.empCount)`)}`,ans:[2],lab:["emp1.empCount"],
+  sol:R`<p><code>empCount</code> is a class variable: one counter shared by every Employee. Each time an Employee is created, <code>__init__</code> runs <code>Employee.empCount += 1</code>. Two employees were created, so it is <b>2</b>, and you get the same 2 whether you ask <code>emp1</code>, <code>emp2</code> or <code>Employee</code> itself.</p>`}
 ]},
 
 /* ---------------- LAB EXTRAS ---------------- */
