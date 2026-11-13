@@ -1,0 +1,1920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Past MA 261 Exam 2 questions with worked solutions, topic breakdown, formula sheet, and a timed mock exam.">
+<title>MA 261 Exam 2 Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../site.css">
+
+<style>html,body{margin:0}[hidden]{display:none!important}</style>
+<link rel="icon" type="image/png" href="../../favicon.png"><link rel="apple-touch-icon" href="../../favicon.png">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow"><a href="../../" style="color:inherit">← DecoExams</a> · MA 26100 · Multivariate Calculus</div>
+      <h1>Exam 2 Lab</h1>
+      <p class="lede">A refresher with warm-ups for every topic, then every question from six past Exam 2s with worked solutions, a formula sheet, and a timed mock exam.</p>
+      <div class="stats" id="stats"></div>
+      <div class="fxbtns"><button class="sndbtn" id="snd" type="button"></button><button class="sndbtn" id="cfx" type="button"></button><button class="sndbtn" id="mem" type="button"></button><button class="sndbtn" id="achb" type="button"></button></div>
+      <dialog id="achd"><div class="ahead"><h2>Achievements</h2><form method="dialog"><button class="btn">Close</button></form></div><div class="agrid" id="agrid"></div></dialog>
+    </div>
+    <div class="cv"><canvas id="contour" width="340" height="340" aria-label="Arrow plot of the rotation field, with a circle drawn around the origin"></canvas><div class="cap">the field ⟨−y, x⟩ around a closed curve</div></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-start" aria-selected="true" data-tab="start">Start here</button>
+    <button role="tab" id="tab-practice" aria-selected="false" data-tab="practice">Practice</button>
+    <button role="tab" id="tab-mock" aria-selected="false" data-tab="mock">Mock exam</button>
+    <button role="tab" id="tab-topics" aria-selected="false" data-tab="topics">Topics &amp; formulas</button>
+  </nav>
+
+  <section id="start">
+    <h2>Start here</h2>
+    <p class="sub">A quick refresher for each topic, then warm-up problems that build up to what the exam actually asks. Work through them in order.</p>
+    <ol class="steps">
+      <li><b>Read the refresher.</b> The few ideas each topic is really testing, with every term explained.</li>
+      <li><b>Do the warm-ups.</b> Each one adds a single new twist. The last ones are shaped like real exam questions.</li>
+      <li><b>Try the real ones.</b> Each topic ends with a link to every past exam question on it.</li>
+    </ol>
+    <p class="sub"><b>Fall 2026 Exam 2:</b> Wednesday, November 18, 8:00–9:00 pm. Twelve multiple choice questions, no notes, no calculator. The course calendar says it covers Lessons 17–30: Lagrange multipliers (15.8), double and triple integrals (16.1–16.6), and vector fields through divergence and curl (17.1–17.5). The thirteen topics below follow that order.</p>
+    <div class="meter" id="meter"></div>
+    <div id="lessons"></div>
+  </section>
+
+  <section id="practice" hidden>
+    <div class="filters">
+      <label for="fExam">Exam<select id="fExam"></select></label>
+      <label for="fTopic">Topic<select id="fTopic"></select></label>
+      <label class="chk" for="fOpen"><input type="checkbox" id="fOpen"> Unanswered only</label>
+      <button class="btn" id="shuffle">Shuffle</button>
+      <button class="btn ghost" id="reset">Reset my progress</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="qlist" id="qlist"></div>
+  </section>
+
+  <section id="mock" hidden></section>
+
+  <section id="topics" hidden>
+    <h2>What shows up</h2>
+    <p class="sub">Questions per topic across all six exams. The gold bar is your accuracy on that topic in Practice (saved in this browser only). Click a topic to drill it.</p>
+    <div class="bars" id="bars"></div>
+    <div class="legend"><span><i style="background:var(--ink)"></i>questions on past exams</span><span><i style="background:var(--gold)"></i>your % correct</span></div>
+    <h2>Formula sheet</h2>
+    <p class="sub">No notes or calculators are allowed on the exam, so these need to be memorized. Each card ends with the mistake past exams were built to catch.</p>
+    <div class="sheet" id="sheet"></div>
+  </section>
+
+  <div class="notes">
+    <p>Sources: MA 26100 Exam 2 from Fall 2022, Spring 2023, Fall 2023 (test #1111), Spring 2024 (test #21), Fall 2024, and Spring 2025 (version 9955), with their official answer keys, all from the Purdue math department's past exam archive. Every answer here matches the official key, and each one was also worked out independently.</p>
+    <p>Scope: the Fall 2026 course calendar lists Exam 2 as Lessons 17–30. The ground rules sheet says Lessons 17–31; Lesson 31 is the start of Section 17.6 (surface integrals), so ask your instructor if that matters to you. Four past questions fall outside Lessons 17–30 (three on Exam 1 material, one on surface area). They are in Practice under "Outside Lessons 17–30" and are left out of the mock exam.</p>
+    <p>Progress is stored in your own browser, so each person in the group tracks their own.</p>
+  </div>
+</div>
+
+<script>
+window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:"global"},startup:{typeset:false},options:{enableMenu:false}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async id="mjx"></script>
+<script>
+const EXAMS = {
+  F22: { name: "Fall 2022", note: "Official key, version 01." },
+  S23: { name: "Spring 2023", note: "Official key, version 01." },
+  F23: { name: "Fall 2023", note: "Official key, test/quiz #1111." },
+  S24: { name: "Spring 2024", note: "Official key, test/quiz #21." },
+  F24: { name: "Fall 2024", note: "Official key, version 01." },
+  S25: { name: "Spring 2025", note: "Official key, version 9955. This exam has six choices (A–F)." }
+};
+
+const TOPICS = {
+  lag:  "Lagrange multipliers",
+  dbl:  "Double integrals",
+  ord:  "Changing the order",
+  pol:  "Polar coordinates",
+  tri:  "Triple integrals",
+  cyl:  "Cylindrical coordinates",
+  sph:  "Spherical coordinates",
+  com:  "Mass & center of mass",
+  vf:   "Vector fields",
+  li:   "Line integrals",
+  cons: "Conservative fields",
+  grn:  "Green's theorem",
+  dc:   "Divergence & curl",
+  out:  "Outside Lessons 17–30"
+};
+
+const R = String.raw;
+const Q = [
+/* ---------------- FALL 2022 ---------------- */
+{ e:"F22", n:1, t:"ord", a:"D",
+  q:R`Change the order of integration and evaluate \(\displaystyle\int_0^1\!\!\int_{\sqrt x}^1 e^{y^3}\,dy\,dx\).`,
+  o:[R`\(\tfrac12e\)`,R`\(\tfrac12(e-1)\)`,R`\(\tfrac13e\)`,R`\(\tfrac13(e-1)\)`,R`\(e\)`],
+  s:R`There is no formula for \(\int e^{y^3}dy\), so integrate in \(x\) first instead.
+<b>Read the region off the limits:</b> \(0\le x\le1\) and \(\sqrt x\le y\le1\). That is the area between the curve \(y=\sqrt x\) (the same curve as \(x=y^2\)) and the line \(y=1\).
+<b>Describe it the other way:</b> \(y\) goes from 0 to 1, and for each \(y\), \(x\) goes from 0 across to the curve \(x=y^2\).
+\[\int_0^1\!\!\int_0^{y^2}e^{y^3}dx\,dy=\int_0^1y^2e^{y^3}dy.\]
+Now substitute \(u=y^3\), \(du=3y^2dy\): \(\tfrac13\int_0^1e^u\,du=\tfrac13(e-1)\).` },
+{ e:"F22", n:2, t:"lag", a:"A",
+  q:R`Find the maximum of \(f(x,y)=x+y\) on the curve defined by \(x^2+2y^2=6\).`,
+  o:["3","6","5",R`\(\tfrac32\)`,R`\(\tfrac52\)`],
+  s:R`Lagrange multipliers: solve \(\nabla f=\lambda\nabla g\) with \(g=x^2+2y^2\).
+\(\langle1,1\rangle=\lambda\langle2x,4y\rangle\), so \(x=\tfrac1{2\lambda}\) and \(y=\tfrac1{4\lambda}\). That means \(x=2y\).
+Put \(x=2y\) into the curve: \(4y^2+2y^2=6\Rightarrow y=\pm1\). The two candidate points are \((2,1)\) and \((-2,-1)\).
+\(f(2,1)=3\) and \(f(-2,-1)=-3\). The maximum is \(3\).` },
+{ e:"F22", n:3, t:"dbl", a:"D",
+  q:R`Evaluate \(\displaystyle\iint_R\frac{2xy^2}{x^2+1}\,dA\) where \(R=[0,1]\times[0,2]\).`,
+  o:[R`\(\tfrac13\ln5\)`,R`\(4\ln2\)`,R`\(\tfrac16\ln5\)`,R`\(\tfrac83\ln2\)`,R`\(\tfrac43\ln2\)`],
+  s:R`\(R=[0,1]\times[0,2]\) means \(0\le x\le1\), \(0\le y\le2\). The integrand is (something with only \(x\)) times (something with only \(y\)) and the region is a rectangle, so the double integral splits into two single ones:
+\[\int_0^1\frac{2x}{x^2+1}dx\cdot\int_0^2y^2dy=\Big[\ln(x^2+1)\Big]_0^1\cdot\Big[\tfrac{y^3}3\Big]_0^2=\ln2\cdot\tfrac83.\]` },
+{ e:"F22", n:4, t:"pol", a:"C",
+  q:R`\(D\) is the region between the circles \(x^2+y^2=1\) and \(x^2+y^2=2\). Find \(\displaystyle\iint_De^{x^2+y^2}\,dA\).`,
+  o:[R`\(\pi e^4-\pi e\)`,R`\(2\pi e^2-2\pi e\)`,R`\(\pi e^2-\pi e\)`,R`\(2\pi e^2\)`,R`\(6\pi e^4\)`],
+  s:R`A ring plus \(x^2+y^2\) means polar coordinates: \(x^2+y^2=r^2\) and \(dA=r\,dr\,d\theta\).
+The circles are \(r=1\) and \(r=\sqrt2\) (the radius is the square root of the right side), all the way around.
+\[\int_0^{2\pi}\!\!\int_1^{\sqrt2}e^{r^2}r\,dr\,d\theta=2\pi\Big[\tfrac12e^{r^2}\Big]_1^{\sqrt2}=\pi(e^2-e).\]
+Choice A uses radius 2 instead of \(\sqrt2\).` },
+{ e:"F22", n:5, t:"tri", a:"E",
+  q:R`Which of the following <b>does not</b> equal the volume of the solid bounded by \(x=0\), \(y=0\), \(z=0\), and \(3x+y+z=3\)?`,
+  o:[R`\(\displaystyle\int_0^1\!\!\int_0^{3-3x}\!\!\int_0^{3-z-3x}dy\,dz\,dx\)`,
+     R`\(\displaystyle\int_0^3\!\!\int_0^{\frac{3-y}3}\!\!\int_0^{3-y-3x}dz\,dx\,dy\)`,
+     R`\(\displaystyle\int_0^3\!\!\int_0^{\frac{3-z}3}\!\!\int_0^{3-z-3x}dy\,dx\,dz\)`,
+     R`\(\displaystyle\int_0^1\!\!\int_0^{3-3x}\!\!\int_0^{3-y-3x}dz\,dy\,dx\)`,
+     R`\(\displaystyle\int_0^1\!\!\int_0^{3-z}\!\!\int_0^{3-y-z}dx\,dy\,dz\)`],
+  s:R`The solid is a pyramid with corners \((0,0,0)\), \((1,0,0)\), \((0,3,0)\), \((0,0,3)\): the plane hits the axes at \(x=1\), \(y=3\), \(z=3\).
+A correct setup always follows the same recipe. <b>Inside:</b> solve the plane for that variable. <b>Middle:</b> set the inside variable to 0 in the plane and solve for the middle one. <b>Outside:</b> 0 to that variable's intercept.
+Check E (order \(dx\,dy\,dz\)). Inside should be \(x\) from 0 to \(\tfrac{3-y-z}3\), but E has \(3-y-z\). Outside should be \(z\) from 0 to 3, but E has 0 to 1. So <b>E is wrong</b>.
+B, C and D follow the recipe exactly. (In the scanned exam, A's inside limit looks like \(3-y-3x\). It has to be \(3-z-3x\), as written here, because a limit for \(y\) cannot contain \(y\).)` },
+{ e:"F22", n:6, t:"cyl", a:"A",
+  q:R`Evaluate \(\displaystyle\iiint_D2z\,dV\), where \(D\) is the region between \(z=\sqrt{4+x^2+y^2}\) and \(z=\sqrt{12-x^2-y^2}\).`,
+  o:[R`\(16\pi\)`,R`\(8\pi\)`,R`\(4\pi\)`,R`\(\dfrac{16\pi}3\)`,R`\(\dfrac{32\pi}3\)`],
+  s:R`Both surfaces contain \(x^2+y^2\), so use cylindrical coordinates: \(x^2+y^2=r^2\), \(dV=r\,dz\,dr\,d\theta\).
+Bottom: \(z=\sqrt{4+r^2}\). Top: \(z=\sqrt{12-r^2}\). They meet where \(4+r^2=12-r^2\Rightarrow r=2\), so \(0\le r\le2\).
+<b>Inside (z):</b> \(\int2z\,dz=z^2\), from bottom to top: \((12-r^2)-(4+r^2)=8-2r^2\). The square roots disappear.
+<b>Then r:</b> \(\int_0^2(8-2r^2)\,r\,dr=\big[4r^2-\tfrac{r^4}2\big]_0^2=16-8=8\).
+<b>Then θ:</b> \(2\pi\cdot8=16\pi\).` },
+{ e:"F22", n:7, t:"cyl", a:"C",
+  q:R`Rewrite the triple integral \(\displaystyle\int_2^6\!\!\int_0^{\sqrt2}\!\!\int_x^{\sqrt{4-x^2}}e^{-x^2-y^2}\,dy\,dx\,dz\) in cylindrical coordinates.`,
+  o:[R`\(\displaystyle\int_2^6\!\!\int_0^{2\pi}\!\!\int_0^2re^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_0^{\pi/4}\!\!\int_0^2re^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_{\pi/4}^{\pi/2}\!\!\int_0^2re^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_0^{\pi/4}\!\!\int_0^2e^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_{\pi/4}^{\pi/2}\!\!\int_0^2e^{-r^2}dr\,d\theta\,dz\)`],
+  s:R`The \(z\) limits (2 to 6) stay the same. Look at the \(x,y\) part: \(y\) runs from the line \(y=x\) up to the circle \(y=\sqrt{4-x^2}\) (radius 2), with \(x\ge0\).
+That is the slice of the disk <b>above</b> the line \(y=x\) and right of the \(y\)-axis. The line \(y=x\) is the angle \(\theta=\tfrac\pi4\); the \(y\)-axis is \(\theta=\tfrac\pi2\). So \(\tfrac\pi4\le\theta\le\tfrac\pi2\), \(0\le r\le2\).
+The integrand becomes \(e^{-r^2}\), and \(dy\,dx\) becomes \(r\,dr\,d\theta\). That extra \(r\) rules out D and E.` },
+{ e:"F22", n:8, t:"sph", a:"D",
+  q:R`Choose the triple integral in spherical coordinates that represents the volume of the solid bounded by the cone \(z=\sqrt{x^2+y^2}\) and the sphere \(x^2+y^2+z^2=8\).`,
+  o:[R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^8\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^{\sqrt8}\rho\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^{\sqrt8}\rho\sin^2\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^{\sqrt8}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/2}\!\!\int_0^{\sqrt8}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`],
+  s:R`Three things to get right.
+<b>ρ (distance from the origin):</b> the sphere \(x^2+y^2+z^2=8\) is \(\rho=\sqrt8\). A uses 8, forgetting the square root.
+<b>φ (angle down from the positive z-axis):</b> on the cone \(z=\sqrt{x^2+y^2}\) the height equals the distance from the axis, so it opens at 45°: \(\phi=\tfrac\pi4\). The solid is inside the cone: \(0\le\phi\le\tfrac\pi4\). E goes to \(\tfrac\pi2\), which is the whole top half of the ball.
+<b>Volume piece:</b> \(dV=\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\). B and C have the wrong piece.` },
+{ e:"F22", n:9, t:"vf", a:"A",
+  q:R`Which of the following is a radial field?`,
+  o:[R`\(\dfrac1{(x^2+y^2)^4}\langle x,y\rangle\)`,R`\(\dfrac1{x^2+y^2}\langle y,x\rangle\)`,R`\(\dfrac1{x^{3/2}+y^{3/2}}\langle y,x\rangle\)`,R`\(\langle x^2,y^2\rangle\)`,R`\(\langle x^2,xy^2\rangle\)`],
+  s:R`A <b>radial field</b> points straight away from (or straight toward) the origin at every point. In a formula: a number times the position vector \(\langle x,y\rangle\).
+A is exactly that: the number \(\tfrac1{(x^2+y^2)^4}\) times \(\langle x,y\rangle\).
+B and C use \(\langle y,x\rangle\), which has the coordinates swapped. At \((1,0)\) it gives \(\langle0,1\rangle\), pointing sideways, not outward.
+D at \((1,2)\) gives \(\langle1,4\rangle\), not a multiple of \(\langle1,2\rangle\). E fails the same way.` },
+{ e:"F22", n:10, t:"com", a:"D",
+  q:R`Find the center of mass of the rectangle \(\{(x,y)\mid0\le x\le1,\;0\le y\le2\}\) where the density function is given by \(\rho(x,y)=xy\).`,
+  o:["\\((1,2)\\)","\\((0,0)\\)","\\((1/2,1)\\)","\\((2/3,4/3)\\)","\\((1/2,1/3)\\)"],
+  s:R`Three integrals. Each one splits because the region is a rectangle and everything is a product.
+<b>Mass:</b> \(m=\iint xy\,dA=\int_0^1x\,dx\int_0^2y\,dy=\tfrac12\cdot2=1\).
+<b>For \(\bar x\), put one more \(x\) inside:</b> \(\iint x\cdot xy\,dA=\int_0^1x^2dx\int_0^2y\,dy=\tfrac13\cdot2=\tfrac23\). So \(\bar x=\tfrac{2/3}{1}=\tfrac23\).
+<b>For \(\bar y\), put one more \(y\) inside:</b> \(\int_0^1x\,dx\int_0^2y^2dy=\tfrac12\cdot\tfrac83=\tfrac43\). So \(\bar y=\tfrac43\).
+C is the middle of the rectangle, which would be right only if the density were constant.` },
+{ e:"F22", n:11, t:"li", a:"E",
+  q:R`Consider a spring whose shape is the circular helix \(\mathbf r(t)=\dfrac1{\sqrt2}\langle\cos t,\sin t,t\rangle\), \(0\le t\le6\pi\). The mass density of the spring is \(\rho(x,y,z)=1+z\). Find the mass of the spring.`,
+  o:[R`\(3\pi+\dfrac{4\pi^2}{\sqrt2}\)`,R`\(3\pi+\dfrac{9\pi}{\sqrt2}\)`,R`\(18\pi+\dfrac{3\pi^2}{\sqrt3}\)`,R`\(6\pi+\dfrac{9\pi^2}{\sqrt3}\)`,R`\(6\pi+\dfrac{18\pi^2}{\sqrt2}\)`],
+  s:R`Mass of a wire \(=\int_C\rho\,ds\), and \(ds=|\mathbf r'(t)|\,dt\) (speed times a little time).
+<b>Speed:</b> \(\mathbf r'(t)=\tfrac1{\sqrt2}\langle-\sin t,\cos t,1\rangle\), so \(|\mathbf r'|=\tfrac1{\sqrt2}\sqrt{\sin^2t+\cos^2t+1}=\tfrac1{\sqrt2}\sqrt2=1\).
+<b>Density on the curve:</b> \(z=\tfrac t{\sqrt2}\), so \(\rho=1+\tfrac t{\sqrt2}\).
+\[\int_0^{6\pi}\Big(1+\frac t{\sqrt2}\Big)dt=6\pi+\frac{(6\pi)^2}{2\sqrt2}=6\pi+\frac{18\pi^2}{\sqrt2}.\]` },
+{ e:"F22", n:12, t:"cons", a:"B",
+  q:R`Let \(\mathbf F\) be a force given by \(\mathbf F(x,y)=\langle y,x\rangle\). Compute the work of this force along the curve \(C:\langle t,\;4t-2t^2\rangle\), with \(0\le t\le1\).`,
+  o:["−2","2","3","−3","0"],
+  s:R`<b>Shortcut:</b> \(\langle y,x\rangle\) is the gradient of \(\varphi=xy\) (check: \(\varphi_x=y\), \(\varphi_y=x\)). For a gradient field, work \(=\varphi(\text{end})-\varphi(\text{start})\).
+Start (\(t=0\)): \((0,0)\). End (\(t=1\)): \((1,2)\). Work \(=1\cdot2-0=2\).
+<b>The long way gives the same thing:</b> \(\mathbf r'=\langle1,4-4t\rangle\), \(\mathbf F=\langle4t-2t^2,\;t\rangle\), \(\mathbf F\cdot\mathbf r'=8t-6t^2\), and \(\int_0^1(8t-6t^2)dt=4-2=2\).` },
+
+/* ---------------- SPRING 2023 ---------------- */
+{ e:"S23", n:1, t:"out", a:"E",
+  q:R`Find the relative extrema of \(f(x,y)=-\tfrac23x^3+4xy-2y^2+1\).`,
+  o:["\\((3,2)\\) local maximum","\\((1,3)\\) local minimum","\\((2,3)\\) local maximum","\\((2,2)\\) local minimum","\\((2,2)\\) local maximum"],
+  s:R`<i>This semester critical points (Lessons 15–16) were on Exam 1, so this is review.</i>
+\(f_x=-2x^2+4y=0\) and \(f_y=4x-4y=0\). The second gives \(y=x\); then \(-2x^2+4x=0\Rightarrow x=0\) or \(2\). Critical points: \((0,0)\) and \((2,2)\).
+Second derivative test at \((2,2)\): \(f_{xx}=-4x=-8\), \(f_{yy}=-4\), \(f_{xy}=4\). \(D=(-8)(-4)-4^2=16>0\) and \(f_{xx}<0\): <b>local maximum</b>.` },
+{ e:"S23", n:2, t:"out", a:"B",
+  q:R`Consider the surface \(z=3-x^2-y^2+4y\). Find the points on the surface at which the tangent plane is horizontal.`,
+  o:["\\((2,0,9)\\)","\\((0,2,7)\\)","\\((4,6,8)\\)","\\((1,2,3)\\)","\\((-1,2,3)\\)"],
+  s:R`<i>Tangent planes were Exam 1 material this semester, so this is review.</i>
+Horizontal tangent plane means both slopes are zero: \(z_x=-2x=0\) and \(z_y=-2y+4=0\). So \(x=0,\;y=2\), and \(z=3-0-4+8=7\).` },
+{ e:"S23", n:3, t:"lag", a:"A",
+  q:R`Find the maximum of \(f(x,y,z)=x+y+z\) subject to the constraint \((x-1)^2+y^2+z^2=1\).`,
+  o:[R`\(1+\sqrt3\)`,R`\(1-\sqrt3\)`,R`\(\sqrt3\)`,R`\(1+2\sqrt3\)`,R`\(1+3\sqrt3\)`],
+  s:R`\(\nabla f=\lambda\nabla g\): \(\langle1,1,1\rangle=\lambda\langle2(x-1),\,2y,\,2z\rangle\). So \(x-1\), \(y\) and \(z\) are all the same number; call it \(t\).
+Constraint: \(t^2+t^2+t^2=1\Rightarrow t=\pm\tfrac1{\sqrt3}\).
+\(f=x+y+z=(1+t)+t+t=1+3t\). With \(t=\tfrac1{\sqrt3}\): \(1+\tfrac3{\sqrt3}=1+\sqrt3\). (The other sign gives the minimum, \(1-\sqrt3\), which is choice B.)` },
+{ e:"S23", n:4, t:"lag", a:"B",
+  q:R`The \(x\)-coordinate of the point on the plane \(z=x+y\) that is closest to the point \((1,1,1)\) is equal to`,
+  o:[R`\(\tfrac13\)`,R`\(\tfrac23\)`,R`\(\tfrac34\)`,R`\(\tfrac54\)`,R`\(\tfrac14\)`],
+  s:R`Minimize the <b>squared</b> distance (same closest point, no square root): \(f=(x-1)^2+(y-1)^2+(z-1)^2\), with the constraint \(g=x+y-z=0\).
+\(\nabla f=\lambda\nabla g\): \(\langle2(x-1),2(y-1),2(z-1)\rangle=\lambda\langle1,1,-1\rangle\). So \(x=1+\tfrac\lambda2\), \(y=1+\tfrac\lambda2\), \(z=1-\tfrac\lambda2\).
+Plug into \(x+y-z=0\): \(1+\tfrac{3\lambda}2=0\Rightarrow\lambda=-\tfrac23\). Then \(x=1-\tfrac13=\tfrac23\).
+(The closest point is \((\tfrac23,\tfrac23,\tfrac43)\); check that \(z=x+y\).)` },
+{ e:"S23", n:5, t:"dbl", a:"D",
+  q:R`Find the average value of the function \(f(x,y)=x^2y\) over the region \(R\) where \(R\) is the rectangle with vertices \((-1,0)\), \((-1,5)\), \((1,5)\), and \((1,0)\).`,
+  o:[R`\(\tfrac{10}3\)`,R`\(\tfrac{25}{12}\)`,R`\(\tfrac{25}3\)`,R`\(\tfrac56\)`,R`\(\tfrac{25}6\)`],
+  s:R`Average value \(=\dfrac{\text{the double integral}}{\text{the area of the region}}\).
+The rectangle is \(-1\le x\le1\), \(0\le y\le5\): area \(2\cdot5=10\).
+\(\iint x^2y\,dA=\int_{-1}^1x^2dx\cdot\int_0^5y\,dy=\tfrac23\cdot\tfrac{25}2=\tfrac{25}3\).
+Average \(=\tfrac{25/3}{10}=\tfrac56\). Choice C is the integral before dividing by the area.` },
+{ e:"S23", n:6, t:"dbl", a:"A",
+  q:R`Evaluate \(\displaystyle\iint_R\frac{\sin x}x\,dA\) where \(R\) is the region in the \(xy\)-plane bounded by the \(x\)-axis, the line \(y=x\), and the line \(x=1\). Integrate with respect to \(y\) first and then with respect to \(x\).`,
+  o:[R`\(1-\cos(1)\)`,R`\(1+\cos(1)\)`,R`\(-1-\cos(1)\)`,R`\(-1+\cos(1)\)`,R`\(2+\cos(1)\)`],
+  s:R`The region is a triangle: \(x\) from 0 to 1, and for each \(x\), \(y\) goes from the \(x\)-axis (\(y=0\)) up to the line \(y=x\).
+\[\int_0^1\!\!\int_0^x\frac{\sin x}x\,dy\,dx.\]
+Inside, \(\tfrac{\sin x}x\) has no \(y\) in it, so it is a constant: the inside integral is \(\tfrac{\sin x}x\cdot x=\sin x\). The troublesome \(x\) cancels.
+\(\int_0^1\sin x\,dx=\big[-\cos x\big]_0^1=1-\cos1\).` },
+{ e:"S23", n:7, t:"pol", a:"C",
+  q:R`Rewrite the integral as an iterated integral in polar coordinates. Do not evaluate the integral. \[\int_0^1\!\!\int_{-\sqrt{1-y^2}}^{\sqrt{1-y^2}}(x^2+y^2)^{\frac12}\,dx\,dy\]`,
+  o:[R`\(\displaystyle\int_0^\pi\!\!\int_0^1r\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^1r\,dr\,d\theta\)`,R`\(\displaystyle\int_0^\pi\!\!\int_0^1r^2\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{\pi/2}\!\!\int_0^1r^2\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{\pi/2}\!\!\int_0^1r\,dr\,d\theta\)`],
+  s:R`<b>Region:</b> \(x\) runs between \(\pm\sqrt{1-y^2}\), the left and right sides of the circle of radius 1, and \(y\) goes from 0 to 1 only. That is the <b>top half</b> of the disk: \(0\le\theta\le\pi\), \(0\le r\le1\).
+<b>Integrand:</b> \((x^2+y^2)^{1/2}=r\).
+<b>Area piece:</b> \(dx\,dy=r\,dr\,d\theta\).
+Together: \(r\cdot r=r^2\). Choice A forgets the extra \(r\); D covers only a quarter of the disk.` },
+{ e:"S23", n:8, t:"ord", a:"E",
+  q:R`Reverse the order of integration in the following iterated integral and evaluate. \[\int_0^{2\sqrt{\ln3}}\!\!\int_{y/2}^{\sqrt{\ln3}}e^{x^2}\,dx\,dy\]`,
+  o:["80","3","1",R`\(e^3\)`,"2"],
+  s:R`There is no formula for \(\int e^{x^2}dx\), so \(y\) has to go first.
+<b>Region:</b> \(\tfrac y2\le x\le\sqrt{\ln3}\) and \(0\le y\le2\sqrt{\ln3}\). The left edge \(x=\tfrac y2\) is the line \(y=2x\). So the region is the triangle under \(y=2x\), for \(0\le x\le\sqrt{\ln3}\).
+<b>Flipped:</b> \(\displaystyle\int_0^{\sqrt{\ln3}}\!\!\int_0^{2x}e^{x^2}dy\,dx=\int_0^{\sqrt{\ln3}}2xe^{x^2}dx=\Big[e^{x^2}\Big]_0^{\sqrt{\ln3}}=e^{\ln3}-1=3-1=2.\)` },
+{ e:"S23", n:9, t:"cyl", a:"D",
+  q:R`Convert the integral to cylindrical coordinates and evaluate \[\int_0^{10}\!\!\int_0^{\sqrt{100-x^2}}\!\!\int_0^{\sqrt{x^2+y^2}}\frac1{\sqrt{x^2+y^2}}\,dz\,dy\,dx\]`,
+  o:[R`\(5\pi\)`,R`\(10\pi\)`,R`\(20\pi\)`,R`\(25\pi\)`,R`\(30\pi\)`],
+  s:R`<b>The floor region:</b> \(0\le x\le10\), \(0\le y\le\sqrt{100-x^2}\) is the quarter of the radius-10 disk where \(x\) and \(y\) are both positive: \(0\le\theta\le\tfrac\pi2\), \(0\le r\le10\).
+<b>Height:</b> \(z\) from 0 to \(\sqrt{x^2+y^2}=r\).
+<b>Integrand:</b> \(\tfrac1r\), times the volume piece \(r\,dz\,dr\,d\theta\). The \(r\)'s cancel.
+\[\int_0^{\pi/2}\!\!\int_0^{10}\!\!\int_0^r1\,dz\,dr\,d\theta=\frac\pi2\int_0^{10}r\,dr=\frac\pi2\cdot50=25\pi.\]` },
+{ e:"S23", n:10, t:"tri", a:"C",
+  q:R`Let \(V\) be the volume of the solid bounded by the surfaces \(z=6-x^2-y^2\) and \(z=x^2+y^2\). If \(\displaystyle V=\int_{-\sqrt3}^{\sqrt3}\!\!\int_a^{\sqrt{3-x^2}}\!\!\int_{x^2+y^2}^b dz\,dy\,dx\), what are \(a\) and \(b\)?`,
+  o:[R`\(a=x,\;b=\sqrt{3-x^2}\)`,R`\(a=\sqrt{6-x^2},\;b=\sqrt{3-x^2-y^2}\)`,R`\(a=-\sqrt{3-x^2},\;b=6-x^2-y^2\)`,R`\(a=-\sqrt{3-x^2},\;b=3\)`,R`\(a=3,\;b=6-x^2-y^2\)`],
+  s:R`<b>b (top of z):</b> the solid sits between a bowl opening up (\(z=x^2+y^2\)) and a bowl opening down (\(z=6-x^2-y^2\)). The integral already starts \(z\) at the lower bowl, so \(b\) is the upper one: \(6-x^2-y^2\).
+<b>a (bottom of y):</b> the bowls meet where \(x^2+y^2=6-x^2-y^2\Rightarrow x^2+y^2=3\), a circle of radius \(\sqrt3\). The solid's shadow on the floor is that whole disk, so \(y\) runs from the bottom of the circle, \(-\sqrt{3-x^2}\), to the top, \(\sqrt{3-x^2}\).` },
+{ e:"S23", n:11, t:"sph", a:"A",
+  q:R`Which of the following integrals represents the volume of the solid inside a sphere of radius 2 centered at \((0,0,2)\) and outside a sphere of radius 2 centered at \((0,0,0)\)?`,
+  o:[R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_2^{4\cos\phi}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_0^{4\cos\phi}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_{\pi/3}^{\pi/2}\!\!\int_0^2\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_0^{4\sin\phi}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_{4\sin\phi}^2\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`],
+  s:R`<b>The sphere at the origin</b> is simply \(\rho=2\).
+<b>The raised sphere:</b> \(x^2+y^2+(z-2)^2=4\). Expand: \(x^2+y^2+z^2-4z+4=4\), so \(x^2+y^2+z^2=4z\). In spherical, \(x^2+y^2+z^2=\rho^2\) and \(z=\rho\cos\phi\): \(\rho^2=4\rho\cos\phi\Rightarrow\rho=4\cos\phi\).
+<b>ρ limits:</b> outside the first sphere and inside the raised one: \(2\le\rho\le4\cos\phi\).
+<b>φ limits:</b> that only makes sense while \(4\cos\phi\ge2\), i.e. \(\cos\phi\ge\tfrac12\), i.e. \(\phi\le\tfrac\pi3\).
+B starts \(\rho\) at 0, which gives the whole raised ball down to that angle instead of only the part outside the first sphere.` },
+{ e:"S23", n:12, t:"com", a:"D",
+  q:R`Find the \(x\)-coordinate of the center of mass of a plate in the shape of the region bounded by \(y=x\), \(y=\tfrac12x\), and \(x=1\) with a density of \(\delta(x,y)=2x\). Recall the mass moments about the \(x\)- and \(y\)-axes are \(M_x=\iint_Ry\,\delta(x,y)\,dA\) and \(M_y=\iint_Rx\,\delta(x,y)\,dA\), respectively.`,
+  o:[R`\(\tfrac45\)`,R`\(\tfrac56\)`,R`\(\tfrac23\)`,R`\(\tfrac34\)`,R`\(\tfrac67\)`],
+  s:R`The region: \(x\) from 0 to 1, and for each \(x\), \(y\) from the lower line \(\tfrac x2\) to the upper line \(x\). That strip has height \(x-\tfrac x2=\tfrac x2\).
+<b>Mass:</b> \(m=\int_0^1\!\!\int_{x/2}^x2x\,dy\,dx=\int_0^12x\cdot\tfrac x2\,dx=\int_0^1x^2dx=\tfrac13\).
+<b>Moment for \(\bar x\) (one more \(x\) inside):</b> \(M_y=\int_0^1x\cdot2x\cdot\tfrac x2\,dx=\int_0^1x^3dx=\tfrac14\).
+\(\bar x=\dfrac{M_y}{m}=\dfrac{1/4}{1/3}=\dfrac34\). The names are backwards from what you might guess: \(\bar x\) uses \(M_y\).` },
+
+/* ---------------- FALL 2023 ---------------- */
+{ e:"F23", n:1, t:"lag", a:"A",
+  q:R`Find the maximum value of the function \(f(x,y)=3+2x-y\) subject to the constraint \(x^2+2xy+4y^2=7\).`,
+  o:["10","2","7","8","14"],
+  s:R`\(\nabla f=\langle2,-1\rangle\) and \(\nabla g=\langle2x+2y,\;2x+8y\rangle\). Lagrange: \(2=\lambda(2x+2y)\) and \(-1=\lambda(2x+8y)\).
+<b>Get rid of λ:</b> the first equation is \(-2\) times the second, so \(2x+2y=-2(2x+8y)\Rightarrow6x=-18y\Rightarrow x=-3y\).
+<b>Constraint:</b> \(9y^2-6y^2+4y^2=7y^2=7\Rightarrow y=\pm1\). Candidates: \((3,-1)\) and \((-3,1)\).
+\(f(3,-1)=3+6+1=10\), \(f(-3,1)=3-6-1=-4\). Maximum: \(10\).` },
+{ e:"F23", n:2, t:"cons", a:"C",
+  q:R`Find \(\displaystyle\int_C\vec{\mathbf F}\cdot d\mathbf r\), where \(\vec{\mathbf F}(x,y,z)=\langle2xy-yz,\;x^2-xz,\;-xy\rangle\) on some smooth curve \(C\) that goes from \((2,1,0)\) to \((3,2,-1)\).`,
+  o:["12","8","20","24",R`Impossible to answer without knowing \(C\).`],
+  s:R`If \(\mathbf F\) is a gradient \(\nabla\varphi\), the integral only depends on the endpoints, so the curve does not matter.
+<b>Find φ.</b> From \(\varphi_x=2xy-yz\): \(\varphi=x^2y-xyz+(\text{stuff without }x)\). Check the others with \(\varphi=x^2y-xyz\): \(\varphi_y=x^2-xz\) ✓ and \(\varphi_z=-xy\) ✓. No extra terms needed.
+<b>Subtract:</b> \(\varphi(3,2,-1)=18+6=24\) and \(\varphi(2,1,0)=4\). Answer: \(24-4=20\).
+D is the trap: it forgets to subtract the starting value.` },
+{ e:"F23", n:3, t:"pol", a:"E",
+  q:R`Evaluate \(\displaystyle\int_0^3\!\!\int_0^{\sqrt{9-x^2}}\sqrt{x^2+y^2}\,dy\,dx\) by converting to polar coordinates.`,
+  o:[R`\(18\pi\)`,R`\(3\pi\)`,R`\(9\pi\)`,R`\(\dfrac{9\pi}4\)`,R`\(\dfrac{9\pi}2\)`],
+  s:R`<b>Region:</b> \(0\le x\le3\) and \(0\le y\le\sqrt{9-x^2}\): the quarter of the radius-3 disk with \(x,y\ge0\). So \(0\le\theta\le\tfrac\pi2\), \(0\le r\le3\).
+<b>Integrand:</b> \(\sqrt{x^2+y^2}=r\), times the area piece \(r\,dr\,d\theta\).
+\[\int_0^{\pi/2}\!\!\int_0^3r^2\,dr\,d\theta=\frac\pi2\cdot\frac{27}3=\frac{9\pi}2.\]` },
+{ e:"F23", n:4, t:"li", a:"A",
+  q:R`Calculate \(\displaystyle\int_C\frac1{(x-y)^2}\,ds\) where \(C\) is the straight line segment from \((1,0)\) to \((5,3)\).`,
+  o:[R`\(\tfrac52\)`,R`\(\tfrac{15}2\)`,R`\(\tfrac12\)`,"5",R`\(\tfrac25\)`],
+  s:R`<b>Parametrize the segment:</b> start + \(t\)·(end − start) \(=\langle1+4t,\;3t\rangle\), \(0\le t\le1\).
+<b>Speed:</b> \(\mathbf r'=\langle4,3\rangle\), \(|\mathbf r'|=5\). So \(ds=5\,dt\).
+<b>Function on the curve:</b> \(x-y=1+4t-3t=1+t\).
+\[\int_0^1\frac5{(1+t)^2}dt=5\Big[-\frac1{1+t}\Big]_0^1=5\Big(1-\frac12\Big)=\frac52.\]
+C forgets the speed 5.` },
+{ e:"F23", n:5, t:"sph", a:"B",
+  q:R`Choose the triple integral in spherical coordinates that represents the volume of the solid bounded by the cone \(z=\sqrt{x^2+y^2}\) and the sphere \(x^2+y^2+z^2=8\).`,
+  o:[R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^{\sqrt8}\rho\sin^2\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^{\sqrt8}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^8\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^{\sqrt8}\rho\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+     R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/2}\!\!\int_0^{\sqrt8}\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`],
+  s:R`Same solid as Fall 2022 #8, with the choices shuffled.
+Sphere: \(\rho=\sqrt8\). Cone \(z=\sqrt{x^2+y^2}\): \(\phi=\tfrac\pi4\), and the solid is inside it, so \(0\le\phi\le\tfrac\pi4\). Volume piece: \(\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\). Only B has all three.` },
+{ e:"F23", n:6, t:"ord", a:"E",
+  q:R`Compute the following integral; you may wish to change the order of integration in order to do so: \[\int_0^{27}\!\!\int_{\sqrt[3]x}^34e^{y^4}\,dy\,dx\]`,
+  o:[R`\(e^{81}\)`,R`\(e^3-1\)`,"0",R`\(e-1\)`,R`\(e^{81}-1\)`],
+  s:R`<b>Region:</b> \(0\le x\le27\) and \(\sqrt[3]x\le y\le3\). The lower curve \(y=\sqrt[3]x\) is the same as \(x=y^3\).
+<b>Flipped:</b> \(y\) from 0 to 3, and for each \(y\), \(x\) from 0 to \(y^3\).
+\[\int_0^3\!\!\int_0^{y^3}4e^{y^4}dx\,dy=\int_0^34y^3e^{y^4}dy=\Big[e^{y^4}\Big]_0^3=e^{81}-1.\]
+The \(y^3\) that appears is exactly what the substitution \(u=y^4\) needs.` },
+{ e:"F23", n:7, t:"com", a:"B",
+  q:R`Find the center of mass of the rectangle \(\{(x,y)\mid0\le x\le2,\;0\le y\le4\}\) where the density function is given by \(\rho(x,y)=1+y\).`,
+  o:["\\((0,5)\\)",R`\(\left(1,\tfrac{22}9\right)\)`,"\\((1,3)\\)","\\((1,2)\\)",R`\(\left(1,\tfrac{11}3\right)\)`],
+  s:R`<b>\(\bar x\):</b> the density does not depend on \(x\), so left and right balance: \(\bar x=1\), the middle.
+<b>Mass:</b> \(m=\int_0^2\!\!\int_0^4(1+y)\,dy\,dx=2\cdot\big[y+\tfrac{y^2}2\big]_0^4=2\cdot12=24\).
+<b>Moment for \(\bar y\) (one more \(y\) inside):</b> \(\int_0^2\!\!\int_0^4y(1+y)\,dy\,dx=2\Big(8+\tfrac{64}3\Big)=\tfrac{176}3\).
+\(\bar y=\dfrac{176/3}{24}=\dfrac{22}9\approx2.44\). It is above the middle (2) because the plate is heavier near the top.` },
+{ e:"F23", n:8, t:"tri", a:"C",
+  q:R`Let \(E\) be the solid region in the first octant that is above the \(xy\) plane and below the plane \(4x+2y+z=8\). Then the iterated integral satisfying \[\iiint_Ef(x,y,z)\,dV=\int_0^a\!\!\int_0^b\!\!\int_0^cf(x,y,z)\,dz\,dy\,dx\] must have:`,
+  o:[R`\(a=3,\;b=4-2x\)`,R`\(a=2,\;b=8-4x-2y\)`,R`\(a=2,\;b=4-2x\)`,R`\(a=3,\;b=8-4x-2y\)`,R`\(a=2,\;b=8-4x-z\)`],
+  s:R`"First octant" means \(x,y,z\ge0\).
+<b>c (top of z):</b> solve the plane for \(z\): \(z=8-4x-2y\).
+<b>b (top of y):</b> on the floor \(z=0\) the plane is \(4x+2y=8\), so \(y=4-2x\).
+<b>a (top of x):</b> on the floor with \(y=0\): \(4x=8\Rightarrow x=2\).
+Choice B mixes up \(b\) and \(c\): a middle limit may only contain the outside variable \(x\).` },
+{ e:"F23", n:9, t:"cyl", a:"D",
+  q:R`Rewrite the triple integral \(\displaystyle\int_2^6\!\!\int_0^{\sqrt2}\!\!\int_x^{\sqrt{4-x^2}}e^{-x^2-y^2}\,dy\,dx\,dz\) in cylindrical coordinates.`,
+  o:[R`\(\displaystyle\int_2^6\!\!\int_{\pi/4}^{\pi/2}\!\!\int_0^2e^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_0^{2\pi}\!\!\int_0^2re^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_0^{\pi/4}\!\!\int_0^2re^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_{\pi/4}^{\pi/2}\!\!\int_0^2re^{-r^2}dr\,d\theta\,dz\)`,
+     R`\(\displaystyle\int_2^6\!\!\int_0^{\pi/4}\!\!\int_0^2e^{-r^2}dr\,d\theta\,dz\)`],
+  s:R`Same integral as Fall 2022 #7, with the choices shuffled.
+\(y\) runs from the line \(y=x\) (\(\theta=\tfrac\pi4\)) up to the circle of radius 2, with \(x\ge0\): the wedge \(\tfrac\pi4\le\theta\le\tfrac\pi2\), \(0\le r\le2\). The integrand is \(e^{-r^2}\) and the volume piece brings an extra \(r\).` },
+{ e:"F23", n:10, t:"vf", a:"E", fig:"vfA",
+  q:R`Which vector field corresponds to the one pictured here?`,
+  o:[R`\(\vec{\mathbf F}(x,y)=\langle x,1\rangle\)`,R`\(\vec{\mathbf F}(x,y)=\langle y,-2\rangle\)`,R`\(\vec{\mathbf F}(x,y)=\langle x,-y\rangle\)`,R`\(\vec{\mathbf F}(x,y)=\langle x,5y\rangle\)`,R`\(\vec{\mathbf F}(x,y)=\langle y,x\rangle\)`],
+  s:R`Test easy points and throw out formulas that disagree with the picture.
+<b>On the x-axis (\(y=0\)), right side:</b> the arrows point straight <b>up</b>. A gives \(\langle x,1\rangle\) (tilted right), C and D give \(\langle x,0\rangle\) (flat), B gives \(\langle0,-2\rangle\) (down). Only E gives \(\langle0,x\rangle\): straight up when \(x>0\), straight down when \(x<0\). That matches.
+<b>Double-check at the top right, \((2,2)\):</b> E gives \(\langle2,2\rangle\), up and to the right. ✓` },
+{ e:"F23", n:11, t:"dbl", a:"D",
+  q:R`Find the volume enclosed by the surfaces \(x=0\), \(x=3\), \(y=0\), \(y=2\), \(z=1\) and \(z=e^{x+y}\).`,
+  o:[R`\(e^5-e^2\)`,R`\(e^5-e^3-e^2+1\)`,R`\(e^5+e^3-e^2-5\)`,R`\(e^5-e^3-e^2-5\)`,"0"],
+  s:R`Over the rectangle \(0\le x\le3\), \(0\le y\le2\), the top is \(z=e^{x+y}\) and the bottom is \(z=1\) (since \(e^{x+y}\ge1\) there). Volume \(=\iint(\text{top}-\text{bottom})\,dA\).
+\(\iint e^{x+y}dA=\int_0^3e^xdx\cdot\int_0^2e^ydy=(e^3-1)(e^2-1)=e^5-e^3-e^2+1\).
+\(\iint1\,dA=\) area \(=6\).
+Volume \(=e^5-e^3-e^2+1-6=e^5-e^3-e^2-5\). Choice B forgets the bottom \(z=1\).` },
+{ e:"F23", n:12, t:"li", a:"E",
+  q:R`Given the force field \(\vec{\mathbf F}(x,y)=\langle-y,x\rangle\), find the work required to move an object along the ellipse \(\vec{\mathbf r}(t)=\langle2\cos(t),3\sin(t)\rangle\) from \((2,0)\) to \((0,3)\).`,
+  o:["0",R`\(9\pi\)`,R`\(6\pi\)`,R`\(2\pi\)`,R`\(3\pi\)`],
+  s:R`Work \(=\int\mathbf F\cdot\mathbf r'(t)\,dt\).
+<b>t-range:</b> \((2,0)\) is \(t=0\); \((0,3)\) is \(t=\tfrac\pi2\).
+<b>Velocity:</b> \(\mathbf r'=\langle-2\sin t,\;3\cos t\rangle\).
+<b>Field on the curve:</b> \(\langle-y,x\rangle=\langle-3\sin t,\;2\cos t\rangle\).
+<b>Dot product:</b> \(6\sin^2t+6\cos^2t=6\).
+\(\int_0^{\pi/2}6\,dt=3\pi\). (This field is not a gradient, so there is no shortcut.)` },
+
+/* ---------------- SPRING 2024 ---------------- */
+{ e:"S24", n:1, t:"grn", a:"E",
+  q:R`According to Green's Theorem, which of the following line integrals is <b>not</b> equal to the area of the region enclosed by a simple closed curve \(C\), oriented counterclockwise?`,
+  o:[R`\(\displaystyle\frac15\int_Cy\,dx+6x\,dy\)`,R`\(\displaystyle\frac15\int_C-3y\,dx+2x\,dy\)`,R`\(\displaystyle\frac15\int_C-4y\,dx+x\,dy\)`,R`\(\displaystyle\frac15\int_C2y\,dx+7x\,dy\)`,R`\(\displaystyle\frac15\int_C2y\,dx-3x\,dy\)`],
+  s:R`Green's Theorem: \(\displaystyle\oint_CP\,dx+Q\,dy=\iint_R(Q_x-P_y)\,dA\).
+Every choice has \(P=ay\) and \(Q=bx\), so \(Q_x-P_y=b-a\), a constant, and the integral is \((b-a)\times\text{Area}\). With the \(\tfrac15\) in front we need \(b-a=5\).
+A: \(6-1=5\) ✓. B: \(2-(-3)=5\) ✓. C: \(1-(-4)=5\) ✓. D: \(7-2=5\) ✓. E: \(-3-2=-5\), which gives <b>minus</b> the area.` },
+{ e:"S24", n:2, t:"cons", a:"D",
+  q:R`Given the force field \(\vec F=\langle x,y,z\rangle\), find the work required to move an object on the helix \(\vec r(t)=\langle2\cos t,\;2\sin t,\;\tfrac t{2\pi}\rangle\), \(0\le t\le2\pi\).`,
+  o:[R`\(\dfrac1{8\pi^2}\)`,R`\(\dfrac1{2\pi}\)`,R`\(4\pi+\dfrac12\)`,R`\(\dfrac12\)`,R`\(8\pi+\dfrac12\)`],
+  s:R`<b>Shortcut:</b> \(\langle x,y,z\rangle\) is the gradient of \(\varphi=\tfrac12(x^2+y^2+z^2)\), so work \(=\varphi(\text{end})-\varphi(\text{start})\).
+Start (\(t=0\)): \((2,0,0)\), \(\varphi=2\). End (\(t=2\pi\)): \((2,0,1)\), \(\varphi=\tfrac12(4+1)=\tfrac52\). Work \(=\tfrac12\).
+<b>Directly:</b> \(\mathbf r'=\langle-2\sin t,2\cos t,\tfrac1{2\pi}\rangle\). \(\mathbf F\cdot\mathbf r'=-4\cos t\sin t+4\sin t\cos t+\tfrac t{4\pi^2}=\tfrac t{4\pi^2}\). \(\int_0^{2\pi}\tfrac t{4\pi^2}dt=\tfrac{(2\pi)^2}{8\pi^2}=\tfrac12\). ✓` },
+{ e:"S24", n:3, t:"cyl", a:"C",
+  q:R`Find the volume of the solid region bounded by the two surfaces \(z=x^2+y^2-9\) and \(z=-2(x^2+y^2)\). <i>Hint: use cylindrical coordinates.</i>`,
+  o:[R`\(\dfrac{27\pi}4\)`,R`\(\dfrac{81\pi}2\)`,R`\(\dfrac{27\pi}2\)`,R`\(\dfrac{81\pi}3\)`,R`\(\dfrac{81\pi}4\)`],
+  s:R`In cylindrical: \(z=r^2-9\) (a bowl opening up, lowest point \(-9\)) and \(z=-2r^2\) (a bowl opening down from 0).
+<b>Where they meet:</b> \(r^2-9=-2r^2\Rightarrow r^2=3\Rightarrow r=\sqrt3\).
+<b>Which is on top?</b> At \(r=0\): \(0\) versus \(-9\). So \(-2r^2\) is the top.
+<b>Height:</b> top − bottom \(=-2r^2-(r^2-9)=9-3r^2\).
+\[V=\int_0^{2\pi}\!\!\int_0^{\sqrt3}(9-3r^2)\,r\,dr\,d\theta=2\pi\Big[\frac{9r^2}2-\frac{3r^4}4\Big]_0^{\sqrt3}=2\pi\Big(\frac{27}2-\frac{27}4\Big)=\frac{27\pi}2.\]` },
+{ e:"S24", n:4, t:"dbl", a:"A",
+  q:R`Compute \(\displaystyle\int_0^1\!\!\int_0^4\sqrt{xy}\,dx\,dy\).`,
+  o:[R`\(\tfrac{32}9\)`,R`\(\tfrac{64}9\)`,R`\(\tfrac{32}{27}\)`,R`\(\tfrac{16}{27}\)`,R`\(\tfrac{16}9\)`],
+  s:R`\(\sqrt{xy}=\sqrt x\cdot\sqrt y\), and all four limits are numbers, so split it. Watch which limits belong to which variable: \(dx\) is inside, so \(x\) goes 0 to 4 and \(y\) goes 0 to 1.
+\(\int_0^4x^{1/2}dx=\tfrac23\cdot4^{3/2}=\tfrac23\cdot8=\tfrac{16}3\). \(\int_0^1y^{1/2}dy=\tfrac23\).
+Product: \(\tfrac{16}3\cdot\tfrac23=\tfrac{32}9\).` },
+{ e:"S24", n:5, t:"pol", a:"A",
+  q:R`Compute \(\displaystyle\int_{-3}^3\!\!\int_{-\sqrt{9-y^2}}^{\sqrt{9-y^2}}e^{x^2+y^2}\,dx\,dy\).`,
+  o:[R`\(\pi(e^9-1)\)`,R`\(\dfrac\pi2(e^3-1)\)`,R`\(\dfrac\pi2(e^9-1)\)`,R`\(\pi(e^3-1)\)`,R`\(\dfrac\pi2(e^6-1)\)`],
+  s:R`<b>Region:</b> \(x\) between \(\pm\sqrt{9-y^2}\) and \(y\) from \(-3\) to 3 is the <b>whole</b> disk of radius 3: \(0\le\theta\le2\pi\), \(0\le r\le3\).
+\[\int_0^{2\pi}\!\!\int_0^3e^{r^2}r\,dr\,d\theta=2\pi\Big[\tfrac12e^{r^2}\Big]_0^3=\pi(e^9-1).\]
+C is what you get for half the disk; D forgets to square the 3.` },
+{ e:"S24", n:6, t:"tri", a:"B",
+  q:R`Which of the following integrals represents the volume of the solid in the first octant bounded by the plane \(3x+2y+6z=12\)?`,
+  o:[R`\(\displaystyle\int_0^6\!\!\int_0^{4-\frac{2y}3}\!\!\int_0^{3-\frac x2-\frac y3}dz\,dx\,dy\)`,
+     R`\(\displaystyle\int_0^6\!\!\int_0^{4-\frac{2y}3}\!\!\int_0^{2-\frac x2-\frac y3}dz\,dx\,dy\)`,
+     R`\(\displaystyle\int_0^4\!\!\int_0^{6-y}\!\!\int_0^{2-\frac x2-\frac y3}dz\,dx\,dy\)`,
+     R`\(\displaystyle\int_0^6\!\!\int_0^{4-\frac y3}\!\!\int_0^{2-\frac x3-\frac y3}dz\,dx\,dy\)`,
+     R`\(\displaystyle\int_0^4\!\!\int_0^{6-y}\!\!\int_0^{2-\frac x3-\frac y3}dz\,dx\,dy\)`],
+  s:R`The order is \(dz\,dx\,dy\): \(z\) inside, then \(x\), then \(y\) outside.
+<b>z:</b> solve the plane for \(z\): \(6z=12-3x-2y\Rightarrow z=2-\tfrac x2-\tfrac y3\).
+<b>x:</b> on the floor (\(z=0\)): \(3x+2y=12\Rightarrow x=4-\tfrac{2y}3\).
+<b>y:</b> on the floor with \(x=0\): \(2y=12\Rightarrow y=6\).
+That is B. A has the wrong constant in the \(z\) limit; C and E use the \(x\)-intercept 4 for \(y\).` },
+{ e:"S24", n:7, t:"lag", a:"A",
+  q:R`At which points on the curve \(x^2+y^2=4\) does the function \(f(x,y)=4x^2+10y^2\) achieve an absolute maximum?`,
+  o:["\\((0,2)\\) and \\((0,-2)\\)","\\((0,2)\\) only","\\((2,0)\\) and \\((2,0)\\)","\\((2,0)\\) only","It does not achieve an absolute maximum"],
+  s:R`<b>Lagrange:</b> \(\langle8x,20y\rangle=\lambda\langle2x,2y\rangle\). First equation: \(8x=2\lambda x\), so \(x=0\) or \(\lambda=4\). Second: \(20y=2\lambda y\), so \(y=0\) or \(\lambda=10\). λ cannot be 4 and 10 at once, so either \(x=0\) or \(y=0\).
+On the circle that gives \((0,\pm2)\) with \(f=40\), and \((\pm2,0)\) with \(f=16\). Maximum at <b>both</b> \((0,2)\) and \((0,-2)\).
+<b>Faster:</b> on the circle \(x^2=4-y^2\), so \(f=16+6y^2\), biggest when \(y^2\) is biggest. (Choice C is printed that way on the original exam.)` },
+{ e:"S24", n:8, t:"out", a:"A",
+  q:R`Let \(f(x,y,z)=x^4+y^2+z^5\) and \(g(x,y,z)=x^2+3y+2z\). Suppose \(\vec\nabla f(1,1,-1)\) is perpendicular to \(\vec\nabla g(a,b,c)\), then`,
+  o:["\\(a=-2\\)","\\(a=1\\)","\\(a=2\\)",R`\(a=\tfrac12\)`,"\\(a=-1\\)"],
+  s:R`<i>Gradients were Exam 1 material this semester, so this is review.</i>
+\(\nabla f=\langle4x^3,2y,5z^4\rangle\), at \((1,1,-1)\): \(\langle4,2,5\rangle\). \(\nabla g=\langle2x,3,2\rangle\), at \((a,b,c)\): \(\langle2a,3,2\rangle\).
+Perpendicular means dot product zero: \(8a+6+10=0\Rightarrow a=-2\).` },
+{ e:"S24", n:9, t:"cons", a:"E",
+  q:R`Given that \(\vec F=\langle7-4y,\;2y-4x\rangle\) is conservative and \(\vec F=\vec\nabla\phi\). Evaluate \(\displaystyle\int_C\vec\nabla\phi\cdot d\vec r\), where the curve \(C\) is parametrized as \(\vec r(t)=\langle e^t\sin t,\;e^t\cos t\rangle\), \(0\le t\le2\pi\).`,
+  o:[R`\(e^{2\pi}-1\)`,R`\(-e^{4\pi}-1\)`,R`\(4\pi^2\)`,R`\(-4\pi^2\)`,R`\(e^{4\pi}-1\)`],
+  s:R`Do not plug that curve into the integral. Find \(\phi\) and subtract endpoint values.
+<b>Find φ:</b> \(\phi_x=7-4y\Rightarrow\phi=7x-4xy+g(y)\). Then \(\phi_y=-4x+g'(y)\) must equal \(2y-4x\), so \(g'(y)=2y\), \(g=y^2\). \(\phi=7x-4xy+y^2\).
+<b>Endpoints:</b> \(\mathbf r(0)=\langle0,1\rangle\) and \(\mathbf r(2\pi)=\langle0,e^{2\pi}\rangle\).
+With \(x=0\), \(\phi=y^2\): \(\phi(\text{end})-\phi(\text{start})=e^{4\pi}-1\).` },
+{ e:"S24", n:10, t:"dc", a:"C",
+  q:R`Suppose \(f(x,y,z)=xy^2z^3\), then \(\operatorname{div}(\vec\nabla f)\) at \((2,-1,1)\) is equal to:`,
+  o:["8","14","16","10","12"],
+  s:R`Two steps: gradient first, then divergence of that.
+<b>Gradient:</b> \(\nabla f=\langle y^2z^3,\;2xyz^3,\;3xy^2z^2\rangle\).
+<b>Divergence</b> (x-derivative of the first part + y-derivative of the second + z-derivative of the third): \(0+2xz^3+6xy^2z\).
+At \((2,-1,1)\): \(2\cdot2\cdot1+6\cdot2\cdot1\cdot1=4+12=16\).` },
+{ e:"S24", n:11, t:"out", a:"D",
+  q:R`Find the area of the part of the plane \(2x+5y+z=10\) that is in the first octant.`,
+  o:[R`\(\sqrt{30}\)`,R`\(10\sqrt{30}\)`,R`\(5\sqrt{10}\)`,R`\(5\sqrt{30}\)`,R`\(10\sqrt{10}\)`],
+  s:R`<i>Surface area is Section 17.6 (Lesson 31), after this semester's Exam 2 cutoff on the course calendar.</i>
+For a surface \(z=g(x,y)\): area \(=\iint\sqrt{1+g_x^2+g_y^2}\,dA\) over its shadow on the floor.
+Here \(z=10-2x-5y\), so \(\sqrt{1+4+25}=\sqrt{30}\), a constant. The shadow is the triangle with corners \((0,0)\), \((5,0)\), \((0,2)\): area \(\tfrac12\cdot5\cdot2=5\).
+Area \(=5\sqrt{30}\).` },
+{ e:"S24", n:12, t:"ord", a:"B",
+  q:R`Compute \(\displaystyle\iint_R\cos(y^2)\,dy\,dx\), over the triangle \(R\) with vertices \((0,0)\), \(\left(0,\sqrt{\tfrac\pi2}\right)\), \(\left(\sqrt{\tfrac\pi2},\sqrt{\tfrac\pi2}\right)\).`,
+  o:["1",R`\(\tfrac12\)`,R`\(\tfrac\pi2\)`,"0",R`\(\sqrt{\tfrac\pi2}\)`],
+  s:R`There is no formula for \(\int\cos(y^2)dy\), so integrate in \(x\) first.
+<b>The triangle:</b> its sides are the \(y\)-axis (\(x=0\)), the top \(y=\sqrt{\pi/2}\), and the line \(y=x\). For each \(y\) from 0 to \(\sqrt{\pi/2}\), \(x\) goes from 0 to \(y\).
+\[\int_0^{\sqrt{\pi/2}}\!\!\int_0^y\cos(y^2)\,dx\,dy=\int_0^{\sqrt{\pi/2}}y\cos(y^2)\,dy=\Big[\tfrac12\sin(y^2)\Big]_0^{\sqrt{\pi/2}}=\tfrac12\sin\tfrac\pi2=\tfrac12.\]` },
+
+/* ---------------- FALL 2024 ---------------- */
+{ e:"F24", n:1, t:"cons", a:"D",
+  q:R`Consider the vector field \(\mathbf F=\langle e^{yz}-y\sin(xy),\;zxe^{yz}-x\sin(xy),\;xye^{yz}\rangle\). Find a potential function \(\phi\) for this field, if one exists.`,
+  o:[R`\(xe^{yz}\)`,R`\(e^{yz}\)`,R`\(xe^{yz}+\sin(xy)\)`,R`\(xe^{yz}+\cos(xy)\)`,"No potential function exists."],
+  s:R`A potential function is a \(\phi\) whose gradient is \(\mathbf F\). On a multiple choice exam the fastest way is to differentiate the choices.
+Try D, \(\phi=xe^{yz}+\cos(xy)\):
+\(\phi_x=e^{yz}-y\sin(xy)\) ✓ &nbsp; \(\phi_y=xze^{yz}-x\sin(xy)\) ✓ &nbsp; \(\phi_z=xye^{yz}\) ✓.
+A is missing the \(\sin\) terms. C gives \(+y\cos(xy)\) in the first slot, which is wrong.` },
+{ e:"F24", n:2, t:"grn", a:"E",
+  q:R`Let \(R\) be the triangle in \(\mathbb R^2\) with vertices \((0,0)\), \((2,0)\), and \((1,1)\), and let \(C\) denote the boundary of \(R\), oriented counterclockwise. Compute the line integral \(\displaystyle\int_C\cos^3(x)\,dx+e^x\,dy\).`,
+  o:["1",R`\(e^2+2e+1\)`,R`\(e^2-2e\)`,R`\(e^2\)`,R`\(e^2-2e+1\)`],
+  s:R`A closed curve with an ugly \(\cos^3x\): use Green's Theorem, \(\oint P\,dx+Q\,dy=\iint(Q_x-P_y)\,dA\).
+\(P=\cos^3x\) has no \(y\), so \(P_y=0\). \(Q=e^x\), so \(Q_x=e^x\). The ugly part vanishes.
+<b>The triangle:</b> left side is \(y=x\), right side is \(y=2-x\). Slice horizontally: for \(0\le y\le1\), \(x\) goes from \(y\) to \(2-y\).
+\[\int_0^1\!\!\int_y^{2-y}e^x\,dx\,dy=\int_0^1\big(e^{2-y}-e^y\big)dy=\Big[-e^{2-y}-e^y\Big]_0^1=(-e-e)-(-e^2-1)=e^2-2e+1.\]` },
+{ e:"F24", n:3, t:"dc", a:"C",
+  q:R`If \(\mathbf F=\langle xy,\;\sin(z),\;\cos(y)\rangle\), then \(\operatorname{curl}(\mathbf F)\) is:`,
+  o:[R`\(\langle\sin(y)\cos(z),\;0,\;-x\rangle\)`,R`\(\langle-\sin(y)+\cos(z),\;0,\;x\rangle\)`,R`\(\langle-\sin(y)-\cos(z),\;0,\;-x\rangle\)`,R`\(\langle-\sin(y)-\cos(z),\;0,\;x\rangle\)`,"None of the above."],
+  s:R`Call the parts \(P=xy\), \(Q=\sin z\), \(R=\cos y\). \(\operatorname{curl}\mathbf F=\langle R_y-Q_z,\;P_z-R_x,\;Q_x-P_y\rangle\).
+<b>First:</b> \(R_y-Q_z=-\sin y-\cos z\).
+<b>Second:</b> \(P_z-R_x=0-0=0\).
+<b>Third:</b> \(Q_x-P_y=0-x=-x\).
+So \(\langle-\sin y-\cos z,\;0,\;-x\rangle\). D has the sign of the last part wrong.` },
+{ e:"F24", n:4, t:"dbl", a:"A",
+  q:R`Find the volume of the solid under the plane \(z=2x\) and above the region \(R\) in the first quadrant of the \(xy\)-plane bounded by the coordinate axes and the line \(x+y=1\).`,
+  o:["1/3","1/2","2/3","1/6","1"],
+  s:R`Volume under a surface \(=\iint_R(\text{height})\,dA\), with height \(2x\).
+<b>The region</b> is the triangle with corners \((0,0)\), \((1,0)\), \((0,1)\): for \(0\le x\le1\), \(y\) goes from 0 up to the line \(y=1-x\).
+\[\int_0^1\!\!\int_0^{1-x}2x\,dy\,dx=\int_0^12x(1-x)\,dx=\Big[x^2-\tfrac23x^3\Big]_0^1=\tfrac13.\]` },
+{ e:"F24", n:5, t:"tri", a:"C",
+  q:R`Evaluate the integral \(\displaystyle\int_0^1\!\!\int_0^1\!\!\int_0^{2-y}e^x\,dz\,dx\,dy\).`,
+  o:[R`\(\tfrac12e\)`,R`\(\tfrac32e\)`,R`\(\tfrac32(e-1)\)`,R`\(2(e-1)\)`,R`\(\tfrac12(e-1)\)`],
+  s:R`Work from the inside out.
+<b>z:</b> \(e^x\) has no \(z\), so \(\int_0^{2-y}e^x\,dz=(2-y)e^x\).
+<b>x:</b> \(\int_0^1(2-y)e^x\,dx=(2-y)(e-1)\).
+<b>y:</b> \((e-1)\int_0^1(2-y)\,dy=(e-1)\big(2-\tfrac12\big)=\tfrac32(e-1)\).` },
+{ e:"F24", n:6, t:"sph", a:"D",
+  q:R`The volume of the region inside the sphere \(x^2+y^2+z^2=4\) and the cone \(z=\sqrt{3x^2+3y^2}\) is given by \(\displaystyle\int_0^{2\pi}\!\!\int_0^a\!\!\int_0^bc\,d\rho\,d\phi\,d\theta\), where the integral is using spherical coordinates. What are the values of \(a\), \(b\) and \(c\)?`,
+  o:[R`\(a=\pi/3,\;b=2,\;c=\rho^2\sin\phi\)`,R`\(a=\pi/3,\;b=\sqrt3,\;c=\rho^2\cos\phi\)`,R`\(a=\pi/6,\;b=2,\;c=\rho^2\cos\phi\)`,R`\(a=\pi/6,\;b=2,\;c=\rho^2\sin\phi\)`,R`\(a=\pi/6,\;b=\sqrt3,\;c=\rho^2\sin\phi\)`],
+  s:R`<b>b:</b> the sphere \(x^2+y^2+z^2=4\) is \(\rho=2\).
+<b>c:</b> the volume piece is always \(\rho^2\sin\phi\).
+<b>a:</b> the cone is \(z=\sqrt3\,r\), where \(r=\sqrt{x^2+y^2}\) is the distance from the \(z\)-axis. The angle \(\phi\) down from the \(z\)-axis has \(\tan\phi=\dfrac rz=\dfrac1{\sqrt3}\), so \(\phi=\tfrac\pi6\) (30°).
+A steeper cone (bigger number in front) means a <b>smaller</b> φ. Choice A mixes up \(\tfrac\pi6\) and \(\tfrac\pi3\).` },
+{ e:"F24", n:7, t:"lag", a:"A",
+  q:R`The maximum and minimum values of the function \(f(x,y)=(x-2)^2+(y-4)^2\) subject to the constraint \(x^2+y^2=5\) are, respectively,`,
+  o:["45 and 5","50 and 4","100 and 4","20 and 5","At least one of the maximum and minimum values does not exist."],
+  s:R`<b>Lagrange:</b> \(\langle2(x-2),2(y-4)\rangle=\lambda\langle2x,2y\rangle\), so \(x-2=\lambda x\) and \(y-4=\lambda y\). Solve each: \(x=\tfrac2{1-\lambda}\), \(y=\tfrac4{1-\lambda}\). So \(y=2x\).
+<b>Constraint:</b> \(x^2+4x^2=5\Rightarrow x=\pm1\). Candidates: \((1,2)\) and \((-1,-2)\).
+\(f(1,2)=1+4=5\). \(f(-1,-2)=9+36=45\). Max 45, min 5.
+<b>Picture:</b> \(f\) is the squared distance to \((2,4)\). The nearest and farthest points of the circle lie on the line through the center and \((2,4)\).` },
+{ e:"F24", n:8, t:"ord", a:"B",
+  q:R`Compute \(\displaystyle\int_0^1\!\!\int_y^1e^{x^2}\,dx\,dy\). (Hint: change the order of integration.)`,
+  o:["0",R`\(\tfrac12(e-1)\)`,R`\(\tfrac12e\)`,R`\(\tfrac12(e+1)\)`,R`\(-\tfrac12(e-1)\)`],
+  s:R`<b>Region:</b> \(0\le y\le1\) and \(y\le x\le1\): the triangle below the line \(y=x\), with corners \((0,0)\), \((1,0)\), \((1,1)\).
+<b>Flipped:</b> \(x\) from 0 to 1, and for each \(x\), \(y\) from 0 up to \(x\).
+\[\int_0^1\!\!\int_0^xe^{x^2}dy\,dx=\int_0^1xe^{x^2}dx=\Big[\tfrac12e^{x^2}\Big]_0^1=\tfrac12(e-1).\]` },
+{ e:"F24", n:9, t:"pol", a:"E",
+  q:R`Compute \(\displaystyle\iint_Re^{-(x^2+y^2)}\,dA\), where \(R\) is the region surrounded by the circle \(x^2+y^2=4\).`,
+  o:["0",R`\(\pi(1-e^4)\)`,R`\(\pi(1+e^{-4})\)`,R`\(\pi(1+e^4)\)`,R`\(\pi(1-e^{-4})\)`],
+  s:R`Whole disk of radius 2: \(0\le\theta\le2\pi\), \(0\le r\le2\).
+\[\int_0^{2\pi}\!\!\int_0^2e^{-r^2}r\,dr\,d\theta=2\pi\Big[-\tfrac12e^{-r^2}\Big]_0^2=2\pi\cdot\tfrac12\big(1-e^{-4}\big)=\pi(1-e^{-4}).\]
+Sanity check: the integrand is positive, so the answer must be positive. That rules out B.` },
+{ e:"F24", n:10, t:"vf", a:"B",
+  q:R`Let \(a\ne0\) and let \(C\) be the curve \(x^2-2y^2=a\). Which of the following vector fields \(\vec F\) is such that \(\vec F(x_0,y_0)\) is orthogonal to the tangent line to the curve \(C\) at \((x_0,y_0)\) for every point \((x_0,y_0)\) on the curve \(C\)?`,
+  o:[R`\(\vec F(x,y)=\langle2,-4\rangle\)`,R`\(\vec F(x,y)=\langle2x,-4y\rangle\)`,R`\(\vec F(x,y)=\langle2x,4y\rangle\)`,R`\(\vec F(x,y)=\langle x^2,-4y^2\rangle\)`,R`\(\vec F(x,y)=\langle x+2y,\;2x-y\rangle\)`],
+  s:R`"Orthogonal" means perpendicular. The curve is a level curve of \(g(x,y)=x^2-2y^2\) (the set where \(g\) equals the number \(a\)).
+<b>Key fact:</b> the gradient of \(g\) is perpendicular to the level curves of \(g\) at every point.
+\(\nabla g=\langle2x,-4y\rangle\). That is B.` },
+{ e:"F24", n:11, t:"li", a:"C",
+  q:R`Compute the line integral \(\displaystyle\int_Cf(x,y)\,ds\) of the function \(f(x,y)=\sin(2\pi x)+xy\) along the curve \(C\) which is parametrized by \(\vec r(t)=\langle t,t\rangle\) for \(0\le t\le1\).`,
+  o:[R`\(\pi+\tfrac13\)`,R`\(\tfrac13\)`,R`\(\tfrac{\sqrt2}3\)`,R`\(2+\tfrac{\sqrt2}3\)`,"0"],
+  s:R`<b>Speed:</b> \(\mathbf r'=\langle1,1\rangle\), \(|\mathbf r'|=\sqrt2\), so \(ds=\sqrt2\,dt\).
+<b>Function on the curve</b> (\(x=t,\;y=t\)): \(\sin(2\pi t)+t^2\).
+\[\sqrt2\int_0^1\big(\sin(2\pi t)+t^2\big)dt=\sqrt2\Big(0+\tfrac13\Big)=\tfrac{\sqrt2}3.\]
+The sine integrates to 0 over one full period. B forgets the speed \(\sqrt2\).` },
+{ e:"F24", n:12, t:"grn", a:"D",
+  q:R`Compute the flux of the vector field \(\vec F(x,y)=\langle x,y\rangle\) across the curve \(\vec r(t)=\langle3\cos(t),2\sin(t)\rangle\) for \(-\pi\le t\le\pi\).`,
+  o:[R`\(24\pi\)`,"0","12",R`\(12\pi\)`,R`\(6\pi\)`],
+  s:R`Flux across a closed curve measures how much of the field flows <b>out</b> through it. The flux form of Green's Theorem says: outward flux \(=\iint_R\operatorname{div}\mathbf F\,dA\).
+\(\operatorname{div}\langle x,y\rangle=1+1=2\). The curve is a full ellipse with half-widths 3 and 2, and an ellipse's area is \(\pi\cdot3\cdot2=6\pi\).
+Flux \(=2\cdot6\pi=12\pi\).
+<b>Directly:</b> flux \(=\int(P\,y'-Q\,x')\,dt=\int_{-\pi}^{\pi}\big(3\cos t\cdot2\cos t+2\sin t\cdot3\sin t\big)dt=\int_{-\pi}^{\pi}6\,dt=12\pi\). ✓` },
+
+/* ---------------- SPRING 2025 ---------------- */
+{ e:"S25", n:1, t:"sph", a:"E",
+  q:R`Find the volume of the region <i>in the first octant</i> that lies inside \(x^2+y^2+z^2=9\) and above the cone \(z=\sqrt{x^2+y^2}\).`,
+  o:[R`\(18\pi\)`,R`\(9\pi\sqrt2\)`,R`\(3\pi^2/8\)`,R`\(9\pi^2/16\)`,R`\(\dfrac92\pi\left(1-\dfrac1{\sqrt2}\right)\)`,R`\(9\pi/2\)`],
+  s:R`Spherical limits: sphere \(\rho=3\); inside the cone \(z=\sqrt{x^2+y^2}\) means \(0\le\phi\le\tfrac\pi4\); <b>first octant</b> (\(x,y\ge0\)) means \(0\le\theta\le\tfrac\pi2\), a quarter turn.
+The three integrals separate:
+\[\int_0^{\pi/2}d\theta\cdot\int_0^{\pi/4}\sin\phi\,d\phi\cdot\int_0^3\rho^2d\rho=\frac\pi2\cdot\Big(1-\frac1{\sqrt2}\Big)\cdot9=\frac92\pi\Big(1-\frac1{\sqrt2}\Big).\]
+(\(\int_0^{\pi/4}\sin\phi\,d\phi=\big[-\cos\phi\big]_0^{\pi/4}=1-\tfrac1{\sqrt2}\).)` },
+{ e:"S25", n:2, t:"li", a:"F",
+  q:R`Find \(\displaystyle\int_C\frac{\sqrt[5]{xyz}}{\sqrt{1+8y}}\,ds\) where \(C\) is \(\vec{\boldsymbol r}(t)=t\,\vec{\boldsymbol\imath}+t^2\,\vec{\boldsymbol\jmath}+t^2\,\vec{\boldsymbol k}\) for \(0\le t\le1\).`,
+  o:[R`\(\tfrac43\)`,R`\(\tfrac{13}{12}\)`,R`\(\dfrac{1+\sqrt5}2\)`,R`\(\tfrac13\)`,R`\(\dfrac{3\sqrt5-1}8\)`,R`\(\tfrac12\)`],
+  s:R`It looks awful, but everything is built to cancel. On the curve \(x=t\), \(y=t^2\), \(z=t^2\).
+<b>Top:</b> \(xyz=t^5\), and its fifth root is \(t\).
+<b>Bottom:</b> \(\sqrt{1+8y}=\sqrt{1+8t^2}\).
+<b>Speed:</b> \(\mathbf r'=\langle1,2t,2t\rangle\), \(|\mathbf r'|=\sqrt{1+4t^2+4t^2}=\sqrt{1+8t^2}\). So \(ds=\sqrt{1+8t^2}\,dt\).
+The square roots cancel: \(\int_0^1t\,dt=\tfrac12\).` },
+{ e:"S25", n:3, t:"dbl", a:"D",
+  q:R`Compute the double integral \(\displaystyle\iint_R\frac{3xy^2}{1+x^2}\,dA\) where \(R\) is the rectangle \(R=\{(x,y):0\le x\le1,\;-2\le y\le2\}\).`,
+  o:["0",R`\(4\ln2\)`,R`\(2\pi\)`,R`\(8\ln2\)`,R`\(4\pi\)`,R`\(2\pi\ln2\)`],
+  s:R`Rectangle and a product: split into an \(x\)-integral times a \(y\)-integral.
+\(\int_0^1\dfrac{3x}{1+x^2}dx=\tfrac32\Big[\ln(1+x^2)\Big]_0^1=\tfrac32\ln2\) (substitute \(u=1+x^2\)).
+\(\int_{-2}^2y^2dy=\tfrac{16}3\).
+Product: \(\tfrac32\cdot\tfrac{16}3\ln2=8\ln2\).
+A is the trap: \(y^2\) is even, so the \(y\)-integral over \(-2\) to 2 does not cancel to zero.` },
+{ e:"S25", n:4, t:"grn", a:"B",
+  q:R`Use Green's Theorem to evaluate \(\displaystyle\int_C2xy\,dx+y^2\,dy\) where \(C\) is the boundary of the rectangle with vertices \((0,0)\), \((1,0)\), \((1,3)\), and \((0,3)\), oriented counterclockwise.`,
+  o:["0","−3","−9","6","−27","12"],
+  s:R`\(P=2xy\), \(Q=y^2\). Green's: \(\oint P\,dx+Q\,dy=\iint(Q_x-P_y)\,dA\).
+\(Q_x=0\) (no \(x\) in \(y^2\)). \(P_y=2x\). So the integrand is \(-2x\).
+\[\int_0^3\!\!\int_0^1-2x\,dx\,dy=3\cdot\Big[-x^2\Big]_0^1=-3.\]` },
+{ e:"S25", n:5, t:"cyl", a:"E",
+  q:R`Let \(D\) be the region between \(x^2+y^2=1\) and \(x^2+y^2=4\) which is above \(z=0\) and below \(z=4-(x^2+y^2)\). Using cylindrical coordinates, if \(f(r,\theta,z)=\dfrac1{r^3}\) then the value of \(\displaystyle\int_Df\,dV\) is:`,
+  o:[R`\(\dfrac{4\pi}3\)`,"0",R`\(\pi(3-\ln4)\)`,R`\(\dfrac{9\pi}8\)`,R`\(2\pi\)`,R`\(\pi\left(\dfrac{15}4-\ln16\right)\)`],
+  s:R`Limits: between the cylinders, \(1\le r\le2\); all the way around, \(0\le\theta\le2\pi\); height \(0\le z\le4-r^2\).
+Integrand times the volume piece: \(\dfrac1{r^3}\cdot r=\dfrac1{r^2}\).
+<b>z:</b> \(\int_0^{4-r^2}\dfrac1{r^2}dz=\dfrac{4-r^2}{r^2}=\dfrac4{r^2}-1\).
+<b>r:</b> \(\int_1^2\Big(\dfrac4{r^2}-1\Big)dr=\Big[-\dfrac4r-r\Big]_1^2=(-2-2)-(-4-1)=1\).
+<b>θ:</b> \(2\pi\cdot1=2\pi\).` },
+{ e:"S25", n:6, t:"tri", a:"F",
+  q:R`Consider the following triple integral. \[\int_0^2\!\!\int_x^2\!\!\int_{2y}^4f(x,y,z)\,dz\,dy\,dx.\] Which of the following is the correct way to re-write the integral with respect to the order of integration \(\iiint f(x,y,z)\,dx\,dz\,dy\)?`,
+  o:[R`\(\int_0^2\!\int_{2y}^4\!\int_y^2f(x,y,z)\,dx\,dz\,dy\)`,R`\(\int_x^{z/2}\!\int_{2x}^4\!\int_0^2f(x,y,z)\,dx\,dz\,dy\)`,R`\(\int_0^2\!\int_0^{2y}\!\int_0^yf(x,y,z)\,dx\,dz\,dy\)`,R`\(\int_x^2\!\int_{2y}^4\!\int_0^2f(x,y,z)\,dx\,dz\,dy\)`,R`\(\int_0^2\!\int_{2y}^4\!\int_0^xf(x,y,z)\,dx\,dz\,dy\)`,R`\(\int_0^2\!\int_{2y}^4\!\int_0^yf(x,y,z)\,dx\,dz\,dy\)`],
+  s:R`<b>Write the region as inequalities:</b> \(0\le x\le2\), \(x\le y\le2\), \(2y\le z\le4\).
+The new order is \(dx\,dz\,dy\): \(y\) outside, then \(z\), then \(x\) inside.
+<b>y (outside, numbers only):</b> from the first two inequalities, \(0\le x\le y\le2\), so \(y\) goes from 0 to 2.
+<b>z (may use y):</b> \(2y\le z\le4\), unchanged.
+<b>x (inside):</b> \(0\le x\le y\).
+That is F. Quick filters: the outside limits must be plain numbers (kills B and D), and a limit for \(x\) cannot contain \(x\) (kills E).` },
+{ e:"S25", n:7, t:"vf", a:"D",
+  q:R`If \(\nabla\varphi=\langle2x,-2y\rangle\) then the equipotential curves (level curves of \(\varphi\)) are mostly`,
+  o:["Lines","Isolated points","Non-circular ellipses","Hyperbolas","Circles","Parabolas"],
+  s:R`Undo the gradient: \(\varphi_x=2x\) and \(\varphi_y=-2y\) give \(\varphi=x^2-y^2\) (plus a constant).
+Level curves: \(x^2-y^2=c\). A difference of squares equal to a constant is a <b>hyperbola</b>. ("Mostly" because \(c=0\) gives the two lines \(y=\pm x\).)
+With a plus sign, \(x^2+y^2=c\), you would get circles instead.` },
+{ e:"S25", n:8, t:"pol", a:"B", fig:"halfdisk",
+  q:R`Compute the double integral \(\displaystyle\iint_Rx\,dA\) where \(R\) is the region in the plane inside of the circle \(x^2+y^2=4\) and above the line \(y=-x\).`,
+  o:[R`\(\dfrac1{\sqrt2}\)`,R`\(\dfrac{8\sqrt2}3\)`,R`\(2\sqrt2\)`,R`\(\dfrac83\)`,R`\(\dfrac8{\sqrt3}\)`,"0"],
+  s:R`<b>θ limits:</b> the line \(y=-x\) points along \(\theta=-\tfrac\pi4\) (down-right) and \(\theta=\tfrac{3\pi}4\) (up-left). "Above the line" is the half disk between those: \(-\tfrac\pi4\le\theta\le\tfrac{3\pi}4\). And \(0\le r\le2\).
+<b>Integrand:</b> \(x=r\cos\theta\), times \(r\,dr\,d\theta\).
+\[\int_{-\pi/4}^{3\pi/4}\cos\theta\,d\theta\cdot\int_0^2r^2\,dr=\Big[\sin\theta\Big]_{-\pi/4}^{3\pi/4}\cdot\frac83=\Big(\frac{\sqrt2}2+\frac{\sqrt2}2\Big)\cdot\frac83=\frac{8\sqrt2}3.\]` },
+{ e:"S25", n:9, t:"cons", a:"A", fig:"path",
+  q:R`Find \(\displaystyle\int_C\vec{\boldsymbol F}\cdot d\vec{\boldsymbol r}\) where \(\vec{\boldsymbol F}(x,y)=\langle-e^y\sin x,\;e^y\cos x\rangle\) and the curve \(C\) is the pictured path (a sequence of directed line segments and semicircles) from \((0,0)\) to \((0,1)\).`,
+  o:[R`\(e-1\)`,R`\(1-e\)`,R`\(e+1\)`,"0",R`\(-e\)`,R`\(e\)`],
+  s:R`A complicated path is a hint that the path does not matter. Check whether \(\mathbf F\) is conservative.
+<b>Test:</b> \(P=-e^y\sin x\), \(Q=e^y\cos x\). \(P_y=-e^y\sin x\) and \(Q_x=-e^y\sin x\). Equal, so yes.
+<b>Potential:</b> \(\varphi=e^y\cos x\) (check: \(\varphi_x=-e^y\sin x\) ✓, \(\varphi_y=e^y\cos x\) ✓).
+<b>Endpoints only:</b> \(\varphi(0,1)-\varphi(0,0)=e\cdot1-1\cdot1=e-1\).` },
+{ e:"S25", n:10, t:"li", a:"F",
+  q:R`Find \(\displaystyle\int_C\vec{\boldsymbol F}\cdot\vec{\boldsymbol T}\,ds\) where \(\vec{\boldsymbol F}(x,y)=-y\,\vec{\boldsymbol\imath}+x\,\vec{\boldsymbol\jmath}\) and \(C\) is the circle of radius 1, centered at the origin and oriented counterclockwise.`,
+  o:["1",R`\(\pi\)`,R`\(\pi/2\)`,R`\(4\pi\)`,"0",R`\(2\pi\)`],
+  s:R`\(\int\mathbf F\cdot\mathbf T\,ds\) is just another way to write \(\int\mathbf F\cdot d\mathbf r\) (\(\mathbf T\) is the unit tangent, the direction of travel).
+<b>Parametrize:</b> \(\mathbf r=\langle\cos t,\sin t\rangle\), \(0\le t\le2\pi\). \(\mathbf r'=\langle-\sin t,\cos t\rangle\).
+<b>Field on the circle:</b> \(\langle-y,x\rangle=\langle-\sin t,\cos t\rangle\).
+<b>Dot:</b> \(\sin^2t+\cos^2t=1\). \(\int_0^{2\pi}1\,dt=2\pi\).
+<b>Or Green's:</b> \(Q_x-P_y=1-(-1)=2\), times the disk's area \(\pi\): \(2\pi\). ✓` },
+{ e:"S25", n:11, t:"ord", a:"B",
+  q:R`Compute the double integral \(\displaystyle\iint\frac1{x\ln(y)}\,dA\) over the triangle with vertices \((1,1)\), \((1,3)\), and \((3,3)\). <i>Hint: the integral is easier with one order of integration than the other.</i>`,
+  o:[R`\(\dfrac2{\ln(2)}\)`,"2","0","1",R`\(\ln3\)`,R`\(3\ln3\)`],
+  s:R`<b>The triangle:</b> its sides are \(x=1\) (left), \(y=3\) (top) and the line \(y=x\). For each \(y\) from 1 to 3, \(x\) runs from 1 to \(y\).
+There is no formula for \(\int\tfrac1{\ln y}dy\), so integrate in \(x\) first:
+\[\int_1^3\frac1{\ln y}\Big(\int_1^y\frac1x\,dx\Big)dy=\int_1^3\frac1{\ln y}\cdot\ln y\;dy=\int_1^31\,dy=2.\]
+The inside integral produces exactly the \(\ln y\) needed to cancel the bad part.` },
+{ e:"S25", n:12, t:"lag", a:"B",
+  q:R`Compute the <b>absolute maximum</b> of the function \(f(x,y,z)=2x+2y-z\) over the sphere \(x^2+y^2+z^2=9\).`,
+  o:[R`\(5\sqrt3\)`,"9",R`\(6\sqrt2\)`,R`\(6\sqrt3\)`,"7","10"],
+  s:R`\(\nabla f=\lambda\nabla g\): \(\langle2,2,-1\rangle=\lambda\langle2x,2y,2z\rangle\). So \((x,y,z)\) is a multiple of \(\langle2,2,-1\rangle\): write \((x,y,z)=t\langle2,2,-1\rangle\).
+<b>Constraint:</b> \(4t^2+4t^2+t^2=9t^2=9\Rightarrow t=\pm1\).
+\(f(2,2,-1)=4+4+1=9\) (max). \(f(-2,-2,1)=-9\) (min).
+<b>Pattern:</b> for \(f=ax+by+cz\) on a sphere of radius \(R\) centered at the origin, the max is \(R\sqrt{a^2+b^2+c^2}\). Here \(3\cdot3=9\).` }
+];
+
+const SHEET = {
+  lag: { f:[
+    R`Max/min of \(f\) on the constraint \(g=c\): solve \(\nabla f=\lambda\nabla g\) together with \(g=c\)`,
+    R`Plug <b>every</b> candidate point into \(f\); biggest is the max, smallest is the min`,
+    R`\(f=ax+by+cz\) on a sphere of radius \(R\) at the origin: max \(=R\sqrt{a^2+b^2+c^2}\), min is the negative`,
+    R`Closest point: minimize the distance <b>squared</b>`],
+    trap:"Finding the point and stopping. The question usually asks for the value of f there. Also: the same equations give the minimum, and it is always one of the choices." },
+  dbl: { f:[
+    R`\(\displaystyle\iint_Rf\,dA=\int_a^b\!\!\int_{\text{bottom}(x)}^{\text{top}(x)}f\,dy\,dx\)`,
+    R`Rectangle and \(f=g(x)h(y)\): \(\iint=\int g\,dx\cdot\int h\,dy\)`,
+    R`Average value \(=\dfrac1{\text{area}}\iint_Rf\,dA\)`,
+    R`Volume between surfaces \(=\iint(\text{top}-\text{bottom})\,dA\)`],
+    trap:"Outside limits must be plain numbers. Inside limits may only use the outside variable." },
+  ord: { f:[
+    R`Read the region from the limits, sketch it, then describe it the other way`,
+    R`\(\displaystyle\int_0^a\!\!\int_x^af\,dy\,dx=\int_0^a\!\!\int_0^yf\,dx\,dy\) (triangle above \(y=x\))`,
+    R`\(y=\sqrt x\iff x=y^2\); &nbsp; \(y=\sqrt[3]x\iff x=y^3\); &nbsp; \(x=\tfrac y2\iff y=2x\)`,
+    R`Flip when you see \(e^{x^2}\), \(e^{y^3}\), \(\cos(y^2)\), \(\tfrac{\sin x}x\), \(\tfrac1{\ln y}\)`],
+    trap:"Swapping dx and dy but keeping the old limits. The limits have to be rebuilt from the picture." },
+  pol: { f:[
+    R`\(x=r\cos\theta,\;y=r\sin\theta,\;x^2+y^2=r^2\)`,
+    R`\(dA=r\,dr\,d\theta\)`,
+    R`Whole disk: \(0\le\theta\le2\pi\). Top half: \(0\) to \(\pi\). First quadrant: \(0\) to \(\tfrac\pi2\)`,
+    R`Line \(y=x\): \(\theta=\tfrac\pi4\). Line \(y=-x\): \(\theta=-\tfrac\pi4\) and \(\tfrac{3\pi}4\)`],
+    trap:"Forgetting the extra r. And x² + y² = 2 is radius √2, not 2." },
+  tri: { f:[
+    R`\(\displaystyle\iiint f\,dV=\int_a^b\!\!\int_{\dots(x)}^{\dots(x)}\!\!\int_{\dots(x,y)}^{\dots(x,y)}f\,dz\,dy\,dx\)`,
+    R`Under a plane in the first octant: inside = plane solved for that variable; middle = set the inside variable to 0; outside = 0 to the intercept`,
+    R`Volume \(=\iiint1\,dV\)`,
+    R`To reorder: write the region as inequalities first`],
+    trap:"A limit may only contain variables that are integrated later (further outside). A limit for x can never contain x." },
+  cyl: { f:[
+    R`\(x=r\cos\theta,\;y=r\sin\theta,\;z=z\)`,
+    R`\(dV=r\,dz\,dr\,d\theta\)`,
+    R`Surfaces meet where their \(z\)'s are equal: that gives the largest \(r\)`,
+    R`Cone \(z=\sqrt{x^2+y^2}\) is \(z=r\); paraboloid \(z=x^2+y^2\) is \(z=r^2\)`],
+    trap:"Not checking which surface is on top. Test r = 0 in both." },
+  sph: { f:[
+    R`\(\rho\): distance from the origin. \(\phi\): angle down from the \(+z\)-axis (\(0\) to \(\pi\)). \(\theta\): same as polar`,
+    R`\(dV=\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,
+    R`\(x^2+y^2+z^2=\rho^2\), &nbsp; \(z=\rho\cos\phi\)`,
+    R`Cone \(z=k\sqrt{x^2+y^2}\): \(\tan\phi=\tfrac1k\). So \(k=1\Rightarrow\tfrac\pi4\); \(k=\sqrt3\Rightarrow\tfrac\pi6\); \(k=\tfrac1{\sqrt3}\Rightarrow\tfrac\pi3\)`,
+    R`Sphere of radius \(a\) centered at \((0,0,a)\): \(\rho=2a\cos\phi\)`],
+    trap:"x² + y² + z² = 8 is ρ = √8, not 8. First octant means θ only goes to π/2." },
+  com: { f:[
+    R`Mass \(m=\iint\rho\,dA\)`,
+    R`\(M_y=\iint x\rho\,dA\), &nbsp; \(M_x=\iint y\rho\,dA\)`,
+    R`\(\bar x=\dfrac{M_y}m\), &nbsp; \(\bar y=\dfrac{M_x}m\)`,
+    R`Density has no \(x\) and the plate is left-right symmetric: \(\bar x\) is the middle`],
+    trap:"x̄ uses M_y (the one with the extra x). And don't forget to divide by the mass." },
+  vf: { f:[
+    R`\(\mathbf F(x,y)=\langle P,Q\rangle\): one arrow at every point`,
+    R`Radial: a number times \(\langle x,y\rangle\). Rotation: \(\langle-y,x\rangle\)`,
+    R`Gradient field: \(\mathbf F=\nabla\varphi=\langle\varphi_x,\varphi_y\rangle\)`,
+    R`\(\nabla\varphi\) is perpendicular to the level curves \(\varphi=c\)`],
+    trap:"Matching a picture: test (1,0) and (0,1) before anything fancy. ⟨y, x⟩ is not radial." },
+  li: { f:[
+    R`Scalar: \(\displaystyle\int_Cf\,ds=\int_a^bf(\mathbf r(t))\,|\mathbf r'(t)|\,dt\)`,
+    R`Vector (work): \(\displaystyle\int_C\mathbf F\cdot d\mathbf r=\int_a^b\mathbf F(\mathbf r(t))\cdot\mathbf r'(t)\,dt\)`,
+    R`Segment from \(A\) to \(B\): \(\mathbf r(t)=A+t(B-A)\), \(0\le t\le1\)`,
+    R`Circle radius \(a\): \(\langle a\cos t,a\sin t\rangle\). &nbsp; \(\int\mathbf F\cdot\mathbf T\,ds\) means \(\int\mathbf F\cdot d\mathbf r\)`],
+    trap:"ds needs the speed |r′|. Work needs the dot product with r′ instead. Don't mix them." },
+  cons: { f:[
+    R`Conservative means \(\mathbf F=\nabla\varphi\). Test in 2D: \(P_y=Q_x\). In 3D: \(\operatorname{curl}\mathbf F=\mathbf 0\)`,
+    R`\(\displaystyle\int_C\nabla\varphi\cdot d\mathbf r=\varphi(\text{end})-\varphi(\text{start})\)`,
+    R`Find \(\varphi\): integrate \(P\) in \(x\), then fix it so \(\varphi_y=Q\) (and \(\varphi_z=R\))`,
+    R`Closed curve and conservative field: the integral is 0`],
+    trap:"Forgetting to subtract the starting value. And end minus start, not the other way." },
+  grn: { f:[
+    R`\(\displaystyle\oint_CP\,dx+Q\,dy=\iint_R(Q_x-P_y)\,dA\) (counterclockwise)`,
+    R`Area \(=\oint x\,dy=\oint-y\,dx=\tfrac12\oint x\,dy-y\,dx\)`,
+    R`Outward flux \(=\displaystyle\oint\mathbf F\cdot\mathbf n\,ds=\iint_R(P_x+Q_y)\,dA\)`,
+    R`Ellipse with half-widths \(a,b\): area \(\pi ab\)`],
+    trap:"Q_x − P_y, in that order. Clockwise flips the sign. The curve must be closed." },
+  dc: { f:[
+    R`\(\operatorname{div}\mathbf F=P_x+Q_y+R_z\) (a number)`,
+    R`\(\operatorname{curl}\mathbf F=\langle R_y-Q_z,\;P_z-R_x,\;Q_x-P_y\rangle\) (a vector)`,
+    R`\(\operatorname{curl}(\nabla f)=\mathbf 0\) always; &nbsp; \(\operatorname{div}(\operatorname{curl}\mathbf F)=0\) always`,
+    R`\(\operatorname{div}(\nabla f)=f_{xx}+f_{yy}+f_{zz}\)`],
+    trap:"Sign errors in the curl. Work one component at a time and write both terms before subtracting." }
+};
+
+const LEARN = {
+lag: {
+  exam: R`Find the largest (or smallest) value of \(f\) when the point is forced to stay on a curve or surface. The favorite is a simple \(f\) like \(x+y\) or \(2x+2y-z\) on a circle, ellipse or sphere. "Closest point" questions are the same thing in disguise.`,
+  learn: R`<p class="idea"><b>The big idea:</b> you want the biggest value of \(f\), but you are only allowed to stand on a certain curve (the <b>constraint</b>). At the best spot, the arrow \(\nabla f\) and the arrow \(\nabla g\) point along the same line.</p>
+<p><b>Words first.</b> The constraint is an equation like \(x^2+y^2=25\). Call its left side \(g\). The <b>gradient</b> \(\nabla f=\langle f_x,f_y\rangle\) is the vector of partial derivatives. \(\lambda\) (the Greek letter "lambda") is just an unknown number, the <b>Lagrange multiplier</b>.</p>
+<p><b>The method:</b></p>
+<ol><li>Write \(\nabla f=\lambda\nabla g\). That is one equation for each variable.</li>
+<li>Use those equations to find how \(x,y\) (and \(z\)) are related. You usually do not need \(\lambda\) itself.</li>
+<li>Put that relation into the constraint to get actual points.</li>
+<li>Plug every point into \(f\). The biggest value is the maximum and the smallest is the minimum.</li></ol>
+<div class="ex"><b>Example:</b> maximize \(f=3x+4y\) on the circle \(x^2+y^2=25\).
+<br>1. \(\langle3,4\rangle=\lambda\langle2x,2y\rangle\), so \(x=\tfrac3{2\lambda}\) and \(y=\tfrac4{2\lambda}\).
+<br>2. Divide them: \(\tfrac yx=\tfrac43\), so \(y=\tfrac43x\). The point is a multiple of \(\langle3,4\rangle\).
+<br>3. Circle: \(x^2+\tfrac{16}9x^2=25\Rightarrow x=\pm3\). Points \((3,4)\) and \((-3,-4)\).
+<br>4. \(f(3,4)=25\) is the max. \(f(-3,-4)=-25\) is the min.</div>
+<p><b>Closest point problems:</b> to find the point on a plane or curve closest to \((a,b,c)\), minimize the distance <i>squared</i>, \((x-a)^2+(y-b)^2+(z-c)^2\). It has the same closest point and no square root to differentiate.</p>
+<p><b>Common mistakes:</b> answering with the point when the question wants the value of \(f\); and forgetting that the same equations also produce the minimum.</p>`,
+  warm: [
+    { step:"The method on a line", a:"B",
+      q:R`Use \(\nabla f=\lambda\nabla g\) to find the maximum of \(f(x,y)=xy\) on the line \(x+y=10\).`,
+      o:["10","25","50","100","20"],
+      s:R`\(g=x+y\). \(\nabla f=\langle y,x\rangle\) and \(\nabla g=\langle1,1\rangle\). So \(y=\lambda\) and \(x=\lambda\): the two are equal, \(x=y\).
+Constraint: \(x+x=10\Rightarrow x=y=5\). \(f=5\cdot5=25\).` },
+    { step:"A straight-line f on a circle", a:"D",
+      q:R`Find the maximum of \(f(x,y)=x+2y\) on the circle \(x^2+y^2=5\).`,
+      o:["1","3",R`\(\sqrt5\)`,"5","10"],
+      s:R`\(\langle1,2\rangle=\lambda\langle2x,2y\rangle\) says \((x,y)\) is a multiple of \(\langle1,2\rangle\): write \((x,y)=t\langle1,2\rangle\).
+Circle: \(t^2+4t^2=5\Rightarrow t=\pm1\). Points \((1,2)\) and \((-1,-2)\).
+\(f(1,2)=1+4=5\) (max), \(f(-1,-2)=-5\) (min).` },
+    { step:"An ellipse", a:"B",
+      q:R`Find the maximum of \(f(x,y)=x+y\) on the ellipse \(x^2+3y^2=12\).`,
+      o:["2","4","6",R`\(2\sqrt3\)`,"12"],
+      s:R`\(\langle1,1\rangle=\lambda\langle2x,6y\rangle\), so \(x=\tfrac1{2\lambda}\) and \(y=\tfrac1{6\lambda}\). Dividing: \(x=3y\).
+Ellipse: \(9y^2+3y^2=12\Rightarrow y=\pm1\). Points \((3,1)\) and \((-3,-1)\).
+\(f(3,1)=4\) is the maximum.` },
+    { step:"Two kinds of candidates", a:"C",
+      q:R`Let \(M\) and \(m\) be the maximum and minimum of \(f(x,y)=x^2+3y^2\) on the circle \(x^2+y^2=1\). Find \(M+m\).`,
+      o:["1","3","4","2","0"],
+      s:R`\(\langle2x,6y\rangle=\lambda\langle2x,2y\rangle\). First equation: \(2x=2\lambda x\), so \(x=0\) or \(\lambda=1\). Second: \(6y=2\lambda y\), so \(y=0\) or \(\lambda=3\).
+\(\lambda\) cannot be 1 and 3 at once, so \(x=0\) or \(y=0\). <b>Never divide by \(x\) or \(y\) without checking the zero case.</b>
+\(x=0\): points \((0,\pm1)\), \(f=3\). \(y=0\): points \((\pm1,0)\), \(f=1\).
+\(M+m=3+1=4\).` },
+    { step:"Exam shape: a sphere", a:"E",
+      q:R`Compute the absolute maximum of \(f(x,y,z)=x+2y+2z\) over the sphere \(x^2+y^2+z^2=9\).`,
+      o:["3","6",R`\(9\sqrt3\)`,"27","9"],
+      s:R`\(\langle1,2,2\rangle=\lambda\langle2x,2y,2z\rangle\), so \((x,y,z)=t\langle1,2,2\rangle\).
+Sphere: \(t^2+4t^2+4t^2=9t^2=9\Rightarrow t=\pm1\).
+\(f(1,2,2)=1+4+4=9\). (Check with the pattern: radius 3 times \(\sqrt{1+4+4}=3\) gives 9.)` }
+  ]
+},
+dbl: {
+  exam: R`A double integral over a rectangle that splits into two easy single integrals (often with a \(u\)-substitution in one of them), an average value, or a volume over a triangle where you have to write the limits yourself.`,
+  learn: R`<p class="idea"><b>The big idea:</b> a single integral adds up heights along a line to get an area. A <b>double integral</b> \(\iint_Rf\,dA\) adds up heights over a flat region \(R\) to get a volume. You compute it as two ordinary integrals, one inside the other.</p>
+<p><b>How to read one:</b> in \(\displaystyle\int_0^2\!\!\int_0^1(x+y)\,dx\,dy\), the <b>inside</b> integral goes with the <b>inside</b> \(d\)-letter. Here \(dx\) is inside, so \(x\) runs from 0 to 1 and \(y\) from 0 to 2.</p>
+<p><b>How to do one:</b> integrate the inside one first, treating the other letter as a plain number. Then integrate what is left.</p>
+<div class="ex"><b>Example:</b> \(\displaystyle\int_0^2\!\!\int_0^1(x+y)\,dx\,dy\). Inside: \(\big[\tfrac{x^2}2+xy\big]_{x=0}^{x=1}=\tfrac12+y\). Outside: \(\int_0^2(\tfrac12+y)\,dy=1+2=3\).</div>
+<p><b>Shortcut for rectangles:</b> if the region is a rectangle <i>and</i> the function is (an \(x\)-part) times (a \(y\)-part), do the two integrals separately and multiply.</p>
+<div class="ex"><b>Example:</b> \(\displaystyle\iint xe^y\,dA\) on \(0\le x\le2\), \(0\le y\le1\) is \(\int_0^2x\,dx\cdot\int_0^1e^y\,dy=2(e-1)\).</div>
+<p><b>Regions that are not rectangles:</b> pick an order, say \(dy\,dx\). The outside limits are the smallest and largest \(x\) (plain numbers). For the inside limits, draw a vertical line through the region at a typical \(x\): where it enters is the bottom limit, where it leaves is the top limit. Those can be formulas in \(x\).</p>
+<div class="ex"><b>Example:</b> the triangle with corners \((0,0)\), \((2,0)\), \((0,2)\) lies under the line \(x+y=2\). So \(0\le x\le2\), and for each \(x\), \(0\le y\le2-x\).</div>
+<p><b>Two things built from double integrals:</b></p>
+<ul><li><b>Average value</b> of \(f\) over \(R\) \(=\dfrac{\iint_Rf\,dA}{\text{area of }R}\).</li>
+<li><b>Volume</b> between a top surface and a bottom surface \(=\iint(\text{top}-\text{bottom})\,dA\).</li></ul>`,
+  warm: [
+    { step:"Inside first", a:"B",
+      q:R`Compute \(\displaystyle\int_0^3\!\!\int_0^2(x+2y)\,dx\,dy\).`,
+      o:["12","24","18","36","6"],
+      s:R`Inside (\(x\) from 0 to 2, \(y\) is a constant): \(\big[\tfrac{x^2}2+2xy\big]_0^2=2+4y\).
+Outside: \(\int_0^3(2+4y)\,dy=6+18=24\).` },
+    { step:"Split a product", a:"C",
+      q:R`Compute \(\displaystyle\iint_Rx^2\cos y\,dA\) where \(R=[0,3]\times[0,\tfrac\pi2]\).`,
+      o:["3","27","9",R`\(\tfrac{9\pi}2\)`,"0"],
+      s:R`Rectangle and a product, so split: \(\int_0^3x^2dx\cdot\int_0^{\pi/2}\cos y\,dy=9\cdot1=9\).` },
+    { step:"Substitution in one factor", a:"A",
+      q:R`Compute \(\displaystyle\iint_R\frac{4xy}{x^2+1}\,dA\) where \(R=[0,1]\times[0,3]\).`,
+      o:[R`\(9\ln2\)`,R`\(\tfrac92\ln2\)`,R`\(18\ln2\)`,"9",R`\(2\ln2\)`],
+      s:R`Split: \(\int_0^1\dfrac{4x}{x^2+1}dx\cdot\int_0^3y\,dy\).
+First factor: let \(u=x^2+1\), \(du=2x\,dx\). It becomes \(2\int_1^2\tfrac{du}u=2\ln2\).
+Second factor: \(\tfrac92\). Product: \(9\ln2\).` },
+    { step:"Average value", a:"D",
+      q:R`Find the average value of \(f(x,y)=xy\) over the rectangle \(0\le x\le2\), \(0\le y\le3\).`,
+      o:["9","6","3",R`\(\tfrac32\)`,"1"],
+      s:R`\(\iint xy\,dA=\int_0^2x\,dx\cdot\int_0^3y\,dy=2\cdot\tfrac92=9\). The area is \(2\cdot3=6\).
+Average \(=\tfrac96=\tfrac32\). Choice A is the integral before dividing.` },
+    { step:"Exam shape: volume over a triangle", a:"E",
+      q:R`Find the volume of the solid under the plane \(z=3y\) and above the region in the first quadrant bounded by the coordinate axes and the line \(x+y=2\).`,
+      o:["2","8","6","12","4"],
+      s:R`The triangle: \(0\le x\le2\), and for each \(x\), \(0\le y\le2-x\).
+\[\int_0^2\!\!\int_0^{2-x}3y\,dy\,dx=\int_0^2\tfrac32(2-x)^2dx=\tfrac32\cdot\tfrac83=4.\]
+(\(\int_0^2(2-x)^2dx=\tfrac{2^3}3=\tfrac83\).)` }
+  ]
+},
+ord: {
+  exam: R`An integral that is impossible in the order given, because the inside has no antiderivative: \(e^{x^2}\), \(e^{y^3}\), \(\cos(y^2)\), \(\tfrac1{\ln y}\). You sketch the region, flip the order, and then a simple substitution finishes it.`,
+  learn: R`<p class="idea"><b>The big idea:</b> the limits of a double integral describe a region. The same region can be sliced vertically (\(dy\,dx\)) or horizontally (\(dx\,dy\)). Both give the same answer, but sometimes only one of them can actually be computed.</p>
+<p><b>When to flip:</b> when the inside integral is one of the "impossible" ones, like \(\int e^{x^2}dx\) or \(\int\cos(y^2)dy\). These have no formula. After flipping, the other integration produces exactly the factor a \(u\)-substitution needs.</p>
+<p><b>How to flip, in four steps:</b></p>
+<ol><li><b>Read the limits as inequalities.</b> \(\displaystyle\int_0^1\!\!\int_x^1\cdots dy\,dx\) says \(0\le x\le1\) and \(x\le y\le1\).</li>
+<li><b>Sketch.</b> Draw the boundary curves: here the line \(y=x\) and the line \(y=1\). The region is the triangle with corners \((0,0)\), \((0,1)\), \((1,1)\).</li>
+<li><b>New outside limits:</b> the smallest and largest value of the other variable over the whole region. Here \(y\) goes from 0 to 1.</li>
+<li><b>New inside limits:</b> slice the other way. A horizontal line at height \(y\) enters at \(x=0\) and leaves at the line \(y=x\), which is \(x=y\). So \(0\le x\le y\).</li></ol>
+<div class="ex"><b>Example:</b> \(\displaystyle\int_0^1\!\!\int_x^1e^{y^2}dy\,dx=\int_0^1\!\!\int_0^ye^{y^2}dx\,dy=\int_0^1ye^{y^2}dy=\Big[\tfrac12e^{y^2}\Big]_0^1=\tfrac12(e-1)\).
+<br>The inside integral in \(x\) just multiplies by the width \(y\), and that \(y\) is what makes \(u=y^2\) work.</div>
+<p><b>Rewriting curves:</b> to slice the other way you need each boundary solved for the other variable. \(y=\sqrt x\) is \(x=y^2\). \(y=\sqrt[3]x\) is \(x=y^3\). \(x=\tfrac y2\) is \(y=2x\).</p>
+<p><b>Common mistake:</b> swapping \(dx\) and \(dy\) and leaving the limits alone. The new outside limits must be plain numbers.</p>`,
+  warm: [
+    { step:"Read the region", a:"B",
+      q:R`The limits of \(\displaystyle\int_0^1\!\!\int_x^1f(x,y)\,dy\,dx\) describe which region?`,
+      o:["The triangle with corners \\((0,0)\\), \\((1,0)\\), \\((1,1)\\)","The triangle with corners \\((0,0)\\), \\((0,1)\\), \\((1,1)\\)","The square \\(0\\le x\\le1\\), \\(0\\le y\\le1\\)","The triangle with corners \\((0,0)\\), \\((1,0)\\), \\((0,1)\\)","The region under \\(y=x^2\\)"],
+      s:R`\(0\le x\le1\) and \(x\le y\le1\): \(y\) starts at the line \(y=x\) and goes <b>up</b> to \(y=1\). That is the part of the square <b>above</b> the diagonal: corners \((0,0)\), \((0,1)\), \((1,1)\).
+Choice A is the part below the diagonal, which would be \(0\le y\le x\).` },
+    { step:"Flip the limits", a:"D",
+      q:R`\(\displaystyle\int_0^1\!\!\int_x^1f(x,y)\,dy\,dx\) equals`,
+      o:[R`\(\displaystyle\int_0^1\!\!\int_x^1f\,dx\,dy\)`,R`\(\displaystyle\int_0^1\!\!\int_y^1f\,dx\,dy\)`,R`\(\displaystyle\int_x^1\!\!\int_0^1f\,dx\,dy\)`,R`\(\displaystyle\int_0^1\!\!\int_0^yf\,dx\,dy\)`,R`\(\displaystyle\int_0^1\!\!\int_0^1f\,dx\,dy\)`],
+      s:R`Region: the triangle above \(y=x\) inside the unit square. Slice horizontally: \(y\) from 0 to 1, and at height \(y\), \(x\) runs from the \(y\)-axis (\(x=0\)) to the diagonal (\(x=y\)).
+A keeps the old limits. C has a variable in the outside limits, which is never allowed.` },
+    { step:"Flip, then substitute", a:"C",
+      q:R`Compute \(\displaystyle\int_0^{\sqrt\pi}\!\!\int_x^{\sqrt\pi}\sin(y^2)\,dy\,dx\).`,
+      o:["0",R`\(\tfrac12\)`,"1","2",R`\(\pi\)`],
+      s:R`\(\int\sin(y^2)dy\) has no formula, so flip. Region: \(0\le x\le\sqrt\pi\), \(x\le y\le\sqrt\pi\), the triangle above \(y=x\). Flipped: \(0\le y\le\sqrt\pi\), \(0\le x\le y\).
+\[\int_0^{\sqrt\pi}y\sin(y^2)\,dy=\Big[-\tfrac12\cos(y^2)\Big]_0^{\sqrt\pi}=-\tfrac12(\cos\pi-\cos0)=-\tfrac12(-2)=1.\]` },
+    { step:"A curved edge", a:"A",
+      q:R`Compute \(\displaystyle\int_0^4\!\!\int_{\sqrt x}^2\frac1{1+y^3}\,dy\,dx\).`,
+      o:[R`\(\tfrac13\ln9\)`,R`\(\ln9\)`,R`\(\tfrac13\ln8\)`,R`\(3\ln9\)`,R`\(\tfrac12\ln9\)`],
+      s:R`Region: \(0\le x\le4\), \(\sqrt x\le y\le2\). The curve \(y=\sqrt x\) is \(x=y^2\). Flipped: \(0\le y\le2\), and \(x\) from 0 to \(y^2\).
+\[\int_0^2\frac{y^2}{1+y^3}\,dy=\Big[\tfrac13\ln(1+y^3)\Big]_0^2=\tfrac13\ln9.\]` },
+    { step:"Exam shape: a slanted edge", a:"E",
+      q:R`Reverse the order of integration and evaluate \(\displaystyle\int_0^6\!\!\int_{y/3}^2e^{x^2}\,dx\,dy\).`,
+      o:[R`\(e^4-1\)`,R`\(3(e^4-1)\)`,R`\(\tfrac32e^4\)`,R`\(\tfrac12(e^4-1)\)`,R`\(\tfrac32(e^4-1)\)`],
+      s:R`Region: \(0\le y\le6\), \(\tfrac y3\le x\le2\). The left edge \(x=\tfrac y3\) is the line \(y=3x\). So the region is the triangle under \(y=3x\) for \(0\le x\le2\).
+Flipped: \(\displaystyle\int_0^2\!\!\int_0^{3x}e^{x^2}dy\,dx=\int_0^23xe^{x^2}dx=\Big[\tfrac32e^{x^2}\Big]_0^2=\tfrac32(e^4-1)\).` }
+  ]
+},
+pol: {
+  exam: R`A disk, ring, half disk or quarter disk with \(x^2+y^2\) in the integrand. Either "compute it" or "which polar integral is this?" The work is choosing the \(\theta\) range from the picture and remembering the extra \(r\).`,
+  learn: R`<p class="idea"><b>The big idea:</b> round regions are painful in \(x\) and \(y\) but simple in <b>polar coordinates</b>: \(r\) is the distance from the origin, and \(\theta\) is the angle measured counterclockwise from the positive \(x\)-axis.</p>
+<p><b>The three swaps:</b></p>
+<ul><li>\(x=r\cos\theta\), \(y=r\sin\theta\)</li>
+<li>\(x^2+y^2=r^2\) (so \(\sqrt{x^2+y^2}=r\))</li>
+<li>\(dA=r\,dr\,d\theta\). <b>Do not forget this extra \(r\).</b> A tiny polar piece is wider the farther out it is, and the \(r\) accounts for that.</li></ul>
+<p><b>Limits for common shapes</b> (circle of radius \(a\) centered at the origin):</p>
+<ul><li>Whole disk: \(0\le r\le a\), \(0\le\theta\le2\pi\).</li>
+<li>Top half (\(y\ge0\)): \(0\le\theta\le\pi\). Right half (\(x\ge0\)): \(-\tfrac\pi2\le\theta\le\tfrac\pi2\).</li>
+<li>First quadrant (\(x,y\ge0\)): \(0\le\theta\le\tfrac\pi2\).</li>
+<li>Ring between radius \(a\) and \(b\): \(a\le r\le b\).</li></ul>
+<p><b>Watch the radius:</b> the circle \(x^2+y^2=4\) has radius 2, and \(x^2+y^2=2\) has radius \(\sqrt2\).</p>
+<div class="ex"><b>Example:</b> \(\displaystyle\iint_De^{x^2+y^2}dA\) over the disk of radius 1.
+<br>\(\displaystyle\int_0^{2\pi}\!\!\int_0^1e^{r^2}\,r\,dr\,d\theta\). Inside: let \(u=r^2\), so \(\int_0^1e^{r^2}r\,dr=\tfrac12(e-1)\). Outside: multiply by \(2\pi\). Answer \(\pi(e-1)\).
+<br>The extra \(r\) is what makes the substitution possible.</div>
+<p><b>Converting from Cartesian limits:</b> \(\displaystyle\int_0^3\!\!\int_0^{\sqrt{9-x^2}}\). The top limit \(y=\sqrt{9-x^2}\) is the upper half of the circle \(x^2+y^2=9\). With \(x\) from 0 to 3 and \(y\ge0\) this is the first-quadrant quarter of the radius-3 disk.</p>`,
+  warm: [
+    { step:"The extra r", a:"C",
+      q:R`Which integral gives the area of the disk \(x^2+y^2\le9\)?`,
+      o:[R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^3dr\,d\theta\)`,R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^9r\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^3r\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{\pi}\!\!\int_0^3r\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^3r^2\,dr\,d\theta\)`],
+      s:R`Area \(=\iint1\,dA\) and \(dA=r\,dr\,d\theta\). Radius is \(\sqrt9=3\), all the way around.
+Check: \(2\pi\cdot\tfrac92=9\pi=\pi\cdot3^2\). ✓ Choice A (no \(r\)) would give \(6\pi\).` },
+    { step:"Choose the θ range", a:"B",
+      q:R`Compute \(\displaystyle\iint_R(x^2+y^2)\,dA\) where \(R\) is the part of the disk \(x^2+y^2\le4\) in the first quadrant.`,
+      o:[R`\(\pi\)`,R`\(2\pi\)`,R`\(4\pi\)`,R`\(8\pi\)`,R`\(\tfrac\pi2\)`],
+      s:R`First quadrant: \(0\le\theta\le\tfrac\pi2\). Radius 2. Integrand \(r^2\), times the extra \(r\).
+\[\int_0^{\pi/2}\!\!\int_0^2r^3\,dr\,d\theta=\frac\pi2\cdot\frac{16}4=2\pi.\]` },
+    { step:"Substitution inside", a:"A",
+      q:R`Compute \(\displaystyle\iint_D\cos(x^2+y^2)\,dA\) where \(D\) is the disk \(x^2+y^2\le\tfrac\pi2\).`,
+      o:[R`\(\pi\)`,R`\(2\pi\)`,R`\(\tfrac\pi2\)`,"0","1"],
+      s:R`Radius \(\sqrt{\pi/2}\). \(\displaystyle\int_0^{2\pi}\!\!\int_0^{\sqrt{\pi/2}}\cos(r^2)\,r\,dr\,d\theta\).
+Inside: \(\big[\tfrac12\sin(r^2)\big]_0^{\sqrt{\pi/2}}=\tfrac12\sin\tfrac\pi2=\tfrac12\). Times \(2\pi\): \(\pi\).` },
+    { step:"A ring", a:"D",
+      q:R`Compute \(\displaystyle\iint_D\frac1{x^2+y^2}\,dA\) where \(D\) is the ring between the circles \(x^2+y^2=1\) and \(x^2+y^2=e^2\).`,
+      o:[R`\(\pi\)`,R`\(2\pi e\)`,R`\(\pi(e^2-1)\)`,R`\(2\pi\)`,R`\(2\pi(e-1)\)`],
+      s:R`The circles have radius 1 and \(e\). Integrand \(\tfrac1{r^2}\) times \(r\) is \(\tfrac1r\).
+\[\int_0^{2\pi}\!\!\int_1^e\frac1r\,dr\,d\theta=2\pi\big[\ln r\big]_1^e=2\pi.\]` },
+    { step:"Exam shape: convert the limits", a:"E",
+      q:R`Rewrite \(\displaystyle\int_{-2}^2\!\!\int_0^{\sqrt{4-x^2}}(x^2+y^2)^{\frac32}\,dy\,dx\) as an iterated integral in polar coordinates.`,
+      o:[R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^2r^4\,dr\,d\theta\)`,R`\(\displaystyle\int_0^\pi\!\!\int_0^2r^3\,dr\,d\theta\)`,R`\(\displaystyle\int_0^{\pi/2}\!\!\int_0^2r^4\,dr\,d\theta\)`,R`\(\displaystyle\int_0^\pi\!\!\int_0^4r^4\,dr\,d\theta\)`,R`\(\displaystyle\int_0^\pi\!\!\int_0^2r^4\,dr\,d\theta\)`],
+      s:R`<b>Region:</b> \(y\) from 0 up to the circle \(y=\sqrt{4-x^2}\), with \(x\) from \(-2\) to 2: the top half of the radius-2 disk. \(0\le\theta\le\pi\), \(0\le r\le2\).
+<b>Integrand:</b> \((r^2)^{3/2}=r^3\), times the extra \(r\): \(r^4\).
+B forgets the extra \(r\). D uses 4 for the radius.` }
+  ]
+},
+tri: {
+  exam: R`Mostly setting up limits, not computing: the solid under a plane in the first octant in a stated order, rewriting an integral in a different order, or filling in a missing limit. Sometimes one easy evaluation.`,
+  learn: R`<p class="idea"><b>The big idea:</b> a <b>triple integral</b> \(\iiint f\,dV\) adds up a quantity over a solid. With \(f=1\) it gives the volume. You compute three integrals, from the inside out.</p>
+<p><b>The one rule for limits:</b></p>
+<ul><li><b>Outside</b> limits: plain numbers.</li>
+<li><b>Middle</b> limits: may use the outside variable only.</li>
+<li><b>Inside</b> limits: may use the two others.</li></ul>
+<p>So a limit can only contain variables that are integrated <i>later</i>. This rule alone eliminates many wrong choices.</p>
+<p><b>"First octant"</b> means the corner of space where \(x\ge0\), \(y\ge0\), \(z\ge0\).</p>
+<p><b>The solid under a plane</b> (a pyramid shape called a tetrahedron). Take \(x+y+z=4\) in the first octant, in the order \(dz\,dy\,dx\):</p>
+<ol><li><b>Inside (z):</b> solve the plane for \(z\): \(0\le z\le4-x-y\).</li>
+<li><b>Middle (y):</b> look at the floor, where \(z=0\). The plane becomes \(x+y=4\), so \(0\le y\le4-x\).</li>
+<li><b>Outside (x):</b> on the floor with \(y=0\) too: \(0\le x\le4\).</li></ol>
+<div class="ex"><b>Result:</b> \(\displaystyle V=\int_0^4\!\!\int_0^{4-x}\!\!\int_0^{4-x-y}dz\,dy\,dx\). For a different order, do the same three steps with the letters in that order.</div>
+<p><b>Changing the order of a given integral:</b> first write the region as a list of inequalities, then rebuild.</p>
+<div class="ex"><b>Example:</b> \(\displaystyle\int_0^1\!\!\int_0^x\!\!\int_0^yf\,dz\,dy\,dx\) means \(0\le x\le1\), \(0\le y\le x\), \(0\le z\le y\). Chain them: \(0\le z\le y\le x\le1\).
+<br>From the chain you can read any order. For \(dx\,dy\,dz\): \(z\) from 0 to 1, then \(y\) from \(z\) to 1, then \(x\) from \(y\) to 1.</div>`,
+  warm: [
+    { step:"Inside out", a:"C",
+      q:R`Compute \(\displaystyle\int_0^1\!\!\int_0^2\!\!\int_0^3xyz\,dz\,dy\,dx\).`,
+      o:["3","9",R`\(\tfrac92\)`,"6","18"],
+      s:R`All limits are numbers and the integrand is a product, so it splits into three:
+\(\int_0^1x\,dx\cdot\int_0^2y\,dy\cdot\int_0^3z\,dz=\tfrac12\cdot2\cdot\tfrac92=\tfrac92\).` },
+    { step:"Under a plane", a:"A",
+      q:R`Which integral gives the volume of the solid in the first octant under the plane \(x+y+z=4\)?`,
+      o:[R`\(\displaystyle\int_0^4\!\!\int_0^{4-x}\!\!\int_0^{4-x-y}dz\,dy\,dx\)`,R`\(\displaystyle\int_0^4\!\!\int_0^4\!\!\int_0^{4-x-y}dz\,dy\,dx\)`,R`\(\displaystyle\int_0^4\!\!\int_0^{4-x-y}\!\!\int_0^{4-x}dz\,dy\,dx\)`,R`\(\displaystyle\int_0^{4-x-y}\!\!\int_0^{4-x}\!\!\int_0^4dz\,dy\,dx\)`,R`\(\displaystyle\int_0^4\!\!\int_0^{4-x}\!\!\int_0^4dz\,dy\,dx\)`],
+      s:R`Inside: \(z\) up to the plane, \(4-x-y\). Middle: on the floor (\(z=0\)), \(y\) up to \(4-x\). Outside: \(x\) from 0 to 4.
+B lets \(y\) go to 4 for every \(x\) (a square floor, not a triangle). C has a \(y\)-limit containing \(y\). D has variables in the outside limits.` },
+    { step:"Unequal coefficients", a:"D",
+      q:R`The volume of the solid in the first octant bounded by the plane \(2x+y+4z=8\) is \(\displaystyle\int_0^a\!\!\int_0^b\!\!\int_0^cdz\,dy\,dx\). What are \(a\), \(b\), \(c\)?`,
+      o:[R`\(a=8,\;b=8-2x,\;c=8-2x-y\)`,R`\(a=4,\;b=8-2x,\;c=8-2x-y\)`,R`\(a=4,\;b=4-x,\;c=2-\tfrac x2-\tfrac y4\)`,R`\(a=4,\;b=8-2x,\;c=2-\tfrac x2-\tfrac y4\)`,R`\(a=2,\;b=8-2x,\;c=2-\tfrac x2-\tfrac y4\)`],
+      s:R`<b>c:</b> solve for \(z\): \(4z=8-2x-y\Rightarrow z=2-\tfrac x2-\tfrac y4\). Divide everything by 4, which B forgets.
+<b>b:</b> floor (\(z=0\)): \(2x+y=8\Rightarrow y=8-2x\).
+<b>a:</b> floor with \(y=0\): \(2x=8\Rightarrow x=4\).` },
+    { step:"Evaluate with a variable limit", a:"B",
+      q:R`Evaluate \(\displaystyle\int_0^1\!\!\int_0^1\!\!\int_0^{3-x}e^y\,dz\,dy\,dx\).`,
+      o:[R`\(3(e-1)\)`,R`\(\tfrac52(e-1)\)`,R`\(\tfrac52e\)`,R`\(\tfrac12(e-1)\)`,R`\(5(e-1)\)`],
+      s:R`<b>z:</b> \(e^y\) has no \(z\), so the inside integral is \((3-x)e^y\).
+<b>y:</b> \(\int_0^1(3-x)e^y\,dy=(3-x)(e-1)\).
+<b>x:</b> \((e-1)\int_0^1(3-x)\,dx=(e-1)\big(3-\tfrac12\big)=\tfrac52(e-1)\).` },
+    { step:"Exam shape: reorder", a:"E",
+      q:R`Which of the following rewrites \(\displaystyle\int_0^1\!\!\int_0^x\!\!\int_0^yf\,dz\,dy\,dx\) in the order \(dx\,dy\,dz\)?`,
+      o:[R`\(\int_0^1\!\int_0^z\!\int_0^yf\,dx\,dy\,dz\)`,R`\(\int_0^1\!\int_0^x\!\int_0^yf\,dx\,dy\,dz\)`,R`\(\int_0^y\!\int_z^1\!\int_y^1f\,dx\,dy\,dz\)`,R`\(\int_0^1\!\int_z^1\!\int_0^yf\,dx\,dy\,dz\)`,R`\(\int_0^1\!\int_z^1\!\int_y^1f\,dx\,dy\,dz\)`],
+      s:R`Region: \(0\le x\le1\), \(0\le y\le x\), \(0\le z\le y\). As a chain: \(0\le z\le y\le x\le1\).
+<b>z (outside):</b> 0 to 1. <b>y (middle):</b> between \(z\) and 1. <b>x (inside):</b> between \(y\) and 1.
+B has \(x\) in a limit while \(x\) is the inside variable. C has a variable in the outside limits.` }
+  ]
+},
+cyl: {
+  exam: R`A solid between two surfaces that contain \(x^2+y^2\) (bowls, cones, cylinders). Either compute a volume or integral, or rewrite Cartesian limits in cylindrical form. Finding where the surfaces meet gives the \(r\) range.`,
+  learn: R`<p class="idea"><b>The big idea:</b> <b>cylindrical coordinates</b> are polar coordinates on the floor plus ordinary height: \((r,\theta,z)\). Use them when the solid is round when viewed from above, which usually shows up as \(x^2+y^2\) in the equations.</p>
+<p><b>The swaps:</b> \(x^2+y^2=r^2\), \(z\) stays \(z\), and \(dV=r\,dz\,dr\,d\theta\). The same extra \(r\) as polar.</p>
+<p><b>Surfaces to recognize:</b></p>
+<ul><li>\(z=x^2+y^2\) becomes \(z=r^2\): a bowl opening upward (a paraboloid).</li>
+<li>\(z=\sqrt{x^2+y^2}\) becomes \(z=r\): a cone.</li>
+<li>\(x^2+y^2=4\) becomes \(r=2\): a vertical cylinder.</li></ul>
+<p><b>Setting up a solid between two surfaces:</b></p>
+<ol><li><b>z:</b> from the lower surface to the upper one. To see which is on top, plug in \(r=0\).</li>
+<li><b>r:</b> the surfaces meet where their \(z\)-values are equal. Solve that for \(r\); the solid is \(0\le r\le\) that number.</li>
+<li><b>θ:</b> \(0\) to \(2\pi\) unless the problem restricts it.</li></ol>
+<div class="ex"><b>Example:</b> volume between \(z=r^2\) and \(z=8-r^2\).
+<br>They meet when \(r^2=8-r^2\), so \(r=2\). At \(r=0\): 0 versus 8, so \(8-r^2\) is on top.
+<br>\(\displaystyle V=\int_0^{2\pi}\!\!\int_0^2\!\!\int_{r^2}^{8-r^2}r\,dz\,dr\,d\theta=2\pi\int_0^2(8-2r^2)\,r\,dr=2\pi(16-8)=16\pi\).</div>
+<p><b>Converting Cartesian limits:</b> leave the \(z\) part alone, and treat the \(x,y\) limits exactly like a polar problem: sketch that flat region and read off \(r\) and \(\theta\). A line \(y=x\) is \(\theta=\tfrac\pi4\).</p>`,
+  warm: [
+    { step:"A plain cylinder", a:"C",
+      q:R`Compute \(\displaystyle\iiint_Ez\,dV\) where \(E\) is the cylinder \(x^2+y^2\le4\), \(0\le z\le3\).`,
+      o:[R`\(9\pi\)`,R`\(12\pi\)`,R`\(18\pi\)`,R`\(36\pi\)`,R`\(6\pi\)`],
+      s:R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^2\!\!\int_0^3z\,r\,dz\,dr\,d\theta\). It splits: \(2\pi\cdot\int_0^2r\,dr\cdot\int_0^3z\,dz=2\pi\cdot2\cdot\tfrac92=18\pi\).` },
+    { step:"Where two surfaces meet", a:"B",
+      q:R`Find the volume of the solid between the paraboloids \(z=x^2+y^2\) and \(z=18-x^2-y^2\).`,
+      o:[R`\(27\pi\)`,R`\(81\pi\)`,R`\(162\pi\)`,R`\(54\pi\)`,R`\(9\pi\)`],
+      s:R`\(z=r^2\) and \(z=18-r^2\) meet at \(r^2=9\), \(r=3\). The top is \(18-r^2\) (at \(r=0\) it is 18).
+Height: \(18-2r^2\). \(V=2\pi\int_0^3(18-2r^2)\,r\,dr=2\pi\big[9r^2-\tfrac{r^4}2\big]_0^3=2\pi\big(81-\tfrac{81}2\big)=81\pi\).` },
+    { step:"Convert the limits", a:"A",
+      q:R`Rewrite \(\displaystyle\int_0^5\!\!\int_0^1\!\!\int_0^{\sqrt{1-x^2}}(x^2+y^2)\,dy\,dx\,dz\) in cylindrical coordinates.`,
+      o:[R`\(\displaystyle\int_0^5\!\!\int_0^{\pi/2}\!\!\int_0^1r^3\,dr\,d\theta\,dz\)`,R`\(\displaystyle\int_0^5\!\!\int_0^{\pi/2}\!\!\int_0^1r^2\,dr\,d\theta\,dz\)`,R`\(\displaystyle\int_0^5\!\!\int_0^{\pi}\!\!\int_0^1r^3\,dr\,d\theta\,dz\)`,R`\(\displaystyle\int_0^5\!\!\int_0^{2\pi}\!\!\int_0^1r^3\,dr\,d\theta\,dz\)`,R`\(\displaystyle\int_0^5\!\!\int_0^{\pi/2}\!\!\int_0^1r\,dr\,d\theta\,dz\)`],
+      s:R`The \(x,y\) limits: \(0\le x\le1\), \(0\le y\le\sqrt{1-x^2}\) is the first-quadrant quarter of the unit disk: \(0\le\theta\le\tfrac\pi2\), \(0\le r\le1\).
+Integrand \(r^2\) times the extra \(r\): \(r^3\). B forgets the extra \(r\).` },
+    { step:"When the r cancels", a:"D",
+      q:R`Compute \(\displaystyle\iiint_E\frac1{\sqrt{x^2+y^2}}\,dV\) where \(E\) is the cylinder \(x^2+y^2\le9\), \(0\le z\le2\).`,
+      o:[R`\(6\pi\)`,R`\(18\pi\)`,R`\(36\pi\)`,R`\(12\pi\)`,R`\(4\pi\)`],
+      s:R`Integrand \(\tfrac1r\), times the volume piece \(r\,dz\,dr\,d\theta\): the \(r\)'s cancel and you integrate 1.
+\(\displaystyle\int_0^{2\pi}\!\!\int_0^3\!\!\int_0^21\,dz\,dr\,d\theta=2\pi\cdot3\cdot2=12\pi\).` },
+    { step:"Exam shape: square-root surfaces", a:"E",
+      q:R`Evaluate \(\displaystyle\iiint_Dz\,dV\), where \(D\) is the region between the cone \(z=\sqrt{x^2+y^2}\) and the surface \(z=\sqrt{8-x^2-y^2}\).`,
+      o:[R`\(4\pi\)`,R`\(16\pi\)`,R`\(\dfrac{32\pi}3\)`,R`\(2\pi\)`,R`\(8\pi\)`],
+      s:R`Bottom: \(z=r\). Top: \(z=\sqrt{8-r^2}\). They meet when \(r^2=8-r^2\), so \(r=2\).
+<b>z:</b> \(\int z\,dz=\tfrac{z^2}2\), from bottom to top: \(\tfrac12\big[(8-r^2)-r^2\big]=4-r^2\). Squaring removes the roots.
+<b>r:</b> \(\int_0^2(4-r^2)\,r\,dr=\big[2r^2-\tfrac{r^4}4\big]_0^2=8-4=4\).
+<b>θ:</b> \(2\pi\cdot4=8\pi\).` }
+  ]
+},
+sph: {
+  exam: R`Almost always an "ice cream cone": the solid inside a sphere and above a cone. You pick the limits for \(\rho\), \(\phi\), \(\theta\) and the volume piece \(\rho^2\sin\phi\). Sometimes you also evaluate, and once it was a sphere that does not sit at the origin.`,
+  learn: R`<p class="idea"><b>The big idea:</b> <b>spherical coordinates</b> locate a point by its distance from the origin and two angles. Balls and cones, which are messy in \(x,y,z\), become simple boxes of numbers.</p>
+<p><b>The three coordinates:</b></p>
+<ul><li>\(\rho\) ("rho"): the straight-line distance from the origin. \(\rho\ge0\).</li>
+<li>\(\phi\) ("phi"): the angle measured <b>down from the positive \(z\)-axis</b>. Straight up is \(\phi=0\), the floor (the \(xy\)-plane) is \(\phi=\tfrac\pi2\), straight down is \(\phi=\pi\).</li>
+<li>\(\theta\): the same angle as in polar coordinates, around the \(z\)-axis.</li></ul>
+<p><b>Facts to memorize:</b> \(x^2+y^2+z^2=\rho^2\), \(z=\rho\cos\phi\), and the volume piece is \(dV=\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\).</p>
+<p><b>Shapes:</b></p>
+<ul><li>Sphere \(x^2+y^2+z^2=a^2\) is \(\rho=a\). So \(x^2+y^2+z^2=8\) is \(\rho=\sqrt8\).</li>
+<li>A cone is \(\phi=\) a fixed angle. For \(z=k\sqrt{x^2+y^2}\), the angle satisfies \(\tan\phi=\tfrac1k\).
+<br>\(z=\sqrt{x^2+y^2}\): \(\phi=\tfrac\pi4\) (45°). &nbsp; \(z=\sqrt{3(x^2+y^2)}\): \(\phi=\tfrac\pi6\) (30°, a narrow cone). &nbsp; \(z=\sqrt{\tfrac13(x^2+y^2)}\): \(\phi=\tfrac\pi3\) (60°, a wide cone).</li>
+<li>"Inside the cone" or "above the cone" means \(\phi\) from 0 to the cone's angle.</li></ul>
+<div class="ex"><b>Example (the ice cream cone):</b> inside the sphere \(\rho=2\) and above the cone \(\phi=\tfrac\pi4\).
+\[V=\int_0^{2\pi}\!\!\int_0^{\pi/4}\!\!\int_0^2\rho^2\sin\phi\,d\rho\,d\phi\,d\theta=2\pi\cdot\Big(1-\tfrac{\sqrt2}2\Big)\cdot\tfrac83.\]
+The three integrals separate: \(\int d\theta=2\pi\), \(\int_0^{\pi/4}\sin\phi\,d\phi=1-\cos\tfrac\pi4\), \(\int_0^2\rho^2d\rho=\tfrac83\).</div>
+<p><b>A sphere resting on the origin:</b> the sphere of radius \(a\) centered at \((0,0,a)\) is \(x^2+y^2+z^2=2az\), which becomes \(\rho=2a\cos\phi\).</p>
+<p><b>First octant:</b> \(\theta\) only goes from 0 to \(\tfrac\pi2\).</p>`,
+  warm: [
+    { step:"The volume piece", a:"B",
+      q:R`In spherical coordinates, \(dV\) equals`,
+      o:[R`\(\rho\,d\rho\,d\phi\,d\theta\)`,R`\(\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\)`,R`\(\rho^2\cos\phi\,d\rho\,d\phi\,d\theta\)`,R`\(\rho\sin\phi\,d\rho\,d\phi\,d\theta\)`,R`\(\rho^2\sin^2\phi\,d\rho\,d\phi\,d\theta\)`],
+      s:R`\(dV=\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\). Every wrong choice here has appeared as a wrong answer on a real exam, so this one is worth memorizing exactly.` },
+    { step:"The angle of a cone", a:"C",
+      q:R`The cone \(z=\sqrt{\dfrac{x^2+y^2}3}\) is which surface in spherical coordinates?`,
+      o:[R`\(\phi=\tfrac\pi6\)`,R`\(\phi=\tfrac\pi4\)`,R`\(\phi=\tfrac\pi3\)`,R`\(\phi=\tfrac\pi2\)`,R`\(\phi=\tfrac{2\pi}3\)`],
+      s:R`Let \(r=\sqrt{x^2+y^2}\), the distance from the \(z\)-axis. The cone is \(z=\tfrac r{\sqrt3}\).
+\(\phi\) is measured from the \(z\)-axis, so \(\tan\phi=\dfrac rz=\sqrt3\), which gives \(\phi=\tfrac\pi3\).
+This cone is wide (far from the axis), so its angle is bigger than 45°.` },
+    { step:"Half a ball", a:"A",
+      q:R`Find the volume of the part of the ball \(x^2+y^2+z^2\le16\) that lies above the \(xy\)-plane.`,
+      o:[R`\(\dfrac{128\pi}3\)`,R`\(\dfrac{256\pi}3\)`,R`\(\dfrac{64\pi}3\)`,R`\(32\pi\)`,R`\(\dfrac{16\pi}3\)`],
+      s:R`\(\rho\) from 0 to 4. Above the floor: \(\phi\) from 0 to \(\tfrac\pi2\). All the way around: \(\theta\) from 0 to \(2\pi\).
+\(2\pi\cdot\int_0^{\pi/2}\sin\phi\,d\phi\cdot\int_0^4\rho^2d\rho=2\pi\cdot1\cdot\tfrac{64}3=\tfrac{128\pi}3\).
+Check: half of \(\tfrac43\pi\cdot4^3\). ✓` },
+    { step:"Evaluate an ice cream cone", a:"D",
+      q:R`Find the volume of the solid inside the sphere \(x^2+y^2+z^2=4\) and above the cone \(\phi=\tfrac\pi3\).`,
+      o:[R`\(\dfrac{16\pi}3\)`,R`\(\dfrac{4\pi}3\)`,R`\(8\pi\)`,R`\(\dfrac{8\pi}3\)`,R`\(\dfrac{2\pi}3\)`],
+      s:R`\(\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_0^2\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\).
+\(\int_0^{\pi/3}\sin\phi\,d\phi=1-\cos\tfrac\pi3=\tfrac12\). \(\int_0^2\rho^2d\rho=\tfrac83\).
+\(2\pi\cdot\tfrac12\cdot\tfrac83=\tfrac{8\pi}3\).` },
+    { step:"A sphere not at the origin", a:"B",
+      q:R`The sphere \(x^2+y^2+(z-3)^2=9\) is which surface in spherical coordinates?`,
+      o:[R`\(\rho=3\)`,R`\(\rho=6\cos\phi\)`,R`\(\rho=3\cos\phi\)`,R`\(\rho=6\sin\phi\)`,R`\(\rho=9\cos\phi\)`],
+      s:R`Expand: \(x^2+y^2+z^2-6z+9=9\), so \(x^2+y^2+z^2=6z\).
+Swap in \(\rho^2\) and \(z=\rho\cos\phi\): \(\rho^2=6\rho\cos\phi\Rightarrow\rho=6\cos\phi\).` },
+    { step:"Exam shape: choose the limits", a:"E",
+      q:R`The volume of the region in the first octant inside the sphere \(x^2+y^2+z^2=25\) and above the cone \(z=\sqrt{x^2+y^2}\) is \(\displaystyle\int_0^a\!\!\int_0^b\!\!\int_0^c\rho^2\sin\phi\,d\rho\,d\phi\,d\theta\). What are \(a\), \(b\), \(c\)?`,
+      o:[R`\(a=2\pi,\;b=\tfrac\pi4,\;c=5\)`,R`\(a=\tfrac\pi2,\;b=\tfrac\pi4,\;c=25\)`,R`\(a=\tfrac\pi2,\;b=\tfrac\pi2,\;c=5\)`,R`\(a=\tfrac\pi4,\;b=\tfrac\pi2,\;c=5\)`,R`\(a=\tfrac\pi2,\;b=\tfrac\pi4,\;c=5\)`],
+      s:R`The order is \(d\rho\,d\phi\,d\theta\), so \(c\) belongs to \(\rho\), \(b\) to \(\phi\), \(a\) to \(\theta\).
+<b>c:</b> sphere radius \(\sqrt{25}=5\). <b>b:</b> the cone \(z=\sqrt{x^2+y^2}\) is \(\phi=\tfrac\pi4\). <b>a:</b> first octant, so \(\theta\) stops at \(\tfrac\pi2\).` }
+  ]
+},
+com: {
+  exam: R`The center of mass (or just its \(x\)-coordinate) of a flat plate, a rectangle or a triangle, whose density changes from point to point. It is three double integrals and a division.`,
+  learn: R`<p class="idea"><b>The big idea:</b> the <b>center of mass</b> is the balance point of a flat plate. If the plate is heavier on one side, the balance point shifts toward that side.</p>
+<p><b>Density</b> (written \(\rho(x,y)\) or \(\delta(x,y)\)) says how heavy the plate is near each point. Adding up density over the plate gives the mass.</p>
+<p><b>The three integrals:</b></p>
+<ul><li><b>Mass:</b> \(m=\iint\rho\,dA\).</li>
+<li><b>For \(\bar x\):</b> put an extra \(x\) inside: \(M_y=\iint x\,\rho\,dA\). Then \(\bar x=\dfrac{M_y}m\).</li>
+<li><b>For \(\bar y\):</b> put an extra \(y\) inside: \(M_x=\iint y\,\rho\,dA\). Then \(\bar y=\dfrac{M_x}m\).</li></ul>
+<p>The names look backwards: \(M_y\) (the "moment about the \(y\)-axis") goes with \(\bar x\). Easier to remember: <b>for \(\bar x\), the extra letter is \(x\)</b>.</p>
+<div class="ex"><b>Example:</b> the plate \(0\le x\le2\), \(0\le y\le3\) with density \(\rho=x\) (heavier to the right).
+<br>\(m=\int_0^3\!\!\int_0^2x\,dx\,dy=3\cdot2=6\).
+<br>\(M_y=\int_0^3\!\!\int_0^2x\cdot x\,dx\,dy=3\cdot\tfrac83=8\), so \(\bar x=\tfrac86=\tfrac43\). That is right of the middle (1), as expected.
+<br>\(\bar y=\tfrac32\), the middle, with no work: the density does not change with \(y\), so top and bottom balance.</div>
+<p><b>Sanity checks:</b> the center of mass must lie inside the plate's bounding box, and it leans toward where the density is larger.</p>`,
+  warm: [
+    { step:"Mass", a:"B",
+      q:R`A plate covers \(0\le x\le3\), \(0\le y\le2\) and has density \(\rho(x,y)=y\). Find its mass.`,
+      o:["3","6","9","12","4"],
+      s:R`\(m=\iint y\,dA=\int_0^3dx\cdot\int_0^2y\,dy=3\cdot2=6\).` },
+    { step:"The extra letter", a:"D",
+      q:R`For the same plate (\(0\le x\le3\), \(0\le y\le2\), \(\rho=y\), mass 6), find \(\bar y\).`,
+      o:["1",R`\(\tfrac23\)`,R`\(\tfrac32\)`,R`\(\tfrac43\)`,"2"],
+      s:R`Extra \(y\) inside: \(\iint y\cdot y\,dA=\int_0^3dx\cdot\int_0^2y^2dy=3\cdot\tfrac83=8\).
+\(\bar y=\tfrac86=\tfrac43\). Above the middle (1), because the plate is heavier near the top.` },
+    { step:"Use symmetry", a:"A",
+      q:R`For the same plate (\(0\le x\le3\), \(0\le y\le2\), \(\rho=y\)), what is \(\bar x\)?`,
+      o:[R`\(\tfrac32\)`,"1","2",R`\(\tfrac43\)`,"3"],
+      s:R`The density has no \(x\) in it, so the left half and right half weigh the same. \(\bar x\) is the middle of \(0\le x\le3\): \(\tfrac32\).
+(The integrals agree: \(\iint x\cdot y\,dA=\tfrac92\cdot2=9\), and \(\tfrac96=\tfrac32\).)` },
+    { step:"Exam shape: a rectangle", a:"C",
+      q:R`Find the center of mass of the rectangle \(\{(x,y)\mid0\le x\le3,\;0\le y\le2\}\) where the density function is \(\rho(x,y)=2+x\).`,
+      o:[R`\(\left(\tfrac32,1\right)\)`,R`\(\left(1,\tfrac{12}7\right)\)`,R`\(\left(\tfrac{12}7,1\right)\)`,R`\(\left(\tfrac97,1\right)\)`,"\\((2,1)\\)"],
+      s:R`<b>\(\bar y\):</b> no \(y\) in the density, so \(\bar y=1\), the middle.
+<b>Mass:</b> \(\int_0^2\!\!\int_0^3(2+x)\,dx\,dy=2\big(6+\tfrac92\big)=21\).
+<b>Extra x:</b> \(\int_0^2\!\!\int_0^3x(2+x)\,dx\,dy=2(9+9)=36\).
+\(\bar x=\tfrac{36}{21}=\tfrac{12}7\approx1.71\), right of the middle (1.5) because the plate is heavier on the right.` },
+    { step:"Exam shape: a triangle", a:"E",
+      q:R`Find the \(x\)-coordinate of the center of mass of a plate in the shape of the region bounded by \(y=0\), \(y=x\), and \(x=2\) with a density of \(\delta(x,y)=y\).`,
+      o:[R`\(\tfrac43\)`,"1",R`\(\tfrac54\)`,R`\(\tfrac85\)`,R`\(\tfrac32\)`],
+      s:R`Region: \(0\le x\le2\), \(0\le y\le x\).
+<b>Mass:</b> \(\int_0^2\!\!\int_0^xy\,dy\,dx=\int_0^2\tfrac{x^2}2dx=\tfrac43\).
+<b>Extra x:</b> \(M_y=\int_0^2x\cdot\tfrac{x^2}2dx=\tfrac12\cdot\tfrac{16}4=2\).
+\(\bar x=\dfrac2{4/3}=\dfrac32\).` }
+  ]
+},
+vf: {
+  exam: R`Recognizing fields rather than computing: match a picture of arrows to a formula, pick out the radial field, or use the fact that a gradient is perpendicular to level curves.`,
+  learn: R`<p class="idea"><b>The big idea:</b> a <b>vector field</b> \(\mathbf F(x,y)=\langle P,Q\rangle\) attaches an arrow to every point. Plug in a point, get that point's arrow. Think wind on a weather map.</p>
+<div class="ex"><b>Example:</b> \(\mathbf F=\langle-y,x\rangle\). At \((1,0)\) the arrow is \(\langle0,1\rangle\), straight up. At \((0,1)\) it is \(\langle-1,0\rangle\), pointing left. The arrows circle counterclockwise: a <b>rotation field</b>.</div>
+<p><b>Matching a picture to a formula:</b> pick two or three easy points, such as \((1,0)\), \((0,1)\) and \((1,1)\). For each choice, compute the arrow there and compare with the picture. Wrong choices fall away quickly. The points on the axes are the most useful because one coordinate is zero.</p>
+<p><b>Radial fields:</b> every arrow points straight away from (or toward) the origin. In a formula, that is a number times the position: \(h(x,y)\,\langle x,y\rangle\). Note \(\langle y,x\rangle\) is <i>not</i> radial; the coordinates are swapped.</p>
+<p><b>Gradient fields:</b> start with a function \(\varphi(x,y)\) and take \(\mathbf F=\nabla\varphi=\langle\varphi_x,\varphi_y\rangle\). The function \(\varphi\) is called a <b>potential</b>. Its level curves \(\varphi=c\) are called <b>equipotential curves</b>.</p>
+<p><b>The key fact:</b> at every point, \(\nabla\varphi\) is <b>perpendicular</b> (also called orthogonal) to the level curve of \(\varphi\) through that point.</p>
+<div class="ex"><b>Example:</b> which field is perpendicular to every circle \(x^2+y^2=c\)? Those circles are level curves of \(\varphi=x^2+y^2\), so the answer is \(\nabla\varphi=\langle2x,2y\rangle\).</div>
+<p><b>Going backward:</b> if you are told \(\nabla\varphi=\langle2x,8y\rangle\), then \(\varphi=x^2+4y^2\), and its level curves \(x^2+4y^2=c\) are ellipses.</p>`,
+  warm: [
+    { step:"Plug in a point", a:"D",
+      q:R`For \(\mathbf F(x,y)=\langle-y,x\rangle\), what is the arrow at the point \((1,0)\)?`,
+      o:[R`\(\langle1,0\rangle\)`,R`\(\langle0,-1\rangle\)`,R`\(\langle-1,0\rangle\)`,R`\(\langle0,1\rangle\)`,R`\(\langle1,1\rangle\)`],
+      s:R`\(x=1\), \(y=0\): \(\langle-y,x\rangle=\langle-0,1\rangle=\langle0,1\rangle\), straight up.` },
+    { step:"Radial or not", a:"C",
+      q:R`Which of the following is a radial field?`,
+      o:[R`\(\langle y,x\rangle\)`,R`\(\langle-y,x\rangle\)`,R`\(\dfrac1{x^2+y^2}\langle x,y\rangle\)`,R`\(\langle x^2,y^2\rangle\)`,R`\(\langle1,1\rangle\)`],
+      s:R`Radial means a number times \(\langle x,y\rangle\). Only C is. Test A at \((1,0)\): \(\langle0,1\rangle\), which points sideways instead of outward.` },
+    { step:"Build a gradient field", a:"A",
+      q:R`What is the gradient field of \(\varphi(x,y)=x^2+3y^2\)?`,
+      o:[R`\(\langle2x,6y\rangle\)`,R`\(\langle x^2,3y^2\rangle\)`,R`\(\langle2x,3y\rangle\)`,R`\(\langle6y,2x\rangle\)`,R`\(2x+6y\)`],
+      s:R`\(\nabla\varphi=\langle\varphi_x,\varphi_y\rangle=\langle2x,6y\rangle\). E is not a vector at all.` },
+    { step:"Perpendicular to a curve", a:"B",
+      q:R`Let \(a\ne0\). Which field is orthogonal to the tangent line of the curve \(xy=a\) at every point of the curve?`,
+      o:[R`\(\langle x,y\rangle\)`,R`\(\langle y,x\rangle\)`,R`\(\langle-y,x\rangle\)`,R`\(\langle x,-y\rangle\)`,R`\(\langle1,1\rangle\)`],
+      s:R`The curve is a level curve of \(g=xy\). The gradient is perpendicular to level curves: \(\nabla g=\langle y,x\rangle\).` },
+    { step:"From gradient to level curves", a:"E",
+      q:R`If \(\nabla\varphi=\langle2x,8y\rangle\) then the equipotential curves (level curves of \(\varphi\)) are mostly`,
+      o:["Lines","Circles","Hyperbolas","Parabolas","Non-circular ellipses"],
+      s:R`\(\varphi_x=2x\) and \(\varphi_y=8y\) give \(\varphi=x^2+4y^2\). Level curves \(x^2+4y^2=c\): a sum of squares with different coefficients, so ellipses that are not circles.` },
+    { step:"Exam shape: match the picture", a:"A", fig:"vfB",
+      q:R`Which vector field corresponds to the one pictured here?`,
+      o:[R`\(\langle x,-y\rangle\)`,R`\(\langle x,y\rangle\)`,R`\(\langle-y,x\rangle\)`,R`\(\langle y,x\rangle\)`,R`\(\langle1,x\rangle\)`],
+      s:R`<b>On the x-axis, right side</b> (like \((1,0)\)): the arrows point straight right. \(\langle-y,x\rangle\) and \(\langle y,x\rangle\) give \(\langle0,1\rangle\) (up), and \(\langle1,x\rangle\) gives \(\langle1,1\rangle\) (tilted). Those three are out.
+<b>On the y-axis, top</b> (like \((0,1)\)): the arrows point straight <b>down</b>. \(\langle x,y\rangle\) gives \(\langle0,1\rangle\) (up). \(\langle x,-y\rangle\) gives \(\langle0,-1\rangle\) (down). ✓` }
+  ]
+},
+li: {
+  exam: R`Two kinds. A <b>scalar</b> line integral \(\int_Cf\,ds\) (often the mass of a wire or spring), where you multiply by the speed. And a <b>vector</b> line integral \(\int_C\mathbf F\cdot d\mathbf r\) (work), where you take a dot product with the velocity. For a line segment you write the parametrization yourself.`,
+  learn: R`<p class="idea"><b>The big idea:</b> a <b>line integral</b> adds something up along a curve instead of along the \(x\)-axis. Everything gets rewritten in terms of one variable \(t\), and then it is an ordinary integral.</p>
+<p><b>Step zero: describe the curve.</b> A <b>parametrization</b> \(\mathbf r(t)\) gives the position at time \(t\). Its derivative \(\mathbf r'(t)\) is the velocity, and \(|\mathbf r'(t)|\) (the length of that vector) is the speed.</p>
+<ul><li>Line segment from \(A\) to \(B\): \(\mathbf r(t)=A+t(B-A)\), \(0\le t\le1\).
+<br>From \((1,0)\) to \((5,3)\): \(\langle1+4t,\;3t\rangle\).</li>
+<li>Circle of radius \(a\), counterclockwise: \(\langle a\cos t,\;a\sin t\rangle\), \(0\le t\le2\pi\).</li></ul>
+<p><b>Kind 1, scalar:</b> \(\displaystyle\int_Cf\,ds=\int_a^bf(\mathbf r(t))\,|\mathbf r'(t)|\,dt\).
+<br>\(ds\) is a tiny piece of length, and length = speed × time. If \(f\) is a density, this is the <b>mass</b> of a wire.</p>
+<div class="ex"><b>Example:</b> \(\int_C(x+y)\,ds\) on the segment from \((0,0)\) to \((3,4)\).
+<br>\(\mathbf r=\langle3t,4t\rangle\), speed \(=\sqrt{9+16}=5\). On the curve, \(x+y=7t\).
+<br>\(\int_0^17t\cdot5\,dt=\tfrac{35}2\).</div>
+<p><b>Kind 2, vector:</b> \(\displaystyle\int_C\mathbf F\cdot d\mathbf r=\int_a^b\mathbf F(\mathbf r(t))\cdot\mathbf r'(t)\,dt\).
+<br>This is the <b>work</b> done by the force \(\mathbf F\) on something moving along \(C\). Plug the curve into \(\mathbf F\), then take the dot product with the velocity. There is no absolute value here. The same thing is also written \(\int_C\mathbf F\cdot\mathbf T\,ds\) or \(\int_CP\,dx+Q\,dy\).</p>
+<div class="ex"><b>Example:</b> \(\mathbf F=\langle-y,x\rangle\) along \(\mathbf r=\langle t,t^2\rangle\), \(0\le t\le1\).
+<br>\(\mathbf r'=\langle1,2t\rangle\). On the curve \(\mathbf F=\langle-t^2,t\rangle\). Dot product: \(-t^2+2t^2=t^2\).
+<br>\(\int_0^1t^2dt=\tfrac13\).</div>
+<p><b>Direction matters for kind 2 only:</b> going backward along the curve flips the sign of the work. It does not change \(\int f\,ds\).</p>`,
+  warm: [
+    { step:"Speed", a:"B",
+      q:R`Let \(C\) be \(\mathbf r(t)=\langle3t,4t\rangle\), \(0\le t\le1\). Compute \(\displaystyle\int_Cx\,ds\).`,
+      o:[R`\(\tfrac32\)`,R`\(\tfrac{15}2\)`,"15","5","3"],
+      s:R`Speed: \(|\langle3,4\rangle|=5\), so \(ds=5\,dt\). On the curve \(x=3t\).
+\(\int_0^13t\cdot5\,dt=\tfrac{15}2\). Choice A forgets the speed.` },
+    { step:"Parametrize a segment", a:"C",
+      q:R`Which parametrization traces the line segment from \((1,2)\) to \((4,6)\) for \(0\le t\le1\)?`,
+      o:[R`\(\langle4t,6t\rangle\)`,R`\(\langle1+4t,\;2+6t\rangle\)`,R`\(\langle1+3t,\;2+4t\rangle\)`,R`\(\langle4+t,\;6+2t\rangle\)`,R`\(\langle3t,4t\rangle\)`],
+      s:R`Start + \(t\)·(end − start) \(=\langle1,2\rangle+t\langle3,4\rangle\). Check: \(t=0\) gives \((1,2)\) and \(t=1\) gives \((4,6)\). ✓` },
+    { step:"Scalar integral on a segment", a:"A",
+      q:R`Compute \(\displaystyle\int_C\frac1{(x+y)^2}\,ds\) where \(C\) is the line segment from \((1,0)\) to \((4,4)\).`,
+      o:[R`\(\tfrac58\)`,R`\(\tfrac18\)`,R`\(\tfrac78\)`,"5",R`\(\tfrac57\)`],
+      s:R`\(\mathbf r=\langle1+3t,\;4t\rangle\), speed \(=\sqrt{9+16}=5\). On the curve \(x+y=1+7t\).
+\[\int_0^1\frac5{(1+7t)^2}dt=5\Big[-\frac1{7(1+7t)}\Big]_0^1=\frac57\Big(1-\frac18\Big)=\frac58.\]` },
+    { step:"Work: dot with the velocity", a:"D",
+      q:R`Compute the work done by \(\mathbf F=\langle y,\;2x\rangle\) along \(\mathbf r(t)=\langle t,\;t^2\rangle\), \(0\le t\le1\).`,
+      o:["1",R`\(\tfrac13\)`,"3",R`\(\tfrac53\)`,"0"],
+      s:R`\(\mathbf r'=\langle1,2t\rangle\). On the curve (\(x=t\), \(y=t^2\)): \(\mathbf F=\langle t^2,\;2t\rangle\).
+Dot product: \(t^2+4t^2=5t^2\). \(\int_0^15t^2dt=\tfrac53\).` },
+    { step:"Exam shape: around a circle", a:"E",
+      q:R`Given the force field \(\mathbf F(x,y)=\langle-y,x\rangle\), find the work required to move an object along the circle \(\mathbf r(t)=\langle3\cos t,3\sin t\rangle\) from \((3,0)\) to \((-3,0)\).`,
+      o:[R`\(3\pi\)`,R`\(18\pi\)`,"9","0",R`\(9\pi\)`],
+      s:R`\((3,0)\) is \(t=0\) and \((-3,0)\) is \(t=\pi\).
+\(\mathbf r'=\langle-3\sin t,3\cos t\rangle\). On the curve \(\mathbf F=\langle-3\sin t,3\cos t\rangle\). Dot: \(9\sin^2t+9\cos^2t=9\).
+\(\int_0^\pi9\,dt=9\pi\).` },
+    { step:"Exam shape: mass of a spring", a:"C",
+      q:R`A spring has the shape of the helix \(\mathbf r(t)=\langle3\cos t,\;3\sin t,\;4t\rangle\), \(0\le t\le2\pi\), and mass density \(\rho(x,y,z)=z\). Find the mass of the spring.`,
+      o:[R`\(8\pi^2\)`,R`\(20\pi^2\)`,R`\(40\pi^2\)`,R`\(10\pi\)`,R`\(40\pi\)`],
+      s:R`Mass \(=\int_C\rho\,ds\).
+Speed: \(\mathbf r'=\langle-3\sin t,3\cos t,4\rangle\), \(|\mathbf r'|=\sqrt{9+16}=5\).
+Density on the curve: \(z=4t\).
+\(\int_0^{2\pi}4t\cdot5\,dt=20\cdot\tfrac{(2\pi)^2}2=40\pi^2\).` }
+  ]
+},
+cons: {
+  exam: R`A work integral where the field is secretly a gradient. You find (or check) a potential function \(\varphi\), then the answer is \(\varphi(\text{end})-\varphi(\text{start})\), no matter how wild the path is. A scary path or "some smooth curve" is the signal.`,
+  learn: R`<p class="idea"><b>The big idea:</b> some fields are gradients, \(\mathbf F=\nabla\varphi\). For those, the work along a path only depends on where you start and where you finish. The path in between does not matter.</p>
+<p><b>Words:</b> such a field is called <b>conservative</b>, and \(\varphi\) is a <b>potential function</b> for it.</p>
+<p><b>The shortcut</b> (the Fundamental Theorem for Line Integrals):
+\[\int_C\nabla\varphi\cdot d\mathbf r=\varphi(\text{end point})-\varphi(\text{start point}).\]
+If the curve is closed (ends where it starts), the integral is 0.</p>
+<p><b>How to test</b> whether \(\mathbf F=\langle P,Q\rangle\) is conservative: check \(P_y=Q_x\). In 3D, check that the curl is zero.</p>
+<p><b>How to find φ:</b></p>
+<ol><li>Integrate \(P\) with respect to \(x\). Add an unknown \(g(y)\), since anything with only \(y\) would vanish under \(\partial/\partial x\).</li>
+<li>Differentiate your \(\varphi\) with respect to \(y\) and set it equal to \(Q\). That tells you \(g'(y)\).</li>
+<li>Integrate to get \(g\).</li></ol>
+<div class="ex"><b>Example:</b> \(\mathbf F=\langle2xy+3,\;x^2+4y\rangle\).
+<br>Test: \(P_y=2x\), \(Q_x=2x\). ✓
+<br>1. \(\varphi=x^2y+3x+g(y)\). &nbsp; 2. \(\varphi_y=x^2+g'(y)=x^2+4y\), so \(g'=4y\). &nbsp; 3. \(g=2y^2\).
+<br>\(\varphi=x^2y+3x+2y^2\). From \((0,0)\) to \((1,2)\) along <i>any</i> path: \(\varphi(1,2)-\varphi(0,0)=13-0=13\).</div>
+<p><b>On multiple choice:</b> if the choices are potential functions, just differentiate each one and see which gives back \(\mathbf F\).</p>
+<p><b>Potentials worth knowing:</b> \(\langle y,x\rangle=\nabla(xy)\) and \(\langle x,y,z\rangle=\nabla\big(\tfrac12(x^2+y^2+z^2)\big)\).</p>`,
+  warm: [
+    { step:"The test", a:"C",
+      q:R`Which of these fields is conservative?`,
+      o:[R`\(\langle-y,x\rangle\)`,R`\(\langle y^2,x^2\rangle\)`,R`\(\langle2xy,x^2\rangle\)`,R`\(\langle x^2,xy\rangle\)`,R`\(\langle y,-x\rangle\)`],
+      s:R`Check \(P_y=Q_x\). C: \(P_y=2x\) and \(Q_x=2x\). ✓ (It is the gradient of \(x^2y\).)
+A: \(-1\) vs \(1\). B: \(2y\) vs \(2x\). D: \(0\) vs \(y\). E: \(1\) vs \(-1\).` },
+    { step:"Find a potential", a:"A",
+      q:R`Find a potential function for \(\mathbf F=\langle3x^2y,\;x^3+2y\rangle\).`,
+      o:[R`\(x^3y+y^2\)`,R`\(x^3y\)`,R`\(x^3y+2y\)`,R`\(3x^3y+y^2\)`,R`\(x^3+y^2\)`],
+      s:R`Integrate \(P\) in \(x\): \(\varphi=x^3y+g(y)\). Then \(\varphi_y=x^3+g'(y)\) must equal \(x^3+2y\), so \(g'=2y\) and \(g=y^2\).
+\(\varphi=x^3y+y^2\). Check by differentiating: \(\langle3x^2y,\;x^3+2y\rangle\). ✓` },
+    { step:"End minus start", a:"D",
+      q:R`With \(\mathbf F=\langle3x^2y,\;x^3+2y\rangle=\nabla(x^3y+y^2)\), find \(\displaystyle\int_C\mathbf F\cdot d\mathbf r\) along a curve from \((1,1)\) to \((2,3)\).`,
+      o:["33","35","2","31","29"],
+      s:R`\(\varphi(2,3)=8\cdot3+9=33\). \(\varphi(1,1)=1+1=2\). Answer: \(33-2=31\).
+Choice A forgets to subtract the start.` },
+    { step:"Check the choices (3D)", a:"B",
+      q:R`Find a potential function for \(\mathbf F=\langle yz+2x,\;xz,\;xy+\cos z\rangle\), if one exists.`,
+      o:[R`\(xyz+x^2\)`,R`\(xyz+x^2+\sin z\)`,R`\(xyz+2x+\sin z\)`,R`\(xyz+x^2-\sin z\)`,"No potential function exists."],
+      s:R`Differentiate B: \(\varphi_x=yz+2x\) ✓, \(\varphi_y=xz\) ✓, \(\varphi_z=xy+\cos z\) ✓.
+A is missing the \(\cos z\). D gives \(-\cos z\).` },
+    { step:"Exam shape: a wild path", a:"E",
+      q:R`Find \(\displaystyle\int_C\mathbf F\cdot d\mathbf r\) where \(\mathbf F(x,y)=\langle e^x\cos y,\;-e^x\sin y\rangle\) and \(C\) is a path made of three semicircles and two line segments that starts at \((0,0)\) and ends at \((1,\pi)\).`,
+      o:[R`\(e-1\)`,R`\(1-e\)`,R`\(e+1\)`,"0",R`\(-e-1\)`],
+      s:R`Test: \(P_y=-e^x\sin y\) and \(Q_x=-e^x\sin y\). Equal, so conservative, and the path does not matter.
+Potential: \(\varphi=e^x\cos y\) (check both partials).
+\(\varphi(1,\pi)-\varphi(0,0)=e\cos\pi-1=-e-1\).` }
+  ]
+},
+grn: {
+  exam: R`A line integral around a <b>closed</b> curve (triangle, rectangle, circle, ellipse), traded for a double integral that is much easier. Also: which line integral gives the area of a region, and the flux across a closed curve.`,
+  learn: R`<p class="idea"><b>The big idea:</b> <b>Green's Theorem</b> turns a line integral around the edge of a region into a double integral over the inside. The edge integral may be ugly while the inside one is easy.</p>
+<p><b>The theorem.</b> Let \(C\) be a closed curve (it ends where it starts) traveled <b>counterclockwise</b>, and let \(R\) be the region inside. Then
+\[\oint_CP\,dx+Q\,dy=\iint_R\big(Q_x-P_y\big)\,dA.\]
+The circle on the integral sign just means "closed curve". \(Q_x\) is the \(x\)-derivative of the part next to \(dy\); \(P_y\) is the \(y\)-derivative of the part next to \(dx\).</p>
+<p><b>How to use it:</b></p>
+<ol><li>Name \(P\) (next to \(dx\)) and \(Q\) (next to \(dy\)).</li>
+<li>Compute \(Q_x-P_y\). Anything in \(P\) with only \(x\), or in \(Q\) with only \(y\), disappears.</li>
+<li>Integrate that over the region.</li></ol>
+<div class="ex"><b>Example:</b> \(\oint_C(x^2-y)\,dx+(3x+y^2)\,dy\) around the circle of radius 2.
+<br>\(Q_x-P_y=3-(-1)=4\). Then \(\iint4\,dA=4\cdot\text{area}=4\cdot4\pi=16\pi\).
+<br>When \(Q_x-P_y\) is a constant, the answer is that constant times the area.</div>
+<p><b>Area from a line integral:</b> if \(Q_x-P_y=1\), Green's gives exactly the area. So area \(=\oint x\,dy=\oint-y\,dx=\tfrac12\oint x\,dy-y\,dx\). For \(\oint ay\,dx+bx\,dy\) you get \((b-a)\) times the area.</p>
+<p><b>Flux form:</b> the <b>outward flux</b> of \(\mathbf F=\langle P,Q\rangle\) across \(C\) measures the net flow out through the curve. It equals \(\iint_R(P_x+Q_y)\,dA\), the double integral of the divergence.</p>
+<div class="ex"><b>Example:</b> the flux of \(\langle2x,3y\rangle\) out of the circle of radius 3 is \((2+3)\cdot9\pi=45\pi\).</div>
+<p><b>Common mistakes:</b> computing \(P_y-Q_x\) (backwards), or using Green's on a curve that is not closed.</p>`,
+  warm: [
+    { step:"The integrand", a:"D",
+      q:R`For \(\displaystyle\oint_C(x^3-2y)\,dx+(5x+\sin y)\,dy\), what is \(Q_x-P_y\)?`,
+      o:["3","5","−7","7","0"],
+      s:R`\(P=x^3-2y\) (next to \(dx\)), so \(P_y=-2\). \(Q=5x+\sin y\) (next to \(dy\)), so \(Q_x=5\).
+\(Q_x-P_y=5-(-2)=7\). The \(x^3\) and \(\sin y\) contribute nothing.` },
+    { step:"Constant times area", a:"B",
+      q:R`Evaluate \(\displaystyle\oint_C(x^3-2y)\,dx+(5x+\sin y)\,dy\) where \(C\) is the circle \(x^2+y^2=4\), oriented counterclockwise.`,
+      o:[R`\(14\pi\)`,R`\(28\pi\)`,R`\(7\pi\)`,R`\(56\pi\)`,"0"],
+      s:R`From the last warm-up, \(Q_x-P_y=7\). The region is a disk of radius 2, area \(4\pi\).
+\(7\cdot4\pi=28\pi\).` },
+    { step:"A rectangle", a:"A",
+      q:R`Use Green's Theorem to evaluate \(\displaystyle\oint_Cy^2\,dx+3xy\,dy\) where \(C\) is the boundary of the rectangle with vertices \((0,0)\), \((2,0)\), \((2,1)\), \((0,1)\), oriented counterclockwise.`,
+      o:["1","2","3",R`\(\tfrac12\)`,"0"],
+      s:R`\(Q_x=3y\), \(P_y=2y\), so \(Q_x-P_y=y\).
+\(\int_0^2\!\!\int_0^1y\,dy\,dx=2\cdot\tfrac12=1\).` },
+    { step:"Which one is the area?", a:"E",
+      q:R`\(C\) is a simple closed curve oriented counterclockwise. Which of these is <b>not</b> equal to the area it encloses?`,
+      o:[R`\(\displaystyle\oint_Cx\,dy\)`,R`\(\displaystyle\oint_C-y\,dx\)`,R`\(\displaystyle\frac12\oint_C-y\,dx+x\,dy\)`,R`\(\displaystyle\frac14\oint_C-y\,dx+3x\,dy\)`,R`\(\displaystyle\frac14\oint_Cy\,dx+3x\,dy\)`],
+      s:R`Each gives \((Q_x-P_y)\times\) area, so we need \(Q_x-P_y\) (after the fraction) to be 1.
+A: \(1-0=1\) ✓. B: \(0-(-1)=1\) ✓. C: \(\tfrac12(1+1)=1\) ✓. D: \(\tfrac14(3+1)=1\) ✓. E: \(\tfrac14(3-1)=\tfrac12\), half the area.` },
+    { step:"Flux", a:"C",
+      q:R`Compute the flux of \(\mathbf F(x,y)=\langle2x,3y\rangle\) across the circle \(\mathbf r(t)=\langle3\cos t,3\sin t\rangle\), \(0\le t\le2\pi\).`,
+      o:[R`\(9\pi\)`,R`\(18\pi\)`,R`\(45\pi\)`,R`\(30\pi\)`,"0"],
+      s:R`Outward flux \(=\iint(P_x+Q_y)\,dA\). Here \(P_x+Q_y=2+3=5\), and the disk has area \(9\pi\).
+\(5\cdot9\pi=45\pi\).` },
+    { step:"Exam shape: a triangle", a:"D",
+      q:R`Let \(C\) be the boundary of the triangle with vertices \((0,0)\), \((1,0)\), and \((1,2)\), oriented counterclockwise. Compute \(\displaystyle\oint_C\sin(x^2)\,dx+xy\,dy\).`,
+      o:[R`\(\tfrac13\)`,"1",R`\(\tfrac43\)`,R`\(\tfrac23\)`,"2"],
+      s:R`\(P=\sin(x^2)\) has no \(y\), so \(P_y=0\). \(Q=xy\), so \(Q_x=y\).
+The triangle: \(0\le x\le1\), and \(y\) from 0 up to the line through \((0,0)\) and \((1,2)\), which is \(y=2x\).
+\(\displaystyle\int_0^1\!\!\int_0^{2x}y\,dy\,dx=\int_0^12x^2dx=\tfrac23\).` }
+  ]
+},
+dc: {
+  exam: R`Straight computation: the curl of a 3D field (the wrong choices differ only by signs), or the divergence, once applied to a gradient.`,
+  learn: R`<p class="idea"><b>The big idea:</b> two ways to differentiate a vector field \(\mathbf F=\langle P,Q,R\rangle\). <b>Divergence</b> is a number that measures how much the field spreads out from a point. <b>Curl</b> is a vector that measures how much it spins around a point.</p>
+<p><b>Divergence:</b> each part differentiated by its own variable, then added.
+\[\operatorname{div}\mathbf F=P_x+Q_y+R_z.\]</p>
+<div class="ex"><b>Example:</b> \(\mathbf F=\langle x^2y,\;yz,\;z^3\rangle\). \(\operatorname{div}\mathbf F=2xy+z+3z^2\).</div>
+<p><b>Curl:</b> a vector with three parts.
+\[\operatorname{curl}\mathbf F=\langle R_y-Q_z,\;\;P_z-R_x,\;\;Q_x-P_y\rangle.\]
+A way to remember it: for the first part, cover up \(P\) and \(x\) and cross-differentiate what is left (\(R\) by \(y\), minus \(Q\) by \(z\)). Then rotate the letters: \(x\to y\to z\to x\) and \(P\to Q\to R\to P\).</p>
+<div class="ex"><b>Example:</b> \(\mathbf F=\langle-y,x,0\rangle\) (a rotation about the \(z\)-axis).
+<br>\(\operatorname{curl}\mathbf F=\langle0-0,\;0-0,\;1-(-1)\rangle=\langle0,0,2\rangle\). It spins about the \(z\)-axis, and the curl points along that axis.</div>
+<p><b>Do it slowly:</b> write the two terms of each part before subtracting. Wrong choices on the exam are the right answer with one sign flipped.</p>
+<p><b>Two facts that are always true:</b></p>
+<ul><li>\(\operatorname{curl}(\nabla f)=\mathbf 0\). A gradient field never spins. This is the 3D test for "conservative".</li>
+<li>\(\operatorname{div}(\operatorname{curl}\mathbf F)=0\).</li></ul>
+<p><b>Divergence of a gradient:</b> \(\operatorname{div}(\nabla f)=f_{xx}+f_{yy}+f_{zz}\). Take the gradient first, then the divergence of that.</p>`,
+  warm: [
+    { step:"Divergence", a:"C",
+      q:R`Let \(\mathbf F=\langle x^2y,\;yz,\;z^3\rangle\). Find \(\operatorname{div}\mathbf F\) at \((1,2,1)\).`,
+      o:["4","6","8","10","5"],
+      s:R`\(\operatorname{div}\mathbf F=\partial_x(x^2y)+\partial_y(yz)+\partial_z(z^3)=2xy+z+3z^2\).
+At \((1,2,1)\): \(4+1+3=8\).` },
+    { step:"A simple curl", a:"A",
+      q:R`Find \(\operatorname{curl}\mathbf F\) for \(\mathbf F=\langle-2y,\;2x,\;0\rangle\).`,
+      o:[R`\(\langle0,0,4\rangle\)`,R`\(\langle0,0,0\rangle\)`,R`\(\langle0,0,-4\rangle\)`,R`\(\langle2,2,0\rangle\)`,"4"],
+      s:R`\(P=-2y\), \(Q=2x\), \(R=0\).
+First: \(R_y-Q_z=0-0\). Second: \(P_z-R_x=0-0\). Third: \(Q_x-P_y=2-(-2)=4\).
+\(\langle0,0,4\rangle\). (E is not a vector; curl always is.)` },
+    { step:"Exam shape: full curl", a:"E",
+      q:R`If \(\mathbf F=\langle yz,\;x^2,\;\sin(y)\rangle\), then \(\operatorname{curl}(\mathbf F)\) is:`,
+      o:[R`\(\langle\cos(y),\;-y,\;2x-z\rangle\)`,R`\(\langle-\cos(y),\;y,\;2x-z\rangle\)`,R`\(\langle\cos(y),\;y,\;z-2x\rangle\)`,R`\(\langle\cos(y),\;y,\;2x+z\rangle\)`,R`\(\langle\cos(y),\;y,\;2x-z\rangle\)`],
+      s:R`\(P=yz\), \(Q=x^2\), \(R=\sin y\).
+<b>First:</b> \(R_y-Q_z=\cos y-0=\cos y\).
+<b>Second:</b> \(P_z-R_x=y-0=y\).
+<b>Third:</b> \(Q_x-P_y=2x-z\).` },
+    { step:"Exam shape: divergence of a gradient", a:"B",
+      q:R`Suppose \(f(x,y,z)=x^2yz^2\). Then \(\operatorname{div}(\nabla f)\) at \((1,3,2)\) is equal to:`,
+      o:["18","30","24","12","36"],
+      s:R`\(\nabla f=\langle2xyz^2,\;x^2z^2,\;2x^2yz\rangle\).
+Divergence: \(\partial_x(2xyz^2)+\partial_y(x^2z^2)+\partial_z(2x^2yz)=2yz^2+0+2x^2y\).
+At \((1,3,2)\): \(2\cdot3\cdot4+2\cdot1\cdot3=24+6=30\).` },
+    { step:"A fact to remember", a:"D",
+      q:R`For any function \(f(x,y,z)\) with continuous second derivatives, \(\operatorname{curl}(\nabla f)\) equals`,
+      o:[R`\(f_{xx}+f_{yy}+f_{zz}\)`,R`\(\nabla f\)`,R`\(2\nabla f\)`,R`\(\langle0,0,0\rangle\)`,"It depends on \\(f\\)"],
+      s:R`Always the zero vector. For example the first part is \((f_z)_y-(f_y)_z=f_{zy}-f_{yz}=0\), because mixed partials are equal.
+This is why "curl = 0" is the test for a conservative field. (Choice A is \(\operatorname{div}(\nabla f)\).)` }
+  ]
+}
+};
+
+const HOOKS = {
+  lag:"Best value on a curve: where the two gradients line up.",
+  dbl:"Two integrals, inside first.",
+  ord:"Same region, sliced the other way.",
+  pol:"Round regions want r and θ. Bring the extra r.",
+  tri:"Three integrals. The limits are the whole game.",
+  cyl:"Polar on the floor, plus height.",
+  sph:"Distance and two angles: made for balls and cones.",
+  com:"Where the plate balances.",
+  vf:"An arrow at every point.",
+  li:"Add things up along a curve.",
+  cons:"Only the endpoints matter.",
+  grn:"Trade the edge for the inside.",
+  dc:"Spreading out and spinning."
+};
+
+</script>
+<script>
+(function(){
+const LET="ABCDEF";
+const $=s=>document.querySelector(s);
+Q.forEach(q=>q.id=q.e+"-"+q.n);
+const examOrder=Object.keys(EXAMS);
+
+/* storage */
+let prog={};
+try{prog=JSON.parse(localStorage.getItem("ma261e2")||"{}")||{}}catch(e){prog={}}
+const save=()=>{try{localStorage.setItem("ma261e2",JSON.stringify(prog))}catch(e){}};
+// warm-ups tracked separately so they don't count toward exam stats
+let warm={};
+try{warm=JSON.parse(localStorage.getItem("ma261e2w")||"{}")||{}}catch(e){warm={}}
+const saveWarm=()=>{try{localStorage.setItem("ma261e2w",JSON.stringify(warm))}catch(e){}};
+
+/* math typesetting */
+// MathJax measures font size at typeset time; a detached or display:none element gives NaN-sized SVGs.
+// So queue everything and only typeset elements once they're actually on screen.
+const pending=new Set();
+function flushMath(){
+  if(!(window.MathJax&&MathJax.typesetPromise))return;
+  const vis=[...pending].filter(e=>e.isConnected&&e.getClientRects().length);
+  if(!vis.length)return;
+  vis.forEach(e=>pending.delete(e));
+  MathJax.typesetPromise(vis).catch(()=>{});
+}
+function typeset(el){ pending.add(el); queueMicrotask(flushMath); }
+document.getElementById("mjx").addEventListener("load",()=>{
+  const go=()=>{ if(MathJax.typesetPromise) flushMath(); else setTimeout(go,60); };
+  go();
+});
+
+/* stats */
+function renderStats(){
+  const done=Object.keys(prog).length, right=Object.values(prog).filter(p=>p.ok).length;
+  $("#stats").innerHTML=`<span><b>${Q.length}</b> questions</span><span><b>${examOrder.length}</b> exams</span><span><b>${Object.keys(LEARN).length}</b> topics</span><span>you: <b>${done}</b> answered · <b>${done?Math.round(100*right/done):0}%</b> correct</span>`;
+}
+
+/* header flourish: the rotation field around a closed curve */
+(function(){
+  const c=$("#contour"),x=c.getContext("2d"),W=c.width,o=W/2;
+  function draw(){
+    const cs=getComputedStyle(document.documentElement),col=n=>cs.getPropertyValue("--"+n).trim();
+    x.clearRect(0,0,W,W);
+    x.strokeStyle=col("rule");x.lineWidth=1;x.beginPath();x.moveTo(0,o);x.lineTo(W,o);x.moveTo(o,0);x.lineTo(o,W);x.stroke();
+    x.strokeStyle=col("ink");x.lineWidth=1.5;x.lineCap="round";x.globalAlpha=.8;
+    for(let i=0;i<9;i++)for(let j=0;j<9;j++){const px=20+i*37.5,py=20+j*37.5,u=py-o,v=o-px,n=Math.hypot(u,v);if(!n)continue;
+      // field <-y, x> in screen coordinates (y points down)
+      const dx=u/n*11,dy=v/n*11,ex=px+dx,ey=py+dy;
+      x.beginPath();x.moveTo(px-dx,py-dy);x.lineTo(ex,ey);x.moveTo(ex-dx*.5-dy*.35,ey-dy*.5+dx*.35);x.lineTo(ex,ey);x.lineTo(ex-dx*.5+dy*.35,ey-dy*.5-dx*.35);x.stroke()}
+    x.globalAlpha=1;x.strokeStyle=col("gold");x.lineWidth=2.5;x.beginPath();x.arc(o,o,94,0,7);x.stroke();
+  }
+  draw();
+  try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",draw)}catch(e){}
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+})();
+
+/* figures for questions: drawn as SVG so they follow the light/dark theme */
+function fieldSVG(F,label){
+  const P=v=>130+v*52;let a="";
+  for(let i=-5;i<=5;i++)for(let j=-5;j<=5;j++){const x=i*.4,y=j*.4,[u,v]=F(x,y),n=Math.hypot(u,v);if(!n)continue;
+    const dx=u/n*8,dy=-v/n*8,cx=P(x),cy=P(-y),ex=cx+dx,ey=cy+dy;
+    a+=`<path d="M${(cx-dx).toFixed(1)} ${(cy-dy).toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}M${(ex-dx*.55-dy*.4).toFixed(1)} ${(ey-dy*.55+dx*.4).toFixed(1)}L${ex.toFixed(1)} ${ey.toFixed(1)}L${(ex-dx*.55+dy*.4).toFixed(1)} ${(ey-dy*.55-dx*.4).toFixed(1)}"/>`}
+  return `<svg class="fig" viewBox="0 0 260 260" role="img" aria-label="${label}">
+  <g stroke="var(--rule)" stroke-width="1" fill="none"><path d="M26 130H234M130 26V234"/></g>
+  <g stroke="var(--ink)" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round">${a}</g>
+  <g font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)"><text x="240" y="134">x</text><text x="126" y="18">y</text><text x="16" y="254">−2</text><text x="230" y="254">2</text><text x="2" y="30">2</text></g></svg>`;
+}
+const FIGS={
+  vfA:()=>fieldSVG((x,y)=>[y,x],"Arrow plot of a vector field for x and y from −2 to 2. On the x-axis the arrows point straight up on the right side and straight down on the left side. On the y-axis they point right at the top and left at the bottom. In the top right corner they point up and to the right."),
+  vfB:()=>fieldSVG((x,y)=>[x,-y],"Arrow plot of a vector field for x and y from −2 to 2. On the x-axis the arrows point straight away from the origin. On the y-axis they point straight toward the origin."),
+  halfdisk:()=>`<svg class="fig" viewBox="0 0 260 220" role="img" aria-label="The circle of radius 2 with the half above the line y = −x shaded">
+  <path d="M73.4 53.4A80 80 0 0 1 186.6 166.6Z" fill="var(--gold-soft)"/>
+  <g stroke="var(--muted)" stroke-width="1" fill="none"><path d="M20 110H240M130 12V208"/><circle cx="130" cy="110" r="80"/></g>
+  <path d="M50 30L215 195" stroke="var(--ink)" stroke-width="1.5"/>
+  <g font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)"><text x="244" y="114">x</text><text x="126" y="10">y</text><text x="196" y="204">y = −x</text></g></svg>`,
+  path:()=>`<svg class="fig" viewBox="0 0 260 240" role="img" aria-label="A path that starts at (0,0), runs right to (5,0), follows a semicircle bulging left up to (5,5), runs left to (0,5), then follows a semicircle bulging right down to (0,1)">
+  <path d="M40 210H210A85 85 0 0 1 210 40H40A68 68 0 0 1 40 176" fill="none" stroke="var(--ink)" stroke-width="2"/>
+  <g fill="var(--ink)"><path d="M132 210l-9-5v10z"/><path d="M118 40l9-5v10z"/><path d="M125 120l-5 9h10z"/><path d="M108 113l-5-9h10z"/>
+  <circle cx="40" cy="210" r="4"/><circle cx="210" cy="210" r="4"/><circle cx="210" cy="40" r="4"/><circle cx="40" cy="40" r="4"/><circle cx="40" cy="176" r="4"/></g>
+  <g font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--muted)"><text x="6" y="228">(0,0)</text><text x="204" y="228">(5,0)</text><text x="204" y="30">(5,5)</text><text x="6" y="30">(0,5)</text><text x="2" y="170">(0,1)</text></g></svg>`
+};
+
+/* question card */
+function card(q,mode){
+  // mode: "practice" | "mock" | "review"
+  const el=document.createElement("article");el.className="qc";el.dataset.id=q.id;
+  const p=prog[q.id];
+  el.innerHTML=`<div class="meta"><span>${q.label||EXAMS[q.e].name+" · Q"+q.n}</span><button class="chip" data-topic="${q.t}" title="Drill this topic">${TOPICS[q.t]}</button></div>
+    <div class="stem">${q.fig?FIGS[q.fig]():""}${q.q}</div>
+    <div class="opts">${q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="L">${LET[i]}</span><span>${o}</span></button>`).join("")}</div>
+    <div class="foot"><span class="verdict"></span><button class="linkbtn sh">Show solution</button></div>
+    <div class="sol" hidden><span class="k">Answer: ${q.a}</span>${q.s}</div>`;
+  const opts=[...el.querySelectorAll(".opt")], sol=el.querySelector(".sol"), sh=el.querySelector(".sh"), v=el.querySelector(".verdict");
+  const ai=LET.indexOf(q.a);
+  function reveal(pick){
+    opts.forEach((b,i)=>{b.disabled=true;if(i===ai)b.classList.add("right");else if(i===pick)b.classList.add("wrong")});
+    const ok=pick===ai; el.classList.add(ok?"ok":"no"); v.className="verdict "+(ok?"ok":"no");
+    v.textContent=pick==null?"Not answered · correct: "+q.a:(ok?"Correct":"Incorrect · correct: "+q.a);
+  }
+  sh.onclick=()=>{sol.hidden=!sol.hidden;sh.textContent=sol.hidden?"Show solution":"Hide solution";flushMath();};
+  el.querySelector(".chip").onclick=()=>{ $("#fTopic").value=q.t; $("#fExam").value="all"; showTab("practice"); renderPractice(); window.scrollTo({top:0}); };
+  if(mode==="practice"){
+    if(p) reveal(p.pick);
+    opts.forEach((b,i)=>b.onclick=()=>{prog[q.id]={pick:i,ok:i===ai};save();reveal(i);cheer(b,i===ai);renderStats();renderBars();resetLabel();});
+  } else if(mode==="mock"){
+    sh.hidden=true;
+    opts.forEach((b,i)=>b.onclick=()=>{opts.forEach(o=>o.classList.remove("sel"));b.classList.add("sel");mockState.ans[q.id]=i;updateMockCount();});
+    if(mockState.ans[q.id]!=null) opts[mockState.ans[q.id]].classList.add("sel");
+  } else if(mode==="warm"){
+    el.querySelector(".chip").hidden=true;
+    if(warm[q.id]!=null) reveal(warm[q.id]);
+    opts.forEach((b,i)=>b.onclick=()=>{warm[q.id]=i;saveWarm();reveal(i);cheer(b,i===ai);if(i!==ai&&sol.hidden)sh.click();renderLessonProg();});
+  } else if(mode==="review"){
+    reveal(mockState.ans[q.id]);
+  }
+  // solution typesets separately: it's hidden until revealed
+  typeset(el.querySelector(".stem"));typeset(el.querySelector(".opts"));typeset(sol);
+  return el;
+}
+
+/* practice */
+let order=Q.slice();
+function fillSelects(){
+  $("#fExam").innerHTML=`<option value="all">All exams</option>`+examOrder.map(k=>`<option value="${k}">${EXAMS[k].name}</option>`).join("");
+  $("#fTopic").innerHTML=`<option value="all">All topics</option>`+Object.entries(TOPICS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+}
+function renderPractice(){
+  const ex=$("#fExam").value, tp=$("#fTopic").value, open=$("#fOpen").checked;
+  const list=order.filter(q=>(ex==="all"||q.e===ex)&&(tp==="all"||q.t===tp)&&(!open||!prog[q.id]));
+  const box=$("#qlist");box.innerHTML="";
+  const done=list.filter(q=>prog[q.id]).length;
+  let txt=`${list.length} question${list.length===1?"":"s"} · ${done} answered`;
+  if(ex!=="all") txt+=" · "+EXAMS[ex].note;
+  $("#count").textContent=txt;
+  resetLabel();
+  if(!list.length){box.innerHTML=`<p class="sub">Nothing left here. Clear the filters or reset your progress.</p>`;return}
+  list.forEach(q=>box.appendChild(card(q,"practice")));
+}
+["#fExam","#fTopic","#fOpen"].forEach(s=>$(s).addEventListener("change",()=>{try{localStorage.setItem("ma261e2f",JSON.stringify({e:$("#fExam").value,t:$("#fTopic").value}))}catch(e){};renderPractice()}));
+$("#shuffle").onclick=()=>{order=Q.slice().sort(()=>Math.random()-.5);renderPractice()};
+// first click arms the button for 3 s; a second click within that window runs the reset
+function twoClick(b,act){
+  let t=null;
+  b.onclick=()=>{
+    if(!t){b.dataset.idle=b.textContent;b.textContent="Click again to erase";b.classList.remove("ghost");
+      t=setTimeout(()=>{t=null;b.textContent=b.dataset.idle;b.classList.add("ghost")},3000);return}
+    clearTimeout(t);t=null;b.classList.add("ghost");act();
+  };
+}
+// Practice reset only touches the questions in the current exam/topic filter
+const inFilter=()=>{const ex=$("#fExam").value,tp=$("#fTopic").value;return Q.filter(q=>(ex==="all"||q.e===ex)&&(tp==="all"||q.t===tp))};
+function resetLabel(){
+  const ex=$("#fExam").value,tp=$("#fTopic").value,b=$("#reset");
+  b.textContent=ex==="all"&&tp==="all"?"Reset all progress":"Reset "+[ex!=="all"&&EXAMS[ex].name,tp!=="all"&&TOPICS[tp]].filter(Boolean).join(" · ");
+  b.disabled=!inFilter().some(q=>prog[q.id]);
+}
+twoClick($("#reset"),()=>{inFilter().forEach(q=>delete prog[q.id]);save();renderPractice();renderStats();renderBars()});
+
+/* topics */
+function renderBars(){
+  const max=Math.max(...Object.keys(TOPICS).map(k=>Q.filter(q=>q.t===k).length));
+  const rows=Object.entries(TOPICS).map(([k,v])=>{const qs=Q.filter(q=>q.t===k);return{k,v,n:qs.length,done:qs.filter(q=>prog[q.id]).length,right:qs.filter(q=>prog[q.id]&&prog[q.id].ok).length}}).sort((a,b)=>b.n-a.n);
+  $("#bars").innerHTML=rows.map(r=>{
+    const pct=r.done?Math.round(100*r.right/r.done):null;
+    return `<button class="lab" data-k="${r.k}">${r.v}</button><div class="track"><div class="fill" style="width:${100*r.n/max}%"></div>${pct!=null?`<div class="acc" style="width:${(100*r.n/max)*pct/100}%"></div>`:""}</div><span class="num">${r.n} q${pct!=null?` · ${pct}%`:""}</span>`}).join("");
+  $("#bars").querySelectorAll(".lab").forEach(b=>b.onclick=()=>{$("#fTopic").value=b.dataset.k;$("#fExam").value="all";showTab("practice");renderPractice();window.scrollTo({top:0})});
+}
+function renderSheet(){
+  const el=$("#sheet");
+  el.innerHTML=Object.entries(SHEET).map(([k,s])=>`<div class="card"><h3>${TOPICS[k]}<span>${Q.filter(q=>q.t===k).length} q</span></h3><ul>${s.f.map(f=>`<li>${f}</li>`).join("")}</ul><div class="trap"><b>Trap</b>${s.trap}</div></div>`).join("");
+  typeset(el);
+}
+
+/* visuals: one interactive picture per lesson, built the first time the lesson opens */
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cv=n=>getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const fx=(v,d=2)=>{let s=(Math.abs(v)<.5*10**-d?0:v).toFixed(d);if(s.includes("."))s=s.replace(/\.?0+$/,"");return s.replace("-","−")};
+const sgn=(v,first)=>v<0?(first?"−":" − "):(first?"":" + ");
+const VIZS=[],anims=new Set();
+// ponytail: one shared rAF loop for all animations; each animator bails when its canvas is hidden
+function animate(fn){if(!anims.size)requestAnimationFrame(function tick(t){anims.forEach(f=>f(t));requestAnimationFrame(tick)});anims.add(fn)}
+const shown=g=>g.c.getClientRects().length>0;
+
+function viz(host,o){
+  const box=document.createElement("div");box.className="viz";
+  box.innerHTML=`<div class="vfig"><canvas role="img" aria-label="${o.label}"></canvas>${o.hint?`<p class="vhint">${o.hint}</p>`:""}</div>
+    <div class="vside"><div class="vctl"></div><div class="vread" aria-live="polite"></div>${o.cap?`<p class="vcap">${o.cap}</p>`:""}</div>`;
+  host.appendChild(box);
+  const c=box.querySelector("canvas"),ctx=c.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1);
+  const W=Math.round(c.getBoundingClientRect().width)||320,H=Math.round(W*(o.aspect||.8));
+  c.width=W*dpr;c.height=H*dpr;c.style.height=H+"px";c.style.touchAction=o.touch||"none";
+  const[x0,x1]=o.xr||[-3,3],yc=o.yc||0,k=W/(x1-x0);
+  const g={c,ctx,W,H,ctl:box.querySelector(".vctl"),read:box.querySelector(".vread"),handles:[],
+    X:x=>(x-x0)*k,Y:y=>H/2-(y-yc)*k,ix:p=>x0+p/k,iy:p=>yc+(H/2-p)/k,
+    redraw(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);g.draw()}};
+  const pos=e=>{const r=c.getBoundingClientRect();return[Math.max(6,Math.min(W-6,e.clientX-r.left)),Math.max(6,Math.min(H-6,e.clientY-r.top))]};
+  const near=(px,py)=>g.handles.find(h=>Math.hypot(g.X(h.x)-px,g.Y(h.y)-py)<22);
+  let act=null,last;
+  c.addEventListener("pointerdown",e=>{const[px,py]=pos(e);act=near(px,py)||(g.onfree?"free":null);last=[px,py];
+    if(g.onhover){g.onhover(g.ix(px),g.iy(py));g.redraw()}
+    if(act){c.setPointerCapture(e.pointerId);e.preventDefault()}});
+  c.addEventListener("pointermove",e=>{const[px,py]=pos(e);
+    if(act==="free"){g.onfree(px-last[0],py-last[1]);last=[px,py];g.redraw()}
+    else if(act){act.move(g.ix(px),g.iy(py));g.redraw()}
+    else{c.style.cursor=near(px,py)?"grab":"";if(g.onhover){g.onhover(g.ix(px),g.iy(py));g.redraw()}}});
+  for(const ev of["pointerup","pointercancel"])c.addEventListener(ev,()=>act=null);
+  VIZS.push(g);return g;
+}
+const pt=(x,y,snap=.5)=>{const h={x,y,move(X,Y){h.x=Math.round(X/snap)*snap;h.y=Math.round(Y/snap)*snap}};return h};
+function slider(ctl,lab,min,max,step,val,on){const l=document.createElement("label");
+  l.innerHTML=`<span>${lab}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${val}"><output>${fx(val)}</output>`;
+  const i=l.querySelector("input"),o=l.querySelector("output");i.oninput=()=>{o.textContent=fx(+i.value);on(+i.value)};ctl.appendChild(l);
+  return{set(v){i.value=v;o.textContent=fx(v)}}}
+function choose(ctl,lab,opts,on){const l=document.createElement("label");l.className="vsel";
+  l.innerHTML=`<span>${lab}</span><select>${opts.map((o,i)=>`<option value="${i}">${o}</option>`).join("")}</select>`;
+  l.querySelector("select").onchange=e=>on(+e.target.value);ctl.appendChild(l)}
+function button(ctl,lab,on){let row=ctl.lastElementChild;if(!row||!row.classList.contains("vbtns")){row=document.createElement("div");row.className="vbtns";ctl.appendChild(row)}
+  const b=document.createElement("button");b.type="button";b.className="btn";b.textContent=lab;b.onclick=on;row.appendChild(b);return b}
+
+function axes(g,grid=true){const{ctx,W,H}=g;ctx.lineWidth=1;
+  if(grid){ctx.strokeStyle=cv("grid");ctx.beginPath();
+    for(let x=Math.ceil(g.ix(0));x<=g.ix(W);x++){ctx.moveTo(g.X(x),0);ctx.lineTo(g.X(x),H)}
+    for(let y=Math.ceil(g.iy(H));y<=g.iy(0);y++){ctx.moveTo(0,g.Y(y));ctx.lineTo(W,g.Y(y))}ctx.stroke()}
+  ctx.strokeStyle=cv("rule");ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(g.X(0),0);ctx.lineTo(g.X(0),H);ctx.moveTo(0,g.Y(0));ctx.lineTo(W,g.Y(0));ctx.stroke()}
+function seg(g,x1,y1,x2,y2,col,w=2,dash){const c=g.ctx;c.save();c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();c.moveTo(g.X(x1),g.Y(y1));c.lineTo(g.X(x2),g.Y(y2));c.stroke();c.restore()}
+function arrow(g,x1,y1,x2,y2,col,lab,w=2.5){const c=g.ctx,a=g.X(x1),b=g.Y(y1),p=g.X(x2),q=g.Y(y2),L=Math.hypot(p-a,q-b);if(L<2)return;
+  const ux=(p-a)/L,uy=(q-b)/L,hs=Math.min(w*4+2,L*.5);
+  c.save();c.strokeStyle=c.fillStyle=col;c.lineWidth=w;c.lineCap="round";c.beginPath();c.moveTo(a,b);c.lineTo(p-ux*hs*.7,q-uy*hs*.7);c.stroke();
+  c.beginPath();c.moveTo(p,q);c.lineTo(p-ux*hs-uy*hs*.5,q-uy*hs+ux*hs*.5);c.lineTo(p-ux*hs+uy*hs*.5,q-uy*hs-ux*hs*.5);c.closePath();c.fill();
+  if(lab){c.font="600 14px "+cv("f-mono");c.fillText(lab,p+ux*12-5,q+uy*12+5)}c.restore()}
+function dot(g,x,y,col,r=6,ring){const c=g.ctx;c.beginPath();c.arc(g.X(x),g.Y(y),r,0,7);c.fillStyle=col;c.fill();if(ring){c.lineWidth=2.5;c.strokeStyle=cv("surface");c.stroke()}}
+function curve(g,f,t0,t1,col,w=2,n=240,dash){const c=g.ctx;c.save();c.strokeStyle=col;c.lineWidth=w;c.setLineDash(dash||[]);c.beginPath();
+  for(let i=0;i<=n;i++){const[x,y]=f(t0+(t1-t0)*i/n);i?c.lineTo(g.X(x),g.Y(y)):c.moveTo(g.X(x),g.Y(y))}c.stroke();c.restore()}
+function text(g,x,y,s,col,dx=0,dy=0){const c=g.ctx;c.font="600 14px "+cv("f-mono");c.fillStyle=col;c.fillText(s,g.X(x)+dx,g.Y(y)+dy)}
+function poly(g,pts,col){const c=g.ctx;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(g.X(x),g.Y(y)):c.moveTo(g.X(x),g.Y(y)));c.closePath();c.fillStyle=col;c.fill()}
+// contour map: shade by height, darken band edges every `step`, paint the level f = hk gold
+function heat(g,f,step,hk){
+  const s=3,w=Math.ceil(g.W/s)+1,h=Math.ceil(g.H/s)+1,v=new Float32Array(w*h);let lo=Infinity,hi=-Infinity;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const z=f(g.ix(i*s),g.iy(j*s));v[j*w+i]=z;if(isFinite(z)){lo=Math.min(lo,z);hi=Math.max(hi,z)}}
+  const off=heat.c||(heat.c=document.createElement("canvas"));off.width=w;off.height=h;
+  const ox=off.getContext("2d"),img=ox.createImageData(w,h),S=rgb(cv("surface")),G=rgb(cv("gold")),I=rgb(cv("ink")),P=rgb(cv("paper"));
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const z=v[j*w+i];let C=P;
+    if(isFinite(z)){const t=hi>lo?(z-lo)/(hi-lo):0;C=S.map((c,q)=>c+(G[q]-c)*t*.55);
+      const r=i<w-1?v[j*w+i+1]:z,d=j<h-1?v[(j+1)*w+i]:z,b=Math.floor(z/step);
+      if(b!==Math.floor(r/step)||b!==Math.floor(d/step))C=C.map((c,q)=>c+(I[q]-c)*.4);
+      if(hk!=null&&((z-hk)*(r-hk)<=0&&r!==z||(z-hk)*(d-hk)<=0&&d!==z))C=G}
+    img.data.set([C[0],C[1],C[2],255],4*(j*w+i))}
+  ox.putImageData(img,0,0);g.ctx.drawImage(off,0,0,w*s,h*s)}
+function spark(fn,a,m,col){const xs=Array.from({length:41},(_,i)=>a-2+i/10),ys=xs.map(fn),lo=Math.min(...ys),hi=Math.max(...ys);
+  const Y=y=>62-54*(y-lo)/((hi-lo)||1),X=x=>(x-a+2)*40,t=[a-.9,a+.9].map(x=>[X(x),Y(fn(a)+m*(x-a))]);
+  return `<svg class="spark" viewBox="0 0 160 70" aria-hidden="true"><polyline points="${xs.map((x,i)=>X(x).toFixed(1)+","+Y(ys[i]).toFixed(1)).join(" ")}" fill="none" stroke="var(--muted)" stroke-width="2"/>
+  <line x1="${t[0][0]}" y1="${t[0][1]}" x2="${t[1][0]}" y2="${t[1][1]}" stroke="var(--${col})" stroke-width="3" stroke-linecap="round"/><circle cx="80" cy="${Y(fn(a))}" r="4.5" fill="var(--ink)"/></svg>`}
+
+const FLD=[["⟨−y, x⟩ (rotation)",(x,y)=>[-y,x],"0","2"],["⟨x, y⟩ (radial)",(x,y)=>[x,y],"2","0"],["⟨y, x⟩",(x,y)=>[y,x],"0","0"],["⟨x, −y⟩",(x,y)=>[x,-y],"0","0"],["⟨1, x⟩",(x,y)=>[1,x],"0","1"],["⟨y, 0⟩ (shear)",(x,y)=>[y,0],"0","−1"]];
+function fieldViz(h){
+  const g=viz(h,{label:"Arrow plot of a vector field you choose from a list",xr:[-2.7,2.7],hint:"Hover or tap a point to read its arrow.",
+    cap:"A vector field puts one arrow at every point. To match a picture to a formula, test easy points like (1, 0) and (0, 1). Divergence measures spreading out; curl measures spinning."});
+  let F=FLD[0],hx=1,hy=0;
+  choose(g.ctl,"field",FLD.map(f=>f[0]),i=>{F=FLD[i];g.redraw()});
+  g.onhover=(x,y)=>{hx=Math.max(-2,Math.min(2,Math.round(x*2)/2));hy=Math.max(-2,Math.min(2,Math.round(y*2)/2))};
+  g.draw=()=>{axes(g);
+    for(let i=-4;i<=4;i++)for(let j=-4;j<=4;j++){const x=i/2,y=j/2,[u,v]=F[1](x,y),n=Math.hypot(u,v);if(n)arrow(g,x-u/n*.17,y-v/n*.17,x+u/n*.17,y+v/n*.17,cv("muted"),"",1.5)}
+    const[u,v]=F[1](hx,hy);arrow(g,hx,hy,hx+u*.45,hy+v*.45,cv("gold"),"",3);dot(g,hx,hy,cv("gold"),5,1);
+    g.read.innerHTML=`<span class="big">F(${fx(hx)}, ${fx(hy)}) = ⟨${fx(u)}, ${fx(v)}⟩</span><div>divergence P<sub>x</sub> + Q<sub>y</sub> = <b>${F[2]}</b></div><div>curl (k part) Q<sub>x</sub> − P<sub>y</sub> = <b>${F[3]}</b></div>`};
+  g.redraw()}
+function sliceViz(h){
+  // ponytail: three fixed regions inside the unit square; add a row here if another shape is needed
+  const RG=[{n:"triangle above y = x",lo:x=>x,hi:x=>1,L:y=>0,R:y=>y,t:["x","1","0","y"]},
+    {n:"under the curve y = √x",lo:x=>0,hi:x=>Math.sqrt(x),L:y=>y*y,R:y=>1,t:["0","√x","y²","1"]},
+    {n:"between y = x² and y = x",lo:x=>x*x,hi:x=>x,L:y=>y,R:y=>Math.sqrt(y),t:["x²","x","y","√y"]}];
+  const g=viz(h,{label:"A region in the unit square with one slice drawn through it, vertical or horizontal",xr:[-.25,1.45],yc:.55,
+    cap:"The gold bar is one slice. The inside limits are where the slice enters and leaves the region. The outside limits are how far the slice can slide. Switch the order and the same region gets new limits."});
+  let r=RG[0],o=0,s=.5;
+  choose(g.ctl,"region",RG.map(r=>r.n),i=>{r=RG[i];g.redraw()});
+  choose(g.ctl,"order",["dy dx (vertical slices)","dx dy (horizontal slices)"],i=>{o=i;g.redraw()});
+  slider(g.ctl,"slide the slice",.05,.95,.01,s,v=>{s=v;g.redraw()});
+  g.draw=()=>{axes(g,false);const P=[];for(let i=0;i<=40;i++)P.push([i/40,r.lo(i/40)]);for(let i=40;i>=0;i--)P.push([i/40,r.hi(i/40)]);
+    poly(g,P,cv("gold-soft"));g.ctx.strokeStyle=cv("ink");g.ctx.lineWidth=2;g.ctx.beginPath();P.forEach(([x,y],i)=>i?g.ctx.lineTo(g.X(x),g.Y(y)):g.ctx.moveTo(g.X(x),g.Y(y)));g.ctx.closePath();g.ctx.stroke();
+    text(g,1,0,"1",cv("muted"),-4,18);text(g,0,1,"1",cv("muted"),-16,5);
+    const[a,b]=o?[r.L(s),r.R(s)]:[r.lo(s),r.hi(s)];
+    if(o)seg(g,a,s,b,s,cv("gold"),5);else seg(g,s,a,s,b,cv("gold"),5);
+    const[t0,t1,t2,t3]=r.t;
+    g.read.innerHTML=o?`<span class="big">∫<sub>0</sub><sup>1</sup> ∫<sub>${t2}</sub><sup>${t3}</sup> f dx dy</span><div>this slice: y = ${fx(s)}</div><div>x runs from ${fx(a)} to ${fx(b)}</div>`
+      :`<span class="big">∫<sub>0</sub><sup>1</sup> ∫<sub>${t0}</sub><sup>${t1}</sup> f dy dx</span><div>this slice: x = ${fx(s)}</div><div>y runs from ${fx(a)} to ${fx(b)}</div>`};
+  g.redraw()}
+function workViz(h){
+  const FL=[["⟨y, x⟩ = ∇(xy), conservative",(x,y)=>[y,x]],["⟨−y, x⟩, not conservative",(x,y)=>[-y,x]]];
+  const g=viz(h,{label:"A path from A to B through a vector field; a slider bends the path",xr:[-.8,3.8],yc:1,
+    cap:"Work adds up F · (tiny step) along the path from A = (0, 0) to B = (3, 2). Bend the path. For the conservative field the total never changes, because it only depends on the endpoints. For the rotation field it does."});
+  let F=FL[0],b=1;
+  choose(g.ctl,"field",FL.map(f=>f[0]),i=>{F=FL[i];g.redraw()});
+  slider(g.ctl,"bend the path",-1.5,1.5,.1,b,v=>{b=v;g.redraw()});
+  const P=t=>[3*t,2*t+b*Math.sin(Math.PI*t)];
+  g.draw=()=>{axes(g);
+    for(let i=-1;i<=7;i++)for(let j=-2;j<=6;j++){const x=i/2,y=j/2,[u,v]=F[1](x,y),n=Math.hypot(u,v);if(n)arrow(g,x-u/n*.15,y-v/n*.15,x+u/n*.15,y+v/n*.15,cv("muted"),"",1.5)}
+    curve(g,P,0,1,cv("gold"),3.5);dot(g,0,0,cv("ink"),6,1);dot(g,3,2,cv("ink"),6,1);text(g,0,0,"A",cv("ink"),-18,18);text(g,3,2,"B",cv("ink"),10,-6);
+    let W=0;for(let i=0;i<400;i++){const[x0,y0]=P(i/400),[x1,y1]=P((i+1)/400),[u,v]=F[1]((x0+x1)/2,(y0+y1)/2);W+=u*(x1-x0)+v*(y1-y0)}
+    g.read.innerHTML=`<span class="big">work = ${fx(W)}</span><div>${F===FL[0]?"φ(B) − φ(A) = 3·2 − 0 = 6, for every path":"changes with the path, so there is no potential function"}</div>`};
+  g.redraw()}
+const VIZ={
+lag(h){
+  const g=viz(h,{label:"A circle with a point you slide around it, the level line of f through that point, and the two gradient arrows",xr:[-3.7,3.7],
+    cap:"The circle is the constraint x² + y² = 4. The dashed line is the level line of f = ax + by through your point. f is largest where that line just touches the circle, and exactly there the two arrows line up."});
+  let th=.4,a=1,b=1;
+  slider(g.ctl,"move the point",0,6.28,.01,th,v=>{th=v;g.redraw()});
+  slider(g.ctl,"a",-2,2,.5,a,v=>{a=v;g.redraw()});
+  slider(g.ctl,"b",-2,2,.5,b,v=>{b=v;g.redraw()});
+  g.draw=()=>{axes(g);curve(g,t=>[2*Math.cos(t),2*Math.sin(t)],0,6.3,cv("ink"),2.5);
+    const x=2*Math.cos(th),y=2*Math.sin(th),n=Math.hypot(a,b),f=a*x+b*y;
+    if(n){seg(g,x-b/n*7,y+a/n*7,x+b/n*7,y-a/n*7,cv("muted"),1.5,[5,4]);arrow(g,x,y,x+a/n,y+b/n,cv("gold"),"∇f")}
+    arrow(g,x,y,x*1.5,y*1.5,cv("ink"),"∇g");dot(g,x,y,cv("gold"),7,1);
+    const al=n&&Math.abs(a*y-b*x)/(2*n)<.03; // cross product near 0 means the arrows are parallel
+    g.read.innerHTML=`<span class="big">${!n?"f is 0 everywhere: nothing to maximize":al?(f>0?"Maximum: the arrows line up":"Minimum: the arrows line up"):"Not an extreme point yet"}</span>
+      <div>point (${fx(x)}, ${fx(y)})</div><div>f = ${fx(a)}x${sgn(b)}${fx(Math.abs(b))}y = <b>${fx(f)}</b></div><div>largest possible: ${fx(2*n)}</div>`};
+  g.redraw()},
+dbl:sliceViz,ord:sliceViz,
+pol(h){
+  const g=viz(h,{label:"A wedge of a ring: r between two radii, theta between 0 and an angle you choose",
+    cap:"In polar coordinates the simple shape is a wedge of a ring: r between two numbers and θ between two angles. Pieces farther from the origin are wider, which is where the extra r in r dr dθ comes from."});
+  let r0=1,r1=2,td=180;
+  slider(g.ctl,"inner radius",0,2,.5,r0,v=>{r0=v;g.redraw()});
+  slider(g.ctl,"outer radius",.5,2.5,.5,r1,v=>{r1=v;g.redraw()});
+  slider(g.ctl,"θ goes to (degrees)",30,360,30,td,v=>{td=v;g.redraw()});
+  g.draw=()=>{axes(g);const a=Math.min(r0,r1),b=Math.max(r0,r1),T=td*Math.PI/180,P=[];
+    for(let i=0;i<=72;i++)P.push([b*Math.cos(T*i/72),b*Math.sin(T*i/72)]);for(let i=72;i>=0;i--)P.push([a*Math.cos(T*i/72),a*Math.sin(T*i/72)]);
+    poly(g,P,cv("gold-soft"));curve(g,t=>[b*Math.cos(t),b*Math.sin(t)],0,T,cv("gold"),2.5);if(a)curve(g,t=>[a*Math.cos(t),a*Math.sin(t)],0,T,cv("gold"),2.5);
+    seg(g,a,0,b,0,cv("ink"));seg(g,a*Math.cos(T),a*Math.sin(T),b*Math.cos(T),b*Math.sin(T),cv("ink"));
+    g.read.innerHTML=`<span class="big">∫<sub>0</sub><sup>${fx(td/180)}π</sup> ∫<sub>${fx(a)}</sub><sup>${fx(b)}</sup> r dr dθ</span><div>${td}° is ${fx(td/180)}π radians</div><div>area = <b>${fx(T*(b*b-a*a)/2)}</b></div>`};
+  g.redraw()},
+sph(h){
+  const g=viz(h,{label:"Side view of the solid inside a sphere and above a cone, with sliders for the cone angle and the sphere radius",yc:1.3,
+    cap:"A side view: a slice through the z-axis (vertical). φ is measured down from the positive z-axis, so a cone is φ = one fixed angle and a sphere is ρ = its radius. Spin the shaded shape around the z-axis to get the solid."});
+  let pd=45,R=2.5;
+  slider(g.ctl,"cone angle φ (degrees)",15,90,15,pd,v=>{pd=v;g.redraw()});
+  slider(g.ctl,"sphere radius ρ",1,3,.5,R,v=>{R=v;g.redraw()});
+  g.draw=()=>{axes(g);const p=pd*Math.PI/180,P=[[0,0]];for(let i=-30;i<=30;i++)P.push([R*Math.sin(p*i/30),R*Math.cos(p*i/30)]);
+    poly(g,P,cv("gold-soft"));curve(g,t=>[R*Math.cos(t),R*Math.sin(t)],0,Math.PI,cv("ink"),2);
+    seg(g,0,0,R*Math.sin(p),R*Math.cos(p),cv("gold"),3);seg(g,0,0,-R*Math.sin(p),R*Math.cos(p),cv("gold"),3);
+    curve(g,t=>[.7*Math.sin(t),.7*Math.cos(t)],0,p,cv("good"),2.5);text(g,.85*Math.sin(p/2),.85*Math.cos(p/2),"φ",cv("good"),0,4);text(g,0,R,"z",cv("muted"),8,-6);
+    const k=1/Math.tan(p);
+    g.read.innerHTML=`<span class="big">0 ≤ ρ ≤ ${fx(R)}, &nbsp;0 ≤ φ ≤ ${pd}°</span><div>cone: ${pd===90?"the floor z = 0":"z = "+fx(k)+" · √(x² + y²)"}</div><div>sphere: x² + y² + z² = ${fx(R*R)}</div><div>volume = <b>${fx(2*Math.PI*(1-Math.cos(p))*R**3/3)}</b></div>`};
+  g.redraw()},
+com(h){
+  const g=viz(h,{label:"A rectangular plate shaded darker toward the top, with a dot at its balance point",xr:[-2,4],yc:2,
+    cap:"The plate is 0 ≤ x ≤ 2, 0 ≤ y ≤ 4 with density ρ = 1 + k·y. Darker means heavier. The dot is the center of mass. More weight near the top pulls it up from the middle (the dashed line)."});
+  let k=1;
+  slider(g.ctl,"k in ρ = 1 + k·y",0,3,.25,k,v=>{k=v;g.redraw()});
+  g.draw=()=>{axes(g);
+    for(let i=0;i<20;i++){g.ctx.globalAlpha=.15+.75*(1+k*(i+.5)/5)/13;poly(g,[[0,i/5],[2,i/5],[2,(i+1)/5],[0,(i+1)/5]],cv("gold"))}g.ctx.globalAlpha=1;
+    const m=2*(4+8*k),Mx=2*(8+64*k/3),yb=Mx/m;seg(g,-.3,2,2.3,2,cv("muted"),1.5,[4,4]);dot(g,1,yb,cv("ink"),7,1);
+    g.read.innerHTML=`<span class="big">center of mass (1, ${fx(yb)})</span><div>mass m = ∬ ρ dA = ${fx(m)}</div><div>M<sub>x</sub> = ∬ y·ρ dA = ${fx(Mx)}</div><div>ȳ = M<sub>x</sub> ÷ m = <b>${fx(yb)}</b></div>`};
+  g.redraw()},
+vf:fieldViz,dc:fieldViz,li:workViz,cons:workViz
+};
+function redrawViz(){VIZS.forEach(g=>g.redraw())}
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redrawViz)}catch(e){}
+new MutationObserver(redrawViz).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+function confetti(el){if(RM||!confettiOn())return;const r=el.getBoundingClientRect(),cols=["gold","good","ink","bad"].map(cv);
+  for(let i=0;i<30;i++){const s=document.createElement("i");s.className="confetti";
+    s.style.cssText=`left:${r.left+r.width*(.15+.7*Math.random())}px;top:${r.top+r.height/2}px;background:${cols[i%4]}`;document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2,v=60+Math.random()*130;
+    s.animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v-70}px) rotate(${Math.random()*720}deg)`,opacity:0}],
+      {duration:900+Math.random()*500,easing:"cubic-bezier(.15,.7,.3,1)"}).onfinish=()=>s.remove()}}
+
+
+/* answer feedback: confetti when right, buzzer when wrong */
+// each toggle remembers its choice in this browser
+function toggle(id,key,on,off){
+  let v=true;try{v=localStorage.getItem(key)!=="off"}catch(e){}
+  const b=$(id),show=()=>{b.textContent=v?on:off;b.setAttribute("aria-pressed",v)};
+  b.onclick=()=>{v=!v;try{localStorage.setItem(key,v?"on":"off")}catch(e){};show()};show();
+  return()=>v;
+}
+const soundOn=toggle("#snd","ma261snd","🔊 Sound on","🔇 Sound off"),confettiOn=toggle("#cfx","ma261cfx","🎉 Confetti on","Confetti off"),memesOn=toggle("#mem","ma261mem","😂 Memes on","Memes off");
+// ponytail: emoji "stickers" instead of image files, so nothing to host or license
+const YAY=[["🐓","Cock-a-doodle-CORRECT"],["🐐","Certified GOAT of Calc III"],["😎","Extra r? Never forgot it. Nailed it"],["🧠","Big brain energy detected"],["🚀","Triple integral? Full send"],["🦆","Even the duck is impressed"],["🍕","You earned a slice (dy dx or dx dy, your call)"],["👑","Green would be proud"],["🔥","Too hot. Lagrange says that's the max"],["🐸","It is Wednesday and you are correct"],["🎯", "Bullseye. Right on the normal vector"],["🏆", "Gold medal in partial differentiation"],["💯", "100% chain rule certified"],["🥇", "First place, in every direction"],["🦅", "Soaring like a unit tangent vector"],["🎉", "Party at the critical point"],["🐓", "The rooster crows for thee"],["🐓", "Rooster approved"],["🧮", "The math is mathing"],["✨", "Smooth like a C∞ function"],["🌶️", "Spicy and correct"],["🍰", "Piece of cake (every slice an ellipse)"],["🤓", "Nerd alert. Respectfully"],["🦁", "Absolute unit (vector)"],["🎸", "Rock on, rockstar"],["🐉", "Dragon-level calc"],["🛸", "Out of this world (in ℝ³)"],["🏄", "Riding the level curves"],["🧲", "Magnetically attracted to right answers"],["🍀", "Not luck. Pure skill"],["⚡", "Lightning fast and correct"],["🦖", "Rawr means correct in dinosaur"],["🎩", "Classy answer"],["🧙", "Calculus wizard confirmed"],["🐝", "Busy bee, correct bee"],["🌈", "Gradient? More like grade A"],["📈", "Stonks"],["🤑", "Your GPA just went up"],["🥳", "Fubini is clapping"],["🍩", "Donut worry, you got it (torus approved)"],["🎮", "Achievement unlocked"],["💪", "Flexing on the saddle point"],["🐢", "Slow and steady still wins"],["🦉", "Wise owl move"],["🥶", "Ice cold answer"],["🛹", "Sick trick, perfect landing"],["🏀", "Nothing but net"],["⚽", "GOOOOAL"],["🎳", "Strike"],["🎻", "Music to Lagrange's ears"],["🌮", "Taco Tuesday victory"],["🐶", "Good dog. Very good dog"],["🐱", "The cat approves (rare)"],["🦄", "Mythical levels of correct"],["🌋", "Eruption of correctness"],["🍔", "Big Mac energy"],["🧃", "Juice was worth the squeeze"],["🥨", "Twisted like a space curve, but correct"],["🧊", "Cool, calm, correct"],["🎂", "Somebody bake this person a cake"],["🪐", "Orbital-level math"],["📍", "Tangent plane: perfectly placed"],["👏", "Slow clap from the TA"],["🙌", "Praise be to the gradient"],["💅", "Effortless"],["🤌", "Chef's kiss"],["🗿", "Stone cold correct"],["🐺", "Lone wolf, right answer"],["🦍", "Gorilla-grade brainpower"],["🧗", "Climbed straight up the gradient"],["🏔️", "Found the absolute max"],["🍿", "Entertaining AND correct"],["🎬", "And the Oscar goes to you"],["🛎️", "Ding ding ding"],["🧨", "Explosive performance"],["🥷", "Ninja'd that one"],["🪄", "Magic. Or just good math"],["🐍", "Smooth like a parametrized curve"],["🧭", "You found true north (it's ∇f)"],["📐", "Perpendicular to wrong answers"],["🌟", "Gold star"],["🍾", "Pop the champagne"],["🦩", "Flamingo stands on one leg for you"],["🥑", "Avocado-ing great"],["🏁", "Checkered flag"],["💎", "Diamond hands, diamond brain"],["🦸", "Calc hero"],["🧁", "Sweet"],["🐬", "Dolphins are smart. So are you"],["🔭", "Saw that answer from a light year away"],["🧪", "Experiment successful"],["🛡️", "Dodged the trap answer"],["🎲", "Not a guess. Definitely not a guess"],["🍯", "Sweet like honey"],["🌊", "Riding the wave"],["🪁", "Flying high"],["👨‍🍳", "Cooked"],["🏋️", "Heavy lifting done"],["🐧", "Cool penguin, correct penguin"],["🦜", "Polly wanted a right answer. Polly got one"],["🎺", "Toot toot, victory"],["🥁", "Ba dum tss, correct"],["🫡", "Salute"],["🤖", "Beep boop. Correctness verified"],["🌻", "Blooming brain"],["🐿️", "Nuts about this answer"],["🦒", "Head above the rest"]],
+  NAY=[["💀","Bro forgot the extra r"],["🤡","Q_x − P_y said hi, you said P_y − Q_x"],["🐓","Cock-a-doodle-DON'T"],["🫠","The limits of integration got you"],["🙈","Pretend you didn't click that"],["🧯","That answer is on fire (bad)"],["🦆","The duck is disappointed"],["📉","Your stock just dropped"],["🥲","It's okay. The limit doesn't exist either"],["🐌","Slow down, check the sign"],["🫣", "Oof"],["😬", "Yikes"],["🚑", "Calling an ambulance for that answer"],["🪦", "RIP that answer"],["🐓", "The rooster is shaking its head"],["🐓", "Rooster says no"],["🧂", "Salty answer, wrong answer"],["🍝", "Spaghetti math"],["🌀", "Spiraling, like a helix"],["🙃", "Upside down, like a flipped normal"],["🤦", "Facepalm"],["🫥", "Vanished like a limit that doesn't exist"],["🦨", "That one stinks"],["🐛", "Bug in the brain code"],["🧱", "Hit a wall"],["🚧", "Under construction"],["🛑", "Stop. Reread the question"],["🕳️", "Fell into the trap answer"],["🧟", "brain.exe not found"],["🥴", "Woozy"],["🐒", "Monkey business"],["🎪", "Circus move"],["🤷", "Shrug energy"],["🔄", "Try flipping the sign"],["📏", "Check the units, chief"],["🫗", "Spilled the answer"],["🍋", "Sour"],["💸", "That one cost you"],["🙊", "Shh, nobody saw"],["🧻", "Wipe that one away"],["👻", "Spooky wrong"],["🌧️", "Rain on your parade"],["🥔", "Couch potato answer"],["🪫", "Low battery brain"],["🔌", "Unplugged"],["🧩", "Missing a piece"],["🕵️", "Investigate the minus signs"],["🐻", "Bear market"],["🦀", "Crab-walked right past the answer"],["🐟", "Something's fishy"],["🎭", "Drama. Wrong drama"],["🗑️", "Straight to the trash (it's okay)"],["🥶", "Cold. Very cold"],["🌵", "Prickly"],["🤕", "That one hurt"],["🫢", "Oops"],["🍳", "Fried"],["🧽", "Soak up the solution and try again"],["🎈", "Popped"],["🪤", "It's a trap"],["🦗", "Crickets"],["🐄", "Moo-ve on and try again"],["🦥", "Sloth mode"],["🥀", "Wilted"],["🧸", "Teddy bear hug. You need it"],["🏚️", "Foundation's cracked"],["🌪️", "Chaos"],["⛔", "Access denied"],["🛶", "Up the creek without a paddle"],["🔍", "Look closer at the question"],["📵", "No signal"],["🫨", "Shook"],["🤯", "Mind blown (the wrong way)"],["🐀", "Rats"],["🦇", "Batty"],["🍂", "Fell like autumn leaves"],["🚮", "Littering wrong answers"],["🦴", "Bone-headed move"],["👀", "The TA saw that"],["📚", "Back to the refresher"],["🙅", "Nope"],["🐍", "Sssso close? No"],["🫤", "Meh"],["🐔", "Chicken out next time"],["🕰️", "Time to review"],["🎢", "Rollercoaster, straight down"],["💥", "Kaboom"],["🦞", "Lobstered"],["🪞", "Mirror says try again"],["🍄", "Mushroom for improvement"],["🦆", "Quack. That's wrong in duck"],["🏳️", "Not surrender. Regroup"],["🪨", "Rock bottom (just a local min, you'll climb out)"],["🌡️", "Fever dream answer"],["🥸", "Disguised as a right answer"],["🍌", "Slipped on a banana"],["🐊", "Snap, wrong"],["🧮", "The math ain't mathing"],["🎯", "Missed the target"],["🧶", "All tangled up"],["⛈️", "Stormy"],["🔕", "No ding for you"],["📴", "Brain on airplane mode"],["🦠", "Infected with a sign error"],["🐡", "Puffed up and wrong"],["🏝️", "Stranded on wrong answer island"],["🥜", "Aw nuts"],["🚂", "Wrong track"]];
+let memeEl,memeT;
+function meme(ok){if(!memesOn())return;const L=ok?YAY:NAY,[e,t]=L[Math.random()*L.length|0];
+  memeEl?.remove();clearTimeout(memeT);memeEl=document.createElement("div");memeEl.className="meme";memeEl.setAttribute("role","status");
+  memeEl.innerHTML=`<b>${e}</b><span>${t}</span>`;document.body.appendChild(memeEl);
+  if(!RM)memeEl.animate([{transform:"translateY(40px) rotate(-6deg) scale(.6)",opacity:0},{transform:"rotate(2deg) scale(1.05)",opacity:1,offset:.6},{transform:"none",opacity:1}],{duration:350,easing:"ease-out"});
+  memeT=setTimeout(()=>memeEl.remove(),2200);ach.memes=(ach.memes||0)+1}
+let actx;
+function buzzer(){
+  if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    const t=actx.currentTime,g=actx.createGain();g.connect(actx.destination);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);g.gain.setValueAtTime(.12,t+.42);g.gain.exponentialRampToValueAtTime(.0001,t+.5);
+    // two slightly detuned square waves beat against each other: the game-show "ehhh"
+    for(const f of[110,117]){const o=actx.createOscillator();o.type="square";o.frequency.setValueAtTime(f,t);o.frequency.linearRampToValueAtTime(f*.85,t+.5);o.connect(g);o.start(t);o.stop(t+.52)}
+  }catch(e){}
+}
+function ding(){
+  if(!soundOn())return;
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume();
+    // two rising bell notes (A5 then E6); each is a triangle wave plus a quieter octave for shimmer, ringing out over ~0.8 s
+    [[880,0],[1318.5,.12]].forEach(([f,d])=>{const t=actx.currentTime+d,g=actx.createGain();g.connect(actx.destination);
+      g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.4,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.8);
+      [["triangle",f,1],["sine",f*2,.35]].forEach(([type,hz,lvl])=>{const o=actx.createOscillator(),og=actx.createGain();
+        o.type=type;o.frequency.setValueAtTime(hz,t);og.gain.value=lvl;o.connect(og);og.connect(g);o.start(t);o.stop(t+.85)})});
+  }catch(e){}
+}
+function cheer(el,ok){meme(ok);if(ok){confetti(el);ding()}else buzzer();achAnswer(ok)}
+
+/* achievements: earned once, kept even when progress is reset */
+let ach={got:{},streak:0,best:0,wrongs:0,wrongRun:0,answered:0};
+try{Object.assign(ach,JSON.parse(localStorage.getItem("ma261e2ach")||"{}"))}catch(e){}
+const saveAch=()=>{try{localStorage.setItem("ma261e2ach",JSON.stringify(ach))}catch(e){}};
+// topics whose warm-ups are all answered (or all right)
+const wFull=ok=>Object.values(LEARN).filter(L=>L.warm.every(w=>ok?warm[w.id]===LET.indexOf(w.a):warm[w.id]!=null)).length;
+const exDone=ok=>examOrder.some(e=>Q.filter(q=>q.e===e).every(q=>ok?prog[q.id]?.ok:prog[q.id]));
+const NT=Object.keys(LEARN).length;
+const ACH=[
+  ["first","👶","Baby steps","Answer your first question",c=>ach.answered>=1],
+  ["right","🐓","Cock-a-doodle-doo","Get your first answer right",c=>ach.best>=1],
+  ["wrong","🫠","Character development","Get your first answer wrong",c=>ach.wrongs>=1],
+  ["s3","🔥","Heating up","3 right in a row",c=>ach.best>=3],
+  ["s5","🌶️","On fire","5 right in a row",c=>ach.best>=5],
+  ["s10","🚀","Unstoppable","10 right in a row",c=>ach.best>=10],
+  ["s20","🐐","GOAT mode","20 right in a row",c=>ach.best>=20],
+  ["comeback","🦅","Comeback kid","Get one right after 3+ wrong in a row",c=>ach.comeback],
+  ["fail25","💀","Failing forward","Get 25 answers wrong. It's how you learn",c=>ach.wrongs>=25],
+  ["grind","💯","Grinder","Answer 100 times (re-answers count)",c=>ach.answered>=100],
+  ["w10","🤸","Stretched out","Answer 10 warm-ups",c=>c.nw>=10],
+  ["topic","✅","Topic down","Finish every warm-up in one topic",c=>wFull()>=1],
+  ["flawless","🎯","Flawless","Get every warm-up in a topic right",c=>wFull(true)>=1],
+  ["wall","🎓","Fully warmed up","Finish the warm-ups for every topic",c=>wFull()===NT],
+  ["q25","📝","Quarter way","Answer 25 past exam questions",c=>c.np>=25],
+  ["qall","🏁","Seen it all","Answer every past exam question",c=>c.np===Q.length],
+  ["exam","📄","Full exam","Answer every question from one past exam",c=>exDone()],
+  ["exam100","👑","Perfect exam","Get every question right on one past exam",c=>exDone(true)],
+  ["brain","🧠","Big brain","80%+ correct over 20+ exam questions",c=>c.np>=20&&c.nr/c.np>=.8],
+  ["mock","⏱️","Under pressure","Finish a mock exam",c=>ach.mocks>=1],
+  ["mock9","📈","Passing vibes","Get 9+ of 12 on a mock exam",c=>ach.mockBest>=9],
+  ["mock12","💎","Perfect mock","Get 12 of 12 on a mock exam",c=>ach.mockBest===12],
+  ["speed","⚡","Speedrun","9+ right on a mock in under 20 minutes",c=>ach.fast],
+  ["night","🦉","Night owl","Answer a question between midnight and 4 a.m.",c=>ach.night],
+  ["early","🌅","Early bird","Answer a question between 5 and 7 a.m.",c=>ach.early],
+  ["cheat","📋","Cheat sheet","Open the Topics & formulas tab",c=>ach.cheat],
+  ["pooper","🥱","Party pooper","Turn off confetti",c=>ach.pooper],
+  ["memes","🤡","Meme lord","See 50 memes",c=>ach.memes>=50],
+  ["all","🏆","Completionist","Unlock every other achievement",c=>ACH.every(a=>a[0]==="all"||ach.got[a[0]])]
+];
+function checkAch(quiet){
+  const P=Object.values(prog),c={np:P.length,nr:P.filter(p=>p.ok).length,nw:Object.keys(warm).length},fresh=[];
+  ACH.forEach(a=>{if(!ach.got[a[0]]&&a[4](c)){ach.got[a[0]]=Date.now();fresh.push(a)}});
+  if(fresh.length)saveAch();
+  $("#achb").textContent=`🏆 ${Object.keys(ach.got).length}/${ACH.length} achievements`;
+  // quiet on page load, so old progress doesn't fire a burst of toasts
+  if(!quiet)fresh.forEach(([,e,n],i)=>setTimeout(()=>{const t=document.createElement("div");t.className="achtoast";t.setAttribute("role","status");
+    t.innerHTML=`<b>${e}</b><span><small>Achievement unlocked</small>${n}</span>`;document.body.appendChild(t);confetti(t);ding();
+    if(!RM)t.animate([{transform:"translate(-50%,-80px)",opacity:0},{transform:"translate(-50%,0)",opacity:1}],{duration:350,easing:"ease-out"});
+    setTimeout(()=>t.remove(),2600)},500+i*2800));
+}
+function achAnswer(ok){
+  ach.answered++;
+  if(ok){if(ach.wrongRun>=3)ach.comeback=1;ach.streak++;ach.best=Math.max(ach.best,ach.streak);ach.wrongRun=0}
+  else{ach.streak=0;ach.wrongs++;ach.wrongRun++}
+  const h=new Date().getHours();if(h<4)ach.night=1;if(h>=5&&h<7)ach.early=1;
+  saveAch();checkAch();
+}
+const achFlag=k=>{if(!ach[k]){ach[k]=1;saveAch();checkAch()}};
+$("#cfx").addEventListener("click",()=>{if(!confettiOn())achFlag("pooper")});
+$("#achb").onclick=()=>{
+  $("#agrid").innerHTML=ACH.map(([id,e,n,d])=>`<div class="ach${ach.got[id]?"":" locked"}"><b>${e}</b><div>${n}<small>${d}</small></div></div>`).join("");
+  $("#achd").showModal();
+};
+
+/* start here */
+function renderLessons(){
+  const box=$("#lessons");
+  Object.keys(LEARN).forEach((k,ti)=>{
+    const L=LEARN[k], n=Q.filter(q=>q.t===k).length;
+    L.warm.forEach((w,i)=>{w.id="W-"+k+"-"+i;w.t=k;w.label=`Warm-up ${i+1} of ${L.warm.length} · ${w.step}`});
+    const d=document.createElement("details");d.className="lesson";d.dataset.k=k;
+    d.dataset.n=String(ti+1).padStart(2,"0");
+    d.innerHTML=`<summary><span class="n">${d.dataset.n}</span><div class="st"><h3>${TOPICS[k]}</h3><span class="hook">${HOOKS[k]}</span></div><span class="dots" aria-hidden="true">${L.warm.map(()=>"<i></i>").join("")}</span></summary>
+      <div class="body"><h4>Refresher</h4><div class="refresh">${L.learn}</div>${VIZ[k]?`<h4>Play with it</h4><div class="vizhost"></div>`:""}<h4>Warm-ups</h4><div class="refresh"><div class="ex"><b>On the exam:</b> ${L.exam}</div></div><div class="qlist"></div>
+      <div class="lfoot"><button class="btn primary next">Now try the ${n} real exam question${n===1?"":"s"} →</button><button class="btn ghost wreset" type="button">Reset these warm-ups</button></div></div>`;
+    const fill=()=>{const ql=d.querySelector(".qlist");ql.innerHTML="";L.warm.forEach(w=>ql.appendChild(card(w,"warm")))};fill();
+    twoClick(d.querySelector(".wreset"),()=>{L.warm.forEach(w=>delete warm[w.id]);saveWarm();fill();renderLessonProg()});
+    d.querySelectorAll(".refresh").forEach(typeset);
+    d.addEventListener("toggle",()=>{if(d.open&&!d.built&&VIZ[k]){d.built=1;VIZ[k](d.querySelector(".vizhost"))}flushMath()});
+    d.querySelector(".next").onclick=()=>{$("#fTopic").value=k;$("#fExam").value="all";$("#fOpen").checked=false;showTab("practice");renderPractice();window.scrollTo({top:0})};
+    box.appendChild(d);
+  });
+  renderLessonProg();
+}
+function renderLessonProg(){
+  let tot=0,done=0,topics=0;
+  document.querySelectorAll(".lesson").forEach(d=>{
+    const w=LEARN[d.dataset.k].warm,n=w.filter(x=>warm[x.id]!=null).length,full=n===w.length;
+    tot+=w.length;done+=n;topics+=full;
+    d.querySelectorAll(".dots i").forEach((el,i)=>{const p=warm[w[i].id];el.className=p==null?"":p===LET.indexOf(w[i].a)?"ok":"no"});
+    if(full&&d.dataset.full==="0")confetti(d.querySelector("summary"));
+    d.dataset.full=full?"1":"0";d.classList.toggle("done",full);
+    d.querySelector(".n").textContent=full?"✓":d.dataset.n;
+    d.querySelector(".wreset").disabled=!n;
+  });
+  $("#meter").innerHTML=`<div class="mbar"><i style="width:${100*done/tot}%"></i></div><span><b>${done}</b>/${tot} warm-ups · <b>${topics}</b>/${NT} topics done</span>`;
+}
+
+/* mock */
+const mockState={qs:[],ans:{},end:0,timer:null,done:false};
+const MOCK_MIN=60;
+function mockIntro(){
+  const m=$("#mock");
+  m.innerHTML=`<div class="intro"><h2>Mock Exam 2</h2><p class="sub">Twelve questions from twelve different topics, pulled at random from the past exams. Same format as the real thing. Questions outside Lessons 17–30 are left out.</p>
+  <ul><li>${MOCK_MIN} minutes on the clock</li><li>No feedback until you submit</li><li>No notes or calculator, just like the exam</li><li>Scored out of 100: 8 points per question plus 4 for the scantron</li></ul>
+  <button class="btn primary" id="mStart">Start mock exam</button></div>`;
+  $("#mStart").onclick=startMock;
+}
+function startMock(){
+  mockState.qs=Object.keys(LEARN).sort(()=>Math.random()-.5).slice(0,12).map(k=>{const p=Q.filter(q=>q.t===k);return p[Math.floor(Math.random()*p.length)]}).sort(()=>Math.random()-.5);
+  mockState.ans={};mockState.done=false;mockState.end=Date.now()+MOCK_MIN*60000;
+  const m=$("#mock");
+  m.innerHTML=`<div class="mockbar"><span class="timer" id="mTime">${MOCK_MIN}:00</span><span id="mCount"></span><button class="btn primary" id="mSubmit">Submit</button></div><div class="qlist" id="mList"></div>`;
+  mockState.qs.forEach((q,i)=>{const c=card(q,"mock");c.querySelector(".meta span").textContent=`Question ${i+1} of 12`;c.querySelector(".chip").hidden=true;$("#mList").appendChild(c)});
+  updateMockCount();
+  $("#mSubmit").onclick=submitMock;
+  clearInterval(mockState.timer);mockState.timer=setInterval(tick,1000);tick();
+  window.scrollTo({top:0});
+}
+function tick(){
+  const left=Math.max(0,mockState.end-Date.now());
+  const el=$("#mTime");if(!el){clearInterval(mockState.timer);return}
+  el.textContent=Math.floor(left/60000)+":"+String(Math.floor(left/1000)%60).padStart(2,"0");
+  if(left<=0)submitMock();
+}
+function updateMockCount(){const c=$("#mCount");if(c)c.textContent=Object.keys(mockState.ans).length+" / 12 answered"}
+function submitMock(){
+  if(mockState.done)return;mockState.done=true;clearInterval(mockState.timer);
+  const right=mockState.qs.filter(q=>mockState.ans[q.id]===LET.indexOf(q.a)).length;
+  const used=Math.round((MOCK_MIN*60000-Math.max(0,mockState.end-Date.now()))/60000);
+  ach.mocks=(ach.mocks||0)+1;ach.mockBest=Math.max(ach.mockBest||0,right);if(right>=9&&used<20)ach.fast=1;saveAch();checkAch();
+  const weak=[...new Set(mockState.qs.filter(q=>mockState.ans[q.id]!==LET.indexOf(q.a)).map(q=>TOPICS[q.t]))];
+  const m=$("#mock");
+  m.innerHTML=`<div class="intro"><div class="eyebrow">Mock result</div><div class="score">${right*8+4}</div><p class="sub">${right} of 12 correct · about ${used} min used${weak.length?" · review: "+weak.join(", "):""}</p><button class="btn primary" id="mAgain">New mock exam</button></div><div class="qlist" id="mList" style="margin-top:14px"></div>`;
+  mockState.qs.forEach(q=>$("#mList").appendChild(card(q,"review")));
+  $("#mAgain").onclick=startMock;window.scrollTo({top:0});
+}
+
+/* tabs */
+function showTab(t){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  ["start","practice","mock","topics"].forEach(s=>$("#"+s).hidden=s!==t);
+  if(t==="topics")achFlag("cheat");
+  try{localStorage.setItem("ma261e2t",t)}catch(e){}
+  flushMath();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+
+/* boot */
+fillSelects();
+try{const f=JSON.parse(localStorage.getItem("ma261e2f")||"null");if(f){$("#fExam").value=f.e||"all";$("#fTopic").value=f.t||"all"}}catch(e){}
+renderStats();renderPractice();renderBars();renderSheet();renderLessons();mockIntro();checkAch(true);
+const h=(location.hash||"").slice(1);
+let t0="start";try{t0=localStorage.getItem("ma261e2t")||"start"}catch(e){}
+showTab(["start","practice","mock","topics"].includes(h)?h:t0);
+})();
+</script>
+</body>
+</html>
